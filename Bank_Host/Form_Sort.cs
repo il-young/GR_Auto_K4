@@ -5753,7 +5753,7 @@ namespace Bank_Host
                 if(lot_row > -1)
                 {
                     device_row_num = i;
-                    lot_row_num = lot_row;
+                    lot_row_num = lot_row +1;
 
                     dataGridView_Device_CellClick(i, 0);
 
