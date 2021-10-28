@@ -1628,6 +1628,9 @@ namespace Bank_Host
             dataGridView_Device.Rows.Clear();
             dataGridView_Device.Refresh();
 
+            device_row_num = 0;
+            lot_row_num = 0;
+
             dataGridView_Device.Columns.Add("#", "#");
             dataGridView_Device.Columns.Add("DEVICE", "DEVICE");
 
@@ -5735,6 +5738,108 @@ namespace Bank_Host
                 }
             }
         }
+
+        int device_row_num = 0;
+        int lot_row_num = 0;
+
+        private void label_scan_wait_Click(object sender, EventArgs e)
+        {
+            int lot_row = -1;
+
+            for(int i= device_row_num; i< dataGridView_Device.RowCount; i++)
+            {
+                lot_row = get_wait_position(dataGridView_Device.Rows[i].Cells[1].Value.ToString(), lot_row_num);
+
+                if(lot_row > -1)
+                {
+                    device_row_num = i;
+                    lot_row_num = lot_row;
+
+                    dataGridView_Device_CellClick(i, 0);
+
+                    dataGridView_Lot.Rows[lot_row_num].Selected = true;
+                }
+                else
+                {
+                    device_row_num = 0;
+                    lot_row_num = 0;
+                }
+            }
+        }
+
+        private int get_wait_position(string dev_name, int start_lot)
+        {
+            string res = "";            
+
+            string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
+            string strReadfile = "";
+
+            if (strSelCust != "940")
+            {
+                strSelDevice = dev_name;
+                strReadfile = strFileName + "\\" + dev_name + "\\" + dev_name + ".txt";
+            }
+            else
+                strReadfile = strFileName + "\\" + dev_name + "\\" + dev_name + ".txt";
+
+            string[] info = Fnc_ReadFile(strReadfile);
+            string state = "";
+
+            if (info == null)
+                return -1;
+
+            for (int m = start_lot+1; m < info.Length; m++)
+            {
+                string[] strSplit_data = info[m].Split('\t');
+
+                state = strSplit_data[13];
+
+                if (state == "Waiting")
+                {
+                    return m;
+                }
+            }
+
+            return -1;
+        }
+
+        private void dataGridView_Device_CellClick(int r, int c)
+        {
+            int rowIndex = r;
+            int colIndex = c;
+
+            if (colIndex != 0)
+                colIndex = 0;
+
+            if (rowIndex == -1)
+                return;
+
+            string strDevice = dataGridView_Device.Rows[rowIndex].Cells[1].Value.ToString();
+
+            while (bGridViewUpdate)
+            {
+                Thread.Sleep(1);
+                Application.DoEvents();
+            }
+
+            try
+            {
+                if (strSelCust == "940")
+                {
+                    strSelDevice = strDevice;
+                }
+
+                Fnc_GetDeviceData(strDevice);
+
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+
+
 
         private void button_printbill_Click(object sender, EventArgs e)
         {

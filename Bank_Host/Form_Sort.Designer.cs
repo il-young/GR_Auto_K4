@@ -1395,6 +1395,7 @@
             this.label_scan_wait.TabIndex = 2;
             this.label_scan_wait.Text = "-";
             this.label_scan_wait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_scan_wait.Click += new System.EventHandler(this.label_scan_wait_Click);
             // 
             // label14
             // 
