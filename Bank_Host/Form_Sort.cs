@@ -39,6 +39,7 @@ namespace Bank_Host
         public Form_Sort()
         {
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(Application.StartupPath);
+            
             strExcutionPath = di.ToString();
 
             InitializeComponent();
@@ -46,6 +47,8 @@ namespace Bank_Host
 
         public void Fnc_Init()
         {
+            dataGridView_Lot.DefaultCellStyle.SelectionBackColor = Color.Yellow;    // 2021-10-28 선택 셀 배경색 수정
+            dataGridView_Lot.DefaultCellStyle.SelectionForeColor = Color.Black;     // 2021-10-28 선택 셀 글자         색 수정
             tabControl_Sort.SelectedIndex = 0;
             comboBox_mode.SelectedIndex = -1;
 
@@ -102,6 +105,7 @@ namespace Bank_Host
                         if (str == strCust)
                             bAdd = true;
                     }
+
                     if (!bAdd)
                     {
                         comboBox_cust.Items.Add(strCust);
@@ -6589,15 +6593,18 @@ namespace Bank_Host
                     strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
                     Frm_Process.Form_Display(strMsg);
 
-                    if (taskResut.Status.ToString() == "Faulted")
-                    {
-                        strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
-                        Frm_Process.Form_Display_Warning(strMsg);
-                        Thread.Sleep(3000);
-                        Frm_Process.Form_Hide();
+                    string res = taskResut.Status.ToString();
 
-                        return;
-                    }
+                    //if (res == "Faulted")
+                    //{
+                    //    strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
+                    //    Frm_Process.Form_Display_Warning(strMsg);
+                    //    Thread.Sleep(3000);
+                    //    Frm_Process.Form_Hide();
+
+                    //    return;
+                    //}
+
 
                     int nCount = Fnc_Get_Worklist_3(taskResut.Result);
 
