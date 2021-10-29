@@ -87,4 +87,4 @@ D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Release\Bank_Host.csproj.CoreCompileInputs.cache
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Release\Bank_Host.exe
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Release\Bank_Host.pdb
-D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Release\Bank_Host.csproj.CopyComplete
+D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Release\Bank_Host.csproj.AssemblyReference.cache

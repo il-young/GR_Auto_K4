@@ -12,12 +12,42 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Threading;
 using System.Speech.Synthesis;
-
+using System.Diagnostics;
 
 namespace Bank_Host
 {
     public partial class Form_Sort : Form
     {
+        [DllImport("imm32.dll")]
+        private static extern IntPtr ImmGetDefaultIMEWnd(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr IParam);
+
+        [DllImport("imm32.dll")]
+        public static extern IntPtr ImmGetContext(IntPtr hWnd);
+
+        [DllImport("imm32.dll")]
+        public static extern Boolean ImmSetConversionStatus(IntPtr hIMC, Int32 fdwConversion, Int32 fdwSentence);
+
+        public const int IME_CMODE_ALPHANUMERIC = 0x0000;
+        private const int WM_IME_CONTROL = 643;
+
+        public struct stAmkor_Label
+        {
+            public string Lot;
+            public string DCC;
+            public string Device;
+            public string DQTY;
+            public string WQTY;
+            public string AMKOR_ID;
+            public string CUST;
+            public string Wafer_ID;
+        }
+                
+        public List<stAmkor_Label> label_list = new List<stAmkor_Label>();
+        
+
         Form_Progress Frm_Process = new Form_Progress();
 
         public string strExcutionPath = "", strWorkFileName = "", strWorkCust = "";
@@ -2922,6 +2952,15 @@ namespace Bank_Host
             int n = tabControl_Sort.SelectedIndex;
             BankHost_main.nSortTabNo = n;
 
+            if (bselected_mode_index == true)
+            {
+                tabControl_Sort.SelectedIndex = 5;
+                speech.SpeakAsyncCancelAll();
+                speech.SpeakAsync("라벨출력 모드 종료 후 이동 할 수 있습니다.");
+                return;
+            }
+                
+
             if (BankHost_main.nWorkMode == 0 && n < 3)
             {
                 tabControl_Sort.SelectedIndex = 0;
@@ -3022,15 +3061,22 @@ namespace Bank_Host
                 Fnc_Hist_Init();
             }
             else if(n == 4)
+            {                     
+                Fnc_Get_Unprinted_Deviceinfo();
+                textBox_unprinted_device.Text = "";
+            }
+            else if(n == 5)
             {
-                if (strWorkFileName == "" || BankHost_main.strOperator == "")
+                if (bselected_mode_index == false)
                 {
                     tabControl_Sort.SelectedIndex = 0;
                     return;
                 }
-
-                Fnc_Get_Unprinted_Deviceinfo();
-                textBox_unprinted_device.Text = "";
+                else
+                {
+                    tabControl_Sort.SelectedIndex = 5;
+                    return;
+                }
             }
         }
 
@@ -4348,6 +4394,66 @@ namespace Bank_Host
                 }
             }
         }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Convert.ToInt32(e.KeyChar) == 13)
+            {
+                Amkor_label_Print_Process(textBox1.Text);
+                textBox1.Text = "";
+            }
+        }
+
+        private void Amkor_label_Print_Process(string strBcr)
+        {
+            stAmkor_Label temp = new stAmkor_Label();
+            string[] str_temp = strBcr.Replace(':', ',').Split(',');
+
+            if (str_temp.Length == 8)
+            {
+                temp.Lot = str_temp[0];
+                temp.DCC = str_temp[1];
+                temp.Device = str_temp[2];
+                temp.DQTY = int.Parse(str_temp[3]).ToString();
+                temp.WQTY = int.Parse(str_temp[4]).ToString();
+                temp.AMKOR_ID = int.Parse(str_temp[5]).ToString();
+                temp.CUST = int.Parse(str_temp[6]).ToString();
+                temp.Wafer_ID = str_temp[7];
+
+                if (check_duplicate(temp.AMKOR_ID) == false)
+                {
+                    label_list.Add(temp);
+
+                    dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+
+                    Frm_Print.Fnc_Print(temp);
+                }
+                else
+                {
+                    speech.SpeakAsyncCancelAll();
+                    speech.SpeakAsync("중복된 라벨 입니다.");
+
+                }
+            }
+        }
+
+        bool check_duplicate(string amkor_id)
+        {
+            bool res = false;
+
+            for(int i = 0; i< dataGridView_label.RowCount;i++)
+            {
+                if(dataGridView_label.Rows[i].Cells[4].Value.ToString() == amkor_id)
+                {
+                    dataGridView_label.Rows[i].Selected = true;
+                    res = true;
+                    break;
+                }
+            }
+
+            return res;
+        }
+
         public Bcrinfo Fnc_Bcr_Parsing(string strBcr)
         {
             //nWorkBcrcount 확인 할 것, 고객별 바코드 형식도 확인이 필요할 듯!
@@ -4362,6 +4468,15 @@ namespace Bank_Host
             string[] strSplit_QtyPos = new string[2];
 
             int nDevicePos = -1, nLotPos = -1, nQtyPos = -1;
+
+            if(BankHost_main.nProcess == 4001)
+            {
+                string[] temp = strBcr.Split(':');
+                Amkor_label_Print_Process(strBcr);
+               
+
+                return bcr;
+            }
 
             if (BankHost_main.strWork_DevicePos.Contains(','))
             {
@@ -5838,13 +5953,23 @@ namespace Bank_Host
             }
         }
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
-
+        }
 
         private void button_printbill_Click(object sender, EventArgs e)
         {
             Frm_Print.Fnc_Print_Billinfo(strSelBill);
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (!BankHost_main.IsAutoFocus)
+                BankHost_main.IsAutoFocus = true;
+        }
+      
+       
 
         public void Fnc_Get_History_Bill(string strGetBill)
         {
@@ -5933,6 +6058,105 @@ namespace Bank_Host
             }
 
             dataGridView_hist.Sort(dataGridView_hist.Columns["일자"], ListSortDirection.Ascending);           
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (blabel_save == true)
+            {
+                bselected_mode_index = false;
+                tabControl_Sort.SelectedIndex = 0;
+                blabel_save = false;
+
+                dataGridView_label.Rows.Clear();
+            }
+            else
+            {
+                DialogResult res = MessageBox.Show("저장 하지 않았습니다. 종료 하시겠습니까?", "종료", MessageBoxButtons.YesNo);
+
+                if(res == DialogResult.Yes)
+                {
+                    bselected_mode_index = false;
+                    tabControl_Sort.SelectedIndex = 0;
+                    blabel_save = false;
+                    dataGridView_label.Rows.Clear();
+                }
+            }
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            string file_path = "";
+            saveFileDialog1.InitialDirectory = Properties.Settings.Default.file_save_path;
+            saveFileDialog1.Filter = "CSV file(*.csv)|";
+
+            DialogResult res = saveFileDialog1.ShowDialog();
+
+            if(res == DialogResult.OK)
+            {
+                if(saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.Length-3, 3).ToUpper() != "CSV")
+                {
+                    file_path = saveFileDialog1.FileName + ".csv";
+                }
+                else
+                {
+                    file_path = saveFileDialog1.FileName;
+                }
+
+                make_csv(file_path);
+            }
+
+        }
+
+        bool blabel_save = false;
+
+        public void make_csv(string path)
+        {
+            try
+            {
+                string str_temp = "No.,LOT,Device,Lot_QTY,Wafer_QTY,Amkor_ID,Cust,Wafer_Lot";
+                System.IO.StreamWriter st = System.IO.File.AppendText(path);
+
+                st.WriteLine(str_temp);
+
+                for (int i = 0; i < dataGridView_label.RowCount; i++)
+                {
+                    str_temp = (i + 1).ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[1].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[2].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[3].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[4].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[5].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString();
+
+                    st.WriteLine(str_temp);
+
+                }
+              
+                st.Close();
+                st.Dispose();
+                blabel_save = true;
+            }
+            catch(Exception ex)
+            {
+
+            }
+             
+           
+        }
+
+        private void dataGridView_label_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            textBox1.Text = e.KeyChar.ToString();
+            textBox1.Select(textBox1.TextLength, 0);
+            textBox1.Focus();
         }
 
         private void button_grstart_Click(object sender, EventArgs e)
@@ -6786,6 +7010,24 @@ namespace Bank_Host
                     comboBox_Name.SelectedIndex = 0;
                 }
             }
+            else if(nSel == 4)
+            {
+                if(BankHost_main.IsAutoFocus == false)
+                    BankHost_main.IsAutoFocus = true;
+
+                label_list.Clear();
+                BankHost_main.nProcess = 4001;
+                
+                tabControl_Sort.SelectedIndex = 5;
+                bselected_mode_index = true;
+                textBox1.Focus();
+
+                if(GetIME() == true)
+                {
+                    ChangeIME(textBox1);
+                }
+
+            }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
 
@@ -6795,6 +7037,37 @@ namespace Bank_Host
                 MessageBox.Show("DB 업데이트 실패!");
             }            
         }
+
+
+        private void ChangeIME(System.Windows.Forms.Control ctl)
+        {
+            IntPtr context = ImmGetContext(ctl.Handle);
+            Int32 dwConversion = 0;
+            dwConversion = IME_CMODE_ALPHANUMERIC;
+            ImmSetConversionStatus(context, dwConversion, 0);
+        }
+
+
+        bool GetIME()
+        {
+            Process p = Process.GetProcessesByName(Application.ProductName).FirstOrDefault();
+
+            if (p == null)
+                return false;
+
+            IntPtr hwnd = p.MainWindowHandle;
+            IntPtr hime = ImmGetDefaultIMEWnd(hwnd);
+            IntPtr status = SendMessage(hime, WM_IME_CONTROL, new IntPtr(0x5), new IntPtr(0));
+
+
+            
+            if (status.ToInt32() != 0)
+                return true;  
+            
+            return false;
+        }
+
+        bool bselected_mode_index = false;
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {

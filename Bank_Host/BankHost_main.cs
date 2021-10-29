@@ -523,6 +523,7 @@ namespace Bank_Host
                         Thread.Sleep(200);
                     }
 
+
                     Form_Sort.nLabelcount = 0;
                     Form_Sort.nLabelttl = 0;
 
@@ -538,12 +539,52 @@ namespace Bank_Host
                     nProcess = 1000;
                     IsRun = false;
                 }
+                else if (nProcess == 4001)
+                {
+                    Read_Bcr = null;
+
+                    string strbank = string.Format("LON,16");
+                    //string strbank = string.Format("LON");
+                    Frm_Scanner.Socket_MessageSend(strbank);
+                    Thread.Sleep(350);
+
+                    Frm_Scanner.Socket_MessageSend("LOFF");
+                    Thread.Sleep(80);
+
+                    try
+                    {
+                        Read_Bcr = Frm_Sort.Fnc_Bcr_Parsing(Frm_Scanner.strReceivedata);
+                    }
+                    catch
+                    {
+                        IsRun = false;
+                        Read_Bcr = null;
+                    }
+
+                    if(Read_Bcr == null)
+                    {
+                        //if(read_err_cnt > 10)
+                        //{
+                        //    if (BankHost_main.IsAutoFocus == false)
+                        //        BankHost_main.IsAutoFocus = true;
+
+                        //    read_err_cnt = 0;
+                        //}
+                        //else
+                        //{
+                        //    read_err_cnt++;
+                        //}
+                    }
+
+                }
             }
             catch
             {
                 nProcess = 1000;
             }
         }
+
+        int read_err_cnt = 0;
 
         public void ProcessGun_Error(string strMsg)
         {
