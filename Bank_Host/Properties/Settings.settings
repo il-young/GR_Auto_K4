@@ -5,5 +5,8 @@
     <Setting Name="file_save_path" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="LOCATION" Type="System.String" Scope="User">
+      <Value Profile="(Default)">K4</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

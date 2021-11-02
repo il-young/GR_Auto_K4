@@ -190,3 +190,11 @@
 20211029,16:14:24,socketManager_OnConnectStatus: Connected
 20211029,16:14:24,Keyence: 192.168.10.10: 9100
 20211029,16:14:24,SocketManager OK!
+20211029,16:20:32,socketManager_OnConnectStatus: Connecting
+20211029,16:20:32,socketManager_OnConnectStatus: Connected
+20211029,16:20:32,Keyence: 192.168.10.10: 9100
+20211029,16:20:32,SocketManager OK!
+20211029,16:24:14,socketManager_OnConnectStatus: Connecting
+20211029,16:24:14,socketManager_OnConnectStatus: Connected
+20211029,16:24:14,Keyence: 192.168.10.10: 9100
+20211029,16:24:14,SocketManager OK!

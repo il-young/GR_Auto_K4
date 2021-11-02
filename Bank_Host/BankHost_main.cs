@@ -586,6 +586,52 @@ namespace Bank_Host
 
         int read_err_cnt = 0;
 
+        private void label3_Click(object sender, EventArgs e)
+        {
+            if(label3.Text == "K4")
+            {
+                label3.Text = "K5";
+                label3.ForeColor = Color.Green;
+
+                Properties.Settings.Default.LOCATION = "K5";
+                Properties.Settings.Default.Save();
+            }
+            else if(label3.Text =="K5")
+            {
+                label3.Text = "K3";
+                label3.ForeColor = Color.Blue;
+
+                Properties.Settings.Default.LOCATION = "K3";
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                label3.Text = "K4";
+                label3.ForeColor = Color.Red;
+
+                Properties.Settings.Default.LOCATION = "K4";
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void BankHost_main_Load(object sender, EventArgs e)
+        {
+            label3.Text = Properties.Settings.Default.LOCATION;
+
+            if (label3.Text == "K4")
+            {
+                label3.ForeColor = Color.Red;             
+            }
+            else if (label3.Text == "K5")
+            {
+                label3.ForeColor = Color.Green;
+            }
+            else
+            {
+                label3.ForeColor = Color.Blue;
+            }
+        }
+
         public void ProcessGun_Error(string strMsg)
         {
             Frm_Sort.Fnc_BcrInfo("");

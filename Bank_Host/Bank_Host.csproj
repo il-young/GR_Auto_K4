@@ -90,8 +90,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Host">
-      <HintPath>..\..\dll\Host.dll</HintPath>
+    <Reference Include="Host, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\x64\Release\Host.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MICube.SmartDriver.Base.TCP">

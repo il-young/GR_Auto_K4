@@ -45,6 +45,7 @@
             this.label_camera = new System.Windows.Forms.Label();
             this.label_state = new System.Windows.Forms.Label();
             this.label_type = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -244,11 +245,25 @@
             this.label_type.Text = "Reel Type";
             this.label_type.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.Control;
+            this.label3.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label3.ForeColor = System.Drawing.Color.Red;
+            this.label3.Location = new System.Drawing.Point(866, 13);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 32);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "K4";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
             // BankHost_main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1264, 761);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label_state);
             this.Controls.Add(this.label_camera);
             this.Controls.Add(this.label_type);
@@ -270,6 +285,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bank Host";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BankHost_main_FormClosing);
+            this.Load += new System.EventHandler(this.BankHost_main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -293,6 +309,7 @@
         private System.Windows.Forms.Label label_camera;
         private System.Windows.Forms.Label label_state;
         private System.Windows.Forms.Label label_type;
+        private System.Windows.Forms.Label label3;
     }
 }
 

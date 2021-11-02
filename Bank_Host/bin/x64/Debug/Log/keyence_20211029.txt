@@ -606,3 +606,13 @@
 20211029,16:14:24,Keyence: 192.168.100.2: 9004
 20211029,16:14:24,SocketManager OK!
 20211029,16:14:24,OK,BLOAD
+20211029,16:20:32,socketManager_OnConnectStatus: Connecting
+20211029,16:20:33,socketManager_OnConnectStatus: Connected
+20211029,16:20:33,Keyence: 192.168.100.2: 9004
+20211029,16:20:33,SocketManager OK!
+20211029,16:20:33,OK,BLOAD
+20211029,16:24:14,socketManager_OnConnectStatus: Connecting
+20211029,16:24:14,socketManager_OnConnectStatus: Connected
+20211029,16:24:14,Keyence: 192.168.100.2: 9004
+20211029,16:24:14,SocketManager OK!
+20211029,16:24:15,OK,BLOAD

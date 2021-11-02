@@ -6812,7 +6812,7 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
-                var taskResut = BankHost_main.Host.Fnc_GetLotInformation();
+                var taskResut = BankHost_main.Host.Fnc_GetLotInformation(Properties.Settings.Default.LOCATION);
 
                 try
                 {
@@ -6915,7 +6915,7 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
-                var taskResut = BankHost_main.Host.Fnc_GetBillInformation(strInputBill);
+                var taskResut = BankHost_main.Host.Fnc_GetBillInformation(Properties.Settings.Default.LOCATION, strInputBill);
 
                 try
                 {
