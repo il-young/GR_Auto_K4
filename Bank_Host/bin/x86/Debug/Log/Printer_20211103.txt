@@ -1,0 +1,7 @@
+20211103,12:57:40,socketManager_OnConnectStatus: Connecting
+20211103,12:57:43,socketManager_OnConnectStatus: Connecting
+20211103,12:57:43,Keyence: 192.168.10.10: 9100
+20211103,12:57:43,SocketManager OK!
+20211103,12:57:46,socketManager_OnConnectStatus: Connecting
+20211103,12:57:49,socketManager_OnConnectStatus: Connecting
+20211103,12:57:52,socketManager_OnConnectStatus: Connecting

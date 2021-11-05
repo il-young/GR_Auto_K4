@@ -1,0 +1,21 @@
+20211103,12:52:42,socketManager_OnConnectStatus: Connecting
+20211103,12:56:10,socketManager_OnConnectStatus: Connecting
+20211103,12:56:13,socketManager_OnConnectStatus: Connecting
+20211103,12:56:13,Keyence: 192.168.10.10: 9100
+20211103,12:56:13,SocketManager OK!
+20211103,12:56:16,socketManager_OnConnectStatus: Connecting
+20211103,12:56:19,socketManager_OnConnectStatus: Connecting
+20211103,12:56:22,socketManager_OnConnectStatus: Connecting
+20211103,12:56:25,socketManager_OnConnectStatus: Connecting
+20211103,12:56:28,socketManager_OnConnectStatus: Connecting
+20211103,12:56:31,socketManager_OnConnectStatus: Connecting
+20211103,12:56:34,socketManager_OnConnectStatus: Connecting
+20211103,12:56:43,socketManager_OnConnectStatus: Connecting
+20211103,12:56:46,socketManager_OnConnectStatus: Connecting
+20211103,12:56:46,Keyence: 192.168.10.10: 9100
+20211103,12:56:46,SocketManager OK!
+20211103,12:56:49,socketManager_OnConnectStatus: Connecting
+20211103,12:56:52,socketManager_OnConnectStatus: Connecting
+20211103,12:56:55,socketManager_OnConnectStatus: Connecting
+20211103,12:56:58,socketManager_OnConnectStatus: Connecting
+20211103,12:57:02,socketManager_OnConnectStatus: Connecting

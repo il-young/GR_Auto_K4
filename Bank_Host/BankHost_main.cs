@@ -588,29 +588,45 @@ namespace Bank_Host
 
         private void label3_Click(object sender, EventArgs e)
         {
+            
             if(label3.Text == "K4")
             {
-                label3.Text = "K5";
-                label3.ForeColor = Color.Green;
+                DialogResult res = MessageBox.Show("위치를 K5로 변경 하시겠습니까?","위치 변경", MessageBoxButtons.YesNo);
 
-                Properties.Settings.Default.LOCATION = "K5";
-                Properties.Settings.Default.Save();
+                if (res == DialogResult.Yes)
+                {
+                    label3.Text = "K5";
+                    label3.ForeColor = Color.Green;
+
+                    Properties.Settings.Default.LOCATION = "K5";
+                    Properties.Settings.Default.Save();
+                }
             }
             else if(label3.Text =="K5")
             {
-                label3.Text = "K3";
-                label3.ForeColor = Color.Blue;
+                DialogResult res = MessageBox.Show("위치를 K3로 변경 하시겠습니까?", "위치 변경", MessageBoxButtons.YesNo);
 
-                Properties.Settings.Default.LOCATION = "K3";
-                Properties.Settings.Default.Save();
+                if (res == DialogResult.Yes)
+                {
+                    label3.Text = "K3";
+                    label3.ForeColor = Color.Blue;
+
+                    Properties.Settings.Default.LOCATION = "K3";
+                    Properties.Settings.Default.Save();
+                }
             }
             else
             {
-                label3.Text = "K4";
-                label3.ForeColor = Color.Red;
+                DialogResult res = MessageBox.Show("위치를 K4로 변경 하시겠습니까?", "위치 변경", MessageBoxButtons.YesNo);
 
-                Properties.Settings.Default.LOCATION = "K4";
-                Properties.Settings.Default.Save();
+                if (res == DialogResult.Yes)
+                {
+                    label3.Text = "K4";
+                    label3.ForeColor = Color.Red;
+
+                    Properties.Settings.Default.LOCATION = "K4";
+                    Properties.Settings.Default.Save();
+                }
             }
         }
 
