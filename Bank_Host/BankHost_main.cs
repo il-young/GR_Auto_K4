@@ -575,7 +575,6 @@ namespace Bank_Host
                         //    read_err_cnt++;
                         //}
                     }
-
                 }
             }
             catch
@@ -587,8 +586,7 @@ namespace Bank_Host
         int read_err_cnt = 0;
 
         private void label3_Click(object sender, EventArgs e)
-        {
-            
+        {            
             if(label3.Text == "K4")
             {
                 DialogResult res = MessageBox.Show("위치를 K5로 변경 하시겠습니까?","위치 변경", MessageBoxButtons.YesNo);

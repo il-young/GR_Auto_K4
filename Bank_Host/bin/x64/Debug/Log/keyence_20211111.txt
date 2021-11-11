@@ -1,0 +1,28 @@
+20211111,14:28:01,socketManager_OnConnectStatus: Connecting
+20211111,14:28:04,socketManager_OnConnectStatus: Connecting
+20211111,14:28:04,Keyence: 192.168.100.2: 9004
+20211111,14:28:04,SocketManager OK!
+20211111,14:28:07,socketManager_OnConnectStatus: Connecting
+20211111,14:28:10,socketManager_OnConnectStatus: Connecting
+20211111,14:28:13,socketManager_OnConnectStatus: Connecting
+20211111,14:28:16,socketManager_OnConnectStatus: Connecting
+20211111,14:28:19,socketManager_OnConnectStatus: Connecting
+20211111,14:28:22,socketManager_OnConnectStatus: Connecting
+20211111,14:28:25,socketManager_OnConnectStatus: Connecting
+20211111,14:28:28,socketManager_OnConnectStatus: Connecting
+20211111,14:28:31,socketManager_OnConnectStatus: Connecting
+20211111,14:28:34,socketManager_OnConnectStatus: Connecting
+20211111,14:28:37,socketManager_OnConnectStatus: Connecting
+20211111,14:28:40,socketManager_OnConnectStatus: Connecting
+20211111,14:28:43,socketManager_OnConnectStatus: Connecting
+20211111,14:28:46,socketManager_OnConnectStatus: Connecting
+20211111,14:28:49,socketManager_OnConnectStatus: Connecting
+20211111,14:28:56,socketManager_OnConnectStatus: Connecting
+20211111,14:28:59,socketManager_OnConnectStatus: Connecting
+20211111,14:28:59,Keyence: 192.168.100.2: 9004
+20211111,14:28:59,SocketManager OK!
+20211111,14:29:27,socketManager_OnConnectStatus: Connecting
+20211111,14:29:30,socketManager_OnConnectStatus: Connecting
+20211111,14:29:33,socketManager_OnConnectStatus: Connecting
+20211111,14:29:42,socketManager_OnConnectStatus: Connecting
+20211111,14:29:45,socketManager_OnConnectStatus: Connecting

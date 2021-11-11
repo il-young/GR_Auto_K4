@@ -4399,7 +4399,7 @@ namespace Bank_Host
         {
             if (Convert.ToInt32(e.KeyChar) == 13)
             {
-                Amkor_label_Print_Process(textBox1.Text);
+                Amkor_label_Print_Process(textBox1.Text.ToUpper());
                 textBox1.Text = "";
             }
         }
@@ -4409,7 +4409,33 @@ namespace Bank_Host
             stAmkor_Label temp = new stAmkor_Label();
             string[] str_temp = strBcr.Replace(':', ',').Split(',');
 
-            if (str_temp.Length == 8)
+            if(str_temp.Length == 7)
+            {
+                temp.Lot = str_temp[0];
+                temp.DCC = str_temp[1];
+                temp.Device = str_temp[2];
+                temp.DQTY = int.Parse(str_temp[3]).ToString();
+                temp.WQTY = int.Parse(str_temp[4]).ToString();
+                temp.AMKOR_ID = int.Parse(str_temp[5]).ToString();
+                temp.CUST = int.Parse(str_temp[6]).ToString();
+                temp.Wafer_ID = "";
+
+                if (check_duplicate(temp.AMKOR_ID) == false)
+                {
+                    label_list.Add(temp);
+
+                    dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+
+                    Frm_Print.Fnc_Print(temp);
+                }
+                else
+                {
+                    speech.SpeakAsyncCancelAll();
+                    speech.SpeakAsync("중복된 라벨 입니다.");
+
+                }
+            }
+            else if (str_temp.Length == 8)
             {
                 temp.Lot = str_temp[0];
                 temp.DCC = str_temp[1];
