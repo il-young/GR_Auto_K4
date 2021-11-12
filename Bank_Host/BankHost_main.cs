@@ -598,6 +598,8 @@ namespace Bank_Host
 
                     Properties.Settings.Default.LOCATION = "K5";
                     Properties.Settings.Default.Save();
+
+                    BankHost_main.nScanMode = 1;
                 }
             }
             else if(label3.Text =="K5")

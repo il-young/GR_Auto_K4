@@ -320,6 +320,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "선택";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.Form_Option_Load);
             this.ResumeLayout(false);
 
         }

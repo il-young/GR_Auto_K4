@@ -138,8 +138,8 @@ namespace Bank_Host
         }
 
         private void label_basketTime1_Click(object sender, EventArgs e)
-        {
-            if(BankHost_main.nMaterial_type == 1)
+        {            
+            if (BankHost_main.nMaterial_type == 1)
             {
                 BankHost_main.nScanMode = 1;
             }
@@ -147,7 +147,7 @@ namespace Bank_Host
             {
                 BankHost_main.nScanMode = 0;
             }
-
+            
             Fnc_Init_image();
         }
 
@@ -215,6 +215,25 @@ namespace Bank_Host
         {
             BankHost_main.nAmkorBcrType = 1;
             Fnc_Init_image2();
+        }
+
+        private void Form_Option_Load(object sender, EventArgs e)
+        {
+            if(Properties.Settings.Default.LOCATION == "K5")
+            {
+                label_basketTime1.Enabled = false;
+                label_basketTime2.Enabled = true;
+            }
+            else if(Properties.Settings.Default.LOCATION == "K4")
+            {
+                label_basketTime1.Enabled = true;
+                label_basketTime2.Enabled = true;
+            }
+            else if(Properties.Settings.Default.LOCATION == "K3")
+            {
+                label_basketTime1.Enabled = true;
+                label_basketTime2.Enabled = true;
+            }
         }
     }
 }
