@@ -992,6 +992,190 @@ namespace Bank_Host
 
             return list.Count;
         }
+
+        public int Fnc_Get_Worklist_lot_history(string strData)
+        {
+            /////////////////////////////////////////////////
+            ///파일 이름: JOB\CUST_JOBNO_DATE , ex) WORK\JOB_102_2008060835.txt
+            ///파일 이름 설정
+            string[] strList = strData.Split('\n'); //index 1 부터 데이터 받아야 함.
+            int nArryLength = strList.Length;
+
+            string[] strCol = strList[0].Split('\t');
+            int nColcnt = strCol.Length;
+
+            List<StorageData> list = new List<StorageData>();
+
+            int nCount = 0;
+
+            string strMsg = string.Format("\n\n작업 정보를 분석 중 입니다.");
+            Frm_Process.Form_Show(strMsg);
+
+            for (int i = 1; i < nArryLength; i++)
+            {
+                nCount++;
+                strMsg = string.Format("\n\n데이터 Read {0} / {1}", nCount, nArryLength - 1);
+                Frm_Process.Form_Display(strMsg);
+
+                string[] strJobInfo = strList[i].Split('\t');
+
+                StorageData data = new StorageData();
+
+                for (int j = 0; j < nColcnt; j++)
+                {
+                    var strType = strJobInfo[j];
+
+                    string str = "";
+                    if (strType != null)
+                    {
+                        if (j != 6)
+                            str = strType.ToString();
+                        else
+                        {
+                            str = strType.ToString();
+
+                            DateTime conv = DateTime.ParseExact(str, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                            //DateTime conv = DateTime.FromOADate(double.Parse(strType));
+                            str = string.Format("{0}/{1}/{2}", conv.Year, conv.Month, conv.Day);
+                        }
+                    }
+                    
+                    if (j == 0) //Plant
+                    {
+                        if (str == null)
+                            str = "";
+
+                        str = str.Trim();
+                        data.Plant = str;                        
+                    }
+                    else if (j == 1) //Cust
+                    {
+                        str = str.Trim();
+                        strWorkCust = str;                        
+                    }
+                    else if (j == 2) //Loc
+                    {
+                        str = str.Trim();
+                        data.Loc = str;
+                    }
+                    else if (j == 3)//Hawb#
+                    {
+                        str = str.Trim();
+                        data.Hawb = str;                        
+                    }
+                    else if (j == 4) //Invoice#
+                    {
+                        str = str.Trim();
+                        data.Invoice = str;
+                        //string strnQty = string.Format("{0:0,0}", Int32.Parse(str));
+                    }
+                    else if (j == 5) //Device
+                    {
+                        str = str.Trim();
+                        //data.Rcv_WQty = str;
+                        data.Device = str;
+                    }
+                    else if (j == 6) //Lot#
+                    {
+                        str = str.Trim();
+                        data.Lot = str;
+                    }
+                    else if (j == 7) //DCC
+                    {
+                        str = str.Trim();
+                        data.Lot_Dcc = str;                        
+                    }
+                    else if (j == 8) //Die Qty
+                    {
+                        str = str.Trim();
+                        
+                        data.Die_Qty = str;
+                    }
+                    else if (j == 9) //Wfr Qty
+                    {
+                        str = str.Trim();
+                        data.Rcv_WQty = "0";
+                        data.Default_WQty = str;                        
+                    }
+                    else if (j == 10) //Rev Date
+                    {
+                        str = str.Trim();
+                        data.Rcvddate = str;                        
+                    }
+                }
+                list.Add(data);
+            }
+
+            //list.Sort(CompareStorageData);
+
+            list = list.OrderBy(X => X.Loc).ThenBy(X => X.Lot).ToList();
+
+            dataGridView_worklist.Columns.Clear();
+            dataGridView_worklist.Rows.Clear();
+            dataGridView_worklist.Refresh();
+
+            //dataGridView_worklist.Columns.Add("#", "#");
+            //dataGridView_worklist.Columns.Add("CUST", "CUST");
+            //dataGridView_worklist.Columns.Add("DEVICE", "DEVICE");
+            //dataGridView_worklist.Columns.Add("LOT#", "LOT#");
+            //dataGridView_worklist.Columns.Add("DCC", "DCC");
+            //dataGridView_worklist.Columns.Add("DIE_QTY", "DIE_QTY");
+            //dataGridView_worklist.Columns.Add("WFR TTL", "WFR TTL");
+            //dataGridView_worklist.Columns.Add("REV_DATE", "REV_DATE");
+            //dataGridView_worklist.Columns.Add("LOT_TYPE", "LOT_TYPE");
+            //dataGridView_worklist.Columns.Add("BILL#", "BILL#");
+            //dataGridView_worklist.Columns.Add("AMKOR_ID", "AMKOR_ID");
+            //dataGridView_worklist.Columns.Add("WAFER_LOT", "WAFER_LOT");
+            //dataGridView_worklist.Columns.Add("SHIPMENT", "SHIPMENT");
+
+
+            dgv_loc.Columns[0].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[1].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[2].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[3].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[4].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[5].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[6].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[7].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[8].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[9].SortMode = DataGridViewColumnSortMode.Programmatic;
+            dgv_loc.Columns[10].SortMode = DataGridViewColumnSortMode.Programmatic;
+
+            if (list.Count == 0)
+            {
+                dgv_loc.Columns.Clear();
+                dgv_loc.Rows.Clear();
+                dgv_loc.Refresh();
+
+                dgv_loc.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
+
+                Application.DoEvents();
+            }
+
+            nCount = 0;
+
+            foreach (var item in list)
+            {
+                strSelCust = item.Cust;
+
+                dgv_loc.Rows.Add(new object[11] {item.Plant, item.Cust, item.Loc, item.Hawb, item.Invoice, item.Device, item.Lot, item.Lot_Dcc, item.Die_Qty, item.Default_WQty, item.Rcv_WQty});
+
+                if(item.Loc == "")
+                {
+                    dgv_loc.Rows[nCount].DefaultCellStyle.BackColor = Color.Yellow;
+                    dgv_loc.Rows[nCount].DefaultCellStyle.ForeColor = Color.Black;
+                }                  
+
+                nCount++;
+            }
+
+            Frm_Process.Form_Display("\n작업을 마침니다.");
+            Frm_Process.Hide();
+
+            return list.Count;
+        }
+
+
         public void Fnc_Set_Workfile(string[] strBillData)
         {
             /////////////////////////////////////////////////
@@ -4377,7 +4561,7 @@ namespace Bank_Host
                     textBox_Readdata.ImeMode = ImeMode.Alpha;
                 }
 
-                if (BankHost_main.nScanMode == 1)
+                if (BankHost_main.nScanMode == 1) // gun scaner mode
                 {
                     BankHost_main.strScanData = textBox_Readdata.Text;
 
@@ -4458,7 +4642,6 @@ namespace Bank_Host
                 {
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync("중복된 라벨 입니다.");
-
                 }
             }
         }
@@ -4482,6 +4665,22 @@ namespace Bank_Host
 
         public Bcrinfo Fnc_Bcr_Parsing(string strBcr)
         {
+            Bcrinfo info = new Bcrinfo();
+
+            if(Properties.Settings.Default.LOCATION == "K4")
+            {
+                info = K4_Parsing(strBcr);
+            }
+            else if(Properties.Settings.Default.LOCATION == "K5")
+            {
+                info = K5_parsing(strBcr);
+            }
+
+            return info;
+        }
+
+        private Bcrinfo K5_parsing(string strBcr)
+        {
             //nWorkBcrcount 확인 할 것, 고객별 바코드 형식도 확인이 필요할 듯!
             if (strBcr.Contains("LON") || strBcr.Contains("ERROR") || strBcr.Contains("BLOAD"))
                 return null;
@@ -4495,11 +4694,11 @@ namespace Bank_Host
 
             int nDevicePos = -1, nLotPos = -1, nQtyPos = -1;
 
-            if(BankHost_main.nProcess == 4001)
+            if (BankHost_main.nProcess == 4001)
             {
                 string[] temp = strBcr.Split(':');
                 Amkor_label_Print_Process(strBcr);
-               
+
 
                 return bcr;
             }
@@ -4544,7 +4743,7 @@ namespace Bank_Host
 
             if (strBcr.Contains(',') && !b1Dbcr && strBcrType != "PDF417" && BankHost_main.strWork_Shot1Lot == "YES")
             {
-                if(BankHost_main.strWork_Cust != "453" || BankHost_main.strWork_Cust != "734")
+                if (BankHost_main.strWork_Cust != "453" || BankHost_main.strWork_Cust != "734")
                     bmultibcr = true;
             }
 
@@ -4561,7 +4760,7 @@ namespace Bank_Host
                 strUdigit[1] = nLotPos.ToString();
             }
 
-            if(strUdigit[0] == "D")
+            if (strUdigit[0] == "D")
             {
                 nUdigitPos = Int32.Parse(strUdigit[1]);
             }
@@ -4656,7 +4855,7 @@ namespace Bank_Host
                             //strWaferID = strBarcode;
                             bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
                             bcr.Lot = bcr.Lot.Trim();
-                        }                        
+                        }
                         else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
                         {
                             bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
@@ -4673,7 +4872,7 @@ namespace Bank_Host
                             bcr.Device = bcr.Device.Trim();
                         }
 
-                        if(strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
+                        if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
                         {
                             strID = strBarcode;
                         }
@@ -4760,7 +4959,7 @@ namespace Bank_Host
                 string strindex = BankHost_main.strWork_LotDigit.Replace("-", "");
                 int st = bcr.Lot.Length;
                 int index = st - bcr.Lot.IndexOf('-', 0);
-                bcr.Lot = bcr.Lot.Substring(0, st-index);
+                bcr.Lot = bcr.Lot.Substring(0, st - index);
             }
 
             nValWfrQty = BankHost_main.Host.Host_Get_BcrRead_Wfrcount(BankHost_main.strEqid, bcr.Lot);
@@ -4820,7 +5019,7 @@ namespace Bank_Host
                 {
                     bcr.result = "OK";
                 }
-            }            
+            }
 
             int nCheckUnprint = BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device);
             if (nCheckUnprint > 0)
@@ -4841,7 +5040,374 @@ namespace Bank_Host
             strSaveInfo[8] = bcr.WfrTTL;
             strSaveInfo[9] = BankHost_main.strOperator;
 
-           // Fnc_SaveLog_Work(strFileName, strlog, strSaveInfo, 0);
+            // Fnc_SaveLog_Work(strFileName, strlog, strSaveInfo, 0);
+            Fnc_SaveLog_Work(strFileName_Device, strlog, strSaveInfo, 1);
+
+            return bcr;
+        }
+
+        private Bcrinfo K4_Parsing(string strBcr)
+        {
+            //nWorkBcrcount 확인 할 것, 고객별 바코드 형식도 확인이 필요할 듯!
+            if (strBcr.Contains("LON") || strBcr.Contains("ERROR") || strBcr.Contains("BLOAD"))
+                return null;
+
+            ///BCR count check
+            Bcrinfo bcr = new Bcrinfo();
+
+            string[] strSplit_DevicePos = new string[2];
+            string[] strSplit_LotPos = new string[2];
+            string[] strSplit_QtyPos = new string[2];
+
+            int nDevicePos = -1, nLotPos = -1, nQtyPos = -1;
+
+            if (BankHost_main.nProcess == 4001)
+            {
+                string[] temp = strBcr.Split(':');
+                Amkor_label_Print_Process(strBcr);
+
+
+                return bcr;
+            }
+
+            if (BankHost_main.strWork_DevicePos.Contains(','))
+            {
+                strSplit_DevicePos = BankHost_main.strWork_DevicePos.Split(',');
+                nDevicePos = Int32.Parse(strSplit_DevicePos[0]);
+            }
+            else
+                nDevicePos = Int32.Parse(BankHost_main.strWork_DevicePos);
+
+            if (BankHost_main.strWork_LotidPos.Contains(','))
+            {
+                strSplit_LotPos = BankHost_main.strWork_LotidPos.Split(',');
+                nLotPos = Int32.Parse(strSplit_LotPos[0]);
+            }
+            else
+                nLotPos = Int32.Parse(BankHost_main.strWork_LotidPos);
+
+            if (BankHost_main.strWork_QtyPos.Contains(','))
+            {
+                strSplit_QtyPos = BankHost_main.strWork_QtyPos.Split(',');
+                nQtyPos = Int32.Parse(strSplit_QtyPos[0]);
+            }
+            else
+                nQtyPos = Int32.Parse(BankHost_main.strWork_QtyPos);
+
+            char seperator = char.Parse(BankHost_main.strWork_SPR);
+            bool bmultibcr = false;
+
+            //1D Scan 인지 확인
+            string strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            string str1Dbcrcount = "0";
+            bool b1Dbcr = false;
+
+            if (strBcrType == "CODE39" || strBcrType == "CODE128")
+            {
+                b1Dbcr = true;
+                str1Dbcrcount = BankHost_main.Host.Host_Get_Bcrcount(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            }
+
+            if (strBcr.Contains(',') && !b1Dbcr && strBcrType != "PDF417" && BankHost_main.strWork_Shot1Lot == "YES")
+            {
+                if (BankHost_main.strWork_Cust != "453" || BankHost_main.strWork_Cust != "734")
+                    bmultibcr = true;
+            }
+
+            string strWaferID = "";
+            int nUdigitPos = 0;
+            string[] strUdigit = null;
+
+            if (BankHost_main.strWork_Udigit != "")
+                strUdigit = BankHost_main.strWork_Udigit.Split(',');
+            else
+            {
+                strUdigit = new string[2];
+                strUdigit[0] = "D";
+                strUdigit[1] = nLotPos.ToString();
+            }
+
+            if (strUdigit[0] == "D")
+            {
+                nUdigitPos = Int32.Parse(strUdigit[1]);
+            }
+
+            if (bmultibcr)//INARI
+            {
+                string[] strSplit_Bcr1 = strBcr.Split(',');
+                int nLength = strSplit_Bcr1.Length;
+
+                BankHost_main.nWorkBcrcount = nLength;
+
+                int nTotalDieQty = 0;
+                for (int n = 0; n < nLength; n++)
+                {
+                    string[] strSplit_Bcr2 = strSplit_Bcr1[n].Split(seperator);
+                    if (strSplit_Bcr2.Length < 3)
+                        return null;
+
+                    bcr.Device = strSplit_Bcr2[nDevicePos]; bcr.Device = bcr.Device.Trim();
+
+                    if (strSplit_DevicePos[1] != null)
+                    {
+                        if (strSplit_DevicePos[1].Substring(0, 1) == "L")
+                        {
+                            int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                            bcr.Device = bcr.Device.Substring(nDigit, bcr.Device.Length - nDigit);
+                        }
+                        else if (strSplit_DevicePos[1].Substring(0, 1) == "R")
+                        {
+                            int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                            bcr.Device = bcr.Device.Substring(0, bcr.Device.Length - nDigit);
+                        }
+                    }
+
+                    bcr.Lot = strSplit_Bcr2[nLotPos]; bcr.Lot = bcr.Lot.Trim();
+
+                    if (strSplit_LotPos[1] != null)
+                    {
+                        if (strSplit_LotPos[1].Substring(0, 1) == "L")
+                        {
+                            int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
+                            bcr.Lot = bcr.Lot.Substring(nDigit, bcr.Lot.Length - nDigit);
+                        }
+                        else if (strSplit_LotPos[1].Substring(0, 1) == "R")
+                        {
+                            int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
+                            bcr.Lot = bcr.Lot.Substring(0, bcr.Lot.Length - nDigit);
+                        }
+                    }
+
+                    bcr.DieQty = strSplit_Bcr2[nQtyPos]; bcr.DieQty = bcr.DieQty.Trim();
+
+                    if (strSplit_QtyPos[1] != null)
+                    {
+                        if (strSplit_QtyPos[1].Substring(0, 1) == "L")
+                        {
+                            int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
+                            bcr.DieQty = bcr.DieQty.Substring(nDigit, bcr.DieQty.Length - nDigit);
+                        }
+                        else if (strSplit_QtyPos[1].Substring(0, 1) == "R")
+                        {
+                            int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
+                            bcr.DieQty = bcr.DieQty.Substring(0, bcr.DieQty.Length - nDigit);
+                        }
+                    }
+
+                    strWaferID = strSplit_Bcr2[nUdigitPos];
+
+                    nTotalDieQty = nTotalDieQty + Int32.Parse(bcr.DieQty);
+                }
+
+                bcr.DieQty = nTotalDieQty.ToString();
+            }
+            else
+            {
+                BankHost_main.nWorkBcrcount = 1;
+
+                string[] strSplit_Bcr = strBcr.Split(seperator);
+
+                if (b1Dbcr)
+                {
+                    if (strSplit_Bcr.Length < Int32.Parse(str1Dbcrcount))
+                        return null;
+
+                    string strID = "";
+                    for (int n = 0; n < strSplit_Bcr.Length; n++)
+                    {
+                        string strBarcode = strSplit_Bcr[n];
+
+                        if (strBarcode.Substring(0, 2) == "1T")
+                        {
+                            //strWaferID = strBarcode;
+                            bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
+                            bcr.Lot = bcr.Lot.Trim();
+                        }
+                        else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
+                        {
+                            bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
+                            bcr.Device = bcr.Device.Trim();
+                        }
+                        else if (strBarcode.Substring(0, 1) == "Q")
+                        {
+                            bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
+                            bcr.DieQty = bcr.DieQty.Trim();
+                        }
+                        else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
+                        {
+                            bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
+                            bcr.Device = bcr.Device.Trim();
+                        }
+
+                        if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
+                        {
+                            strID = strBarcode;
+                        }
+                    }
+
+                    strWaferID = string.Format("{0}_{1}", bcr.Lot, strID);
+                }
+                else
+                {
+                    if (strSplit_Bcr.Length < 3)
+                        return null;
+
+                    bcr.Device = strSplit_Bcr[nDevicePos]; bcr.Device = bcr.Device.Trim();
+
+                    if (strSplit_DevicePos[1] != null)
+                    {
+                        if (strSplit_DevicePos[1].Substring(0, 1) == "L")
+                        {
+                            int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                            bcr.Device = bcr.Device.Substring(nDigit, bcr.Device.Length - nDigit);
+                        }
+                        else if (strSplit_DevicePos[1].Substring(0, 1) == "R")
+                        {
+                            int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                            bcr.Device = bcr.Device.Substring(0, bcr.Device.Length - nDigit);
+                        }
+                    }
+
+                    bcr.Lot = strSplit_Bcr[nLotPos]; bcr.Lot = bcr.Lot.Trim();
+
+                    if (strSplit_LotPos[1] != null)
+                    {
+                        if (strSplit_LotPos[1].Substring(0, 1) == "L")
+                        {
+                            int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
+                            bcr.Lot = bcr.Lot.Substring(nDigit, bcr.Lot.Length - nDigit);
+                        }
+                        else if (strSplit_LotPos[1].Substring(0, 1) == "R")
+                        {
+                            int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
+                            bcr.Lot = bcr.Lot.Substring(0, bcr.Lot.Length - nDigit);
+                        }
+                    }
+
+                    bcr.DieQty = strSplit_Bcr[nQtyPos]; bcr.DieQty = bcr.DieQty.Trim();
+
+                    if (strSplit_QtyPos[1] != null)
+                    {
+                        if (strSplit_QtyPos[1].Substring(0, 1) == "L")
+                        {
+                            int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
+                            bcr.DieQty = bcr.DieQty.Substring(nDigit, bcr.DieQty.Length - nDigit);
+                        }
+                        else if (strSplit_QtyPos[1].Substring(0, 1) == "R")
+                        {
+                            int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
+                            bcr.DieQty = bcr.DieQty.Substring(0, bcr.DieQty.Length - nDigit);
+                        }
+                    }
+
+                    strWaferID = string.Format("{0}", strSplit_Bcr[nUdigitPos]);
+
+                    strWaferID = strWaferID.Trim();
+
+                    if (strWaferID.Contains(","))
+                    {
+                        string[] strSplit = strWaferID.Split(',');
+                        strWaferID = strSplit[0];
+                    }
+
+                    //strWaferID = strSplit_Bcr[nLotPos];
+                }
+            }
+
+            if (BankHost_main.strWork_LotDigit.Contains("."))
+            {
+                int st = bcr.Lot.Length - 5;
+                int index = bcr.Lot.IndexOf('.', st);
+                bcr.Lot = bcr.Lot.Substring(0, index);
+            }
+
+            if (BankHost_main.strWork_LotDigit.Contains("-"))
+            {
+                string strindex = BankHost_main.strWork_LotDigit.Replace("-", "");
+                int st = bcr.Lot.Length;
+                int index = st - bcr.Lot.IndexOf('-', 0);
+                bcr.Lot = bcr.Lot.Substring(0, st - index);
+            }
+
+            nValWfrQty = BankHost_main.Host.Host_Get_BcrRead_Wfrcount(BankHost_main.strEqid, bcr.Lot);
+
+            if (bcr.DieQty == "" || bcr.Lot == "")
+                return null;
+
+            int nDieTTL = 0, nWfrTTL = 0;
+            string strFileName = "", strFileName_Device = "";
+            if (bcr.Device == "")
+            {
+                //디바이스 정보 없는 자재인 경우
+                //bcr.Device = strSelDevice; //21.02.17
+                string strFile = strExcutionPath + "\\Work\\" + strWorkFileName; //HY210315
+                string strReadfile = strFile + "\\" + strSelDevice + "\\" + strSelDevice + ".txt";
+                string str = Fnc_Get_Device(strReadfile, bcr.Lot);
+                bcr.Device = str;
+
+                nDieTTL = Fnc_GetTTL(strSelDevice, bcr.Lot, 0);
+                nWfrTTL = Fnc_GetTTL(strSelDevice, bcr.Lot, 1);
+
+                strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
+                strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strSelDevice + "\\" + strSelDevice;
+            }
+            else
+            {
+                nDieTTL = Fnc_GetTTL(bcr.Device, bcr.Lot, 0);
+                nWfrTTL = Fnc_GetTTL(bcr.Device, bcr.Lot, 1);
+
+                strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
+                strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + bcr.Device + "\\" + bcr.Device;
+            }
+
+            int nQty = Int32.Parse(bcr.DieQty);
+
+            bcr.DieTTL = nDieTTL.ToString();
+            bcr.WfrTTL = nWfrTTL.ToString();
+
+            string strSetID = strWaferID + "_" + bcr.DieQty;
+            string strGet = BankHost_main.Host.Host_Set_BcrReadInfo(BankHost_main.strEqid, bcr.Device, bcr.Lot, strSetID);
+
+            if (strGet == "True")
+            {
+                bcr.result = "DUPLICATE";
+            }
+            else
+            {
+                if (BankHost_main.strWork_Lotinfo == "")
+                {
+                    bcr.result = "OK";
+                }
+                else if (BankHost_main.strWork_Lotinfo != bcr.Lot)
+                {
+                    bcr.result = "MISSMATCH";
+                }
+                else
+                {
+                    bcr.result = "OK";
+                }
+            }
+
+            int nCheckUnprint = BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device);
+            if (nCheckUnprint > 0)
+                bcr.unprinted_device = true;
+
+            string strlog = string.Format("PARSING+{0}+{1}+{2}+{3}+{4}+{5}+{6}", bcr.Device, bcr.Lot, bcr.DieQty, bcr.DieTTL, bcr.WfrTTL, bcr.result, BankHost_main.strOperator);
+
+            ////DB Save
+            string[] strSaveInfo = new string[10];
+            strSaveInfo[0] = BankHost_main.strEqid;
+            strSaveInfo[1] = "VAL_READ_DATA";
+            strSaveInfo[2] = "";
+            strSaveInfo[3] = bcr.Device;
+            strSaveInfo[4] = bcr.Lot;
+            strSaveInfo[5] = bcr.DieQty;
+            strSaveInfo[6] = bcr.DieTTL;
+            strSaveInfo[7] = nValWfrQty.ToString();
+            strSaveInfo[8] = bcr.WfrTTL;
+            strSaveInfo[9] = BankHost_main.strOperator;
+
+            // Fnc_SaveLog_Work(strFileName, strlog, strSaveInfo, 0);
             Fnc_SaveLog_Work(strFileName_Device, strlog, strSaveInfo, 1);
 
             return bcr;
@@ -6135,6 +6701,9 @@ namespace Bank_Host
                     file_path = saveFileDialog1.FileName;
                 }
 
+                Properties.Settings.Default.file_save_path = file_path;
+                Properties.Settings.Default.Save();
+
                 make_csv(file_path);
             }
 
@@ -6142,11 +6711,11 @@ namespace Bank_Host
 
         bool blabel_save = false;
 
-        public void make_csv(string path)
+        public void make_loc_csv(string path)
         {
             try
             {
-                string str_temp = "No.,LOT,Device,Lot_QTY,Wafer_QTY,Amkor_ID,Cust,Wafer_Lot";
+                string str_temp = "Plant,Cust,Loc,Hawb#,Invoice#,Device,Cust Lost#,DCC,Die Qty,Wfr Qty,Rcv Date";
                 System.IO.StreamWriter st = System.IO.File.AppendText(path);
 
                 st.WriteLine(str_temp);
@@ -6319,6 +6888,34 @@ namespace Bank_Host
                 tabControl_Sort.SelectedIndex = 2;
         }
 
+        private void btn_output_Click(object sender, EventArgs e)
+        {
+            string file_path = "";
+            saveFileDialog1.InitialDirectory = Properties.Settings.Default.Loc_file_save_path;
+            saveFileDialog1.Filter = "CSV file(*.csv)|";
+
+            DialogResult res = saveFileDialog1.ShowDialog();
+
+            if (res == DialogResult.OK)
+            {
+                
+
+                if (saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.Length - 3, 3).ToUpper() != "CSV")
+                {
+                    file_path = saveFileDialog1.FileName + ".csv";
+                }
+                else
+                {
+                    file_path = saveFileDialog1.FileName;
+                }
+
+                Properties.Settings.Default.Loc_file_save_path = file_path;
+                Properties.Settings.Default.Save();
+
+                make_csv(file_path);
+            }
+        }
+
         public int Fnc_GetDeviceData(string strDevice)
         {
             try
@@ -6403,6 +7000,7 @@ namespace Bank_Host
                     st.strop = strSplit_data[14];
                     st.strGRstatus = strSplit_data[15];
                     st.Default_WQty = strSplit_data[16];
+
                     if (strSplit_data.Length > 17)
                         st.shipment = strSplit_data[17];
                     else
@@ -7054,6 +7652,82 @@ namespace Bank_Host
                 }
 
             }
+            else if(nSel == 5)
+            {
+                dgv_loc.Rows.Clear();
+
+                Form_Input Frm_Input = new Form_Input();
+
+                Frm_Input.Fnc_Init(nSel);
+                Frm_Input.ShowDialog();
+
+                if (BankHost_main.strOperator == "" || strInputBill == "")
+                    return;
+
+                label_opinfo.Text = BankHost_main.strOperator;
+                if (!BankHost_main.bHost_connect)
+                    return;
+
+                string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
+                Frm_Process.Form_Show(strMsg);
+
+                var taskResut = BankHost_main.Host.Fnc_GetBillInformation(Properties.Settings.Default.LOCATION, strInputBill);
+
+                try
+                {
+                    strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
+                    Frm_Process.Form_Display(strMsg);
+
+                    string res = taskResut.Status.ToString();
+
+                    //if (res == "Faulted")
+                    //{
+                    //    strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
+                    //    Frm_Process.Form_Display_Warning(strMsg);
+                    //    Thread.Sleep(3000);
+                    //    Frm_Process.Form_Hide();
+
+                    //    return;
+                    //}
+
+
+                    int nCount = Fnc_Get_Worklist_lot_history(taskResut.Result);
+
+                    if (nCount < 1)
+                    {
+                        dataGridView_worklist.Columns.Clear();
+                        dataGridView_worklist.Rows.Clear();
+                        dataGridView_worklist.Refresh();
+                    }
+                    else
+                    {
+                        label_cust.Text = strSelCust;
+                        Fnc_Get_Information_Model(strSelCust);
+
+                        strSelBillno[0] = strInputBill;
+
+                        if (strSelCust == "940")
+                        {
+                            Fnc_Set_Workfile_NoDevice(strSelBillno); //HY210315
+                        }
+                        else
+                            Fnc_Set_Workfile(strSelBillno);
+
+                        comboBox_Name.SelectedIndex = 0;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string str = string.Format("{0}", ex);
+
+                    strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
+                    Frm_Process.Form_Display_Warning(strMsg);
+
+                    Thread.Sleep(3000);
+                    Frm_Process.Form_Hide();
+                }
+
+            }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
 
@@ -7466,10 +8140,45 @@ namespace Bank_Host
             textBox_Readdata.Invoke(new Update(() => textBox_Readdata.Text = strInfo));            
         }
 
+        public void init_mode_combobox()
+        {
+            string loc = Properties.Settings.Default.LOCATION;
+
+            if(loc == "K4")
+            {
+                comboBox_mode.Items.Clear();
+                comboBox_mode.Items.Add("모드1: Auto GR");
+                comboBox_mode.Items.Add("모드2: Auto GR(이전 작업 불러오기)");
+                comboBox_mode.Items.Add("모드3: Validation(Webservice)");
+                comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
+                comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
+                comboBox_mode.Items.Add("모드6: Location History");
+            }
+            else if(loc == "K5")
+            {
+                comboBox_mode.Items.Clear();
+                comboBox_mode.Items.Add("모드1: Auto GR");
+                comboBox_mode.Items.Add("모드2: Auto GR(이전 작업 불러오기)");
+                comboBox_mode.Items.Add("모드3: Validation(Webservice)");
+                comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
+                comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
+            }
+            else if(loc == "K3")
+            {
+                comboBox_mode.Items.Clear();
+                comboBox_mode.Items.Add("모드1: Auto GR");
+                comboBox_mode.Items.Add("모드2: Auto GR(이전 작업 불러오기)");
+                comboBox_mode.Items.Add("모드3: Validation(Webservice)");
+                comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
+                comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
+            }
+        }
+
     }
 
     public class StorageData
     {
+        public string Plant = "";
         public string Cust = "";
         public string Device = "";
         public string Lot = "";
@@ -7488,6 +8197,9 @@ namespace Bank_Host
         public string strGRstatus = "";
         public string Default_WQty = "";
         public string shipment = "";
+        public string Invoice = "";
+        public string Loc = "";
+        public string Hawb = "";
     }
 
     public class Bcrinfo

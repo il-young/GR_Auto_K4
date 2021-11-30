@@ -46,5 +46,17 @@ namespace Bank_Host.Properties {
                 this["LOCATION"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Loc_file_save_path {
+            get {
+                return ((string)(this["Loc_file_save_path"]));
+            }
+            set {
+                this["Loc_file_save_path"] = value;
+            }
+        }
     }
 }

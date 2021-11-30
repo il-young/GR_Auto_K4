@@ -599,7 +599,7 @@ namespace Bank_Host
                     Properties.Settings.Default.LOCATION = "K5";
                     Properties.Settings.Default.Save();
 
-                    BankHost_main.nScanMode = 1;
+                    BankHost_main.nScanMode = 1;                    
                 }
             }
             else if(label3.Text =="K5")
@@ -628,6 +628,9 @@ namespace Bank_Host
                     Properties.Settings.Default.Save();
                 }
             }
+
+            Frm_Sort.init_mode_combobox();
+
         }
 
         private void BankHost_main_Load(object sender, EventArgs e)
@@ -646,6 +649,8 @@ namespace Bank_Host
             {
                 label3.ForeColor = Color.Blue;
             }
+
+            Frm_Sort.init_mode_combobox();
         }
 
         public void ProcessGun_Error(string strMsg)

@@ -21,6 +21,65 @@ namespace Bank_Host
         {
             InitializeComponent();
         }
+
+        public void Set_1d_input()
+        {
+            label_2dbcr.Visible = false;
+            textBox_2dbcr.Visible = false;
+            checkBox_devicefix.Visible = true;
+
+            if(strDevicePos.Split(',')[0] == "-1" )
+            {
+                textBox_device.Enabled = false;
+            }
+            else
+            {
+                textBox_device.Enabled = true;
+            }
+
+            if(strLotPos.Split(',')[0] == "-1")
+            {
+                textBox_lot.Enabled = false;
+            }
+            else
+            {
+                textBox_lot.Enabled = true;
+            }
+            
+            if(strDieQtyPos.Split(',')[0] == "-1")
+            {
+                textBox_qty.Enabled = false;
+            }
+            else
+            {
+                textBox_qty.Enabled = true;
+            }
+
+            if(strWfrQtyPos.Split(',')[0] == "-1")
+            {
+                textBox_wftqty.Enabled = false;
+            }
+            else
+            {
+                textBox_wftqty.Enabled = true;
+            }
+
+            nWorkType = 2;
+        }
+
+        private void Set_2d_input()
+        {
+            label_2dbcr.Visible = true;
+            textBox_2dbcr.Visible = true;
+            checkBox_devicefix.Visible = false;
+            textBox_device.Enabled = false;
+            textBox_lot.Enabled = false;
+            textBox_qty.Enabled = false;
+            textBox_wftqty.Enabled = false;
+
+            nWorkType = 1;
+        }
+
         public void Fnc_Init()
         {
             strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
@@ -31,27 +90,11 @@ namespace Bank_Host
 
             if (strBcrType == "DATAMATRIX" || strBcrType == "PDF417" || strBcrType == "QR")
             {
-                label_2dbcr.Visible = true;
-                textBox_2dbcr.Visible = true;
-                checkBox_devicefix.Visible = false;              
-                textBox_device.Enabled = false;
-                textBox_lot.Enabled = false;
-                textBox_qty.Enabled = false;
-                textBox_wftqty.Enabled = false;
-
-                nWorkType = 1;
+                Set_2d_input();
             }
             else
             {
-                label_2dbcr.Visible = false;
-                textBox_2dbcr.Visible = false;
-                checkBox_devicefix.Visible = true;
-                textBox_device.Enabled = true;
-                textBox_lot.Enabled = true;
-                textBox_qty.Enabled = true;
-                textBox_wftqty.Enabled = true;
-
-                nWorkType = 2;
+                Set_1d_input();
             }
 
             textBox_device.Text = "";

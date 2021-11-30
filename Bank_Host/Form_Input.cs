@@ -112,11 +112,17 @@ namespace Bank_Host
                     textBox_bill.Enabled = true;
                     label5.Enabled = true;
                 }
+                else if(nIndex == 5)
+                {
+                    textBox_bill.Enabled = true;
+                    label5.Enabled = true;
+                }
                 else
                 {
                     textBox_bill.Enabled = false;
                     label5.Enabled = false;
                 }
+                
             }
 
             textBox_sid.Text = "";
@@ -406,6 +412,17 @@ namespace Bank_Host
             else if(nMode == 2)
             {
                 if(textBox_bill.Text == "")
+                {
+                    MessageBox.Show("Bill# 입력 하여 주십시오.");
+                    textBox_bill.Focus();
+                    return;
+                }
+
+                Form_Sort.strInputBill = textBox_bill.Text.ToUpper();
+            }
+            else if(nMode == 5)
+            {
+                if (textBox_bill.Text == "")
                 {
                     MessageBox.Show("Bill# 입력 하여 주십시오.");
                     textBox_bill.Focus();
