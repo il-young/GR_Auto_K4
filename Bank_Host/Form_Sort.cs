@@ -62,6 +62,8 @@ namespace Bank_Host
         public static string[] strSelBillno = new string[20] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
         public static string strSelCust = "" , strSelBill = "", strInputBill = "", strSelJobName = "";
 
+        public int real_index = -1;
+
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
         Form_Print Frm_Print = new Form_Print();
@@ -121,6 +123,7 @@ namespace Bank_Host
                 AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
                 AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
+                AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
 
                 if (strCust != AWork.strCust)
                 {
@@ -197,6 +200,7 @@ namespace Bank_Host
                 AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
                 AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
+                AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
 
                 if (strCust == AWork.strCust)
                 {
@@ -3346,69 +3350,72 @@ namespace Bank_Host
 
         private void dataGridView_Lot_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dataGridView_Lot.Columns["재작업"].Index)
+            if (dataGridView_Lot.Columns["재작업"] != null)
             {
-                //Do something with your button.
-                int rowIndex = e.RowIndex;
-                int colIndex = e.ColumnIndex;
-
-                if (colIndex != 0)
-                    colIndex = 0;
-
-                if (rowIndex == -1)
-                    return;
-
-                string strGrState = dataGridView_Lot.Rows[rowIndex].Cells[11].Value.ToString();
-
-                if (strGrState == "COMPLETE")
-                    return;
-
-                DialogResult dialogResult1 = MessageBox.Show("작업 이력이 초기화 됩니다. \n\n처음부터 다시 작업을 하시겠습니까?", "Warning", MessageBoxButtons.YesNo);
-                if (dialogResult1 == DialogResult.Yes)
+                if (e.ColumnIndex == dataGridView_Lot.Columns["재작업"].Index)
                 {
-                    string strDevice = strSelDevice;
-                    string strLot = dataGridView_Lot.Rows[rowIndex].Cells[1].Value.ToString();
-                    string strDcc = dataGridView_Lot.Rows[rowIndex].Cells[2].Value.ToString();
-                    string strDiettl = dataGridView_Lot.Rows[rowIndex].Cells[3].Value.ToString();
-                    string strWfrttl = dataGridView_Lot.Rows[rowIndex].Cells[5].Value.ToString();
-                    string strBillNo = dataGridView_Lot.Rows[rowIndex].Cells[9].Value.ToString();
+                    //Do something with your button.
+                    int rowIndex = e.RowIndex;
+                    int colIndex = e.ColumnIndex;
 
-                    Fnc_UpdateDeviceInfo(strDevice, strLot, strDcc, Int32.Parse(strDiettl), 0, Int32.Parse(strWfrttl), false, false);
-                    BankHost_main.Host.Host_Delete_BcrReadinfo(BankHost_main.strEqid, strLot,0);
+                    if (colIndex != 0)
+                        colIndex = 0;
 
-                    string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
-                    string strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;
-                    string strlog = string.Format("RESET+{0}+{1}+{2}+{3}+{4}+{5}+{6}", strDevice, strLot, 0, strDiettl, strWfrttl, "RESET", BankHost_main.strOperator);
+                    if (rowIndex == -1)
+                        return;
 
-                    ////DB Save
-                    string[] strSaveInfo = new string[10];
-                    strSaveInfo[0] = BankHost_main.strEqid;
-                    strSaveInfo[1] = "RESET";
-                    strSaveInfo[2] = strBillNo;
-                    strSaveInfo[3] = strDevice;
-                    strSaveInfo[4] = strLot;
-                    strSaveInfo[5] = "0";
-                    strSaveInfo[6] = strDiettl;
-                    strSaveInfo[7] = "0";
-                    strSaveInfo[8] = strWfrttl;
-                    strSaveInfo[9] = BankHost_main.strOperator;
+                    string strGrState = dataGridView_Lot.Rows[rowIndex].Cells[11].Value.ToString();
 
-                    //Fnc_SaveLog_Work(strFileName, strlog, strSaveInfo, 0);
-                    Fnc_SaveLog_Work(strFileName_Device, strlog, strSaveInfo, 1);
+                    if (strGrState == "COMPLETE")
+                        return;
 
-                    string[] printinfo = { "", "" };
-                    printinfo[0] = "1"; printinfo[1] = "";
-                    BankHost_main.Host.Host_Set_Print_Data(BankHost_main.strEqid, printinfo);
+                    DialogResult dialogResult1 = MessageBox.Show("작업 이력이 초기화 됩니다. \n\n처음부터 다시 작업을 하시겠습니까?", "Warning", MessageBoxButtons.YesNo);
+                    if (dialogResult1 == DialogResult.Yes)
+                    {
+                        string strDevice = strSelDevice;
+                        string strLot = dataGridView_Lot.Rows[rowIndex].Cells[1].Value.ToString();
+                        string strDcc = dataGridView_Lot.Rows[rowIndex].Cells[2].Value.ToString();
+                        string strDiettl = dataGridView_Lot.Rows[rowIndex].Cells[3].Value.ToString();
+                        string strWfrttl = dataGridView_Lot.Rows[rowIndex].Cells[5].Value.ToString();
+                        string strBillNo = dataGridView_Lot.Rows[rowIndex].Cells[9].Value.ToString();
 
-                    nLabelcount = 0;
-                    nLabelttl = 0;
+                        Fnc_UpdateDeviceInfo(strDevice, strLot, strDcc, Int32.Parse(strDiettl), 0, Int32.Parse(strWfrttl), false, false);
+                        BankHost_main.Host.Host_Delete_BcrReadinfo(BankHost_main.strEqid, strLot, 0);
 
-                    //if(strGrState == "Working")
-                    //{ 
+                        string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
+                        string strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;
+                        string strlog = string.Format("RESET+{0}+{1}+{2}+{3}+{4}+{5}+{6}", strDevice, strLot, 0, strDiettl, strWfrttl, "RESET", BankHost_main.strOperator);
+
+                        ////DB Save
+                        string[] strSaveInfo = new string[10];
+                        strSaveInfo[0] = BankHost_main.strEqid;
+                        strSaveInfo[1] = "RESET";
+                        strSaveInfo[2] = strBillNo;
+                        strSaveInfo[3] = strDevice;
+                        strSaveInfo[4] = strLot;
+                        strSaveInfo[5] = "0";
+                        strSaveInfo[6] = strDiettl;
+                        strSaveInfo[7] = "0";
+                        strSaveInfo[8] = strWfrttl;
+                        strSaveInfo[9] = BankHost_main.strOperator;
+
+                        //Fnc_SaveLog_Work(strFileName, strlog, strSaveInfo, 0);
+                        Fnc_SaveLog_Work(strFileName_Device, strlog, strSaveInfo, 1);
+
+                        string[] printinfo = { "", "" };
+                        printinfo[0] = "1"; printinfo[1] = "";
+                        BankHost_main.Host.Host_Set_Print_Data(BankHost_main.strEqid, printinfo);
+
+                        nLabelcount = 0;
+                        nLabelttl = 0;
+
+                        //if(strGrState == "Working")
+                        //{ 
                         BankHost_main.strWork_Lotinfo = "";
-                    //}
+                        //}
 
-                    textBox_Readdata.Focus();
+                        textBox_Readdata.Focus();
+                    }
                 }
             }
             /*
@@ -3467,7 +3474,7 @@ namespace Bank_Host
                 Thread.Sleep(1);
             }
 
-            string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
+            string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName;
             string strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + ".txt";
 
             string strSaveFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
@@ -3483,6 +3490,8 @@ namespace Bank_Host
                 strValReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
                 strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;
             }
+
+            strValReadfile = find_dev(strValReadfile);
 
             string strlog = "";
 
@@ -3514,7 +3523,7 @@ namespace Bank_Host
 
             if (strSelCust != "940")
             {
-                deviceindex = Fnc_Getline(strFileName_Device, strDevice, strDcc, nDieQty.ToString(), bReset);
+                deviceindex = Fnc_Getline(strFileName_Device, strValDevice, strDcc, nDieQty.ToString(), bReset);
             }
             else
             {
@@ -3670,6 +3679,34 @@ namespace Bank_Host
                 label_info.BackColor = Color.DarkGray;
                 label_info.ForeColor = Color.White;
                 st.state = "Waiting";
+            }
+            else if(nQty == -1 && BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
+            {
+                label_info.Text = string.Format("{0} - {1} 완료", deviceindex + 1, Realindex + 1);
+                label_info.BackColor = Color.Blue;
+                label_info.ForeColor = Color.White;
+                st.state = "Complete";
+
+                strSpeak = string.Format("{0} 완료", Realindex + 1);
+
+                strlog = string.Format("UPDATE+{0}+{1}+{2}+{3}+{4}+{5}+{6}", strDevice, strLot, nDieQty, nDiettl, nWfrttl, "COMPLETE", BankHost_main.strOperator);
+
+                ////DB Save
+                string[] strSaveInfo = new string[10];
+                strSaveInfo[0] = BankHost_main.strEqid;
+                strSaveInfo[1] = "VAL_COMPLETE";
+                strSaveInfo[2] = st.Bill;
+                strSaveInfo[3] = strDevice;
+                strSaveInfo[4] = strLot;
+                strSaveInfo[5] = nDieQty.ToString();
+                strSaveInfo[6] = nDiettl.ToString();
+                strSaveInfo[7] = strValWfrcount;
+                strSaveInfo[8] = nWfrttl.ToString();
+                strSaveInfo[9] = BankHost_main.strOperator;
+
+                Fnc_SaveLog_Work(strSaveFileName_Device, strlog, strSaveInfo, 1);
+
+                bWorkComplete = true;
             }
             else if (nQty < nttl)
             {
@@ -4116,6 +4153,11 @@ namespace Bank_Host
 
         public int Fnc_Getline(string strfilepath, string strData, string strDcc, string strDie, bool bReset)
         {
+            if(System.IO.File.Exists(strfilepath) == false)
+            {
+                strfilepath = find_dev(strfilepath);
+            }
+
             string[] info = Fnc_ReadFile(strfilepath);
 
             if (info == null)
@@ -4147,6 +4189,7 @@ namespace Bank_Host
                     st.Rcv_Qty = strSplit_data[4];
                     st.state = strSplit_data[13];
                     st.state = st.state.ToLower();
+
 
                     if (strData == st.Lot)
                     {
@@ -4236,9 +4279,117 @@ namespace Bank_Host
 
             return -1;
         }
+
+
+        /// <summary>
+        /// Device ID 없이 조회 할 때 금일 작업한 커스터머 기준으로 모든 Lot를 검사하여 Lot Diectory return
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string find_dev(string path)
+        {
+            string res = "";
+
+            if(System.IO.File.Exists(path) == false)
+            {
+                if(path.Contains("\\\\") == true)
+                {
+                    string[] file_path = path.Replace(@"\\", @"\").Split('\\');                    
+
+                    for(int i = 0; i < file_path.Length -1; i++)
+                    {
+                        if(i == file_path.Length -2)
+                        {
+                            res += file_path[i];
+                        }
+                        else
+                        {
+                            res += file_path[i] + "\\";
+                        }
+                    }
+
+                    string dev = "";
+
+                    if(System.IO.Directory.Exists(res)== true)
+                    {
+                        DirectoryInfo di = new DirectoryInfo(res);
+
+                        string[] dirs = Directory.GetDirectories(res + "\\");
+
+                        for(int  i = 0; i< dirs.Length;i++)
+                        {
+                            string[] files = Directory.GetFiles(dirs[i] + "\\");
+
+                            for(int j = 0; j < files.Length; j++)
+                            {
+                                 dev = find_lot(files[i]);
+
+                                if (dev != "")
+                                {
+                                    res = files[j];
+                                    strValDevice = dev;
+                                    break;
+                                }                                    
+                            }
+
+                            if (dev != "")
+                                break;
+                        }   
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        string find_lot(string file_path)
+        {
+            string res = "";
+
+            if (!System.IO.File.Exists(file_path))
+            {
+                return "";
+            }
+            else
+            {
+                string[] lines = System.IO.File.ReadAllLines(file_path);
+                string[] datas;
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    datas = lines[i].Split('\t');
+
+                    if (BankHost_main.strLot2Wfr == "TRUE")
+                    {
+                        if (datas[11] == strValLot)
+                        {
+                            res = datas[1];
+                            real_index = i;
+                            strValLot = datas[2];
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (datas[2] == strValLot)
+                        {
+                            res = datas[1];
+                            real_index = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
         public int Fnc_Getline_Revision(string strfilepath, string strData, string strCprQty)
         {
+            if (System.IO.File.Exists(strfilepath) == false)
+                strfilepath = find_dev(strfilepath);
+
             string[] info = Fnc_ReadFile(strfilepath);
+         
 
             if (info == null)
                 return -1;
@@ -4267,7 +4418,22 @@ namespace Bank_Host
                     st.Rcv_Qty = strSplit_data[4];
                     st.state = strSplit_data[13];
 
-                    if (strData == st.Lot && strCprQty == st.Rcv_Qty)
+                    if(BankHost_main.strLot2Wfr == "TRUE")
+                    {
+                        st.Lot = strSplit_data[11];
+
+                        if (strData == st.Lot)
+                        {
+                            if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
+                            {
+                                if (st.state == "Waiting")
+                                    return m;
+                            }
+                            else
+                                return m;
+                        }
+                    }
+                    else if (strData == st.Lot && strCprQty == st.Rcv_Qty)
                     {
                         if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
                         {
@@ -4382,7 +4548,7 @@ namespace Bank_Host
         {
             string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
             string strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + ".txt";
-            strValReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
+            strValReadfile = strFileName + strDevice + "\\" + strDevice + ".txt";
 
             string[] info = Fnc_ReadFile(strValReadfile);
 
@@ -4540,11 +4706,24 @@ namespace Bank_Host
 
             for (int n = 0; n < nCount; n++)
             {
-                strLotno = dataGridView_Lot.Rows[n].Cells[1].Value.ToString();
-                strDieQty = dataGridView_Lot.Rows[n].Cells[3].Value.ToString();
-                if (strData == strLotno && strDieQty == strQty)
+                if (BankHost_main.strLot2Wfr == "TRUE")
                 {
-                    return n;
+                    if(BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
+                    {
+                        return real_index;
+                    }
+                }
+                else
+                {
+                    strLotno = dataGridView_Lot.Rows[n].Cells[1].Value.ToString();
+                    strDieQty = dataGridView_Lot.Rows[n].Cells[3].Value.ToString();
+
+
+
+                    if (strData == strLotno && strDieQty == strQty)
+                    {
+                        return n;
+                    }
                 }
             }
 
@@ -4727,7 +4906,7 @@ namespace Bank_Host
             else
                 nQtyPos = Int32.Parse(BankHost_main.strWork_QtyPos);
 
-            char seperator = char.Parse(BankHost_main.strWork_SPR);
+            char seperator = BankHost_main.strWork_SPR == "" ? '\0' : char.Parse(BankHost_main.strWork_SPR);
             bool bmultibcr = false;
 
             //1D Scan 인지 확인
@@ -4849,32 +5028,60 @@ namespace Bank_Host
                     for (int n = 0; n < strSplit_Bcr.Length; n++)
                     {
                         string strBarcode = strSplit_Bcr[n];
+                        if (strBarcode != "")
+                        {
+                            if (Properties.Settings.Default.LOCATION == "K4")
+                            {
+                                if (strBarcode.Substring(0, 2) == "1T")
+                                {
+                                    //strWaferID = strBarcode;
+                                    bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
+                                    bcr.Lot = bcr.Lot.Trim();
+                                }
+                                else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
+                                {
+                                    bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
+                                    bcr.Device = bcr.Device.Trim();
+                                }
+                                else if (strBarcode.Substring(0, 1) == "Q")
+                                {
+                                    bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
+                                    bcr.DieQty = bcr.DieQty.Trim();
+                                }
+                                else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
+                                {
+                                    bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
+                                    bcr.Device = bcr.Device.Trim();
+                                }
 
-                        if (strBarcode.Substring(0, 2) == "1T")
-                        {
-                            //strWaferID = strBarcode;
-                            bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
-                            bcr.Lot = bcr.Lot.Trim();
-                        }
-                        else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
-                        {
-                            bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
-                            bcr.Device = bcr.Device.Trim();
-                        }
-                        else if (strBarcode.Substring(0, 1) == "Q")
-                        {
-                            bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
-                            bcr.DieQty = bcr.DieQty.Trim();
-                        }
-                        else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
-                        {
-                            bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
-                            bcr.Device = bcr.Device.Trim();
-                        }
+                                if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
+                                {
+                                    strID = strBarcode;
+                                }
+                            }
+                            else if(Properties.Settings.Default.LOCATION =="K5")
+                            {
+                                if(n ==0)
+                                {
 
-                        if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
-                        {
-                            strID = strBarcode;
+                                }
+                                else if (n==1)
+                                {
+                                    bcr.Device = strBarcode.Trim();
+                                }
+                                else if(n==2)
+                                {
+                                    bcr.Lot = strBarcode.Trim();
+                                }
+                                else if(n==3)
+                                {
+                                    bcr.WfrQty = strBarcode.Trim();
+                                }
+                                else if(n==4)
+                                {
+                                    bcr.DieQty = strBarcode.Trim();
+                                }
+                            }
                         }
                     }
 
@@ -4964,7 +5171,7 @@ namespace Bank_Host
 
             nValWfrQty = BankHost_main.Host.Host_Get_BcrRead_Wfrcount(BankHost_main.strEqid, bcr.Lot);
 
-            if (bcr.DieQty == "" || bcr.Lot == "")
+            if ((bcr.DieQty == ""  && bcr.WfrQty == "")|| bcr.Lot == "")
                 return null;
 
             int nDieTTL = 0, nWfrTTL = 0;
@@ -4993,7 +5200,7 @@ namespace Bank_Host
                 strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + bcr.Device + "\\" + bcr.Device;
             }
 
-            int nQty = Int32.Parse(bcr.DieQty);
+            int nQty = bcr.DieQty == "" ? 0 : Int32.Parse(bcr.DieQty);
 
             bcr.DieTTL = nDieTTL.ToString();
             bcr.WfrTTL = nWfrTTL.ToString();
@@ -5566,7 +5773,17 @@ namespace Bank_Host
             if (bcr.WfrQty == "")
                 bcr.WfrQty = bcr.WfrTTL;
 
-            string strSetID = bcr.Lot + "_" + bcr.DieQty;
+            string strSetID = "";
+
+            if (BankHost_main.strLot2Wfr == "TRUE")
+            {
+                strSetID = bcr.Lot;
+            }
+            else
+            {
+                strSetID = bcr.Lot + "_" + bcr.DieQty;
+            }
+            
             string strGet = BankHost_main.Host.Host_Set_BcrReadInfo(BankHost_main.strEqid, bcr.Device, bcr.Lot, strSetID);
 
             if (strGet == "True")
@@ -5578,7 +5795,7 @@ namespace Bank_Host
                 if (BankHost_main.strWork_Lotinfo == "")
                 {
                     bcr.result = "OK";
-                }
+                }                
                 else if (BankHost_main.strWork_Lotinfo != bcr.Lot)
                 {
                     bcr.result = "MISSMATCH";
@@ -6711,28 +6928,27 @@ namespace Bank_Host
 
         bool blabel_save = false;
 
-        public void make_loc_csv(string path)
+        public void make_csv(string path)
         {
             try
             {
-                string str_temp = "Plant,Cust,Loc,Hawb#,Invoice#,Device,Cust Lost#,DCC,Die Qty,Wfr Qty,Rcv Date";
+                string str_temp = "No.,LOT,Device,Lot_QTY,Wafer_QTY,Amkor_ID,Cust,Wafer_Lot";
                 System.IO.StreamWriter st = System.IO.File.AppendText(path);
 
                 st.WriteLine(str_temp);
 
                 for (int i = 0; i < dataGridView_label.RowCount; i++)
-                {
-                    str_temp = (i + 1).ToString() + ",";
-                    str_temp += dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
+                {                    
+                    str_temp = dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[1].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[2].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[3].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[4].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[5].Value.ToString() + ",";
-                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString();
+                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[7].Value.ToString();
 
                     st.WriteLine(str_temp);
-
                 }
               
                 st.Close();
@@ -6743,8 +6959,44 @@ namespace Bank_Host
             {
 
             }
-             
-           
+        }
+
+        public void make_loc_csv(string path)
+        {
+            try
+            {
+                string str_temp = "Plant,Cust,Loc,Hawb#,Invoice#,Device,Cust Lost#,DCC,Die Qty,Wfr Qty,Rcv Date";
+                System.IO.StreamWriter st = System.IO.File.AppendText(path);
+
+                st.WriteLine(str_temp);
+
+                for (int i = 0; i < dgv_loc.RowCount; i++)
+                {
+                    str_temp = (i + 1).ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[0].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[1].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[2].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[3].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[4].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[5].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[6].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[7].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[8].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[9].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[10].Value.ToString() + ",";
+                    str_temp += dgv_loc.Rows[i].Cells[11].Value.ToString();
+
+                    st.WriteLine(str_temp);
+                }
+
+                st.Close();
+                st.Dispose();
+                blabel_save = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void dataGridView_label_KeyPress(object sender, KeyPressEventArgs e)
@@ -6912,7 +7164,7 @@ namespace Bank_Host
                 Properties.Settings.Default.Loc_file_save_path = file_path;
                 Properties.Settings.Default.Save();
 
-                make_csv(file_path);
+                make_loc_csv(file_path);
             }
         }
 
@@ -7341,6 +7593,7 @@ namespace Bank_Host
                 AWork.strUdigit = dt_list.Rows[n]["UDIGIT"].ToString(); AWork.strUdigit = AWork.strUdigit.Trim();
                 AWork.strWfrPos = dt_list.Rows[n]["TTL_WFR_QTY"].ToString(); AWork.strWfrPos = AWork.strWfrPos.Trim();
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
+                AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
 
                 if (strGetCust == AWork.strCust && strModelName == AWork.strModelName)
                 {

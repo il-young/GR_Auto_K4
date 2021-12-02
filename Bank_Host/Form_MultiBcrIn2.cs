@@ -129,7 +129,7 @@ namespace Bank_Host
             if (strDevicePos == "" || strDevicePos == "-1")
             {
                 checkBox_devicefix.Visible = true;
-                textBox_device.Enabled = true;
+                textBox_device.Enabled = false;
             }
 
             if(strDieQtyPos == "" || strDieQtyPos == "-1")

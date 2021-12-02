@@ -51,7 +51,7 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = ""; 
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = ""; 
 
         Thread Thread_Progress = null;
 
@@ -668,7 +668,7 @@ namespace Bank_Host
         {
             //Barcode Print          
             AmkorBcrInfo Amkor = Frm_Sort.Fnc_GetAmkorBcrInfo(Form_Sort.strValReadfile, Form_Sort.strValLot, Form_Sort.strValDcc, Form_Sort.strValDevice);
-
+            
             if (strWork_Shot1Lot == "YES")
                 Form_Sort.nLabelcount = 0;
 
@@ -733,9 +733,9 @@ namespace Bank_Host
                         {
                             Form_Sort.strValDevice = Read_Bcr.Device;
                             Form_Sort.strValLot = Read_Bcr.Lot;
-                            Form_Sort.nValDiettl = Int32.Parse(Read_Bcr.DieTTL);
-                            Form_Sort.nValDieQty = Int32.Parse(Read_Bcr.DieQty);
-                            Form_Sort.nValWfrttl = Int32.Parse(Read_Bcr.WfrTTL);
+                            Form_Sort.nValDiettl = Read_Bcr.DieTTL == "" ? 0 : Int32.Parse(Read_Bcr.DieTTL);
+                            Form_Sort.nValDieQty = Read_Bcr.DieQty == "" ? 0 : Int32.Parse(Read_Bcr.DieQty);
+                            Form_Sort.nValWfrttl = Read_Bcr.WfrTTL == "" ? 0 : Int32.Parse(Read_Bcr.WfrTTL);
                             Form_Sort.bupdate = true;
                             Form_Sort.bunprinted_device = Read_Bcr.unprinted_device;
 
@@ -1366,6 +1366,7 @@ namespace Bank_Host
             strWork_Udigit = Info.strUdigit;
             strWork_WfrQtyPos = Info.strWfrPos;
             strWork_MtlType = Info.strMtlType;
+            strLot2Wfr = Info.strLot2Wfr;
         }        
     }
 }
@@ -1388,4 +1389,5 @@ public class WorkInfo
     public string strUdigit = "";
     public string strWfrPos = "";
     public string strMtlType = "";
+    public string strLot2Wfr = "";
 }
