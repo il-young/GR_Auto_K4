@@ -74,6 +74,7 @@
             this.textBox_lot.Name = "textBox_lot";
             this.textBox_lot.Size = new System.Drawing.Size(747, 46);
             this.textBox_lot.TabIndex = 15;
+            this.textBox_lot.TextChanged += new System.EventHandler(this.textBox_lot_TextChanged);
             this.textBox_lot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_lot_KeyPress);
             // 
             // textBox_device
@@ -174,7 +175,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(903, 365);
+            this.ClientSize = new System.Drawing.Size(899, 361);
             this.ControlBox = false;
             this.Controls.Add(this.checkBox_devicefix);
             this.Controls.Add(this.button_close);

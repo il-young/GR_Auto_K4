@@ -167,6 +167,12 @@ namespace Bank_Host
                 }
             }
         }
+
+        private void textBox_lot_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         public void Fnc_Show()
         {
             try
@@ -342,9 +348,9 @@ namespace Bank_Host
                         strMakeBcr[i] = "";
                     }
 
-                    strMakeBcr[nDevicePos] = textBox_device.Text;
-                    strMakeBcr[nLotPos] = textBox_lot.Text;
-                    strMakeBcr[nWfrQtyPos] = textBox_wftqty.Text;
+                    strMakeBcr[0] = textBox_device.Text;
+                    strMakeBcr[1] = textBox_lot.Text;
+                    strMakeBcr[3] = textBox_wftqty.Text;
 
                     string strSperator = BankHost_main.strWork_SPR;
 

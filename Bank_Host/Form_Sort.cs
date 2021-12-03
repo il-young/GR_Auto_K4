@@ -3474,17 +3474,10 @@ namespace Bank_Host
                 Thread.Sleep(1);
             }
 
-            
-
             string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName;
             string strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + ".txt";
-
-            
-
             string strSaveFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
             string strSaveFileName_Device = "";
-
-            
 
 
             if (strSelCust == "940")
@@ -3501,7 +3494,7 @@ namespace Bank_Host
                     strValReadfile = find_dev(strValReadfile);
                 }
 
-                strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;                
+                strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strValDevice + "\\" + strValDevice;                
             }
 
             if(System.IO.File.Exists(strValReadfile) == false)
@@ -4304,55 +4297,62 @@ namespace Bank_Host
         {
             string res = "";
 
-            if(System.IO.File.Exists(path) == false)
+            try
             {
-                if(path.Contains("\\\\") == true)
+                if(System.IO.File.Exists(path) == false)
                 {
-                    string[] file_path = path.Replace(@"\\", @"\").Split('\\');                    
-
-                    for(int i = 0; i < file_path.Length -1; i++)
+                    if(path.Contains("\\\\") == true)
                     {
-                        if(i == file_path.Length -2)
+                        string[] file_path = path.Replace(@"\\", @"\").Split('\\');                    
+
+                        for(int i = 0; i < file_path.Length -1; i++)
                         {
-                            res += file_path[i];
-                        }
-                        else
-                        {
-                            res += file_path[i] + "\\";
-                        }
-                    }
-
-                    string dev = "";
-
-                    if(System.IO.Directory.Exists(res)== true)
-                    {
-                        DirectoryInfo di = new DirectoryInfo(res);
-
-                        string[] dirs = Directory.GetDirectories(res + "\\");
-
-                        for(int  i = 0; i< dirs.Length;i++)
-                        {
-                            string[] files = Directory.GetFiles(dirs[i] + "\\");
-
-                            for(int j = 0; j < files.Length; j++)
+                            if(i == file_path.Length -2)
                             {
-                                 dev = find_lot(files[i]);
+                                res += file_path[i];
+                            }
+                            else
+                            {
+                                res += file_path[i] + "\\";
+                            }
+                        }
+
+                        string dev = "";
+
+                        if(System.IO.Directory.Exists(res)== true)
+                        {
+                            DirectoryInfo di = new DirectoryInfo(res);
+
+                            string[] dirs = Directory.GetDirectories(res + "\\");
+
+                            for(int  i = 0; i< dirs.Length;i++)
+                            {
+                                string[] files = Directory.GetFiles(dirs[i] + "\\");
+
+                                for(int j = 0; j < files.Length; j++)
+                                {
+                                     dev = find_lot(files[j]);
+
+                                    if (dev != "")
+                                    {
+                                        res = files[j];
+                                        strValDevice = dev;
+                                        break;
+                                    }                                    
+                                }
 
                                 if (dev != "")
-                                {
-                                    res = files[j];
-                                    strValDevice = dev;
                                     break;
-                                }                                    
-                            }
-
-                            if (dev != "")
-                                break;
-                        }   
+                            }   
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
             return res;
         }
 
@@ -4360,39 +4360,47 @@ namespace Bank_Host
         {
             string res = "";
 
-            if (!System.IO.File.Exists(file_path))
+            try
             {
-                return "";
-            }
-            else
-            {
-                string[] lines = System.IO.File.ReadAllLines(file_path);
-                string[] datas;
-
-                for (int i = 0; i < lines.Length; i++)
+                if (!System.IO.File.Exists(file_path))
                 {
-                    datas = lines[i].Split('\t');
+                    return "";
+                }
+                else
+                {
+                    string[] lines = System.IO.File.ReadAllLines(file_path);
+                    string[] datas;
 
-                    if (BankHost_main.strLot2Wfr == "TRUE")
+                    for (int i = 0; i < lines.Length; i++)
                     {
-                        if (datas[11] == strValLot)
+                        datas = lines[i].Split('\t');
+
+                        if (BankHost_main.strLot2Wfr == "TRUE")
                         {
-                            res = datas[1];
-                            real_index = i;
-                            strValLot = datas[2];
-                            break;
+                            if (datas[11] == strValLot)
+                            {
+                                res = datas[1];
+                                real_index = i;
+                                strValLot = datas[2];
+                                break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (datas[2] == strValLot)
+                        else
                         {
-                            res = datas[1];
-                            real_index = i;
-                            break;
+                            if (datas[2] == strValLot)
+                            {
+                                res = datas[1];
+                                real_index = i;
+                                break;
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
             return res;
         }
@@ -4432,10 +4440,23 @@ namespace Bank_Host
                     st.Rcv_Qty = strSplit_data[4];
                     st.state = strSplit_data[13];
 
-                    if(BankHost_main.strLot2Wfr == "TRUE")
+                    if (BankHost_main.strLot2Wfr == "TRUE")
                     {
                         st.Lot = strSplit_data[11];
 
+                        if (strData == st.Lot)
+                        {
+                            if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
+                            {
+                                if (st.state == "Waiting")
+                                    return m;
+                            }
+                            else
+                                return m;
+                        }
+                    }
+                    else if (BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
+                    {
                         if (strData == st.Lot)
                         {
                             if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
@@ -4726,6 +4747,10 @@ namespace Bank_Host
                     {
                         return real_index;
                     }
+                }
+                else if(BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
+                {                    
+                        return real_index;
                 }
                 else
                 {
@@ -5185,8 +5210,12 @@ namespace Bank_Host
 
             nValWfrQty = BankHost_main.Host.Host_Get_BcrRead_Wfrcount(BankHost_main.strEqid, bcr.Lot);
 
-            if ((bcr.DieQty == ""  && bcr.WfrQty == "")|| bcr.Lot == "")
-                return null;
+
+            if (BankHost_main.strWork_QtyPos != "-1" && BankHost_main.strWork_WfrQtyPos != "-1")
+            {
+                if ((bcr.DieQty == "" && bcr.WfrQty == "") || bcr.Lot == "")
+                    return null;
+            }
 
             int nDieTTL = 0, nWfrTTL = 0;
             string strFileName = "", strFileName_Device = "";
