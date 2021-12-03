@@ -3474,11 +3474,18 @@ namespace Bank_Host
                 Thread.Sleep(1);
             }
 
+            
+
             string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName;
             string strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + ".txt";
 
+            
+
             string strSaveFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
             string strSaveFileName_Device = "";
+
+            
+
 
             if (strSelCust == "940")
             {
@@ -3488,10 +3495,17 @@ namespace Bank_Host
             else
             {
                 strValReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
-                strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;
+
+                if (strDevice == "")
+                {
+                    strValReadfile = find_dev(strValReadfile);
+                }
+
+                strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;                
             }
 
-            strValReadfile = find_dev(strValReadfile);
+            if(System.IO.File.Exists(strValReadfile) == false)
+                strValReadfile = find_dev(strValReadfile);
 
             string strlog = "";
 
@@ -5641,9 +5655,20 @@ namespace Bank_Host
             int nLength = strSplit_Bcr.Length;
 
             if (nLength < 4)
-                return null;
+            {
+                if(strWorkCust == "736")
+                {
+
+                }
+                else
+                {
+                    return null;
+                }                
+            }
+                
 
             bcr.Device = strSplit_Bcr[nDevicePos];
+            //bcr.Lot = strSplit_Bcr[int.Parse(BankHost_main.strWork_LotidPos) == -1 ? 0 : int.Parse(BankHost_main.strWork_LotidPos)];
             bcr.Lot = strSplit_Bcr[nLotPos];
             bcr.DieQty = strSplit_Bcr[nDieQtyPos];
             bcr.WfrQty = strSplit_Bcr[nWfrQtyPos];
@@ -5693,7 +5718,7 @@ namespace Bank_Host
             {
                 if (strSplit_DevicePos[1].Substring(0, 1) == "L")
                 {
-                    int n = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                    int n = Int32.Parse(strSplit_DevicePos[1].Substring(1, strSplit_DevicePos[1].Length -1));
                     bcr.Device = bcr.Device.Substring(n, bcr.Device.Length - n);
                 }
                 else
