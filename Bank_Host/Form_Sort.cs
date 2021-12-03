@@ -3488,7 +3488,7 @@ namespace Bank_Host
             else
             {
                 strValReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
-
+                               
                 if (strDevice == "")
                 {
                     strValReadfile = find_dev(strValReadfile);
@@ -3509,7 +3509,7 @@ namespace Bank_Host
                 bReset = true;
 
             int dataIndex = 0;
-            if (nDiettl == nDieQty)
+            if (BankHost_main.strWork_QtyPos == "-1" ? false : nDiettl == nDieQty)
                 dataIndex = Fnc_Getline_Revision(strValReadfile, strLot, nDiettl.ToString());
             else
                 dataIndex = Fnc_Getline(strValReadfile, strLot, strDcc, nDieQty.ToString(), bReset);
@@ -3587,7 +3587,7 @@ namespace Bank_Host
 
             int Realindex = 0;
 
-            if (nDiettl == nDieQty)
+            if (BankHost_main.strWork_QtyPos == "-1" ? false : nDiettl == nDieQty)
                 Realindex = Fnc_GetLotindex_Revision(strLot, nDiettl.ToString());
             else
                 Realindex = Fnc_GetLotindex(strLot, strDcc, nDieQty.ToString(), bupdate);
@@ -3680,14 +3680,14 @@ namespace Bank_Host
             ////1Shot 1Lot 확인, Cust, inch , Name
             bool bWorkComplete = false;
 
-            if (nQty == 0)
+            if (BankHost_main.strWork_QtyPos == "-1" ? false : nQty == 0)
             {
                 label_info.Text = string.Format("{0} - {1}", deviceindex + 1, Realindex + 1);
                 label_info.BackColor = Color.DarkGray;
                 label_info.ForeColor = Color.White;
                 st.state = "Waiting";
             }
-            else if(nQty == -1 && BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
+            else if(BankHost_main.strWork_QtyPos == "-1" ? true : nQty == nttl )
             {
                 label_info.Text = string.Format("{0} - {1} 완료", deviceindex + 1, Realindex + 1);
                 label_info.BackColor = Color.Blue;
@@ -4202,7 +4202,7 @@ namespace Bank_Host
                     {
                         if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && !bReset)
                         {
-                            if (st.state == "waiting" && st.Rcv_Qty == strDie)
+                            if (st.state == "waiting" && BankHost_main.strWork_QtyPos == "-1" ? true : st.Rcv_Qty == strDie)
                                 return m;
                         }
                         else
@@ -4387,7 +4387,7 @@ namespace Bank_Host
                         }
                         else
                         {
-                            if (datas[2] == strValLot)
+                            if(datas.Length > 2? datas[2] == strValLot : false)
                             {
                                 res = datas[1];
                                 real_index = i;
@@ -4507,7 +4507,7 @@ namespace Bank_Host
                 {
                     if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
                     {
-                        if (strGetDiettl == strDieqty)
+                        if (BankHost_main.strWork_DevicePos == "-1" ? true : strGetDiettl == strDieqty)
                             return n;
                     }
                     else
@@ -4741,6 +4741,9 @@ namespace Bank_Host
 
             for (int n = 0; n < nCount; n++)
             {
+                strDieQty = dataGridView_Lot.Rows[n].Cells[3].Value.ToString();
+                strLotno = dataGridView_Lot.Rows[n].Cells[1].Value.ToString();
+
                 if (BankHost_main.strLot2Wfr == "TRUE")
                 {
                     if(BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
@@ -4748,10 +4751,11 @@ namespace Bank_Host
                         return real_index;
                     }
                 }
-                else if(BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
+                else if(BankHost_main.strWork_QtyPos == "-1" ? true : strDieQty  == strQty 
+                    && strLotno == strData)
                 {                    
                         return real_index;
-                }
+                }                
                 else
                 {
                     strLotno = dataGridView_Lot.Rows[n].Cells[1].Value.ToString();
@@ -5104,21 +5108,21 @@ namespace Bank_Host
                                 {
 
                                 }
-                                else if (n==1)
+                                else if (n==0)
                                 {
                                     bcr.Device = strBarcode.Trim();
                                 }
-                                else if(n==2)
+                                else if(n==1)
                                 {
                                     bcr.Lot = strBarcode.Trim();
+                                }
+                                else if(n==2)
+                                {
+                                    bcr.DieQty = strBarcode.Trim();                                    
                                 }
                                 else if(n==3)
                                 {
                                     bcr.WfrQty = strBarcode.Trim();
-                                }
-                                else if(n==4)
-                                {
-                                    bcr.DieQty = strBarcode.Trim();
                                 }
                             }
                         }
@@ -5211,11 +5215,9 @@ namespace Bank_Host
             nValWfrQty = BankHost_main.Host.Host_Get_BcrRead_Wfrcount(BankHost_main.strEqid, bcr.Lot);
 
 
-            if (BankHost_main.strWork_QtyPos != "-1" && BankHost_main.strWork_WfrQtyPos != "-1")
-            {
-                if ((bcr.DieQty == "" && bcr.WfrQty == "") || bcr.Lot == "")
-                    return null;
-            }
+
+            if ((BankHost_main.strWork_QtyPos != "-1" ? false : bcr.DieQty == "" && BankHost_main.strWork_WfrQtyPos != "-1" ?  false : bcr.WfrQty == "") || bcr.Lot == "")
+                return null;
 
             int nDieTTL = 0, nWfrTTL = 0;
             string strFileName = "", strFileName_Device = "";
