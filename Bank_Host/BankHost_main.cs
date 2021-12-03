@@ -715,10 +715,10 @@ namespace Bank_Host
                             return;
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Read_Bcr = null;
-
+                        
                         strMsg = string.Format("오류가 발견 되었습니다. 설정을 다시 확인 하세요!");
                         ProcessGun_Error(strMsg);
                         return;

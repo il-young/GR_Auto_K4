@@ -4754,7 +4754,7 @@ namespace Bank_Host
                 else if(BankHost_main.strWork_QtyPos == "-1" ? true : strDieQty  == strQty 
                     && strLotno == strData)
                 {                    
-                        return real_index;
+                        return n;
                 }                
                 else
                 {
@@ -5104,26 +5104,86 @@ namespace Bank_Host
                             }
                             else if(Properties.Settings.Default.LOCATION =="K5")
                             {
-                                if(n ==0)
-                                {
+                                string[] strSplit_Bcr2 = strBcr.Split(seperator);
+                                if (strSplit_Bcr2.Length < 3)
+                                    return null;
 
-                                }
-                                else if (n==0)
+                                if (BankHost_main.strWork_DevicePos != "-1")
                                 {
-                                    bcr.Device = strBarcode.Trim();
+                                    if (strSplit_DevicePos[1] != null)
+                                    {
+                                        if (strSplit_DevicePos[1].Substring(0, 1) == "L")
+                                        {
+                                            int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                                            bcr.Device = bcr.Device.Substring(nDigit, bcr.Device.Length - nDigit);
+                                        }
+                                        else if (strSplit_DevicePos[1].Substring(0, 1) == "R")
+                                        {
+                                            int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
+                                            bcr.Device = bcr.Device.Substring(0, bcr.Device.Length - nDigit);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        bcr.Device = strSplit_Bcr2[nDevicePos];
+                                    }
                                 }
-                                else if(n==1)
+
+                                if (BankHost_main.strWork_LotidPos != "-1")
                                 {
-                                    bcr.Lot = strBarcode.Trim();
+                                    bcr.Lot = strSplit_Bcr2[nLotPos]; bcr.Lot = bcr.Lot.Trim();
+
+                                    if (strSplit_LotPos[1] != null)
+                                    {
+                                        if (strSplit_LotPos[1].Substring(0, 1) == "L")
+                                        {
+                                            int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
+                                            bcr.Lot = bcr.Lot.Substring(nDigit, bcr.Lot.Length - nDigit);
+                                        }
+                                        else if (strSplit_LotPos[1].Substring(0, 1) == "R")
+                                        {
+                                            int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, strSplit_LotPos[1].Length - 1));
+                                            bcr.Lot = bcr.Lot.Substring(0, bcr.Lot.Length - nDigit);
+                                        }
+                                    }
                                 }
-                                else if(n==2)
+
+                                if (BankHost_main.strWork_QtyPos != "-1")
                                 {
-                                    bcr.DieQty = strBarcode.Trim();                                    
+                                    bcr.DieQty = strSplit_Bcr2[nQtyPos]; bcr.DieQty = bcr.DieQty.Trim();
+
+                                    if (strSplit_QtyPos[1] != null)
+                                    {
+                                        if (strSplit_QtyPos[1].Substring(0, 1) == "L")
+                                        {
+                                            int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
+                                            bcr.DieQty = bcr.DieQty.Substring(nDigit, bcr.DieQty.Length - nDigit);
+                                        }
+                                        else if (strSplit_QtyPos[1].Substring(0, 1) == "R")
+                                        {
+                                            int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
+                                            bcr.DieQty = bcr.DieQty.Substring(0, bcr.DieQty.Length - nDigit);
+                                        }
+                                    }
                                 }
-                                else if(n==3)
-                                {
-                                    bcr.WfrQty = strBarcode.Trim();
-                                }
+
+                                
+                                //if (n==0)
+                                //{
+                                //    bcr.Device = strBarcode.Trim();
+                                //}
+                                //else if(n==1)
+                                //{
+                                //    bcr.Lot = strBarcode.Trim();
+                                //}
+                                //else if(n==2)
+                                //{
+                                //    bcr.DieQty = strBarcode.Trim();                                    
+                                //}
+                                //else if(n==3)
+                                //{
+                                //    bcr.WfrQty = strBarcode.Trim();
+                                //}
                             }
                         }
                     }
@@ -5216,7 +5276,7 @@ namespace Bank_Host
 
 
 
-            if ((BankHost_main.strWork_QtyPos != "-1" ? false : bcr.DieQty == "" && BankHost_main.strWork_WfrQtyPos != "-1" ?  false : bcr.WfrQty == "") || bcr.Lot == "")
+            if (((BankHost_main.strWork_QtyPos == "-1" ? false : bcr.DieQty == "") && (BankHost_main.strWork_WfrQtyPos == "-1" ?  false : bcr.WfrQty == "")) || bcr.Lot == "")
                 return null;
 
             int nDieTTL = 0, nWfrTTL = 0;
