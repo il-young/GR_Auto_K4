@@ -374,7 +374,6 @@ namespace Bank_Host
                     return;
                 }
 
-
                 if (comboBox_cust.Text == "")
                 {
                     MessageBox.Show("선택된 고객이 없습니다. 고객을 선택 하십시오.");

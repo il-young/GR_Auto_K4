@@ -8027,6 +8027,8 @@ namespace Bank_Host
 
                 Form_Input Frm_Input = new Form_Input();
 
+                // strInputBill Bill# 입력 변수.
+
                 Frm_Input.Fnc_Init(nSel);
                 Frm_Input.ShowDialog();
 
@@ -8040,14 +8042,16 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
-                var taskResut = BankHost_main.Host.Fnc_GetBillInformation(Properties.Settings.Default.LOCATION, strInputBill);
+                var taskResut = Fnc_RunAsync("http://10.101.5.38:8080/EETPackingLabelValidation.asmx/BANKSplitLog?pPlant=K4");
 
                 try
                 {
                     strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
                     Frm_Process.Form_Display(strMsg);
 
-                    string res = taskResut.Status.ToString();
+                    string res = taskResut.Result;
+
+                    location_data_sorting(res);
 
                     //if (res == "Faulted")
                     //{
@@ -8060,30 +8064,8 @@ namespace Bank_Host
                     //}
 
 
-                    int nCount = Fnc_Get_Worklist_lot_history(taskResut.Result);
 
-                    if (nCount < 1)
-                    {
-                        dataGridView_worklist.Columns.Clear();
-                        dataGridView_worklist.Rows.Clear();
-                        dataGridView_worklist.Refresh();
-                    }
-                    else
-                    {
-                        label_cust.Text = strSelCust;
-                        Fnc_Get_Information_Model(strSelCust);
 
-                        strSelBillno[0] = strInputBill;
-
-                        if (strSelCust == "940")
-                        {
-                            Fnc_Set_Workfile_NoDevice(strSelBillno); //HY210315
-                        }
-                        else
-                            Fnc_Set_Workfile(strSelBillno);
-
-                        comboBox_Name.SelectedIndex = 0;
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -8107,6 +8089,38 @@ namespace Bank_Host
             }            
         }
 
+        private void location_data_sorting(string data)
+        {
+            int nLoc = -1, nDev = -1, nPlant = -1, nCust = -1, nbill = -1, nInvoice = -1, nLot = -1, nDieQ = -1, nWfrQ = -1, nRevdata = -1;
+            List<string[]> location_list = new List<string[]>();
+
+            string[] temp = data.Split('\n');
+
+            for(int i = 0; i < temp.Length; i++)
+            {
+                location_list.Add(temp[i].Split('\t'));
+            }
+
+            
+            for(int  i = 0;i < location_list[0].Length; i++)
+            {
+                if (location_list[0][i].ToUpper().Contains("LINE") == true || location_list[0][i].ToUpper().Contains("PLANT") == true)
+                    nPlant = i;
+
+                if(location_list[0][i].ToUpper().Contains("CUST") == true)
+                    nCust = i;
+
+                if (location_list[0][i].ToUpper().Contains("LOC") == true)
+                    nLot = i;
+
+                if (location_list[0][i].ToUpper().Contains("BILL") == true || location_list[0][i].ToUpper().Contains("HAWB") == true)
+                    nbill = i;
+
+
+            }
+
+
+        }
 
         private void ChangeIME(System.Windows.Forms.Control ctl)
         {
@@ -8541,6 +8555,26 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
                 comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
             }
+        }
+        
+        public async Task<string> Fnc_RunAsync(string strKey)
+        {
+            string str = "";
+
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                client.BaseAddress = new Uri(strKey);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/HY"));
+
+                System.Net.Http.HttpResponseMessage response = client.GetAsync("").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var contents = await response.Content.ReadAsStringAsync();
+                    str = contents;
+                }
+            }
+
+            return str;
         }
 
     }
