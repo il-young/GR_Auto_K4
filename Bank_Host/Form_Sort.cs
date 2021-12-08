@@ -64,6 +64,8 @@ namespace Bank_Host
 
         public int real_index = -1;
 
+        private int tot_die = -1, tot_wfr = -1, tot_lots = -1;
+
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
         Form_Print Frm_Print = new Form_Print();
@@ -8053,19 +8055,9 @@ namespace Bank_Host
 
                     location_data_sorting(res);
 
-                    //if (res == "Faulted")
-                    //{
-                    //    strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
-                    //    Frm_Process.Form_Display_Warning(strMsg);
-                    //    Thread.Sleep(3000);
-                    //    Frm_Process.Form_Hide();
+                    tabControl_Sort.SelectedIndex = 6;
 
-                    //    return;
-                    //}
-
-
-
-
+                    Frm_Process.Form_Hide();
                 }
                 catch (Exception ex)
                 {
@@ -8091,35 +8083,38 @@ namespace Bank_Host
 
         private void location_data_sorting(string data)
         {
-            int nLoc = -1, nDev = -1, nPlant = -1, nCust = -1, nbill = -1, nInvoice = -1, nLot = -1, nDieQ = -1, nWfrQ = -1, nRevdata = -1;
-            List<string[]> location_list = new List<string[]>();
-
-            string[] temp = data.Split('\n');
-
-            for(int i = 0; i < temp.Length; i++)
+            try
             {
-                location_list.Add(temp[i].Split('\t'));
-            }
+                List<string[]> location_list = new List<string[]>();
 
-            
-            for(int  i = 0;i < location_list[0].Length; i++)
+                string[] temp = data.Split('\n');
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    location_list.Add(temp[i].Split('\t'));
+                }
+
+                tot_die = 0;
+                tot_wfr = 0;
+                tot_lots = location_list.Count - 1;
+
+                for (int i = 1; i < location_list.Count -1; i++)
+                {
+                    dgv_loc.Rows.Add(location_list[i][0], location_list[i][1], location_list[i][9], "", "", location_list[i][3], location_list[i][4], location_list[i][5], location_list[i][6], location_list[i][7], location_list[i][8]);
+
+                    tot_die += int.Parse(location_list[i][6]);
+                    tot_wfr += int.Parse(location_list[i][7]);
+                }
+
+                tb_totaldie.Text = tot_die.ToString();
+                tb_totalwafer.Text = tot_wfr.ToString();
+                tb_totalot.Text = tot_lots.ToString();
+            }
+            catch (Exception ex)
             {
-                if (location_list[0][i].ToUpper().Contains("LINE") == true || location_list[0][i].ToUpper().Contains("PLANT") == true)
-                    nPlant = i;
 
-                if(location_list[0][i].ToUpper().Contains("CUST") == true)
-                    nCust = i;
-
-                if (location_list[0][i].ToUpper().Contains("LOC") == true)
-                    nLot = i;
-
-                if (location_list[0][i].ToUpper().Contains("BILL") == true || location_list[0][i].ToUpper().Contains("HAWB") == true)
-                    nbill = i;
-
-
-            }
-
-
+                throw;
+            }            
         }
 
         private void ChangeIME(System.Windows.Forms.Control ctl)
