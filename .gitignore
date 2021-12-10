@@ -399,3 +399,6 @@ Bank_Host/obj/x64/Debug/Bank_Host.csproj.GenerateResource.cache
 Bank_Host/obj/x64/Debug/Bank_Host.exe
 Bank_Host/obj/x64/Debug/Bank_Host.Form_Sort.resources
 Bank_Host/obj/x64/Debug/Bank_Host.pdb
+.vs/Bank_Host/v15/Server/sqlite3/storage.ide-shm
+Bank_Host/obj/x64/Debug/Bank_Host.csprojAssemblyReference.cache
+.vs/Bank_Host/v15/.suo
