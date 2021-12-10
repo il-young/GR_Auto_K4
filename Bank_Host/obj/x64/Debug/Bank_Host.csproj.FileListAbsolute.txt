@@ -37,6 +37,7 @@ D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\MICube.SmartDriver.Base.TCP.dll
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\zxing.dll
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\zxing.presentation.dll
+D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\Host.pdb
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\zxing.pdb
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\zxing.xml
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\zxing.presentation.pdb
@@ -58,8 +59,7 @@ D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.Properties.Resources.resources
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.csproj.GenerateResource.cache
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.csproj.CoreCompileInputs.cache
+D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.csproj.CopyComplete
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.exe
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.pdb
-D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\bin\x64\Debug\Host.pdb
 D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.csprojAssemblyReference.cache
-D:\Project\GR Project\GR_HOST\GR Automation\code\GR_Auto_1280\Bank_Host\obj\x64\Debug\Bank_Host.csproj.CopyComplete

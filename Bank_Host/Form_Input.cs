@@ -480,7 +480,8 @@ namespace Bank_Host
 
         private void textBox_bill_KeyPress(object sender, KeyPressEventArgs e)
         {
-            button_complete_Click(sender, e);
+            if(e.KeyChar == 13)
+                button_complete_Click(sender, e);
         }
     }
 }

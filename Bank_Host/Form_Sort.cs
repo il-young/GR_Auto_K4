@@ -13,6 +13,7 @@ using System.IO;
 using System.Threading;
 using System.Speech.Synthesis;
 using System.Diagnostics;
+using Microsoft.Office.Interop.Excel;
 
 namespace Bank_Host
 {
@@ -72,7 +73,7 @@ namespace Bank_Host
 
         public Form_Sort()
         {
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(Application.StartupPath);
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.Windows.Forms.Application.StartupPath);
             
             strExcutionPath = di.ToString();
 
@@ -621,7 +622,7 @@ namespace Bank_Host
                 strMsg = string.Format("\n\n 작업 준비 중 입니다. {0} / {1}", nCount, nArryLength - 1);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             int nReturn = Fnc_WorkView(strWorkFileName);
@@ -798,7 +799,7 @@ namespace Bank_Host
 
                 dataGridView_worklist.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             nCount = 1;
@@ -978,7 +979,7 @@ namespace Bank_Host
 
                 dataGridView_worklist.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             nCount = 1;
@@ -1155,7 +1156,7 @@ namespace Bank_Host
 
                 dgv_loc.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             nCount = 0;
@@ -1191,7 +1192,7 @@ namespace Bank_Host
             string strMsg = string.Format("\n\n작업 정보를 생성 합니다.");
             Frm_Process.Form_Show(strMsg);
 
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt = new System.Data.DataTable();
 
             foreach (DataGridViewColumn col in dataGridView_worklist.Columns)
             {
@@ -1363,7 +1364,7 @@ namespace Bank_Host
                 strMsg = string.Format("\n\n 작업 준비 중 입니다. {0} / {1}", nCount, list.Count);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             BankHost_main.Host.Host_Set_Jobname(BankHost_main.strEqid, strWorkFileName);
@@ -1380,7 +1381,7 @@ namespace Bank_Host
             string strMsg = string.Format("\n\n작업 정보를 생성 합니다.");
             Frm_Process.Form_Show(strMsg);
 
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt = new System.Data.DataTable();
 
             foreach (DataGridViewColumn col in dataGridView_worklist.Columns)
             {
@@ -1566,7 +1567,7 @@ namespace Bank_Host
                 strMsg = string.Format("\n\n 작업 준비 중 입니다. {0} / {1}", nCount, list.Count);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             BankHost_main.Host.Host_Set_Jobname(BankHost_main.strEqid, strWorkFileName);
@@ -1626,7 +1627,7 @@ namespace Bank_Host
 
                 dataGridView_worklist.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
 
                 return 0;
             }
@@ -1833,7 +1834,7 @@ namespace Bank_Host
 
                 dataGridView_sort.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
                 Thread.Sleep(1500);
 
                 tabControl_Sort.SelectedIndex = 0;
@@ -2170,7 +2171,7 @@ namespace Bank_Host
                 return;
             }
 
-            Application.DoEvents();
+            System.Windows.Forms.Application.DoEvents();
 
             int nLotcount = dataGridView_sort.Rows.Count;
 
@@ -2858,7 +2859,7 @@ namespace Bank_Host
                 strMsg = string.Format("\n\n 작업 준비 중 입니다. {0} / {1}", nCount, rw - 1);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             xlWorkBook.Close(true, null, null);
@@ -3001,7 +3002,7 @@ namespace Bank_Host
                 }
 
                 list.Add(data);
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             nCount = 0;
@@ -3078,7 +3079,7 @@ namespace Bank_Host
                 strMsg = string.Format("\n\n 작업 준비 중 입니다. {0} / {1}", nCount, rw - 1);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             xlWorkBook.Close(true, null, null);
@@ -3182,7 +3183,7 @@ namespace Bank_Host
 
                     Frm_Process.Form_Show("\n\n데이터 업데이트 진행 중 입니다.");
 
-                    Application.DoEvents();
+                    System.Windows.Forms.Application.DoEvents();
                     //Fnc_WorkDownload(strWorkFileName);
 
                     Gr_GetBillInfo();
@@ -3339,7 +3340,7 @@ namespace Bank_Host
             while (bGridViewUpdate)
             {
                 Thread.Sleep(1);
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             try
@@ -3859,7 +3860,7 @@ namespace Bank_Host
             while (bGridViewUpdate)
             {
                 Thread.Sleep(1);
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             try
@@ -4802,7 +4803,7 @@ namespace Bank_Host
                     while (BankHost_main.bGunRingMode_Run)
                     {
                         Thread.Sleep(1);
-                        Application.DoEvents();
+                        System.Windows.Forms.Application.DoEvents();
                     }
 
                     textBox_Readdata.Text = "";
@@ -6035,7 +6036,7 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n파일 쓰는 중 {0} / {1}", nCellcount, nGcount);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             xlWorkSheet.Columns.AutoFit();
@@ -6108,7 +6109,7 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n파일 쓰는 중 {0}", nCellcount);
                 Frm_Process.Form_Display(strMsg);
 
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             xlWorkSheet.Columns.AutoFit();
@@ -6258,7 +6259,7 @@ namespace Bank_Host
 
         public void Fnc_Get_Unprinted_Deviceinfo()
         {
-            DataTable dt = BankHost_main.Host.Host_Get_Unprinted_Device();
+            System.Data.DataTable dt = BankHost_main.Host.Host_Get_Unprinted_Device();
 
             dataGridView_unprintedinfo.Columns.Clear();
             dataGridView_unprintedinfo.Rows.Clear();
@@ -6266,7 +6267,7 @@ namespace Bank_Host
 
             Thread.Sleep(300);
 
-            dataGridView_unprintedinfo.DefaultCellStyle.Font = new Font("Calibri", 15);
+            dataGridView_unprintedinfo.DefaultCellStyle.Font = new System.Drawing.Font("Calibri", 15);
             dataGridView_unprintedinfo.Columns.Add("ID", "ID");
             dataGridView_unprintedinfo.Columns.Add("Device", "Device");
             dataGridView_unprintedinfo.Columns.Add("Cust", "Cust");
@@ -6415,7 +6416,7 @@ namespace Bank_Host
 
             var dt = BankHost_main.Host.Host_Get_Histinfo_Job(BankHost_main.strEqid, Double.Parse(strDate_st), Double.Parse(strDate_ed));
 
-            dataGridView_hist.DefaultCellStyle.Font = new Font("Calibri", 13);
+            dataGridView_hist.DefaultCellStyle.Font = new System.Drawing.Font("Calibri", 13);
             dataGridView_hist.Columns.Add("NO", "NO");
             dataGridView_hist.Columns.Add("일자", "일자");
             dataGridView_hist.Columns.Add("시간", "시간");
@@ -6869,7 +6870,7 @@ namespace Bank_Host
             while (bGridViewUpdate)
             {
                 Thread.Sleep(1);
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
             }
 
             try
@@ -6910,7 +6911,7 @@ namespace Bank_Host
         {
             var dt = BankHost_main.Host.Host_Get_Histinfo_Job_Bill(strGetBill);
 
-            dataGridView_hist.DefaultCellStyle.Font = new Font("Calibri", 13);
+            dataGridView_hist.DefaultCellStyle.Font = new System.Drawing.Font("Calibri", 13);
             dataGridView_hist.Columns.Add("일자", "일자");
             dataGridView_hist.Columns.Add("위치", "위치");
             dataGridView_hist.Columns.Add("작업", "작업");
@@ -6955,7 +6956,7 @@ namespace Bank_Host
         {
             var dt = BankHost_main.Host.Host_Get_Histinfo_Job_Device(strGetDevice);
 
-            dataGridView_hist.DefaultCellStyle.Font = new Font("Calibri", 13);
+            dataGridView_hist.DefaultCellStyle.Font = new System.Drawing.Font("Calibri", 13);
             dataGridView_hist.Columns.Add("일자", "일자");
             dataGridView_hist.Columns.Add("위치", "위치");
             dataGridView_hist.Columns.Add("작업", "작업");
@@ -7471,6 +7472,155 @@ namespace Bank_Host
             tabControl_Sort.SelectedIndex = 0;
         }
 
+        private void btn_excleout_Click(object sender, EventArgs e)
+        {
+            string nowDateTime = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string pathFilename = string.Empty;
+
+            SaveFileDialog saveFile = new SaveFileDialog
+            {
+                Title = "Excel 파일 저장",
+                FileName = $"Location_History_{nowDateTime}.xlsx",
+                DefaultExt = "xlsx",
+                Filter = "Xlsx files(*.xlsx)|*.xlsx"
+            };
+            
+
+            if(saveFile.ShowDialog() == DialogResult.OK)
+            {
+                pathFilename = saveFile.FileName.ToString();
+                Properties.Settings.Default.Loc_file_save_path = pathFilename;
+                Properties.Settings.Default.Save();
+
+                Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+                Workbook workbook = excel.Workbooks.Add(System.Reflection.Missing.Value);
+                excel.DisplayAlerts = false;
+
+                //1. 워크시트 선택
+                //처음에는 Sheet1로 1개 있음
+                Worksheet worksheet = workbook.Worksheets.Item["Sheet1"];
+                //여러 시트를 하려면 인덱스를 추가해서 받아서 사용 (2번째 부터는)
+                //workbook.Worksheets.Add(After: workbook.Worksheets[index - 1]);
+                //Worksheet worksheet = workbook.Worksheets.Item[index];
+
+                //2. 필요시 시트 이름 변경
+                worksheet.Name = DateTime.Now.ToLongDateString();
+
+                //3. 컬럼 별로 너비 변경
+                Range ModRange = worksheet.Columns[1];
+                ModRange.ColumnWidth = 10;
+                ModRange = worksheet.Columns[2];
+                ModRange.ColumnWidth = 15;
+                //넘버포맷을 사용하면 뒤 컬럼부터는 숫자형식으로 적용
+                ModRange.NumberFormat = "@";
+                ModRange = worksheet.Columns[3];
+                ModRange.ColumnWidth = 10;
+                ModRange = worksheet.Columns[4];
+                ModRange.ColumnWidth = 20;
+                ModRange = worksheet.Columns[5];
+                ModRange.ColumnWidth = 15;
+                ModRange = worksheet.Columns[6];
+                ModRange.ColumnWidth = 20;
+                ModRange = worksheet.Columns[7];
+                ModRange.ColumnWidth = 30;
+                ModRange = worksheet.Columns[11];
+                ModRange.ColumnWidth = 20;
+
+                Microsoft.Office.Interop.Excel.Range date = worksheet.Range["K:K"];
+
+                date.NumberFormat = "0";
+
+                //4. 첫번째 줄 타이틀 생성 - 예쁘게 하기 위해
+                //Range는 엑셀을 실행해서 참고하기 좋음 (첫줄이라 1라인)
+                ModRange = (Range)worksheet.get_Range("A1", "D1");
+                ModRange.Merge(true); //병합하고
+                ModRange.Value = $"Location History"; //이름 입력하고
+                ModRange.Font.Size = 16; //폰트 키우고
+                ModRange.Font.Bold = true; //Bold 주고
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter; //좌측 정렬
+                                                                      //테두리 까지 끝
+                ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlMedium, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
+
+                //5. 2번째 줄에는 리포트 기간 및 파일 설명 추가
+                ModRange = (Range)worksheet.get_Range("A2", "D2");
+                ModRange.Merge(true);
+                //DateTimePicker의 값을 그대로 넣어서 정보로 활용할 수 있음
+                ModRange.Value = $"출력일 : {DateTime.Now:yyyy-MM-dd hh:mm:ss}";
+                //2번째 설명은 우측 정렬
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignRight;
+
+                //ex. 테두리를 위해 그리드 축 개수를 담아두고
+                int columnCount = dgv_loc.Columns.Count;
+                int rowCount = dgv_loc.Rows.Count;
+
+                //5. 헤드열 추가
+                //cell은 1부터 row나 column은 일반적인 0부터라 차이가 있는 점 주의
+                for (int i = 0; i < columnCount; i++)
+                {
+                    ModRange = (Range)worksheet.Cells[3, 1 + i];
+                    ModRange.Value = dgv_loc.Columns[i].HeaderText;
+                    ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+
+                    //data 테두리
+                    ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlThin, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
+                    ModRange.Borders[XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlMedium; //위 테두리
+                    if (i == 0) //시작 컬럼에서 왼쪽 테두리
+                    {
+                        ModRange.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+                    }
+                    else if (i == (columnCount - 1)) //마지막 컬럼에서 우측 테두리
+                    {
+                        ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+                    }
+                    //아래 2줄 얇은 테두리
+                    ModRange.Borders[XlBordersIndex.xlEdgeBottom].LineStyle = XlLineStyle.xlDouble;
+                    ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThick;
+                }
+
+                //6. 데이터 열 추가
+                for (int i = 0; i < rowCount; i++)
+                {
+                    for (int j = 0; j < columnCount; j++)
+                    {
+                        //타이틀, 추가설명, 헤드, 0->1 때문에 i에 4를 더함
+                        ModRange = (Range)worksheet.Cells[4 + i, 1 + j];
+                        ModRange.Value = dgv_loc[j, i].Value == null ? string.Empty : dgv_loc[j, i].Value.ToString();
+
+                        //data 테두리
+                        ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlThin, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
+                        if (j == 0) //시작 컬럼에서 왼쪽 테두리
+                        {
+                            ModRange.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+                        }
+                        else if (j == (columnCount - 1)) //마지막 컬럼에서 우측 테두리
+                        {
+                            ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+                        }
+                        if (i == (rowCount - 1)) //마지막 로우에서 우측 테두리
+                        {
+                            ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+                            //결산 같은 마지막 줄 값이 존재하면 이걸 사용합니다.
+                            //ModRange.Borders[XlBordersIndex.xlEdgeTop].LineStyle = XlLineStyle.xlDouble;
+                        }
+                    }
+                }
+
+                //7. 상단 고정필드 설정
+                worksheet.Application.ActiveWindow.SplitRow = 1;
+                worksheet.Application.ActiveWindow.FreezePanes = true;
+                worksheet.Application.ActiveWindow.SplitRow = 2;
+                worksheet.Application.ActiveWindow.FreezePanes = true;
+                worksheet.Application.ActiveWindow.SplitRow = 3;
+                worksheet.Application.ActiveWindow.FreezePanes = true;
+
+                //8. 파일 저장 (앞선 SaveFileDialog로 만들어진 pathFilename 경로로 파일 저장
+                workbook.SaveAs(Filename: pathFilename);
+                workbook.Close();
+                MessageBox.Show("출력 완료.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+        }
+
         public void Fnc_SaveLog_Work(string strSavePath, string strLog, string[] strinfo, int nMode) ///설비별 개별 로그 저장
         {
             //strSavePath는 device 또는 파일이름으로 로그 남김
@@ -7782,7 +7932,7 @@ namespace Bank_Host
                 while (bGridViewUpdate)
                 {
                     Thread.Sleep(1);
-                    Application.DoEvents();
+                    System.Windows.Forms.Application.DoEvents();
                 }
 
                 try
@@ -8159,7 +8309,7 @@ namespace Bank_Host
 
         bool GetIME()
         {
-            Process p = Process.GetProcessesByName(Application.ProductName).FirstOrDefault();
+            Process p = Process.GetProcessesByName(System.Windows.Forms.Application.ProductName).FirstOrDefault();
 
             if (p == null)
                 return false;
