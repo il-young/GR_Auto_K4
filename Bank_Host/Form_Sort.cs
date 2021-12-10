@@ -7469,6 +7469,7 @@ namespace Bank_Host
         private void btn_exit_Click(object sender, EventArgs e)
         {
             bmode6 = false;
+            dgv_loc.Rows.Clear();
             tabControl_Sort.SelectedIndex = 0;
         }
 
@@ -7509,22 +7510,29 @@ namespace Bank_Host
                 //3. 컬럼 별로 너비 변경
                 Range ModRange = worksheet.Columns[1];
                 ModRange.ColumnWidth = 10;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 ModRange = worksheet.Columns[2];
                 ModRange.ColumnWidth = 15;
-                //넘버포맷을 사용하면 뒤 컬럼부터는 숫자형식으로 적용
-                ModRange.NumberFormat = "@";
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                //넘버포맷을 사용하면 뒤 컬럼부터는 숫자형식으로 적용                
                 ModRange = worksheet.Columns[3];
                 ModRange.ColumnWidth = 10;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 ModRange = worksheet.Columns[4];
                 ModRange.ColumnWidth = 20;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 ModRange = worksheet.Columns[5];
                 ModRange.ColumnWidth = 15;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 ModRange = worksheet.Columns[6];
                 ModRange.ColumnWidth = 20;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 ModRange = worksheet.Columns[7];
                 ModRange.ColumnWidth = 30;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 ModRange = worksheet.Columns[11];
                 ModRange.ColumnWidth = 20;
+                ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
 
                 Microsoft.Office.Interop.Excel.Range date = worksheet.Range["K:K"];
 
@@ -8285,6 +8293,7 @@ namespace Bank_Host
                 dgv_loc.Sort(dgv_loc.Columns[2], ListSortDirection.Ascending);
 
                 BankHost_main.Fnc_SaveLog(string.Format("TOT_Lot : {2}, TOT_Die : {0}, TOT_Wfr : {1}", tot_die, tot_wfr, tot_lots), 1);
+                tot_lots--;
 
                 tb_totaldie.Text = tot_die.ToString();
                 tb_totalwafer.Text = tot_wfr.ToString();
