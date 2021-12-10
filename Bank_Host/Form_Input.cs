@@ -63,10 +63,13 @@ namespace Bank_Host
                     }
 
                     BankHost_main.strOperator = strname;
-
                     bok = true;
 
-                    Fnc_Exit();
+                    if (comboBox_cust.Enabled == true)
+                        comboBox_cust.Focus();
+
+                    if (textBox_bill.Enabled == true)
+                        textBox_bill.Focus();                    
                 }                
             }
         }
@@ -473,6 +476,11 @@ namespace Bank_Host
         private void textBox_bill_TextChanged(object sender, EventArgs e)
         {
             
+        }
+
+        private void textBox_bill_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            button_complete_Click(sender, e);
         }
     }
 }

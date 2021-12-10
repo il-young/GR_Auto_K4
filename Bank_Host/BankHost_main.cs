@@ -1301,7 +1301,13 @@ namespace Bank_Host
             Fnc_Show_PrintViewer();
         }
 
-        public void Fnc_SaveLog(string strLog, int nType) ///설비별 개별 로그 저장
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="strLog">log string</param>
+        /// <param name="nType">0: system, 1:work, 2:setting, 3:error</param>
+        static public void Fnc_SaveLog(string strLog, int nType) ///설비별 개별 로그 저장
         {
             string strPath = "";
             if (nType == 0)
@@ -1323,7 +1329,7 @@ namespace Bank_Host
             Fnc_WriteFile(strPath, strSave);
         }
 
-        public void Fnc_WriteFile(string strFileName, string strLine)
+        static public void Fnc_WriteFile(string strFileName, string strLine)
         {
             using (System.IO.StreamWriter file =
            new System.IO.StreamWriter(strFileName, true))

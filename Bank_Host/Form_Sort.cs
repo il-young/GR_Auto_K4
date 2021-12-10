@@ -3151,6 +3151,14 @@ namespace Bank_Host
             }
                 
 
+            if(bmode6 == true)
+            {
+                tabControl_Sort.SelectedIndex = 6;
+                speech.SpeakAsyncCancelAll();
+                speech.SpeakAsync("라벨출력 모드 종료 후 이동 할 수 있습니다.");
+                return;
+            }
+
             if (BankHost_main.nWorkMode == 0 && n < 3)
             {
                 tabControl_Sort.SelectedIndex = 0;
@@ -7455,6 +7463,14 @@ namespace Bank_Host
             bGridViewUpdate = false;
             return 0;
         }
+
+
+        private void btn_exit_Click(object sender, EventArgs e)
+        {
+            bmode6 = false;
+            tabControl_Sort.SelectedIndex = 0;
+        }
+
         public void Fnc_SaveLog_Work(string strSavePath, string strLog, string[] strinfo, int nMode) ///설비별 개별 로그 저장
         {
             //strSavePath는 device 또는 파일이름으로 로그 남김
@@ -8021,7 +8037,6 @@ namespace Bank_Host
                 {
                     ChangeIME(textBox1);
                 }
-
             }
             else if(nSel == 5)
             {
@@ -8053,10 +8068,15 @@ namespace Bank_Host
 
                     string res = taskResut.Result;
 
+                    BankHost_main.Fnc_SaveLog("SplitLog Low Data", 1);
+                    BankHost_main.Fnc_SaveLog(res, 1);
                     location_data_sorting(res);
+
+                    saveFileDialog1.InitialDirectory = Properties.Settings.Default.Loc_file_save_path;
 
                     tabControl_Sort.SelectedIndex = 6;
 
+                    bmode6 = true;
                     Frm_Process.Form_Hide();
                 }
                 catch (Exception ex)
@@ -8069,7 +8089,6 @@ namespace Bank_Host
                     Thread.Sleep(3000);
                     Frm_Process.Form_Hide();
                 }
-
             }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
@@ -8101,10 +8120,21 @@ namespace Bank_Host
                 for (int i = 1; i < location_list.Count -1; i++)
                 {
                     dgv_loc.Rows.Add(location_list[i][0], location_list[i][1], location_list[i][9], "", "", location_list[i][3], location_list[i][4], location_list[i][5], location_list[i][6], location_list[i][7], location_list[i][8]);
+                    
+                    if(dgv_loc.Rows[i-1].Cells[2].Value.ToString() == "")
+                    {
+                        dgv_loc.Rows[i - 1].DefaultCellStyle.BackColor = Color.Yellow;
+                        dgv_loc.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
+                    }
+
 
                     tot_die += int.Parse(location_list[i][6]);
                     tot_wfr += int.Parse(location_list[i][7]);
                 }
+
+                dgv_loc.Sort(dgv_loc.Columns[2], ListSortDirection.Ascending);
+
+                BankHost_main.Fnc_SaveLog(string.Format("TOT_Lot : {2}, TOT_Die : {0}, TOT_Wfr : {1}", tot_die, tot_wfr, tot_lots), 1);
 
                 tb_totaldie.Text = tot_die.ToString();
                 tb_totalwafer.Text = tot_wfr.ToString();
@@ -8116,6 +8146,7 @@ namespace Bank_Host
                 throw;
             }            
         }
+
 
         private void ChangeIME(System.Windows.Forms.Control ctl)
         {
@@ -8146,6 +8177,7 @@ namespace Bank_Host
         }
 
         bool bselected_mode_index = false;
+        bool bmode6 = false;
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {

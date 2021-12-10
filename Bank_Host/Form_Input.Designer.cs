@@ -197,7 +197,7 @@
             this.textBox_bill.TabIndex = 4;
             this.textBox_bill.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_bill.TextChanged += new System.EventHandler(this.textBox_bill_TextChanged);
-            this.textBox_bill.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_sid_KeyPress);
+            this.textBox_bill.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_bill_KeyPress);
             // 
             // button_complete
             // 
