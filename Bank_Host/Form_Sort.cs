@@ -3151,7 +3151,7 @@ namespace Bank_Host
                 return;
             }
                 
-
+            
             if(bmode6 == true)
             {
                 tabControl_Sort.SelectedIndex = 6;
@@ -7628,6 +7628,13 @@ namespace Bank_Host
 
             }
         }
+
+        private void btn_mail_Click(object sender, EventArgs e)
+        {
+            Form1_Split_email email = new Form1_Split_email();
+            email.ShowDialog();
+        }
+
 
         public void Fnc_SaveLog_Work(string strSavePath, string strLog, string[] strinfo, int nMode) ///설비별 개별 로그 저장
         {
