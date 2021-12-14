@@ -11,5 +11,8 @@
     <Setting Name="Loc_file_save_path" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="SPLIT_LOG_SAVE_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -47,7 +47,10 @@ namespace Bank_Host
         }
                 
         public List<stAmkor_Label> label_list = new List<stAmkor_Label>();
-        
+        public List<string> split_log_lowdata = new List<string>();
+        public List<string> split_log_cust = new List<string>();
+        public List<string> split_log_Linecode = new List<string>();
+        private string split_log_input_return_val = "";
 
         Form_Progress Frm_Process = new Form_Progress();
 
@@ -1690,7 +1693,125 @@ namespace Bank_Host
 
             return nCount - 1;
         }
-        
+
+
+        public int Split_lot(string strWorkName)
+        {
+            string strFileName = strExcutionPath + "\\Work\\" + strWorkName + ".txt";
+
+            string[] data = Fnc_ReadFile(strFileName);
+
+            int nLength = 0;
+
+            dataGridView_worklist.Columns.Clear();
+            dataGridView_worklist.Rows.Clear();
+            dataGridView_worklist.Refresh();
+
+            dataGridView_worklist.Columns.Add("#", "#");
+            dataGridView_worklist.Columns.Add("CUST", "CUST");
+            dataGridView_worklist.Columns.Add("DEVICE", "DEVICE");
+            dataGridView_worklist.Columns.Add("LOT#", "LOT#");
+            dataGridView_worklist.Columns.Add("DCC", "DCC");
+            dataGridView_worklist.Columns.Add("DIE_QTY", "DIE_QTY");
+            dataGridView_worklist.Columns.Add("WFR TTL", "WFR TTL");
+            dataGridView_worklist.Columns.Add("REV_DATE", "REV_DATE");
+            dataGridView_worklist.Columns.Add("LOT_TYPE", "LOT_TYPE");
+            dataGridView_worklist.Columns.Add("BILL#", "BILL#");
+            dataGridView_worklist.Columns.Add("AMKOR_ID", "AMKOR_ID");
+            dataGridView_worklist.Columns.Add("WAFER_LOT", "WAFER_LOT");
+            dataGridView_worklist.Columns.Add("SHIPMENT", "SHIPMENT");
+
+            dataGridView_worklist.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[5].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[6].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[7].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[8].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[9].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[12].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            if (data != null)
+            {
+                nLength = data.Length;
+            }
+            else
+            {
+                dataGridView_worklist.Columns.Clear();
+                dataGridView_worklist.Rows.Clear();
+                dataGridView_worklist.Refresh();
+
+                dataGridView_worklist.Columns.Add("데이터가 없습니다. 다시 선택해 주십시오.", "데이터가 없습니다. 다시 선택해 주십시오.");
+
+                System.Windows.Forms.Application.DoEvents();
+
+                return 0;
+            }
+            List<StorageData> list_Job = new List<StorageData>();
+
+            string strReadfolder = strFileName.Substring(0, strFileName.Length - 4);
+
+            for (int n = 0; n < nLength; n++)
+            {
+                string strReadfile = strReadfolder + "\\" + data[n] + "\\" + data[n] + ".txt";
+                string[] info = Fnc_ReadFile(strReadfile);
+
+                if (info == null)
+                    return 0;
+
+                if (info.Length < 1)
+                    return 0;
+
+                for (int m = 0; m < info.Length; m++)
+                {
+                    StorageData st = new StorageData();
+
+                    string[] strSplit_data = info[m].Split('\t');
+
+                    st.Cust = strSplit_data[0];
+                    strWorkCust = st.Cust;
+                    st.Device = strSplit_data[1];
+                    st.Lot = strSplit_data[2];
+                    st.Lot_Dcc = strSplit_data[3];
+                    st.Rcv_Qty = strSplit_data[4];
+                    st.Rcv_WQty = strSplit_data[6];
+                    st.Default_WQty = strSplit_data[16];
+                    st.Rcvddate = strSplit_data[7];
+                    st.Lot_type = strSplit_data[8];
+                    st.Bill = strSplit_data[9];
+                    st.Amkorid = strSplit_data[10];
+                    st.Wafer_lot = strSplit_data[11];
+
+                    if (strSplit_data.Length > 17)
+                        st.shipment = strSplit_data[17];
+                    else
+                        st.shipment = "";
+
+                    list_Job.Add(st);
+                }
+            }
+
+            list_Job.Sort(CompareStorageData);
+
+            int nCount = 1;
+            foreach (var item in list_Job)
+            {
+                strSelCust = item.Cust;
+
+                dataGridView_worklist.Rows.Add(new object[13] { nCount, item.Cust, item.Device, item.Lot, item.Lot_Dcc, item.Rcv_Qty, item.Default_WQty, item.Rcvddate,
+                    item.Lot_type, item.Bill, item.Amkorid, item.Wafer_lot, item.shipment });
+
+                nCount++;
+            }
+
+            return nCount - 1;
+        }
+
+
         public void Fnc_WorkFileLoad()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -6732,7 +6853,7 @@ namespace Bank_Host
 
             for (int n = 0; n < dataGridView_Lot.RowCount ; n++)
             {
-                if(dataGridView_Lot.Rows[n].Cells[1].Value.ToString().Contains(input) == true)
+                if(dataGridView_Lot.Rows[n].Cells[1].Value.ToString().IndexOf(input) != -1)
                 {
                     dataGridView_Lot.Rows[n].Selected = true;
                     dataGridView_Lot.CurrentCell = dataGridView_Lot.Rows[n].Cells[0];
@@ -8255,6 +8376,48 @@ namespace Bank_Host
                     Frm_Process.Form_Hide();
                 }
             }
+            else if(nSel == 6)
+            {
+                dgv_split_log.Rows.Clear();
+
+                string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
+                Frm_Process.Form_Show(strMsg);
+
+                var taskResut = Fnc_RunAsync("http://10.101.5.38:8080/EETPackingLabelValidation.asmx/BANKSplitLog?pPlant=K4");
+
+                try
+                {
+                    strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
+                    Frm_Process.Form_Display(strMsg);
+
+                    string res = taskResut.Result;
+
+                    BankHost_main.Fnc_SaveLog("SplitLog Low Data", 1);
+                    BankHost_main.Fnc_SaveLog(res, 1);
+                    Split_data_sorting(res);
+
+                    saveFileDialog1.InitialDirectory = Properties.Settings.Default.SPLIT_LOG_SAVE_PATH;
+
+                    bmode7 = true;
+                    Frm_Process.Form_Hide();
+
+                    Form_Splitlog_Input input = new Form_Splitlog_Input(split_log_cust, split_log_Linecode);
+                    input.return_select_event += Input_return_select_event;
+                    input.ShowDialog();
+
+
+                }
+                catch (Exception ex)
+                {
+                    string str = string.Format("{0}", ex);
+
+                    strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
+                    Frm_Process.Form_Display_Warning(strMsg);
+
+                    Thread.Sleep(3000);
+                    Frm_Process.Form_Hide();
+                }
+            }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
 
@@ -8263,6 +8426,17 @@ namespace Bank_Host
                 BankHost_main.bHost_connect = false;
                 MessageBox.Show("DB 업데이트 실패!");
             }            
+        }
+
+        private void Input_return_select_event(string val)
+        {
+            split_log_input_return_val = val;
+
+            label_cust.Text = val.Split(';')[0];
+            comboBox_Name.Items.Clear();
+            comboBox_Name.Items.Add(val.Split(';')[1]);
+            comboBox_Name.SelectedIndex = 0;
+
         }
 
         private void location_data_sorting(string data)
@@ -8313,6 +8487,44 @@ namespace Bank_Host
             }            
         }
 
+        private void Split_data_sorting(string data)
+        {
+            try
+            {
+                List<string[]> Split_list = new List<string[]>();
+
+                string[] temp = data.Split('\n');
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    Split_list.Add(temp[i].Split('\t'));
+                }
+
+                for (int i = 1; i < Split_list.Count - 1; i++)
+                {
+                    split_log_lowdata.Add(string.Join(";", Split_list[i]));
+
+                    if (split_log_cust.Contains(Split_list[i][1]) == false)
+                    {
+                        split_log_cust.Add(Split_list[i][1]);
+                        split_log_Linecode.Add(Split_list[i][1] +";"+ Split_list[i][0]);
+                    }
+                    else
+                    {
+                        if (split_log_Linecode.Contains(Split_list[i][0]) == false)
+                        {
+                            split_log_Linecode.Add(Split_list[i][1] + ";" + Split_list[i][0]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
 
         private void ChangeIME(System.Windows.Forms.Control ctl)
         {
@@ -8343,7 +8555,8 @@ namespace Bank_Host
         }
 
         bool bselected_mode_index = false;
-        bool bmode6 = false;
+        bool bmode6 = false, bmode7 = false;
+
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -8729,6 +8942,7 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
                 comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
                 comboBox_mode.Items.Add("모드6: Location History");
+                comboBox_mode.Items.Add("모드7: Split Log");
             }
             else if(loc == "K5")
             {
