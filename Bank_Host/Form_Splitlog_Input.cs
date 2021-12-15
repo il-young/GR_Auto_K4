@@ -67,8 +67,23 @@ namespace Bank_Host
 
         private void btn_ok_Click(object sender, EventArgs e)
         {
-            list_return_val = cb_cust.Text + ";" + cb_line_code.Text;
-            return_select_event(list_return_val);
+            if(tb_employee.Text =="")
+            {
+                MessageBox.Show("사원번호를 입력하세요");
+                return;
+            }
+            
+            if(cb_cust.Text == "")
+            {
+                MessageBox.Show("고객 코드를 입력 하세요");
+                return;
+            }
+
+            if(cb_line_code.Text == "")
+            {
+                MessageBox.Show("라인코드를 입력하세요");
+                return;
+            }
 
             var dt = BankHost_main.SQL_GetUserDB(tb_employee.Text);
 
@@ -79,20 +94,9 @@ namespace Bank_Host
 
                 return;
             }
-            else
-            {
-                string strname = dt.Rows[0]["NAME"].ToString(); strname = strname.Trim();
-                string strgrade = dt.Rows[0]["GRADE"].ToString(); strname = strname.Trim();
-               
-                if (strgrade != "b")
-                {
-                    MessageBox.Show("해당 ID는 사용 권한이 없습니다.\n\n관리자에게 문의하세요.");
-                    BankHost_main.strOperator = "";
-                    return;
-                }
 
-                BankHost_main.strOperator = strname;
-            }
+            list_return_val = cb_cust.Text + ";" + cb_line_code.Text;
+            return_select_event(list_return_val);
             Close();
         }
 
@@ -134,7 +138,6 @@ namespace Bank_Host
             }
         }
 
-      
         private void Form_Splitlog_Input_Load(object sender, EventArgs e)
         {
             

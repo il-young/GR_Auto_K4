@@ -8392,8 +8392,9 @@ namespace Bank_Host
 
                     string res = taskResut.Result;
 
-                    BankHost_main.Fnc_SaveLog("SplitLog Low Data", 1);
+                    BankHost_main.Fnc_SaveLog("Split Log Low Data", 1);
                     BankHost_main.Fnc_SaveLog(res, 1);
+                    Split_log_file_save(res);
                     Split_data_sorting(res);
 
                     saveFileDialog1.InitialDirectory = Properties.Settings.Default.SPLIT_LOG_SAVE_PATH;
@@ -8525,6 +8526,83 @@ namespace Bank_Host
             }
         }
 
+
+        private void Split_log_file_save(string split_data)
+        {
+            string folderpath = strExcutionPath + "\\Work\\Split_log";
+            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
+            bool bdata = false;
+            List<string> added_string = new List<string>();
+            List<string> Split_list = new List<string>();
+            FileStream stream = null;
+
+            string[] temp = split_data.Split('\n');
+            string[] files = new string[10];
+
+
+            try
+            {
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    Split_list.Add(temp[i].Replace("\r", ""));
+                }
+
+
+                if (System.IO.Directory.Exists(folderpath) == false)
+                {
+                    System.IO.Directory.CreateDirectory(folderpath);
+                }
+
+                if (System.IO.File.Exists(strFileName) == false)
+                {
+                    stream = System.IO.File.Create(strFileName);
+                    stream.Dispose();
+                }
+                else
+                {
+
+                }
+
+                
+
+                files = System.IO.File.ReadAllLines(strFileName);
+
+                for (int i = 0; i < Split_list.Count; i++)
+                {
+                    bdata = false;
+                    for (int j = 0; j < files.Length; j++)
+                    {
+                        if (Split_list[i] == files[j])
+                        {
+                            bdata = true;
+                            break;
+                        }
+                    }
+
+                    if (bdata == false)
+                        added_string.Add(Split_list[i]);
+                }
+
+                System.IO.StreamWriter fs = new StreamWriter(strFileName);
+
+                string[] arr = new string[files.Length + added_string.Count];
+                Array.Copy(files, arr, files.Length);
+
+
+                if (!(added_string.Count == 1 && added_string[0] == ""))
+                    Array.Copy(added_string.ToArray(), 0, arr, files.Length, added_string.Count);
+                
+                fs.Write(String.Join(Environment.NewLine, arr.Take(arr.Length -1).ToArray()));
+
+                fs.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         private void ChangeIME(System.Windows.Forms.Control ctl)
         {
