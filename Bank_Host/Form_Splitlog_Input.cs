@@ -103,7 +103,17 @@ namespace Bank_Host
                 strgrade = dt.Rows[0]["GRADE"].ToString(); strname = strname.Trim();
             }
 
-            list_return_val = cb_cust.Text + ";" + cb_line_code.Text +";" + strname;
+            string strline_code = cb_line_code.Text + ":";
+
+            for(int i = 0; i< cb_line_code.Items.Count; i++)
+            {
+                if(i == cb_line_code.Items.Count -1)
+                    strline_code += cb_line_code.Items[i];
+                else
+                    strline_code += cb_line_code.Items[i] + ":";
+            }
+
+            list_return_val = cb_cust.Text + ";" + strline_code + ";" + strname;
             return_select_event(list_return_val);
             Close();
         }

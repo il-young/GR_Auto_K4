@@ -14,6 +14,7 @@ using System.Threading;
 using System.Speech.Synthesis;
 using System.Diagnostics;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.VisualBasic.Devices;
 
 namespace Bank_Host
 {
@@ -7869,6 +7870,21 @@ namespace Bank_Host
             }
         }
 
+        private void comboBox_Name_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(bmode7 == true)
+            {
+                Split_data_display();
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            label26.Text = "작업 모델";
+            bmode7 = false;
+            UnHook();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {   
             if(BankHost_main.nScanMode == 0)
@@ -7927,12 +7943,12 @@ namespace Bank_Host
                 BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "OK", "1");
                 BankHost_main.nWorkMode = 1;
 
-                for(int n=0; n<strSelBillno.Length; n++)
+                for (int n = 0; n < strSelBillno.Length; n++)
                 {
                     if (strSelBillno[n] != "" && strSelBillno[n].Length > 5)
                     {
                         string strJudge = BankHost_main.Host.Host_Set_Workinfo(BankHost_main.strEqid, strWorkFileName, strSelBillno[n], " ", "WORK");
-                        if(strJudge != "OK")
+                        if (strJudge != "OK")
                         {
                             MessageBox.Show("Bill 정보 DB 저장 실패!");
                         }
@@ -7941,11 +7957,22 @@ namespace Bank_Host
 
                 button_autogr.Enabled = true;
             }
+            else if (nMode == 6)
+            {
+                str = string.Format("\n\nSplit Lot Vaildation 모드");
+
+                Set_split_lot_data();
+
+                tabControl_Sort.SelectedIndex = 7;
+
+                bmode7 = true;
+                SetHook();
+            }
             else
             {
                 str = string.Format("\n\n작업을 시작 합니다. Validation 모드");
                 //상태 변경//
-                BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid,"OK", "2");
+                BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "OK", "2");
                 BankHost_main.nWorkMode = 2;
 
                 BankHost_main.Host.Host_Set_Workinfo(BankHost_main.strEqid, strWorkFileName, strSelBillno[0], "", "WORK");
@@ -7959,38 +7986,116 @@ namespace Bank_Host
             //필요한 정보만 가져오기
             Frm_Process.Hide();
 
-            Fnc_WorkDownload(strWorkFileName);
+            
 
             BankHost_main.nProcess = 1000; //스캔 대기
-
-            //tabControl_Sort.SelectedIndex = 1;
-            tabControl_Sort.SelectedIndex = 2;
-
-            BankHost_main.Host.Host_Set_Jobname(BankHost_main.strEqid, strWorkFileName);
-
-            ////Work Bcr info Update
-            string strModel = comboBox_Name.Text;
-            Fnc_Get_WorkBcrInfo(BankHost_main.strWork_Cust, strModel);
-
-            if (Form_Print.bPrintState && Form_Print.bPrintUse)
+            if (nMode != 6)
             {
-                label_printstate.Text = "프린트 사용 OK";
-                label_printstate.ForeColor = Color.Blue;
-            }
-            else
-            {
-                label_printstate.Text = "프린트 사용 안함";
-                label_printstate.ForeColor = Color.Red;
-            }
+                Fnc_WorkDownload(strWorkFileName);
 
-            nLabelcount = 0;
-            nLabelttl = 0;
+                //tabControl_Sort.SelectedIndex = 1;
+                tabControl_Sort.SelectedIndex = 2;
 
-            string[] printinfo = { "", "" };
-            printinfo[0] = "1"; printinfo[1] = "";
-            BankHost_main.Host.Host_Set_Print_Data(BankHost_main.strEqid, printinfo);
-            BankHost_main.Host.Host_Delete_BcrReadinfoAll(BankHost_main.strEqid);
+                BankHost_main.Host.Host_Set_Jobname(BankHost_main.strEqid, strWorkFileName);
+
+                ////Work Bcr info Update
+                string strModel = comboBox_Name.Text;
+                Fnc_Get_WorkBcrInfo(BankHost_main.strWork_Cust, strModel);
+
+                if (Form_Print.bPrintState && Form_Print.bPrintUse)
+                {
+                    label_printstate.Text = "프린트 사용 OK";
+                    label_printstate.ForeColor = Color.Blue;
+                }
+                else
+                {
+                    label_printstate.Text = "프린트 사용 안함";
+                    label_printstate.ForeColor = Color.Red;
+                }
+
+                nLabelcount = 0;
+                nLabelttl = 0;
+
+                string[] printinfo = { "", "" };
+                printinfo[0] = "1"; printinfo[1] = "";
+                BankHost_main.Host.Host_Set_Print_Data(BankHost_main.strEqid, printinfo);
+                BankHost_main.Host.Host_Delete_BcrReadinfoAll(BankHost_main.strEqid);
+            }
         }
+
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc callback, IntPtr hInstance, uint threadId);
+
+        [DllImport("user32.dll")]
+        static extern bool UnhookWindowsHookEx(IntPtr hInstance);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, int wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr LoadLibrary(string lpFileName);
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+
+        const int WH_KEYBOARD_LL = 13;
+        const int WM_KEYDOWN = 0x100;
+        private IntPtr hook = IntPtr.Zero;
+
+
+        private void SetHook()
+        {
+            IntPtr hInstance = LoadLibrary("User32");
+            //hook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, hInstance, 0);
+        }
+
+        private void UnHook()
+        {
+            UnhookWindowsHookEx(hook);
+        }
+
+        static string Input_key = "";
+
+        static private IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
+        {
+            string str = "";
+
+            if (code >= 0 && wParam == (IntPtr)0x100)//(IntPtr)WM_KEYDOWN)
+            {
+                System.Windows.Forms.KeysConverter kc = new KeysConverter();
+                str = kc.ConvertToString(Marshal.ReadInt32(lParam));
+
+                int key = Marshal.ReadInt32(lParam);
+                if (str == "Enter")
+                {
+
+                    str = "";
+                }
+                else
+                {
+                    Input_key += kc.ConvertToString(Marshal.ReadInt32(lParam));
+                }                
+            }
+            return (IntPtr)0;
+        }
+
+        private void serach_data()
+        {
+
+        }
+
+        private void comboBox_mode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                comboBox_Name.Focus();
+        }
+
+
+        private void comboBox_Name_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                button1_Click(sender, e);
+        }
+
         public void Fnc_Get_WorkBcrInfo(string strGetCust, string strModelName)
         {
             var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
@@ -8379,7 +8484,7 @@ namespace Bank_Host
             else if(nSel == 6)
             {
                 dgv_split_log.Rows.Clear();
-
+                
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
@@ -8405,6 +8510,8 @@ namespace Bank_Host
                     Form_Splitlog_Input input = new Form_Splitlog_Input(split_log_cust, split_log_Linecode);
                     input.return_select_event += Input_return_select_event;
                     input.ShowDialog();
+
+                    Split_data_display();
                 }
                 catch (Exception ex)
                 {
@@ -8429,12 +8536,22 @@ namespace Bank_Host
 
         private void Input_return_select_event(string val)
         {
+            label26.Text = "Line Code";
             split_log_input_return_val = val;
-
             label_cust.Text = val.Split(';')[0];
             comboBox_Name.Items.Clear();
-            comboBox_Name.Items.Add(val.Split(';')[1]);
-            comboBox_Name.SelectedIndex = 0;
+
+            string[] temp = val.Split(';')[1].Split(':');
+            for (int i = 1; i < temp.Length; i++)
+            {
+                comboBox_Name.Items.Add(temp[i]);
+
+                if (temp[0] == temp[i])
+                {
+                    comboBox_Name.SelectedIndex = i - 1;
+                }
+            }
+            
             label_opinfo.Text = val.Split(';')[2];
                         
             BankHost_main.strOperator = label_opinfo.Text;
@@ -8487,10 +8604,68 @@ namespace Bank_Host
                 throw;
             }            
         }
+        private void Set_split_lot_data()
+        {
+            List<string[]> Split_list = new List<string[]>();
+            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
 
+            string[] temp = System.IO.File.ReadAllLines(strFileName);
+
+            dgv_split_log.Rows.Clear();
+            dgv_split_log.Columns.Clear();
+
+            for (int i = 0; i < temp[0].Split('\t').Length; i++)
+            {
+                dgv_split_log.Columns.Add(temp[0].Split('\t')[i], temp[0].Split('\t')[i]);
+                dgv_split_log.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            for (int i = 1; i < dataGridView_worklist.Rows.Count; i++)
+            {
+                string[] row = new string[12];
+                for (int j  = 0; j < dataGridView_worklist.Rows[i].Cells.Count; j++)
+                {
+                    if (dataGridView_worklist.Rows[i].Cells[j].Value != null)
+                        row[j] = dataGridView_worklist.Rows[i].Cells[j].Value.ToString();
+                    else
+                        row[j] = "";
+                }
+
+                dgv_split_log.Rows.Add(row);
+
+                tot_die = int.Parse(dataGridView_worklist.Rows[i].Cells[6].Value.ToString());
+                tot_wfr = int.Parse(dataGridView_worklist.Rows[i].Cells[7].Value.ToString());
+
+            }
+
+            tot_lots = dgv_split_log.RowCount;
+
+            dataGridView_worklist.Columns.Clear();
+            dataGridView_worklist.Rows.Clear();
+        }
         private void Split_data_display()
         {
+            List<string[]> Split_list = new List<string[]>();
+            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
 
+            string[] temp = System.IO.File.ReadAllLines(strFileName);
+
+            dataGridView_worklist.Columns.Clear();
+            dataGridView_worklist.Rows.Clear();
+
+            for(int  i = 0; i< temp[0].Split('\t').Length; i++)
+            {
+                dataGridView_worklist.Columns.Add(temp[0].Split('\t')[i], temp[0].Split('\t')[i]);
+                dataGridView_worklist.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            for(int  i = 1; i< temp.Length; i++)
+            {
+                string[] data_temp = temp[i].Split('\t');
+
+                if(data_temp[0] == comboBox_Name.Text && data_temp[1] == label_cust.Text)
+                    dataGridView_worklist.Rows.Add(temp[i].Split('\t'));
+            }
         }
 
         private void Split_data_sorting()
@@ -8551,9 +8726,8 @@ namespace Bank_Host
                 for (int i = 0; i < temp.Length; i++)
                 {
                     if (temp[i] != "")
-                    {
-                        sp = temp[i].Replace("\r", "").Split('\t');
-                        Split_list.Add(String.Join("\t", sp, 0, sp.Length == 10 ? 10 : sp.Length - 2));
+                    {                        
+                        Split_list.Add(temp[i].Remove(temp[i].Length-1));
                     }
                 }
 
@@ -8573,13 +8747,15 @@ namespace Bank_Host
                 }
 
                 files = System.IO.File.ReadAllLines(strFileName);
-
+                string t = "";
                 for (int i = 0; i < Split_list.Count; i++)
                 {
                     bdata = false;
                     for (int j = 0; j < files.Length; j++)
                     {
-                        if (Split_list[i] == files[j])
+                         t = string.Join("\t", files[j].Split('\t'), 0, files[j].Split('\t').Length == 12 ? files[j].Split('\t').Length-2 : 10);
+
+                        if (Split_list[i] == t)
                         {
                             bdata = true;
                             break;
