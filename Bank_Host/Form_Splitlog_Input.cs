@@ -15,6 +15,9 @@ namespace Bank_Host
         public delegate void return_select(string val);
         public event return_select return_select_event;
 
+        string strname = "";
+        string strgrade = "";
+
 
         string list_return_val = "";
         List<string> list_line_code = new List<string>();
@@ -94,8 +97,13 @@ namespace Bank_Host
 
                 return;
             }
+            else
+            {
+                strname = dt.Rows[0]["NAME"].ToString(); strname = strname.Trim();
+                strgrade = dt.Rows[0]["GRADE"].ToString(); strname = strname.Trim();
+            }
 
-            list_return_val = cb_cust.Text + ";" + cb_line_code.Text;
+            list_return_val = cb_cust.Text + ";" + cb_line_code.Text +";" + strname;
             return_select_event(list_return_val);
             Close();
         }

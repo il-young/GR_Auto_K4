@@ -8395,7 +8395,7 @@ namespace Bank_Host
                     BankHost_main.Fnc_SaveLog("Split Log Low Data", 1);
                     BankHost_main.Fnc_SaveLog(res, 1);
                     Split_log_file_save(res);
-                    Split_data_sorting(res);
+                    Split_data_sorting();
 
                     saveFileDialog1.InitialDirectory = Properties.Settings.Default.SPLIT_LOG_SAVE_PATH;
 
@@ -8405,8 +8405,6 @@ namespace Bank_Host
                     Form_Splitlog_Input input = new Form_Splitlog_Input(split_log_cust, split_log_Linecode);
                     input.return_select_event += Input_return_select_event;
                     input.ShowDialog();
-
-
                 }
                 catch (Exception ex)
                 {
@@ -8437,7 +8435,9 @@ namespace Bank_Host
             comboBox_Name.Items.Clear();
             comboBox_Name.Items.Add(val.Split(';')[1]);
             comboBox_Name.SelectedIndex = 0;
-
+            label_opinfo.Text = val.Split(';')[2];
+                        
+            BankHost_main.strOperator = label_opinfo.Text;
         }
 
         private void location_data_sorting(string data)
@@ -8488,13 +8488,19 @@ namespace Bank_Host
             }            
         }
 
-        private void Split_data_sorting(string data)
+        private void Split_data_display()
+        {
+
+        }
+
+        private void Split_data_sorting()
         {
             try
             {
                 List<string[]> Split_list = new List<string[]>();
+                string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
 
-                string[] temp = data.Split('\n');
+                string[] temp = System.IO.File.ReadAllLines(strFileName);
 
                 for (int i = 0; i < temp.Length; i++)
                 {
@@ -8538,16 +8544,18 @@ namespace Bank_Host
 
             string[] temp = split_data.Split('\n');
             string[] files = new string[10];
-
+            string[] sp;
 
             try
             {
-
                 for (int i = 0; i < temp.Length; i++)
                 {
-                    Split_list.Add(temp[i].Replace("\r", ""));
+                    if (temp[i] != "")
+                    {
+                        sp = temp[i].Replace("\r", "").Split('\t');
+                        Split_list.Add(String.Join("\t", sp, 0, sp.Length == 10 ? 10 : sp.Length - 2));
+                    }
                 }
-
 
                 if (System.IO.Directory.Exists(folderpath) == false)
                 {
@@ -8563,8 +8571,6 @@ namespace Bank_Host
                 {
 
                 }
-
-                
 
                 files = System.IO.File.ReadAllLines(strFileName);
 
