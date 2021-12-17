@@ -254,11 +254,11 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.tb_tot_qty = new System.Windows.Forms.TextBox();
+            this.tb_split_tot_wfr = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
-            this.tb_tot_die = new System.Windows.Forms.TextBox();
+            this.tb_split_tot_die = new System.Windows.Forms.TextBox();
             this.label42 = new System.Windows.Forms.Label();
-            this.tb_tot_lot = new System.Windows.Forms.TextBox();
+            this.tb_split_tot_lot = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -2708,6 +2708,7 @@
             this.dgv_split_log.AllowUserToAddRows = false;
             this.dgv_split_log.AllowUserToOrderColumns = true;
             this.dgv_split_log.AllowUserToResizeColumns = false;
+            this.dgv_split_log.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgv_split_log.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_split_log.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn8,
@@ -2739,7 +2740,7 @@
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
             this.dataGridViewTextBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn8.Width = 70;
+            this.dataGridViewTextBoxColumn8.Width = 50;
             // 
             // dataGridViewTextBoxColumn9
             // 
@@ -2748,7 +2749,7 @@
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.ReadOnly = true;
             this.dataGridViewTextBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn9.Width = 70;
+            this.dataGridViewTextBoxColumn9.Width = 45;
             // 
             // dataGridViewTextBoxColumn10
             // 
@@ -2756,7 +2757,7 @@
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
             this.dataGridViewTextBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Programmatic;
-            this.dataGridViewTextBoxColumn10.Width = 70;
+            this.dataGridViewTextBoxColumn10.Width = 57;
             // 
             // dataGridViewTextBoxColumn11
             // 
@@ -2764,6 +2765,7 @@
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.ReadOnly = true;
             this.dataGridViewTextBoxColumn11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn11.Width = 63;
             // 
             // dataGridViewTextBoxColumn12
             // 
@@ -2771,6 +2773,7 @@
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
             this.dataGridViewTextBoxColumn12.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn12.Width = 72;
             // 
             // dataGridViewTextBoxColumn13
             // 
@@ -2778,6 +2781,7 @@
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
             this.dataGridViewTextBoxColumn13.ReadOnly = true;
             this.dataGridViewTextBoxColumn13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn13.Width = 60;
             // 
             // dataGridViewTextBoxColumn14
             // 
@@ -2785,7 +2789,7 @@
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             this.dataGridViewTextBoxColumn14.ReadOnly = true;
             this.dataGridViewTextBoxColumn14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn14.Width = 150;
+            this.dataGridViewTextBoxColumn14.Width = 45;
             // 
             // dataGridViewTextBoxColumn15
             // 
@@ -2793,7 +2797,7 @@
             this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
             this.dataGridViewTextBoxColumn15.ReadOnly = true;
             this.dataGridViewTextBoxColumn15.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn15.Width = 60;
+            this.dataGridViewTextBoxColumn15.Width = 46;
             // 
             // dataGridViewTextBoxColumn16
             // 
@@ -2801,7 +2805,7 @@
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.ReadOnly = true;
             this.dataGridViewTextBoxColumn16.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn16.Width = 70;
+            this.dataGridViewTextBoxColumn16.Width = 39;
             // 
             // dataGridViewTextBoxColumn17
             // 
@@ -2809,7 +2813,7 @@
             this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
             this.dataGridViewTextBoxColumn17.ReadOnly = true;
             this.dataGridViewTextBoxColumn17.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn17.Width = 70;
+            this.dataGridViewTextBoxColumn17.Width = 40;
             // 
             // dataGridViewTextBoxColumn18
             // 
@@ -2817,7 +2821,7 @@
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
             this.dataGridViewTextBoxColumn18.ReadOnly = true;
             this.dataGridViewTextBoxColumn18.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn18.Width = 150;
+            this.dataGridViewTextBoxColumn18.Width = 68;
             // 
             // panel7
             // 
@@ -2834,11 +2838,11 @@
             // 
             // tb_split
             // 
-            this.tb_split.Location = new System.Drawing.Point(440, 6);
-            this.tb_split.Multiline = true;
+            this.tb_split.Location = new System.Drawing.Point(440, 19);
             this.tb_split.Name = "tb_split";
-            this.tb_split.Size = new System.Drawing.Size(255, 52);
+            this.tb_split.Size = new System.Drawing.Size(255, 27);
             this.tb_split.TabIndex = 20;
+            this.tb_split.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_split_KeyDown);
             // 
             // button9
             // 
@@ -2893,11 +2897,11 @@
             // panel8
             // 
             this.panel8.BackColor = System.Drawing.Color.LightGray;
-            this.panel8.Controls.Add(this.tb_tot_qty);
+            this.panel8.Controls.Add(this.tb_split_tot_wfr);
             this.panel8.Controls.Add(this.label41);
-            this.panel8.Controls.Add(this.tb_tot_die);
+            this.panel8.Controls.Add(this.tb_split_tot_die);
             this.panel8.Controls.Add(this.label42);
-            this.panel8.Controls.Add(this.tb_tot_lot);
+            this.panel8.Controls.Add(this.tb_split_tot_lot);
             this.panel8.Controls.Add(this.label43);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel8.Location = new System.Drawing.Point(0, 0);
@@ -2905,15 +2909,15 @@
             this.panel8.Size = new System.Drawing.Size(1020, 53);
             this.panel8.TabIndex = 1;
             // 
-            // tb_tot_qty
+            // tb_split_tot_wfr
             // 
-            this.tb_tot_qty.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_tot_qty.Location = new System.Drawing.Point(816, 7);
-            this.tb_tot_qty.Name = "tb_tot_qty";
-            this.tb_tot_qty.ReadOnly = true;
-            this.tb_tot_qty.Size = new System.Drawing.Size(153, 35);
-            this.tb_tot_qty.TabIndex = 5;
-            this.tb_tot_qty.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tb_split_tot_wfr.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_split_tot_wfr.Location = new System.Drawing.Point(816, 7);
+            this.tb_split_tot_wfr.Name = "tb_split_tot_wfr";
+            this.tb_split_tot_wfr.ReadOnly = true;
+            this.tb_split_tot_wfr.Size = new System.Drawing.Size(153, 35);
+            this.tb_split_tot_wfr.TabIndex = 5;
+            this.tb_split_tot_wfr.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label41
             // 
@@ -2925,15 +2929,15 @@
             this.label41.TabIndex = 4;
             this.label41.Text = "Total Wafer Qty : ";
             // 
-            // tb_tot_die
+            // tb_split_tot_die
             // 
-            this.tb_tot_die.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_tot_die.Location = new System.Drawing.Point(460, 7);
-            this.tb_tot_die.Name = "tb_tot_die";
-            this.tb_tot_die.ReadOnly = true;
-            this.tb_tot_die.Size = new System.Drawing.Size(153, 35);
-            this.tb_tot_die.TabIndex = 3;
-            this.tb_tot_die.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tb_split_tot_die.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_split_tot_die.Location = new System.Drawing.Point(460, 7);
+            this.tb_split_tot_die.Name = "tb_split_tot_die";
+            this.tb_split_tot_die.ReadOnly = true;
+            this.tb_split_tot_die.Size = new System.Drawing.Size(153, 35);
+            this.tb_split_tot_die.TabIndex = 3;
+            this.tb_split_tot_die.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label42
             // 
@@ -2945,15 +2949,15 @@
             this.label42.TabIndex = 2;
             this.label42.Text = "Total Die Qty : ";
             // 
-            // tb_tot_lot
+            // tb_split_tot_lot
             // 
-            this.tb_tot_lot.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_tot_lot.Location = new System.Drawing.Point(142, 7);
-            this.tb_tot_lot.Name = "tb_tot_lot";
-            this.tb_tot_lot.ReadOnly = true;
-            this.tb_tot_lot.Size = new System.Drawing.Size(135, 35);
-            this.tb_tot_lot.TabIndex = 1;
-            this.tb_tot_lot.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tb_split_tot_lot.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_split_tot_lot.Location = new System.Drawing.Point(142, 7);
+            this.tb_split_tot_lot.Name = "tb_split_tot_lot";
+            this.tb_split_tot_lot.ReadOnly = true;
+            this.tb_split_tot_lot.Size = new System.Drawing.Size(135, 35);
+            this.tb_split_tot_lot.TabIndex = 1;
+            this.tb_split_tot_lot.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label43
             // 
@@ -3227,11 +3231,11 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.TextBox tb_tot_qty;
+        private System.Windows.Forms.TextBox tb_split_tot_wfr;
         private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.TextBox tb_tot_die;
+        private System.Windows.Forms.TextBox tb_split_tot_die;
         private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.TextBox tb_tot_lot;
+        private System.Windows.Forms.TextBox tb_split_tot_lot;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TextBox tb_split;

@@ -35,6 +35,117 @@ namespace Bank_Host
         public const int IME_CMODE_ALPHANUMERIC = 0x0000;
         private const int WM_IME_CONTROL = 643;
 
+        #region VirtualKey 
+        public enum VKeys : int 
+        { 
+            VK_LBUTTON = 0x01, //Left mouse button 
+            VK_RBUTTON = 0x02, //Right mouse button 
+            VK_CANCEL = 0x03, //Control-break processing 
+            VK_MBUTTON = 0x04, //Middle mouse button (three-button mouse) 
+            VK_BACK = 0x08, //BACKSPACE key 
+            VK_TAB = 0x09, //TAB key 
+            VK_CLEAR = 0x0C, //CLEAR key 
+            VK_RETURN = 0x0D, //ENTER key 
+            VK_SHIFT = 0x10, //SHIFT key 
+            VK_CONTROL = 0x11, //CTRL key 
+            VK_MENU = 0x12, //ALT key 
+            VK_PAUSE = 0x13, //PAUSE key 
+            VK_CAPITAL = 0x14, //CAPS LOCK key 
+            VK_HANGUL = 0x15,
+            VK_ESCAPE = 0x1B, //ESC key 
+            VK_SPACE = 0x20, //SPACEBAR 
+            VK_PRIOR = 0x21, //PAGE UP key 
+            VK_NEXT = 0x22, //PAGE DOWN key 
+            VK_END = 0x23, //END key 
+            VK_HOME = 0x24, //HOME key 
+            VK_LEFT = 0x25, //LEFT ARROW key 
+            VK_UP = 0x26, //UP ARROW key 
+            VK_RIGHT = 0x27, //RIGHT ARROW key 
+            VK_DOWN = 0x28, //DOWN ARROW key 
+            VK_SELECT = 0x29, //SELECT key 
+            VK_PRINT = 0x2A, //PRINT key 
+            VK_EXECUTE = 0x2B, //EXECUTE key 
+            VK_SNAPSHOT = 0x2C, //PRINT SCREEN key 
+            VK_INSERT = 0x2D, //INS key 
+            VK_DELETE = 0x2E, //DEL key 
+            VK_HELP = 0x2F, //HELP key 
+            VK_0 = 0x30, //0 key 
+            VK_1 = 0x31, //1 key 
+            VK_2 = 0x32, //2 key 
+            VK_3 = 0x33, //3 key 
+            VK_4 = 0x34, //4 key 
+            VK_5 = 0x35, //5 key
+            VK_6 = 0x36, //6 key 
+            VK_7 = 0x37, //7 key 
+            VK_8 = 0x38, //8 key 
+            VK_9 = 0x39, //9 key 
+            VK_A = 0x41, //A key 
+            VK_B = 0x42, //B key 
+            VK_C = 0x43, //C key 
+            VK_D = 0x44, //D key 
+            VK_E = 0x45, //E key 
+            VK_F = 0x46, //F key 
+            VK_G = 0x47, //G key 
+            VK_H = 0x48, //H key 
+            VK_I = 0x49, //I key 
+            VK_J = 0x4A, //J key 
+            VK_K = 0x4B, //K key 
+            VK_L = 0x4C, //L key 
+            VK_M = 0x4D, //M key 
+            VK_N = 0x4E, //N key 
+            VK_O = 0x4F, //O key 
+            VK_P = 0x50, //P key 
+            VK_Q = 0x51, //Q key 
+            VK_R = 0x52, //R key 
+            VK_S = 0x53, //S key 
+            VK_T = 0x54, //T key 
+            VK_U = 0x55, //U key 
+            VK_V = 0x56, //V key 
+            VK_W = 0x57, //W key 
+            VK_X = 0x58, //X key 
+            VK_Y = 0x59, //Y key 
+            VK_Z = 0x5A, //Z key 
+            VK_NUMPAD0 = 0x60, //Numeric keypad 0 key 
+            VK_NUMPAD1 = 0x61, //Numeric keypad 1 key 
+            VK_NUMPAD2 = 0x62, //Numeric keypad 2 key 
+            VK_NUMPAD3 = 0x63, //Numeric keypad 3 key 
+            VK_NUMPAD4 = 0x64, //Numeric keypad 4 key 
+            VK_NUMPAD5 = 0x65, //Numeric keypad 5 key 
+            VK_NUMPAD6 = 0x66, //Numeric keypad 6 key 
+            VK_NUMPAD7 = 0x67, //Numeric keypad 7 key 
+            VK_NUMPAD8 = 0x68, //Numeric keypad 8 key 
+            VK_NUMPAD9 = 0x69, //Numeric keypad 9 key 
+            VK_SEPARATOR = 0x6C, //Separator key 
+            VK_SUBTRACT = 0x6D, //Subtract key 
+            VK_DECIMAL = 0x6E, //Decimal key 
+            VK_DIVIDE = 0x6F, //Divide key 
+            VK_F1 = 0x70, //F1 key 
+            VK_F2 = 0x71, //F2 key 
+            VK_F3 = 0x72, //F3 key 
+            VK_F4 = 0x73, //F4 key 
+            VK_F5 = 0x74, //F5 key 
+            VK_F6 = 0x75, //F6 key 
+            VK_F7 = 0x76, //F7 key 
+            VK_F8 = 0x77, //F8 key 
+            VK_F9 = 0x78, //F9 key 
+            VK_F10 = 0x79, //F10 key 
+            VK_F11 = 0x7A, //F11 key 
+            VK_F12 = 0x7B, //F12 key 
+            VK_SCROLL = 0x91, //SCROLL LOCK key 
+            VK_LSHIFT = 0xA0, //Left SHIFT key 
+            VK_RSHIFT = 0xA1, //Right SHIFT key 
+            VK_LCONTROL = 0xA2, //Left CONTROL key 
+            VK_RCONTROL = 0xA3, //Right CONTROL key 
+            VK_LMENU = 0xA4, //Left MENU key 
+            VK_RMENU = 0xA5, //Right MENU key 
+            VK_PLAY = 0xFA, //Play key 
+            VK_ZOOM = 0xFB, //Zoom key 
+        } 
+        #endregion
+
+        
+
+
         public struct stAmkor_Label
         {
             public string Lot;
@@ -3274,11 +3385,19 @@ namespace Bank_Host
             }
                 
             
-            if(bmode6 == true)
+            if(bmode6 == true && n != 6)
             {
                 tabControl_Sort.SelectedIndex = 6;
                 speech.SpeakAsyncCancelAll();
                 speech.SpeakAsync("라벨출력 모드 종료 후 이동 할 수 있습니다.");
+                return;
+            }
+
+            if(bmode7 == true && n != 7)
+            {
+                tabControl_Sort.SelectedIndex = 7;
+                speech.SpeakAsyncCancelAll();
+                speech.SpeakAsync("Split 모드 종료 후 이동 할 수 있습니다.");
                 return;
             }
 
@@ -7882,7 +8001,8 @@ namespace Bank_Host
         {
             label26.Text = "작업 모델";
             bmode7 = false;
-            UnHook();
+
+            tabControl_Sort.SelectedIndex = 0;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -7965,8 +8085,13 @@ namespace Bank_Host
 
                 tabControl_Sort.SelectedIndex = 7;
 
-                bmode7 = true;
-                SetHook();
+                if (GetIME() == true)
+                {
+                    ChangeIME(tb_split);
+                }
+                tb_split.Focus();
+
+                bmode7 = true;                
             }
             else
             {
@@ -8024,60 +8149,6 @@ namespace Bank_Host
         }
 
 
-        [DllImport("user32.dll")]
-        static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc callback, IntPtr hInstance, uint threadId);
-
-        [DllImport("user32.dll")]
-        static extern bool UnhookWindowsHookEx(IntPtr hInstance);
-
-        [DllImport("user32.dll")]
-        static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, int wParam, IntPtr lParam);
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr LoadLibrary(string lpFileName);
-        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
-        const int WH_KEYBOARD_LL = 13;
-        const int WM_KEYDOWN = 0x100;
-        private IntPtr hook = IntPtr.Zero;
-
-
-        private void SetHook()
-        {
-            IntPtr hInstance = LoadLibrary("User32");
-            //hook = SetWindowsHookEx(WH_KEYBOARD_LL, HookProc, hInstance, 0);
-        }
-
-        private void UnHook()
-        {
-            UnhookWindowsHookEx(hook);
-        }
-
-        static string Input_key = "";
-
-        static private IntPtr HookProc(int code, IntPtr wParam, IntPtr lParam)
-        {
-            string str = "";
-
-            if (code >= 0 && wParam == (IntPtr)0x100)//(IntPtr)WM_KEYDOWN)
-            {
-                System.Windows.Forms.KeysConverter kc = new KeysConverter();
-                str = kc.ConvertToString(Marshal.ReadInt32(lParam));
-
-                int key = Marshal.ReadInt32(lParam);
-                if (str == "Enter")
-                {
-
-                    str = "";
-                }
-                else
-                {
-                    Input_key += kc.ConvertToString(Marshal.ReadInt32(lParam));
-                }                
-            }
-            return (IntPtr)0;
-        }
-
         private void serach_data()
         {
 
@@ -8094,6 +8165,110 @@ namespace Bank_Host
         {
             if (e.KeyCode == Keys.Enter)
                 button1_Click(sender, e);
+        }
+
+        string Split_Scandata = "";
+        private void tb_split_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                Split_Scandata = tb_split.Text;
+                tb_split.Text = "";
+                Search_data();
+            }
+        }
+
+        private void Search_data()
+        {
+            bool is_in = false;
+
+            if (Split_Scandata.Split(':').Length != 6)
+                return;
+
+            string[] scandata = Split_Scandata.Split(':');
+
+            for(int  i= 0; i < dgv_split_log.RowCount; i++)
+            {
+                if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV
+                    dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0])   //LOT                    
+                {
+                    if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) == int.Parse(scandata[3]) &&
+                    int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString()) == int.Parse(scandata[4]))
+                    {
+                        if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
+                        {
+                            speech.SpeakAsync("이미 완료된 자재 입니다.");
+                        }
+                        else
+                        {
+                            is_in = true;
+                            dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                            dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
+                            speech.SpeakAsync((i + 1).ToString() + "완료");
+
+                            Write_split_data(i, "COMPLETE");
+                        }
+                        
+                    }
+                    else
+                    {
+                        is_in = true;
+                        dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                        dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
+                        speech.SpeakAsync("수량 틀림");
+                        
+                    }
+                }
+            }
+
+            if (is_in == false)
+            {
+                speech.SpeakAsync("리스트에 없는 자재 입니다.");
+            }
+
+            Refresh_split_lot_data();
+        }
+
+        private void Write_split_data(int cnt, string msg)
+        {
+            string folderpath = strExcutionPath + "\\Work\\Split_log";
+            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
+            bool bdata = false;
+            List<string> added_string = new List<string>();
+            List<string> Split_list = new List<string>();            
+
+            string[] temp = System.IO.File.ReadAllLines(strFileName);            
+
+            for(int i = 0; i < temp.Length; i++)
+            {
+                string[] arr = temp[i].Split('\t');
+
+                if(arr[1] == label_cust.Text &&                                     // CUST
+                    arr[3] == dgv_split_log.Rows[cnt].Cells[4].Value.ToString() &&  // DEV
+                    arr[4] == dgv_split_log.Rows[cnt].Cells[5].Value.ToString() &&  // LOT
+                    arr[6] == dgv_split_log.Rows[cnt].Cells[7].Value.ToString() &&  // Die Qty
+                    arr[7] == dgv_split_log.Rows[cnt].Cells[8].Value.ToString())    // Wft Qty
+                {
+                    bdata = true;
+                    temp[0] = "Line\tCust\tBinding#\tDevice#\tCust\tLot#\tDcc\tReturn Qty\tReturn Wafer\tReturn Date\tLoc\tStatus\tOper";
+
+                    if(temp[i].Split('\t').Length == 10)
+                        temp[i] += string.Format("\t{0}\t{1}",msg, BankHost_main.strOperator);
+                    else
+                    {
+                        string[] split_temp = temp[i].Split('\t');
+
+                        split_temp[10] = msg;
+                        split_temp[11] = BankHost_main.strOperator;
+
+                        temp[i] = string.Join("\t", split_temp);
+                    }
+                    break;
+                }
+            }
+
+            if (bdata == true)
+                Split_log_new_file_save(string.Join("\n", temp));
         }
 
         public void Fnc_Get_WorkBcrInfo(string strGetCust, string strModelName)
@@ -8552,7 +8727,7 @@ namespace Bank_Host
                 }
             }
             
-            label_opinfo.Text = val.Split(';')[2];
+            BankHost_main.strOperator = label_opinfo.Text = val.Split(';')[2];
                         
             BankHost_main.strOperator = label_opinfo.Text;
         }
@@ -8604,6 +8779,43 @@ namespace Bank_Host
                 throw;
             }            
         }
+
+        private void Refresh_split_lot_data()
+        {
+            List<string[]> Split_list = new List<string[]>();
+            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
+
+            string[] temp = System.IO.File.ReadAllLines(strFileName);
+
+            dgv_split_log.Rows.Clear();
+
+            for (int i = 1; i < temp.Length; i++)
+            {
+                string[] row = new string[14];
+                string[] row_temp = temp[i].Split('\t');                
+
+                if (label_cust.Text == row_temp[1] && comboBox_Name.Text == row_temp[0])
+                {
+                    row[0] = (dgv_split_log.RowCount + 1).ToString();
+                    for (int j = 0; j < row_temp.Length; j++)
+                    {
+                        if (row_temp[j] != null)
+                            row[j + 1] = row_temp[j];
+                        else
+                            row[j + 1] = "";
+                    }
+
+                    dgv_split_log.Rows.Add(row);
+
+                    if (row[11] == "COMPLETE")
+                    {
+                        dgv_split_log.Rows[dgv_split_log.RowCount - 1].DefaultCellStyle.BackColor = Color.Yellow;
+                        dgv_split_log.Rows[dgv_split_log.RowCount - 1].DefaultCellStyle.ForeColor = Color.Black;
+                    }
+                }
+            }
+        }
+
         private void Set_split_lot_data()
         {
             List<string[]> Split_list = new List<string[]>();
@@ -8614,27 +8826,62 @@ namespace Bank_Host
             dgv_split_log.Rows.Clear();
             dgv_split_log.Columns.Clear();
 
-            for (int i = 0; i < temp[0].Split('\t').Length; i++)
-            {
-                dgv_split_log.Columns.Add(temp[0].Split('\t')[i], temp[0].Split('\t')[i]);
-                dgv_split_log.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
 
-            for (int i = 1; i < dataGridView_worklist.Rows.Count; i++)
+            dgv_split_log.Columns.Add("No", "No.");
+            dgv_split_log.Columns.Add("Line", "Line");
+            dgv_split_log.Columns.Add("Cust", "Cust");
+            dgv_split_log.Columns.Add("Biunding", "Biunding#");
+            dgv_split_log.Columns.Add("Device", "Device#");
+            dgv_split_log.Columns.Add("Cust_Lot", "Cust Lot#");
+            dgv_split_log.Columns.Add("Dcc", "Dcc");
+            dgv_split_log.Columns.Add("Return_Qty", "Return Qty");
+            dgv_split_log.Columns.Add("Return_Wafer", "Return Wafer");
+            dgv_split_log.Columns.Add("Return_Date", "Return Date");
+            dgv_split_log.Columns.Add("Loc", "Loc");
+            dgv_split_log.Columns.Add("Status", "Status");
+            dgv_split_log.Columns.Add("Oper", "Oper");
+            
+            dgv_split_log.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;            
+            dgv_split_log.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[5].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[6].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[7].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[8].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[9].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dgv_split_log.Columns[12].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+
+
+            tot_die = 0;
+            tot_wfr = 0;
+
+            for (int i = 0; i < dataGridView_worklist.Rows.Count; i++)
             {
-                string[] row = new string[12];
+                string[] row = new string[13];
+                row[0] = (i + 1).ToString();
                 for (int j  = 0; j < dataGridView_worklist.Rows[i].Cells.Count; j++)
                 {
                     if (dataGridView_worklist.Rows[i].Cells[j].Value != null)
-                        row[j] = dataGridView_worklist.Rows[i].Cells[j].Value.ToString();
+                        row[j+1] = dataGridView_worklist.Rows[i].Cells[j].Value.ToString();
                     else
-                        row[j] = "";
+                        row[j+1] = "";
                 }
 
                 dgv_split_log.Rows.Add(row);
 
-                tot_die = int.Parse(dataGridView_worklist.Rows[i].Cells[6].Value.ToString());
-                tot_wfr = int.Parse(dataGridView_worklist.Rows[i].Cells[7].Value.ToString());
+                if (row[11] == "COMPLETE")
+                {
+                    dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                    dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
+                }
+
+                tot_die += int.Parse(dataGridView_worklist.Rows[i].Cells[6].Value.ToString());
+                tot_wfr += int.Parse(dataGridView_worklist.Rows[i].Cells[7].Value.ToString());
 
             }
 
@@ -8642,6 +8889,10 @@ namespace Bank_Host
 
             dataGridView_worklist.Columns.Clear();
             dataGridView_worklist.Rows.Clear();
+
+            tb_split_tot_lot.Text = tot_lots.ToString();
+            tb_split_tot_die.Text = tot_die.ToString();
+            tb_split_tot_wfr.Text = tot_wfr.ToString();
         }
         private void Split_data_display()
         {
@@ -8652,14 +8903,34 @@ namespace Bank_Host
 
             dataGridView_worklist.Columns.Clear();
             dataGridView_worklist.Rows.Clear();
+                        
+            dataGridView_worklist.Columns.Add("Line", "Line");
+            dataGridView_worklist.Columns.Add("Cust", "Cust");
+            dataGridView_worklist.Columns.Add("Biunding", "Biunding#");
+            dataGridView_worklist.Columns.Add("Device", "Device#");
+            dataGridView_worklist.Columns.Add("Cust_Lot", "Cust Lot#");
+            dataGridView_worklist.Columns.Add("Dcc", "Dcc");
+            dataGridView_worklist.Columns.Add("Return_Qty", "Return Qty");
+            dataGridView_worklist.Columns.Add("Return_Wafer", "Return Wafer");
+            dataGridView_worklist.Columns.Add("Return_Date", "Return Date");
+            dataGridView_worklist.Columns.Add("Loc", "Loc");
+            dataGridView_worklist.Columns.Add("Status", "Status");
+            dataGridView_worklist.Columns.Add("Oper", "Oper");
 
-            for(int  i = 0; i< temp[0].Split('\t').Length; i++)
-            {
-                dataGridView_worklist.Columns.Add(temp[0].Split('\t')[i], temp[0].Split('\t')[i]);
-                dataGridView_worklist.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+            dataGridView_worklist.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[5].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[6].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[7].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[8].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[9].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;            
 
-            for(int  i = 1; i< temp.Length; i++)
+            for (int  i = 1; i< temp.Length; i++)
             {
                 string[] data_temp = temp[i].Split('\t');
 
@@ -8776,6 +9047,33 @@ namespace Bank_Host
                     Array.Copy(added_string.ToArray(), 0, arr, files.Length, added_string.Count);
                 
                 fs.Write(String.Join(Environment.NewLine, arr.Take(arr.Length -1).ToArray()));
+
+                fs.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        private void Split_log_new_file_save(string split_data)
+        {
+            string folderpath = strExcutionPath + "\\Work\\Split_log";
+            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
+            
+            string[] temp = split_data.Split('\n');
+            string[] files = new string[10];
+            string[] sp;
+
+            try
+            {
+                if (File.Exists(strFileName) == true)
+                    File.Delete(strFileName);
+
+                System.IO.StreamWriter fs = new StreamWriter(strFileName);
+            
+                fs.Write(split_data);
 
                 fs.Dispose();
             }
