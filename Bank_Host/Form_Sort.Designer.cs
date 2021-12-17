@@ -2789,7 +2789,7 @@
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             this.dataGridViewTextBoxColumn14.ReadOnly = true;
             this.dataGridViewTextBoxColumn14.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn14.Width = 45;
+            this.dataGridViewTextBoxColumn14.Width = 80;
             // 
             // dataGridViewTextBoxColumn15
             // 
@@ -2805,7 +2805,7 @@
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.ReadOnly = true;
             this.dataGridViewTextBoxColumn16.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn16.Width = 39;
+            this.dataGridViewTextBoxColumn16.Width = 67;
             // 
             // dataGridViewTextBoxColumn17
             // 
@@ -2813,7 +2813,7 @@
             this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
             this.dataGridViewTextBoxColumn17.ReadOnly = true;
             this.dataGridViewTextBoxColumn17.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn17.Width = 40;
+            this.dataGridViewTextBoxColumn17.Width = 68;
             // 
             // dataGridViewTextBoxColumn18
             // 
@@ -2821,7 +2821,7 @@
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
             this.dataGridViewTextBoxColumn18.ReadOnly = true;
             this.dataGridViewTextBoxColumn18.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn18.Width = 68;
+            this.dataGridViewTextBoxColumn18.Width = 75;
             // 
             // panel7
             // 
@@ -2881,6 +2881,7 @@
             this.button7.TabIndex = 16;
             this.button7.Text = "   출력";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
