@@ -5084,7 +5084,12 @@ namespace Bank_Host
 
                     dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
 
+                    tot_lots++;
                     Frm_Print.Fnc_Print(temp);
+                    speech.SpeakAsyncCancelAll();
+                    speech.SpeakAsync("출력");
+
+                    lprinted_lots.Text = tot_lots.ToString();
                 }
                 else
                 {
@@ -5110,7 +5115,12 @@ namespace Bank_Host
 
                     dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
 
+                    tot_lots++;
                     Frm_Print.Fnc_Print(temp);
+                    speech.SpeakAsyncCancelAll();
+                    speech.SpeakAsync("출력");
+
+                    lprinted_lots.Text = tot_lots.ToString();
                 }
                 else
                 {
@@ -8187,13 +8197,30 @@ namespace Bank_Host
 
             string[] scandata = Split_Scandata.Split(':');
 
+            for(int i = 0; i < scandata.Length; i++)
+            {
+                scandata[i] = scandata[i].Trim();
+            }
+
             for(int  i= 0; i < dgv_split_log.RowCount; i++)
             {
                 if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV
                     dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0])   //LOT                    
                 {
-                    if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) == int.Parse(scandata[3]) &&
-                    int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString()) == int.Parse(scandata[4]))
+                    if(int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) != int.Parse(scandata[1]))  // DCC
+                    {
+                        speech.SpeakAsync("DCC가 틀립니다.");
+                        return;
+                    }
+
+                    if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) != int.Parse(scandata[1]))  // DCC
+                    {
+
+                    }
+
+
+                        if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) == int.Parse(scandata[3]) && //Die Qty
+                    int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString()) == int.Parse(scandata[4]))       // Wfr Qty
                     {
                         if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
                         {
@@ -8770,6 +8797,7 @@ namespace Bank_Host
                 bselected_mode_index = true;
                 textBox1.Focus();
 
+                tot_lots = 0;
                 if(GetIME() == true)
                 {
                     ChangeIME(textBox1);

@@ -392,7 +392,7 @@ namespace Bank_Host
             strbill1 += string.Format("({0}/{1})", DateTime.Now.Month, DateTime.Now.Day);
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = string.Format("^FO 17,70^A0N,95^FD{0}^FS\r\n", strbill1);
+            string P_SC_3 = string.Format("^FO 17,70^A0N,80^FD{0}^FS\r\n", strbill1);
             string P_SC_END = "^XZ\r\n";
 
             string P_OUT = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_END;
