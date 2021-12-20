@@ -5085,11 +5085,15 @@ namespace Bank_Host
                     dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
 
                     tot_lots++;
+                    tot_die += int.Parse(str_temp[3]);
+                    tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync("출력");
 
                     lprinted_lots.Text = tot_lots.ToString();
+                    ldie.Text = tot_die.ToString();
+                    lwfr.Text = tot_wfr.ToString();
                 }
                 else
                 {
@@ -5116,11 +5120,15 @@ namespace Bank_Host
                     dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
 
                     tot_lots++;
+                    tot_die += int.Parse(str_temp[3]);
+                    tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync("출력");
 
                     lprinted_lots.Text = tot_lots.ToString();
+                    ldie.Text = tot_die.ToString();
+                    lwfr.Text = tot_wfr.ToString();
                 }
                 else
                 {
@@ -7316,19 +7324,22 @@ namespace Bank_Host
                 st.WriteLine(str_temp);
 
                 for (int i = 0; i < dataGridView_label.RowCount; i++)
-                {                    
-                    str_temp = dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
+                {
+                    str_temp = (i+1).ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[1].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[2].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[3].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[4].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[5].Value.ToString() + ",";
-                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString() + ",";
-                    str_temp += dataGridView_label.Rows[i].Cells[7].Value.ToString();
+                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString();
 
                     st.WriteLine(str_temp);
+                    Thread.Sleep(10);
                 }
-              
+
+
+                st.Write(string.Format("Lot Qty : ,{0},Die Qty : ,{1},Wfr QTY :,{2}",tot_lots,tot_die,tot_wfr));
                 st.Close();
                 st.Dispose();
                 blabel_save = true;
@@ -8798,6 +8809,8 @@ namespace Bank_Host
                 textBox1.Focus();
 
                 tot_lots = 0;
+                tot_wfr = 0;
+                tot_die = 0;
                 if(GetIME() == true)
                 {
                     ChangeIME(textBox1);
