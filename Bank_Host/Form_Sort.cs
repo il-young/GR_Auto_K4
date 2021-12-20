@@ -7148,6 +7148,8 @@ namespace Bank_Host
             }
         }
 
+        int clicked_label_row = -1;
+
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -7390,9 +7392,16 @@ namespace Bank_Host
 
         private void dataGridView_label_KeyPress(object sender, KeyPressEventArgs e)
         {
-            textBox1.Text = e.KeyChar.ToString();
-            textBox1.Select(textBox1.TextLength, 0);
-            textBox1.Focus();
+            if (e.KeyChar != 46) // delete
+            {
+                textBox1.Text = e.KeyChar.ToString();
+                textBox1.Select(textBox1.TextLength, 0);
+                textBox1.Focus();
+            }
+            else
+            {
+                
+            }
         }
 
         private void button_grstart_Click(object sender, EventArgs e)
@@ -8574,6 +8583,46 @@ namespace Bank_Host
             }
         }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            dataGridView_label.Rows.Clear();
+            tot_lots = 0;
+            tot_die = 0;
+            tot_wfr = 0;
+
+            lprinted_lots.Text = tot_lots.ToString();
+            ldie.Text = tot_die.ToString();
+            lwfr.Text = tot_wfr.ToString();
+        }
+
+
+        private void dataGridView_label_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            
+            DataView dvScore = (DataView)dataGridView_label.DataSource;
+
+            System.Data.DataTable dtdel = dvScore.Table.GetChanges(DataRowState.Deleted);
+
+            tot_lots = dataGridView_label.RowCount;
+            tot_die = 0;
+            tot_wfr = 0;
+
+            foreach (DataRow row in dataGridView_label.Rows)
+            {                
+                tot_die += int.Parse(row[2].ToString());
+                tot_wfr += int.Parse(row[3].ToString());
+            }
+
+            lprinted_lots.Text = tot_lots.ToString();
+            ldie.Text = tot_die.ToString();
+            lwfr.Text = tot_wfr.ToString();
+        }
+
+        private void dataGridView_label_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            int a = 0;
+        }
+
         private void comboBox_mode_SelectedIndexChanged(object sender, EventArgs e)
         {
             dataGridView_worklist.Columns.Clear();
@@ -8798,9 +8847,8 @@ namespace Bank_Host
             }
             else if(nSel == 4)
             {
-                if(BankHost_main.IsAutoFocus == false)
-                    BankHost_main.IsAutoFocus = true;
 
+                BankHost_main.bGunRingMode_Run = true;
                 label_list.Clear();
                 BankHost_main.nProcess = 4001;
                 
@@ -8811,6 +8859,10 @@ namespace Bank_Host
                 tot_lots = 0;
                 tot_wfr = 0;
                 tot_die = 0;
+
+                lprinted_lots.Text = "0";
+                ldie.Text = "0";
+                lwfr.Text = "0";
                 if(GetIME() == true)
                 {
                     ChangeIME(textBox1);
