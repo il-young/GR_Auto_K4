@@ -56,7 +56,6 @@
             this.tb_employee.Name = "tb_employee";
             this.tb_employee.Size = new System.Drawing.Size(177, 35);
             this.tb_employee.TabIndex = 4;
-            this.tb_employee.Text = "396664";
             this.tb_employee.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tb_employee.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_employee_KeyDown);
             // 

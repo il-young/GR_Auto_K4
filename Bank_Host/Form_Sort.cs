@@ -8284,7 +8284,7 @@ namespace Bank_Host
                                 dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
                                 dgv_split_log.Rows[i].Cells[11].Value = "COMPLETE";
                                 dgv_split_log.Rows[i].Cells[12].Value = BankHost_main.strOperator;
-                                dgv_split_log.Rows[i].Cells[13].Value = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
+                                dgv_split_log.Rows[i].Cells[13].Value = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                                 speech.SpeakAsync((i + 1).ToString() + "완료");
 
                                 com_lots++;
@@ -8470,8 +8470,6 @@ namespace Bank_Host
             string nowDateTime = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string pathFilename = string.Empty;
 
-            
-
             SaveFileDialog saveFile = new SaveFileDialog
             {
                 Title = "Excel 파일 저장",
@@ -8540,8 +8538,8 @@ namespace Bank_Host
                 ModRange = worksheet.Columns[12];
                 ModRange.ColumnWidth = 12;
                 ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                ModRange = worksheet.Columns[13];
-                ModRange.ColumnWidth = 15;
+                ModRange = worksheet.Columns[14];
+                ModRange.ColumnWidth = 20;
 
                 Microsoft.Office.Interop.Excel.Range date = worksheet.Range["J:J"];
 
@@ -8663,12 +8661,31 @@ namespace Bank_Host
                 worksheet.Application.ActiveWindow.FreezePanes = true;
                 worksheet.Application.ActiveWindow.SplitRow = 3;
                 worksheet.Application.ActiveWindow.FreezePanes = true;
-
-                //8. 파일 저장 (앞선 SaveFileDialog로 만들어진 pathFilename 경로로 파일 저장
                 workbook.SaveAs(Filename: pathFilename);
-                workbook.Close();
+
+                //worksheet.PageSetup.PrintArea = string.Format("A1:n{0}",4+row_cnt);
+                worksheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
+                
+
+
                 MessageBox.Show("출력 완료.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                //if(DialogResult.Yes == MessageBox.Show("PDF로 저장 하시겠습니까?","PDF", MessageBoxButtons.YesNo))
+                //{
+                //    workbook.ExportAsFixedFormat(
+                //        Excel.XlFixedFormatType.xlTypePDF,
+                //        pathFilename.Split('.')[0],
+                //        Excel.XlFixedFormatQuality.xlQualityStandard,
+                //        true,
+                //        true,
+                //        1,
+                //        10,
+                //        false);
+                //    // workbook.SaveAs(Filename: pathFilename.Split('.')[0], FileFormat: "Pdf");
+                //}
+                //8. 파일 저장 (앞선 SaveFileDialog로 만들어진 pathFilename 경로로 파일 저장
+                
+                workbook.Close();
             }
         }
 
