@@ -5081,15 +5081,18 @@ namespace Bank_Host
                 if (check_duplicate(temp.AMKOR_ID) == false)
                 {
                     label_list.Add(temp);
-
-                    dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+                             
 
                     tot_lots++;
+                    dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
                     speech.SpeakAsyncCancelAll();
-                    speech.SpeakAsync("출력");
+                    speech.SpeakAsync(dataGridView_label.RowCount.ToString());
+
+
 
                     lprinted_lots.Text = tot_lots.ToString();
                     ldie.Text = tot_die.ToString();
@@ -5117,14 +5120,15 @@ namespace Bank_Host
                 {
                     label_list.Add(temp);
 
-                    dataGridView_label.Rows.Add(temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+                    
 
                     tot_lots++;
+                    dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
                     speech.SpeakAsyncCancelAll();
-                    speech.SpeakAsync("출력");
+                    speech.SpeakAsync(dataGridView_label.RowCount.ToString());
 
                     lprinted_lots.Text = tot_lots.ToString();
                     ldie.Text = tot_die.ToString();
@@ -5144,7 +5148,7 @@ namespace Bank_Host
 
             for(int i = 0; i< dataGridView_label.RowCount;i++)
             {
-                if(dataGridView_label.Rows[i].Cells[4].Value.ToString() == amkor_id)
+                if(dataGridView_label.Rows[i].Cells[5].Value.ToString() == amkor_id)
                 {
                     dataGridView_label.Rows[i].Selected = true;
                     res = true;
@@ -7312,6 +7316,8 @@ namespace Bank_Host
                 make_csv(file_path);
             }
 
+            MessageBox.Show("Excel Export 완료 되었습니다.");
+
         }
 
         bool blabel_save = false;
@@ -7327,8 +7333,7 @@ namespace Bank_Host
 
                 for (int i = 0; i < dataGridView_label.RowCount; i++)
                 {
-                    str_temp = (i+1).ToString() + ",";
-                    str_temp += dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
+                    str_temp = dataGridView_label.Rows[i].Cells[0].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[1].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[2].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[3].Value.ToString() + ",";
@@ -7392,16 +7397,9 @@ namespace Bank_Host
 
         private void dataGridView_label_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != 46) // delete
-            {
-                textBox1.Text = e.KeyChar.ToString();
-                textBox1.Select(textBox1.TextLength, 0);
-                textBox1.Focus();
-            }
-            else
-            {
-                
-            }
+            textBox1.Text = e.KeyChar.ToString();
+            textBox1.Select(textBox1.TextLength, 0);
+            textBox1.Focus();         
         }
 
         private void button_grstart_Click(object sender, EventArgs e)
@@ -8064,7 +8062,7 @@ namespace Bank_Host
                 return;
             }
 
-            if (comboBox_Name.Text == "" || comboBox_Name.SelectedIndex == 0)
+            if (comboBox_Name.Text == "" || comboBox_Name.SelectedIndex == -1)
             {
                 MessageBox.Show("모델 선택 하여 주십시오.");
                 return;
@@ -8598,19 +8596,19 @@ namespace Bank_Host
 
         private void dataGridView_label_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            
-            DataView dvScore = (DataView)dataGridView_label.DataSource;
-
-            System.Data.DataTable dtdel = dvScore.Table.GetChanges(DataRowState.Deleted);
-
             tot_lots = dataGridView_label.RowCount;
             tot_die = 0;
             tot_wfr = 0;
 
-            foreach (DataRow row in dataGridView_label.Rows)
+            int row_cnt = 1;
+
+            foreach (DataGridViewRow row in dataGridView_label.Rows)
             {                
-                tot_die += int.Parse(row[2].ToString());
-                tot_wfr += int.Parse(row[3].ToString());
+                tot_die += int.Parse(row.Cells[3].Value.ToString());
+                tot_wfr += int.Parse(row.Cells[4].Value.ToString());
+
+                row.Cells[0].Value = row_cnt.ToString();
+                row_cnt++;
             }
 
             lprinted_lots.Text = tot_lots.ToString();
@@ -8621,6 +8619,18 @@ namespace Bank_Host
         private void dataGridView_label_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             int a = 0;
+        }
+
+        private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
+        {
+            tb_split.Text = e.KeyCode.ToString();
+            tb_split.Select(textBox1.TextLength, 0);
+            tb_split.Focus();
+            
+            if (GetIME() == true)
+            {
+                ChangeIME(tb_split);
+            }
         }
 
         private void comboBox_mode_SelectedIndexChanged(object sender, EventArgs e)
@@ -8847,7 +8857,7 @@ namespace Bank_Host
             }
             else if(nSel == 4)
             {
-
+                BankHost_main.nScanMode = 1;
                 BankHost_main.bGunRingMode_Run = true;
                 label_list.Clear();
                 BankHost_main.nProcess = 4001;
@@ -8951,6 +8961,12 @@ namespace Bank_Host
                     input.ShowDialog();
 
                     Split_data_display();
+
+                    if (GetIME() == true)
+                    {
+                        ChangeIME(tb_split);
+                    }
+                    tb_split.Focus();
                 }
                 catch (Exception ex)
                 {
