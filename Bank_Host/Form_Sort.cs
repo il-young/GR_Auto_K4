@@ -181,6 +181,7 @@ namespace Bank_Host
         public int real_index = -1;
 
         private int tot_die = -1, tot_wfr = -1, tot_lots = -1;
+        private int com_die = -1, com_wfr = -1, com_lots = -1;
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
@@ -5090,7 +5091,7 @@ namespace Bank_Host
                     tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
                     speech.SpeakAsyncCancelAll();
-                    speech.SpeakAsync(dataGridView_label.RowCount.ToString());
+                    speech.SpeakAsync(tot_lots.ToString());
 
 
 
@@ -5120,15 +5121,13 @@ namespace Bank_Host
                 {
                     label_list.Add(temp);
 
-                    
-
                     tot_lots++;
                     dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
                     speech.SpeakAsyncCancelAll();
-                    speech.SpeakAsync(dataGridView_label.RowCount.ToString());
+                    speech.SpeakAsync(tot_lots.ToString());
 
                     lprinted_lots.Text = tot_lots.ToString();
                     ldie.Text = tot_die.ToString();
@@ -5151,6 +5150,7 @@ namespace Bank_Host
                 if(dataGridView_label.Rows[i].Cells[5].Value.ToString() == amkor_id)
                 {
                     dataGridView_label.Rows[i].Selected = true;
+                    dataGridView_label.FirstDisplayedScrollingRowIndex = i;
                     res = true;
                     break;
                 }
@@ -6998,6 +6998,7 @@ namespace Bank_Host
                 if(dataGridView_Lot.Rows[n].Cells[1].Value.ToString().IndexOf(input) != -1)
                 {
                     dataGridView_Lot.Rows[n].Selected = true;
+                    dataGridView_Lot.FirstDisplayedScrollingRowIndex = n;
                     dataGridView_Lot.CurrentCell = dataGridView_Lot.Rows[n].Cells[0];
                     searched_row = n;
                     break;
@@ -7007,6 +7008,7 @@ namespace Bank_Host
                 if (dataGridView_Lot.Rows[n].Cells[3].Value.ToString().Contains(input) == true)
                 {
                     dataGridView_Lot.Rows[n].Selected = true;
+                    dataGridView_Lot.FirstDisplayedScrollingRowIndex = n;
                     dataGridView_Lot.CurrentCell = dataGridView_Lot.Rows[n].Cells[0];
                     searched_row = n;
                     break;
@@ -7026,6 +7028,7 @@ namespace Bank_Host
                     if (searched_row < n)
                     {
                         dataGridView_Lot.Rows[n].Selected = true;
+                        dataGridView_Lot.FirstDisplayedScrollingRowIndex = n;
                         dataGridView_Lot.CurrentCell = dataGridView_Lot.Rows[n].Cells[0];
                         searched_row = n;
                         break;
@@ -7038,6 +7041,7 @@ namespace Bank_Host
                     if (searched_row < n)
                     {
                         dataGridView_Lot.Rows[n].Selected = true;
+                        dataGridView_Lot.FirstDisplayedScrollingRowIndex = n;
                         dataGridView_Lot.CurrentCell = dataGridView_Lot.Rows[n].Cells[0];
                         searched_row = n;
                         break;
@@ -7072,6 +7076,7 @@ namespace Bank_Host
                     dataGridView_Device_CellClick(i, 0);
 
                     dataGridView_Lot.Rows[lot_row_num].Selected = true;
+                    dataGridView_Lot.FirstDisplayedScrollingRowIndex = lot_row_num;
                 }
                 else
                 {
@@ -8062,7 +8067,7 @@ namespace Bank_Host
                 return;
             }
 
-            if (comboBox_Name.Text == "" || comboBox_Name.SelectedIndex == -1)
+            if (comboBox_Name.Text == "" && comboBox_Name.SelectedIndex == -1 && label_cust.Text != "ALL")
             {
                 MessageBox.Show("모델 선택 하여 주십시오.");
                 return;
@@ -8108,6 +8113,14 @@ namespace Bank_Host
             else if (nMode == 6)
             {
                 str = string.Format("\n\nSplit Lot Vaildation 모드");
+                com_die = 0;
+                com_wfr = 0;
+                com_lots = 0;
+
+                tot_die = 0;
+                tot_lots = 0;
+                tot_wfr = 0;
+
 
                 Set_split_lot_data();
 
@@ -8185,7 +8198,13 @@ namespace Bank_Host
         private void comboBox_mode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                comboBox_Name.Focus();
+            {
+                if(label_cust.Text != "ALL")
+                    comboBox_Name.Focus();
+                else
+                    button1_Click(sender, e);
+            }
+                
         }
 
 
@@ -8201,8 +8220,16 @@ namespace Bank_Host
             if(e.KeyCode == Keys.Enter)
             {
                 Split_Scandata = tb_split.Text;
+
+                if (Split_Scandata == "")
+                    return;
+
                 tb_split.Text = "";
                 Search_data();
+
+                tb_com_lots.Text = com_lots.ToString();
+                tb_com_die.Text = com_die.ToString();
+                tb_com_wfr.Text = com_wfr.ToString();
             }
         }
 
@@ -8222,7 +8249,7 @@ namespace Bank_Host
 
             for(int  i= 0; i < dgv_split_log.RowCount; i++)
             {
-                if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV
+                if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV  
                     dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0])   //LOT                    
                 {
                     if(dgv_split_log.Rows[i].Cells[6].Value.ToString() != scandata[1])  // DCC
@@ -8232,11 +8259,20 @@ namespace Bank_Host
                     }
 
 
-                        if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) == int.Parse(scandata[3]) && //Die Qty
+                    if(dgv_split_log.Rows[i].Cells[1].Value.ToString() == scandata[6]) //cust
+                    {
+                        speech.SpeakAsync("고객 코드가 틀립니다.");
+                        return;
+                    }
+
+                    if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) == int.Parse(scandata[3]) && //Die Qty
                     int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString()) == int.Parse(scandata[4]))       // Wfr Qty
                     {
                         if (dgv_split_log.Rows[i].Cells[11].Value != null)
                         {
+                            dgv_split_log.Rows[i].Selected = true;
+                            dgv_split_log.FirstDisplayedScrollingRowIndex = i;
+                            
                             if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
                             {
                                 speech.SpeakAsync("이미 완료된 자재 입니다.");
@@ -8246,17 +8282,31 @@ namespace Bank_Host
                                 is_in = true;
                                 dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
                                 dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
+                                dgv_split_log.Rows[i].Cells[11].Value = "COMPLETE";
+                                dgv_split_log.Rows[i].Cells[12].Value = BankHost_main.strOperator;
+                                dgv_split_log.Rows[i].Cells[13].Value = DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
                                 speech.SpeakAsync((i + 1).ToString() + "완료");
+
+                                com_lots++;
+                                com_die += int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString());
+                                com_wfr += int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString());
 
                                 Write_split_data(i, "COMPLETE");
                             }
                         }
                         else
                         {
+                            dgv_split_log.Rows[i].Selected = true;
+                            dgv_split_log.FirstDisplayedScrollingRowIndex = i;
+
                             is_in = true;
                             dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
                             dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
                             speech.SpeakAsync((i + 1).ToString() + "완료");
+
+                            com_lots++;
+                            com_die += int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString());
+                            com_wfr += int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString());
 
                             Write_split_data(i, "COMPLETE");
                         }
@@ -8266,8 +8316,7 @@ namespace Bank_Host
                         is_in = true;
                         dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Red;
                         dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
-                        speech.SpeakAsync("수량 틀림");
-                        
+                        speech.SpeakAsync("수량 틀림");                        
                     }
                 }
             }
@@ -8276,8 +8325,7 @@ namespace Bank_Host
             {
                 speech.SpeakAsync("리스트에 없는 자재 입니다.");
             }
-
-            Refresh_split_lot_data();
+            
         }
 
         private void Write_split_data(int cnt, string msg)
@@ -8301,16 +8349,17 @@ namespace Bank_Host
                     arr[7] == dgv_split_log.Rows[cnt].Cells[8].Value.ToString())    // Wft Qty
                 {
                     bdata = true;
-                    temp[0] = "Line\tCust\tBinding#\tDevice#\tCust\tLot#\tDcc\tReturn Qty\tReturn Wafer\tReturn Date\tLoc\tStatus\tOper";
+                    //temp[0] = "Line\tCust\tBinding#\tDevice#\tCust\tLot#\tDcc\tReturn Qty\tReturn Wafer\tReturn Date\tLoc\tStatus\tOper\tScantime";
 
                     if(temp[i].Split('\t').Length == 10)
-                        temp[i] += string.Format("\t{0}\t{1}",msg, BankHost_main.strOperator);
+                        temp[i] += string.Format("\t{0}\t{1}\t{2}",msg, BankHost_main.strOperator, dgv_split_log.Rows[cnt].Cells[13].Value.ToString());
                     else
                     {
                         string[] split_temp = temp[i].Split('\t');
 
                         split_temp[10] = msg;
                         split_temp[11] = BankHost_main.strOperator;
+                        split_temp[12] = dgv_split_log.Rows[cnt].Cells[13].Value.ToString();
 
                         temp[i] = string.Join("\t", split_temp);
                     }
@@ -8418,7 +8467,7 @@ namespace Bank_Host
 
         private void button7_Click(object sender, EventArgs e)
         {
-            string nowDateTime = DateTime.Now.ToString("yyyyMMdd");
+            string nowDateTime = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string pathFilename = string.Empty;
 
             
@@ -8491,6 +8540,8 @@ namespace Bank_Host
                 ModRange = worksheet.Columns[12];
                 ModRange.ColumnWidth = 12;
                 ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                ModRange = worksheet.Columns[13];
+                ModRange.ColumnWidth = 15;
 
                 Microsoft.Office.Interop.Excel.Range date = worksheet.Range["J:J"];
 
@@ -8511,7 +8562,7 @@ namespace Bank_Host
                 ModRange = (Range)worksheet.get_Range("A2", "D2");
                 ModRange.Merge(true);
                 //DateTimePicker의 값을 그대로 넣어서 정보로 활용할 수 있음
-                ModRange.Value = $"출력일 : {DateTime.Now:yyyy-MM-dd hh:mm:ss}";
+                ModRange.Value = $"출력일 : {DateTime.Now:yyyy-MM-dd_HH:mm:ss}";
                 //2번째 설명은 우측 정렬
                 ModRange.HorizontalAlignment = XlHAlign.xlHAlignRight;
 
@@ -8543,33 +8594,67 @@ namespace Bank_Host
                     ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThick;
                 }
 
+                int row_cnt = 0;
+
                 //6. 데이터 열 추가
                 for (int i = 0; i < rowCount; i++)
                 {
-                    for (int j = 0; j < columnCount; j++)
+                    if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
                     {
-                        //타이틀, 추가설명, 헤드, 0->1 때문에 i에 4를 더함
-                        ModRange = (Range)worksheet.Cells[4 + i, 1 + j];
-                        ModRange.Value = dgv_split_log[j, i].Value == null ? string.Empty : dgv_split_log[j, i].Value.ToString();
+                        for (int j = 0; j < columnCount; j++)
+                        {
+                            if (j == 0)
+                            {
+                                ModRange = (Range)worksheet.Cells[4 + row_cnt, 1 + j];
+                                ModRange.Value = (row_cnt+1).ToString();
+                            }
+                            else
+                            {
+                                ModRange = (Range)worksheet.Cells[4 + row_cnt, 1 + j];
+                                ModRange.Value = dgv_split_log[j, i].Value == null ? string.Empty : dgv_split_log[j, i].Value.ToString();
+                            }
+                            //타이틀, 추가설명, 헤드, 0->1 때문에 i에 4를 더함
+                            
 
-                        //data 테두리
-                        ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlThin, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
-                        if (j == 0) //시작 컬럼에서 왼쪽 테두리
-                        {
-                            ModRange.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+                            //data 테두리
+                            ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlThin, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
+                            if (j == 0) //시작 컬럼에서 왼쪽 테두리
+                            {
+                                ModRange.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlMedium;
+                            }
+                            else if (j == (columnCount - 1)) //마지막 컬럼에서 우측 테두리
+                            {
+                                ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
+                            }
+                            if (i == (rowCount - 1)) //마지막 로우에서 우측 테두리
+                            {
+                                ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
+                                //결산 같은 마지막 줄 값이 존재하면 이걸 사용합니다.
+                                //ModRange.Borders[XlBordersIndex.xlEdgeTop].LineStyle = XlLineStyle.xlDouble;
+                            }
                         }
-                        else if (j == (columnCount - 1)) //마지막 컬럼에서 우측 테두리
-                        {
-                            ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlMedium;
-                        }
-                        if (i == (rowCount - 1)) //마지막 로우에서 우측 테두리
-                        {
-                            ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlMedium;
-                            //결산 같은 마지막 줄 값이 존재하면 이걸 사용합니다.
-                            //ModRange.Borders[XlBordersIndex.xlEdgeTop].LineStyle = XlLineStyle.xlDouble;
-                        }
+                        row_cnt++;
                     }
                 }
+
+                ModRange = (Range)worksheet.Cells[4 + row_cnt,  6];
+                ModRange.Value = "Complete :";
+                ModRange.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlThin;
+                ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThin;
+                ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlThin;
+                ModRange = (Range)worksheet.Cells[4 + row_cnt, 7];
+                ModRange.Value = com_lots.ToString();
+                ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlThin;
+                ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThin;
+                ModRange = (Range)worksheet.Cells[4 + row_cnt, 8];
+                ModRange.Value = com_die.ToString();
+                ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlThin;
+                ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThin;
+                ModRange = (Range)worksheet.Cells[4 + row_cnt, 9];
+                ModRange.Value = com_wfr.ToString();
+                ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThin;
+                ModRange.Borders[XlBordersIndex.xlEdgeRight].Weight = XlBorderWeight.xlThin;
+
 
                 //7. 상단 고정필드 설정
                 worksheet.Application.ActiveWindow.SplitRow = 1;
@@ -9007,7 +9092,7 @@ namespace Bank_Host
             {
                 comboBox_Name.Enabled = true;
 
-                for (int i = 1; i < temp.Length; i++)
+                for (int i = 0; i < temp.Length; i++)
                 {
                     comboBox_Name.Items.Add(temp[i]);
 
@@ -9076,38 +9161,48 @@ namespace Bank_Host
 
         private void Refresh_split_lot_data()
         {
-            List<string[]> Split_list = new List<string[]>();
-            string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
 
-            string[] temp = System.IO.File.ReadAllLines(strFileName);
 
-            dgv_split_log.Rows.Clear();
+            //List<string[]> Split_list = new List<string[]>();
+            //string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
 
-            for (int i = 1; i < temp.Length; i++)
-            {
-                string[] row = new string[14];
-                string[] row_temp = temp[i].Split('\t');                
+            //string[] temp = System.IO.File.ReadAllLines(strFileName);
 
-                if (label_cust.Text == row_temp[1] && comboBox_Name.Text == row_temp[0])
-                {
-                    row[0] = (dgv_split_log.RowCount + 1).ToString();
-                    for (int j = 0; j < row_temp.Length; j++)
-                    {
-                        if (row_temp[j] != null)
-                            row[j + 1] = row_temp[j];
-                        else
-                            row[j + 1] = "";
-                    }
+            //dgv_split_log.Rows.Clear();
 
-                    dgv_split_log.Rows.Add(row);
+            //for (int i = 1; i < temp.Length; i++)
+            //{
+            //    string[] row = new string[14];
+            //    string[] row_temp = temp[i].Split('\t');
 
-                    if (row[11] == "COMPLETE")
-                    {
-                        dgv_split_log.Rows[dgv_split_log.RowCount - 1].DefaultCellStyle.BackColor = Color.Yellow;
-                        dgv_split_log.Rows[dgv_split_log.RowCount - 1].DefaultCellStyle.ForeColor = Color.Black;
-                    }
-                }
-            }
+
+            //    if (label_cust.Text != "ALL")
+            //    {
+            //        if (label_cust.Text == row_temp[1] && comboBox_Name.Text == row_temp[0])
+            //        {
+            //            row[0] = (dgv_split_log.RowCount + 1).ToString();
+            //            for (int j = 0; j < row_temp.Length; j++)
+            //            {
+            //                if (row_temp[j] != null)
+            //                    row[j + 1] = row_temp[j];
+            //                else
+            //                    row[j + 1] = "";
+            //            }
+
+            //            dgv_split_log.Rows.Add(row);
+
+            //            if (row[11] == "COMPLETE")
+            //            {
+            //                dgv_split_log.Rows[dgv_split_log.RowCount - 1].DefaultCellStyle.BackColor = Color.Yellow;
+            //                dgv_split_log.Rows[dgv_split_log.RowCount - 1].DefaultCellStyle.ForeColor = Color.Black;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //    }
         }
 
         private void Set_split_lot_data()
@@ -9134,6 +9229,7 @@ namespace Bank_Host
             dgv_split_log.Columns.Add("Loc", "Loc");
             dgv_split_log.Columns.Add("Status", "Status");
             dgv_split_log.Columns.Add("Oper", "Oper");
+            dgv_split_log.Columns.Add("Scantime", "Scantime");
             
             dgv_split_log.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;            
             dgv_split_log.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -9148,15 +9244,14 @@ namespace Bank_Host
             dgv_split_log.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgv_split_log.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgv_split_log.Columns[12].SortMode = DataGridViewColumnSortMode.NotSortable;
-
-
+            dgv_split_log.Columns[13].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             tot_die = 0;
             tot_wfr = 0;
 
             for (int i = 0; i < dataGridView_worklist.Rows.Count; i++)
             {
-                string[] row = new string[13];
+                string[] row = new string[14];
                 row[0] = (i + 1).ToString();
                 for (int j  = 0; j < dataGridView_worklist.Rows[i].Cells.Count; j++)
                 {
@@ -9226,7 +9321,7 @@ namespace Bank_Host
 
             if (label_cust.Text != "ALL")
             {
-                for (int i = 1; i < temp.Length; i++)
+                for (int i = 0; i < temp.Length; i++)
                 {
                     string[] data_temp = temp[i].Split('\t');
 
@@ -9236,7 +9331,7 @@ namespace Bank_Host
             }
             else
             {
-                for(int i = 1; i < temp.Length; i++)
+                for(int i = 0; i < temp.Length; i++)
                 {
                     if (temp[i].Split('\t').Length > 10)
                     {
