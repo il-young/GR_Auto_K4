@@ -8210,8 +8210,8 @@ namespace Bank_Host
         {
             bool is_in = false;
 
-            if (Split_Scandata.Split(':').Length != 6)
-                return;
+            //if (Split_Scandata.Split(':').Length != 6)
+            //    return;
 
             string[] scandata = Split_Scandata.Split(':');
 
@@ -8225,24 +8225,31 @@ namespace Bank_Host
                 if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV
                     dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0])   //LOT                    
                 {
-                    if(int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) != int.Parse(scandata[1]))  // DCC
+                    if(dgv_split_log.Rows[i].Cells[6].Value.ToString() != scandata[1])  // DCC
                     {
                         speech.SpeakAsync("DCC가 틀립니다.");
                         return;
-                    }
-
-                    if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) != int.Parse(scandata[1]))  // DCC
-                    {
-
                     }
 
 
                         if (int.Parse(dgv_split_log.Rows[i].Cells[7].Value.ToString()) == int.Parse(scandata[3]) && //Die Qty
                     int.Parse(dgv_split_log.Rows[i].Cells[8].Value.ToString()) == int.Parse(scandata[4]))       // Wfr Qty
                     {
-                        if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
+                        if (dgv_split_log.Rows[i].Cells[11].Value != null)
                         {
-                            speech.SpeakAsync("이미 완료된 자재 입니다.");
+                            if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
+                            {
+                                speech.SpeakAsync("이미 완료된 자재 입니다.");
+                            }
+                            else
+                            {
+                                is_in = true;
+                                dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                                dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
+                                speech.SpeakAsync((i + 1).ToString() + "완료");
+
+                                Write_split_data(i, "COMPLETE");
+                            }
                         }
                         else
                         {
@@ -8253,7 +8260,6 @@ namespace Bank_Host
 
                             Write_split_data(i, "COMPLETE");
                         }
-                        
                     }
                     else
                     {
@@ -8997,18 +9003,26 @@ namespace Bank_Host
             comboBox_Name.Items.Clear();
 
             string[] temp = val.Split(';')[1].Split(':');
-            for (int i = 1; i < temp.Length; i++)
+            if (label_cust.Text != "ALL")
             {
-                comboBox_Name.Items.Add(temp[i]);
+                comboBox_Name.Enabled = true;
 
-                if (temp[0] == temp[i])
+                for (int i = 1; i < temp.Length; i++)
                 {
-                    comboBox_Name.SelectedIndex = i - 1;
+                    comboBox_Name.Items.Add(temp[i]);
+
+                    if (temp[0] == temp[i])
+                    {
+                        comboBox_Name.SelectedIndex = i - 1;
+                    }
                 }
             }
-            
-            BankHost_main.strOperator = label_opinfo.Text = val.Split(';')[2];
-                        
+            else
+            {
+                comboBox_Name.Enabled = false;
+            }
+
+            BankHost_main.strOperator = label_opinfo.Text = val.Split(';')[2];                        
             BankHost_main.strOperator = label_opinfo.Text;
         }
 
@@ -9208,14 +9222,32 @@ namespace Bank_Host
             dataGridView_worklist.Columns[8].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_worklist.Columns[9].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_worklist.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
-            dataGridView_worklist.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;            
+            dataGridView_worklist.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
 
-            for (int  i = 1; i< temp.Length; i++)
+            if (label_cust.Text != "ALL")
             {
-                string[] data_temp = temp[i].Split('\t');
+                for (int i = 1; i < temp.Length; i++)
+                {
+                    string[] data_temp = temp[i].Split('\t');
 
-                if(data_temp[0] == comboBox_Name.Text && data_temp[1] == label_cust.Text)
-                    dataGridView_worklist.Rows.Add(temp[i].Split('\t'));
+                    if (data_temp[0] == comboBox_Name.Text && data_temp[1] == label_cust.Text)
+                        dataGridView_worklist.Rows.Add(temp[i].Split('\t'));
+                }
+            }
+            else
+            {
+                for(int i = 1; i < temp.Length; i++)
+                {
+                    if (temp[i].Split('\t').Length > 10)
+                    {
+                        if (temp[i].Split('\t')[10] != "COMPLETE")
+                            dataGridView_worklist.Rows.Add(temp[i].Split('\t'));
+                    }
+                    else
+                    {
+                        dataGridView_worklist.Rows.Add(temp[i].Split('\t'));
+                    }
+                }
             }
         }
 
@@ -9274,7 +9306,7 @@ namespace Bank_Host
 
             try
             {
-                for (int i = 0; i < temp.Length; i++)
+                for (int i = 1; i < temp.Length; i++)
                 {
                     if (temp[i] != "")
                     {                        
@@ -9326,7 +9358,7 @@ namespace Bank_Host
                 if (!(added_string.Count == 1 && added_string[0] == ""))
                     Array.Copy(added_string.ToArray(), 0, arr, files.Length, added_string.Count);
                 
-                fs.Write(String.Join(Environment.NewLine, arr.Take(arr.Length -1).ToArray()));
+                fs.Write(String.Join(Environment.NewLine, arr.Take(arr.Length).ToArray()));
 
                 fs.Dispose();
             }

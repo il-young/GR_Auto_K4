@@ -48,7 +48,11 @@ namespace Bank_Host
         {
             if (e.KeyCode == Keys.Enter)
             {
-                cb_line_code.Focus();
+                if (cb_cust.Text == "ALL")
+                    btn_ok_Click(sender, e);
+                else
+                    cb_line_code.Focus();
+
             }
         }
 
@@ -82,7 +86,7 @@ namespace Bank_Host
                 return;
             }
 
-            if(cb_line_code.Text == "")
+            if(cb_line_code.Text == "" && cb_cust.Text != "ALL")
             {
                 MessageBox.Show("라인코드를 입력하세요");
                 return;
@@ -113,6 +117,7 @@ namespace Bank_Host
                     strline_code += cb_line_code.Items[i] + ":";
             }
 
+
             list_return_val = cb_cust.Text + ";" + strline_code + ";" + strname;
             return_select_event(list_return_val);
             Close();
@@ -123,36 +128,45 @@ namespace Bank_Host
             cb_line_code.Items.Clear();
             bool b = false;
 
-            for(int i = 0; i < list_line_code.Count; i++)
+            if (cb_cust.Text != "ALL")
             {
-                if (cb_cust.Text == list_line_code[i].Split(';')[0])
+                cb_line_code.Enabled = true;
+
+                for (int i = 0; i < list_line_code.Count; i++)
                 {
-                    if (cb_line_code.Items.Count == 0)
+                    if (cb_cust.Text == list_line_code[i].Split(';')[0])
                     {
-                        cb_line_code.Items.Add(list_line_code[i].Split(';')[1]);                        
-                    }
-                    else
-                    {
-                        b = false;
-
-                        for (int j = 0; j < cb_line_code.Items.Count; j++)
-                        {
-                          if(cb_line_code.Items[j].ToString() == list_line_code[i].Split(';')[1])
-                            {
-                                b = true;
-                                break;
-                            }   
-                        }
-
-                        if (b == false)
+                        if (cb_line_code.Items.Count == 0)
                         {
                             cb_line_code.Items.Add(list_line_code[i].Split(';')[1]);
-                            b = false;
                         }
+                        else
+                        {
+                            b = false;
+
+                            for (int j = 0; j < cb_line_code.Items.Count; j++)
+                            {
+                                if (cb_line_code.Items[j].ToString() == list_line_code[i].Split(';')[1])
+                                {
+                                    b = true;
+                                    break;
+                                }
+                            }
+
+                            if (b == false)
+                            {
+                                cb_line_code.Items.Add(list_line_code[i].Split(';')[1]);
+                                b = false;
+                            }
+                        }
+
+
                     }
-                    
-                        
                 }
+            }
+            else
+            {
+                cb_line_code.Enabled = false;
             }
         }
 
@@ -163,6 +177,8 @@ namespace Bank_Host
 
         private void Form_Splitlog_Input_Shown(object sender, EventArgs e)
         {
+            cb_cust.Items.Add("ALL");
+
             for (int i = 0; i < list_cust.Count; i++)
             {
                 if (cb_cust.Items.Contains(list_cust[i]) == false)
