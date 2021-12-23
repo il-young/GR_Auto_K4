@@ -8324,8 +8324,7 @@ namespace Bank_Host
             if (is_in == false)
             {
                 speech.SpeakAsync("리스트에 없는 자재 입니다.");
-            }
-            
+            }            
         }
 
         private void Write_split_data(int cnt, string msg)
@@ -9057,7 +9056,7 @@ namespace Bank_Host
                     BankHost_main.Fnc_SaveLog("Split Log Low Data", 1);
                     BankHost_main.Fnc_SaveLog(res, 1);
                     Split_log_file_save(res);
-                    Split_data_sorting();
+                    Split_data_sorting(res);
 
                     saveFileDialog1.InitialDirectory = Properties.Settings.Default.SPLIT_LOG_SAVE_PATH;
 
@@ -9360,6 +9359,45 @@ namespace Bank_Host
                         dataGridView_worklist.Rows.Add(temp[i].Split('\t'));
                     }
                 }
+            }
+        }
+
+        private void Split_data_sorting(string split_data)
+        {
+            try
+            {
+                List<string[]> Split_list = new List<string[]>();
+
+                string[] temp = split_data.Split('\n');
+
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    temp[i].Remove(temp[i].Length -1 , 1);
+                    Split_list.Add(temp[i].Split('\t'));
+                }
+
+                for (int i = 1; i < Split_list.Count - 1; i++)
+                {
+                    split_log_lowdata.Add(string.Join(";", Split_list[i]));
+
+                    if (split_log_cust.Contains(Split_list[i][1]) == false)
+                    {
+                        split_log_cust.Add(Split_list[i][1]);
+                        split_log_Linecode.Add(Split_list[i][1] + ";" + Split_list[i][0]);
+                    }
+                    else
+                    {
+                        if (split_log_Linecode.Contains(Split_list[i][0]) == false)
+                        {
+                            split_log_Linecode.Add(Split_list[i][1] + ";" + Split_list[i][0]);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 
