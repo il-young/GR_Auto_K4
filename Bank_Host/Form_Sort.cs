@@ -4455,7 +4455,7 @@ namespace Bank_Host
                     {
                         if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && !bReset)
                         {
-                            if (st.state == "waiting" && BankHost_main.strWork_QtyPos == "-1" ? true : st.Rcv_Qty == strDie)
+                            if (st.state == "waiting" && (BankHost_main.strWork_QtyPos == "-1" ? true : st.Rcv_Qty == strDie))
                                 return m;
                         }
                         else
@@ -4760,7 +4760,7 @@ namespace Bank_Host
                 {
                     if (BankHost_main.strWork_Shot1Lot == "YES" && BankHost_main.strWork_DevicePos == "-1" && bupdate)
                     {
-                        if (BankHost_main.strWork_DevicePos == "-1" ? true : strGetDiettl == strDieqty)
+                        if ((BankHost_main.strWork_DevicePos == "-1" ? true : strGetDiettl == strDieqty) && strGetState != "complete")
                             return n;
                     }
                     else
@@ -8728,6 +8728,61 @@ namespace Bank_Host
             int a = 0;
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void Fnc_SendEmail()
+        {
+            //try
+            //{
+            //    string[] strSplit_address = straddress.Split(';');
+            //    int ncount = strSplit_address.Length;
+
+            //    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+
+            //    for (int n = 0; n < ncount; n++)
+            //    {
+            //        message.To.Add(strSplit_address[n]);
+            //    }
+
+               
+            //    message.Subject = string.Format("반납]");
+
+            //    message.From = new System.Net.Mail.MailAddress("K4BANK@amkor.co.kr");
+
+
+
+            //    //message.IsBodyHtml = true;
+            //    message.Attachments.Add(new System.Net.Mail.Attachment(err_local_img_path));
+            //    System.Net.Mail.LinkedResource linkedResource = new System.Net.Mail.LinkedResource(err_local_img_path);
+            //    linkedResource.ContentId = "MyPic";
+            //    System.Net.Mail.AlternateView view = System.Net.Mail.AlternateView.CreateAlternateViewFromString(string.Format("<pre>{0} 아래의 그림은 오류 발생한 나르미의 위치를 표시 합니다. <img src=cid:MyPic>", strMessage), null, "text/html");
+            //    view.LinkedResources.Add(linkedResource);
+            //    message.AlternateViews.Add(view);
+
+            //    message.Body = strMessage;
+
+            //    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("10.101.10.6");
+            //    smtp.Credentials = new System.Net.NetworkCredential("", "");
+            //    smtp.Port = 25;
+            //    smtp.Send(message);
+
+            //    message.Dispose();
+            //    //linkedResource.Dispose();
+            //    //view.Dispose();
+
+            //    ///////////////////////////////
+            //    ///
+            //}
+            //catch (Exception ex)
+            //{
+             
+            //}
+
+        }
+
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
         {
             tb_split.Text = e.KeyCode.ToString();
@@ -9372,8 +9427,11 @@ namespace Bank_Host
 
                 for (int i = 0; i < temp.Length; i++)
                 {
-                    temp[i].Remove(temp[i].Length -1 , 1);
-                    Split_list.Add(temp[i].Split('\t'));
+                    if (temp[i] != "")
+                    {
+                        temp[i].Remove(temp[i].Length - 1, 1);
+                        Split_list.Add(temp[i].Split('\t'));
+                    }
                 }
 
                 for (int i = 1; i < Split_list.Count - 1; i++)
