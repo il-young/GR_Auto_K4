@@ -5697,7 +5697,8 @@ namespace Bank_Host
             if (strBcr.Contains(',') && !b1Dbcr && strBcrType != "PDF417" && BankHost_main.strWork_Shot1Lot == "YES")
             {
                 if (BankHost_main.strWork_Cust != "453" || BankHost_main.strWork_Cust != "734")
-                    bmultibcr = true;
+                    if(BankHost_main.strWork_Cust == "488")
+                        bmultibcr = true;
             }
 
             string strWaferID = "";
