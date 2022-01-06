@@ -8238,8 +8238,8 @@ namespace Bank_Host
         {
             bool is_in = false;
 
-            //if (Split_Scandata.Split(':').Length != 6)
-            //    return;
+            if (Split_Scandata.Split(':').Length < 6)
+                return;
 
             string[] scandata = Split_Scandata.Split(':');
 
@@ -8251,15 +8251,9 @@ namespace Bank_Host
             for(int  i= 0; i < dgv_split_log.RowCount; i++)
             {
                 if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV  
-                    dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0])   //LOT                    
+                    dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0] &&   //LOT                    
+                    dgv_split_log.Rows[i].Cells[6].Value.ToString() != scandata[1])     //DCC   
                 {
-                    if(dgv_split_log.Rows[i].Cells[6].Value.ToString() != scandata[1])  // DCC
-                    {
-                        speech.SpeakAsync("DCC가 틀립니다.");
-                        return;
-                    }
-
-
                     if(dgv_split_log.Rows[i].Cells[1].Value.ToString() == scandata[6]) //cust
                     {
                         speech.SpeakAsync("고객 코드가 틀립니다.");
@@ -8342,9 +8336,10 @@ namespace Bank_Host
             {
                 string[] arr = temp[i].Split('\t');
 
-                if(arr[1] == label_cust.Text &&                                     // CUST
+                if(arr[1] == dgv_split_log.Rows[cnt].Cells[2].Value.ToString() &&                                     // CUST
                     arr[3] == dgv_split_log.Rows[cnt].Cells[4].Value.ToString() &&  // DEV
                     arr[4] == dgv_split_log.Rows[cnt].Cells[5].Value.ToString() &&  // LOT
+                    arr[5] == dgv_split_log.Rows[cnt].Cells[6].Value.ToString() &&  // DCC
                     arr[6] == dgv_split_log.Rows[cnt].Cells[7].Value.ToString() &&  // Die Qty
                     arr[7] == dgv_split_log.Rows[cnt].Cells[8].Value.ToString())    // Wft Qty
                 {
@@ -8729,9 +8724,55 @@ namespace Bank_Host
             int a = 0;
         }
 
+        /// <summary>
+        /// dgv_split_log의 row index 받아서 string으로 변환해서 구분자 ","로 반환
+        /// </summary>
+        /// <param name="index">row index</param>
+        /// <returns></returns>
+        private string GetDGVRow2Str(int index)
+        {
+            string res = "";
+
+            for(int i = 0; i< 11; i++)
+            {
+                if(dgv_split_log.Rows[index].Cells[i].Value != null)
+                {
+                    res += dgv_split_log.Rows[index].Cells[i].Value.ToString() + ",";
+                }
+                else
+                {
+                    res += ",";
+                }
+            }
+
+            res = res.Remove(res.Length-1, 1);
+
+            return res;
+        }
+
         private void button9_Click(object sender, EventArgs e)
         {
+            string dgv_str_val = "";
 
+            for (int i = 0; i < dgv_split_log.RowCount; i++)
+            {
+                if (dgv_split_log.Rows[i].Cells[11].Value != null)
+                {
+                    if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "")
+                    {
+                        dgv_str_val += GetDGVRow2Str(i) + ";";
+                    }
+                }
+                else
+                {
+                    dgv_str_val += GetDGVRow2Str(i) + ";";
+                }
+            }
+
+            dgv_str_val = dgv_str_val.Remove(dgv_str_val.Length - 1, 1);
+            Form_email_review review_form = new Form_email_review(dgv_str_val);
+
+            review_form.Show();
         }
 
         public void Fnc_SendEmail()
