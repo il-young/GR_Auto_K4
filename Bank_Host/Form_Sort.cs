@@ -8775,55 +8775,7 @@ namespace Bank_Host
             review_form.Show();
         }
 
-        public void Fnc_SendEmail()
-        {
-            //try
-            //{
-            //    string[] strSplit_address = straddress.Split(';');
-            //    int ncount = strSplit_address.Length;
-
-            //    System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-
-            //    for (int n = 0; n < ncount; n++)
-            //    {
-            //        message.To.Add(strSplit_address[n]);
-            //    }
-
-               
-            //    message.Subject = string.Format("반납]");
-
-            //    message.From = new System.Net.Mail.MailAddress("K4BANK@amkor.co.kr");
-
-
-
-            //    //message.IsBodyHtml = true;
-            //    message.Attachments.Add(new System.Net.Mail.Attachment(err_local_img_path));
-            //    System.Net.Mail.LinkedResource linkedResource = new System.Net.Mail.LinkedResource(err_local_img_path);
-            //    linkedResource.ContentId = "MyPic";
-            //    System.Net.Mail.AlternateView view = System.Net.Mail.AlternateView.CreateAlternateViewFromString(string.Format("<pre>{0} 아래의 그림은 오류 발생한 나르미의 위치를 표시 합니다. <img src=cid:MyPic>", strMessage), null, "text/html");
-            //    view.LinkedResources.Add(linkedResource);
-            //    message.AlternateViews.Add(view);
-
-            //    message.Body = strMessage;
-
-            //    System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("10.101.10.6");
-            //    smtp.Credentials = new System.Net.NetworkCredential("", "");
-            //    smtp.Port = 25;
-            //    smtp.Send(message);
-
-            //    message.Dispose();
-            //    //linkedResource.Dispose();
-            //    //view.Dispose();
-
-            //    ///////////////////////////////
-            //    ///
-            //}
-            //catch (Exception ex)
-            //{
-             
-            //}
-
-        }
+        
 
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
         {

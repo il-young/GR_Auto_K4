@@ -70,5 +70,41 @@ namespace Bank_Host.Properties {
                 this["SPLIT_LOG_SAVE_PATH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SplitLogMailHead {
+            get {
+                return ((string)(this["SplitLogMailHead"]));
+            }
+            set {
+                this["SplitLogMailHead"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SplitLogMailBody {
+            get {
+                return ((string)(this["SplitLogMailBody"]));
+            }
+            set {
+                this["SplitLogMailBody"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SplitLogMailTail {
+            get {
+                return ((string)(this["SplitLogMailTail"]));
+            }
+            set {
+                this["SplitLogMailTail"] = value;
+            }
+        }
     }
 }

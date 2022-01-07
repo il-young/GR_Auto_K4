@@ -31,9 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_email_review));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.rtb_body = new System.Windows.Forms.RichTextBox();
+            this.btn_sendmail = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tb_maillist = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,7 +39,10 @@
             this.cb_linecode = new System.Windows.Forms.ComboBox();
             this.dgv_splitlog_err_data = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btn_sendmail = new System.Windows.Forms.Button();
+            this.tb_head = new System.Windows.Forms.TextBox();
+            this.rtb_body = new System.Windows.Forms.RichTextBox();
+            this.cb_msg = new System.Windows.Forms.ComboBox();
+            this.rtb_tail = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -72,49 +73,31 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.btn_sendmail);
-            this.panel2.Controls.Add(this.richTextBox1);
-            this.panel2.Controls.Add(this.comboBox1);
+            this.panel2.Controls.Add(this.rtb_tail);
+            this.panel2.Controls.Add(this.cb_msg);
             this.panel2.Controls.Add(this.rtb_body);
+            this.panel2.Controls.Add(this.tb_head);
+            this.panel2.Controls.Add(this.btn_sendmail);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 43);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(800, 250);
             this.panel2.TabIndex = 1;
             // 
-            // richTextBox1
+            // btn_sendmail
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.richTextBox1.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold);
-            this.richTextBox1.Location = new System.Drawing.Point(0, 126);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(800, 70);
-            this.richTextBox1.TabIndex = 2;
-            this.richTextBox1.Text = "감사합니다.";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "첨부된 Lot는 전산 & 현품이 불일치하여 메일을 발송 하오니 확인 바랍니다.",
-            "첨부된 Lot는 전산 반납이 안된 사항 이오니 뱅크로 전산을 넘겨주시기 바랍니다.",
-            "첨부된 Lot는 전산 반납은 되었으나, 현품이 미반납 상태 이오니 확인 바랍니다."});
-            this.comboBox1.Location = new System.Drawing.Point(0, 97);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(800, 29);
-            this.comboBox1.TabIndex = 1;
-            // 
-            // rtb_body
-            // 
-            this.rtb_body.Dock = System.Windows.Forms.DockStyle.Top;
-            this.rtb_body.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.rtb_body.Location = new System.Drawing.Point(0, 0);
-            this.rtb_body.Name = "rtb_body";
-            this.rtb_body.Size = new System.Drawing.Size(800, 97);
-            this.rtb_body.TabIndex = 0;
-            this.rtb_body.Text = "안녕하십니까?\n반납담당자님.\n";
+            this.btn_sendmail.AutoEllipsis = true;
+            this.btn_sendmail.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_sendmail.BackgroundImage")));
+            this.btn_sendmail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_sendmail.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_sendmail.ImageKey = "(없음)";
+            this.btn_sendmail.Location = new System.Drawing.Point(701, 203);
+            this.btn_sendmail.Name = "btn_sendmail";
+            this.btn_sendmail.Size = new System.Drawing.Size(96, 44);
+            this.btn_sendmail.TabIndex = 4;
+            this.btn_sendmail.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_sendmail.UseVisualStyleBackColor = true;
+            this.btn_sendmail.Click += new System.EventHandler(this.btn_sendmail_Click);
             // 
             // panel1
             // 
@@ -191,19 +174,49 @@
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             // 
-            // btn_sendmail
+            // tb_head
             // 
-            this.btn_sendmail.AutoEllipsis = true;
-            this.btn_sendmail.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_sendmail.BackgroundImage")));
-            this.btn_sendmail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btn_sendmail.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_sendmail.ImageKey = "(없음)";
-            this.btn_sendmail.Location = new System.Drawing.Point(701, 203);
-            this.btn_sendmail.Name = "btn_sendmail";
-            this.btn_sendmail.Size = new System.Drawing.Size(96, 44);
-            this.btn_sendmail.TabIndex = 3;
-            this.btn_sendmail.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_sendmail.UseVisualStyleBackColor = true;
+            this.tb_head.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tb_head.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_head.Location = new System.Drawing.Point(0, 0);
+            this.tb_head.Name = "tb_head";
+            this.tb_head.Size = new System.Drawing.Size(800, 32);
+            this.tb_head.TabIndex = 0;
+            this.tb_head.Text = "[DIEBANK]반납 자재 확인 바랍니다.";
+            // 
+            // rtb_body
+            // 
+            this.rtb_body.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rtb_body.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.rtb_body.Location = new System.Drawing.Point(0, 32);
+            this.rtb_body.Name = "rtb_body";
+            this.rtb_body.Size = new System.Drawing.Size(800, 76);
+            this.rtb_body.TabIndex = 5;
+            this.rtb_body.Text = "안녕하십니까?\n반납담당자님.\n";
+            // 
+            // cb_msg
+            // 
+            this.cb_msg.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cb_msg.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cb_msg.FormattingEnabled = true;
+            this.cb_msg.Items.AddRange(new object[] {
+            "첨부된 Lot는 전산 & 현품이 불일치하여 메일을 발송 하오니 확인 바랍니다.",
+            "첨부된 Lot는 전산 반납이 안된 사항 이오니 뱅크로 전산을 넘겨주시기 바랍니다.",
+            "첨부된 Lot는 전산 반납은 되었으나, 현품이 미반납 상태 이오니 확인 바랍니다."});
+            this.cb_msg.Location = new System.Drawing.Point(0, 108);
+            this.cb_msg.Name = "cb_msg";
+            this.cb_msg.Size = new System.Drawing.Size(800, 29);
+            this.cb_msg.TabIndex = 6;
+            // 
+            // rtb_tail
+            // 
+            this.rtb_tail.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rtb_tail.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold);
+            this.rtb_tail.Location = new System.Drawing.Point(0, 137);
+            this.rtb_tail.Name = "rtb_tail";
+            this.rtb_tail.Size = new System.Drawing.Size(800, 60);
+            this.rtb_tail.TabIndex = 7;
+            this.rtb_tail.Text = "감사합니다.";
             // 
             // Form_email_review
             // 
@@ -222,6 +235,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_splitlog_err_data)).EndInit();
@@ -238,11 +252,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cb_linecode;
-        private System.Windows.Forms.RichTextBox rtb_body;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.DataGridView dgv_splitlog_err_data;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.Button btn_sendmail;
+        private System.Windows.Forms.RichTextBox rtb_tail;
+        private System.Windows.Forms.ComboBox cb_msg;
+        private System.Windows.Forms.RichTextBox rtb_body;
+        private System.Windows.Forms.TextBox tb_head;
     }
 }
