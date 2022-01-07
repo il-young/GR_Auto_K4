@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1_Split_email));
             this.panel1 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.cb_linecode = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgv_mail = new System.Windows.Forms.DataGridView();
@@ -44,23 +44,22 @@
             // 
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.cb_linecode);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(406, 86);
+            this.panel1.Size = new System.Drawing.Size(406, 80);
             this.panel1.TabIndex = 0;
             // 
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button3.Location = new System.Drawing.Point(16, 51);
+            this.button3.Location = new System.Drawing.Point(264, 41);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(87, 29);
+            this.button3.Size = new System.Drawing.Size(130, 29);
             this.button3.TabIndex = 4;
-            this.button3.Text = "수 정";
+            this.button3.Text = "수 정&&추가";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -73,17 +72,6 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "조 회";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button1.Location = new System.Drawing.Point(140, 51);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 29);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "New";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // cb_linecode
             // 
@@ -111,10 +99,10 @@
             this.dgv_mail.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
             this.dgv_mail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv_mail.Location = new System.Drawing.Point(0, 86);
+            this.dgv_mail.Location = new System.Drawing.Point(0, 80);
             this.dgv_mail.Name = "dgv_mail";
             this.dgv_mail.RowTemplate.Height = 23;
-            this.dgv_mail.Size = new System.Drawing.Size(406, 418);
+            this.dgv_mail.Size = new System.Drawing.Size(406, 424);
             this.dgv_mail.TabIndex = 1;
             // 
             // Column1
@@ -129,6 +117,7 @@
             this.ClientSize = new System.Drawing.Size(406, 504);
             this.Controls.Add(this.dgv_mail);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1_Split_email";
@@ -146,7 +135,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ComboBox cb_linecode;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgv_mail;

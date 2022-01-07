@@ -125,11 +125,18 @@ namespace Bank_Host
 
         private void Form1_Split_email_Load(object sender, EventArgs e)
         {
+            LoadEmail();
+        }
+
+        private void LoadEmail()
+        {
+            cb_linecode.Items.Clear();
+
             List<string> temp = search_data("select LINE_CODE from TB_SPLIT_EMAIL");
 
-            for(int i = 0; i < temp.Count;i++)
+            for (int i = 0; i < temp.Count; i++)
             {
-                if(cb_linecode.Items.Contains(temp[i]) == false)
+                if (cb_linecode.Items.Contains(temp[i]) == false)
                     cb_linecode.Items.Add(temp[i]);
             }
         }
@@ -156,13 +163,14 @@ namespace Bank_Host
                 temp += dgv_mail.Rows[i].Cells[0].Value.ToString() + ";";
             }
 
-            int cnt = run_count(string.Format("select count(*) from TB_SPLIT_EMAIL with(nolock) where LINE_CODE={0}", cb_linecode.Text));
+            int cnt = run_count(string.Format("select count(*) from TB_SPLIT_EMAIL with(nolock) where LINE_CODE='{0}'", cb_linecode.Text));
 
             if(cnt == 0)
             {
                 if(MessageBox.Show("추가하시겠습니까?", "추가", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     run_sql_command(string.Format("insert into TB_SPLIT_EMAIL(LINE_CODE,MAIL_ID) values('{0}', '{1}')", cb_linecode.Text, temp));
+                    LoadEmail();
                 }
             }
             else
@@ -217,7 +225,8 @@ namespace Bank_Host
                 }
             }
             catch (Exception ex)
-            {                
+            {
+                return 0;
             }
 
             return res;

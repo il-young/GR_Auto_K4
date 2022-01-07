@@ -410,3 +410,5 @@ Bank_Host/obj/x64/Release/DesignTimeResolveAssemblyReferencesInput.cache
 .vs/Bank_Host/v15/Server/sqlite3/storage.ide
 .vs/Bank_Host/v15/Server/sqlite3/storage.ide-wal
 Bank_Host/obj/
+Bank_Host/bin/x64/Release/Log/
+Bank_Host/bin/
