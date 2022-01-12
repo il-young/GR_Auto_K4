@@ -8247,12 +8247,12 @@ namespace Bank_Host
             {
                 scandata[i] = scandata[i].Trim();
             }
-
+            
             for(int  i= 0; i < dgv_split_log.RowCount; i++)
             {
                 if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV  
                     dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0] &&   //LOT                    
-                    dgv_split_log.Rows[i].Cells[6].Value.ToString() != scandata[1])     //DCC   
+                    dgv_split_log.Rows[i].Cells[6].Value.ToString() == scandata[1])     //DCC   
                 {
                     if(dgv_split_log.Rows[i].Cells[1].Value.ToString() == scandata[6]) //cust
                     {
