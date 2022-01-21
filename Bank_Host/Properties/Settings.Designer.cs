@@ -106,5 +106,29 @@ namespace Bank_Host.Properties {
                 this["SplitLogMailTail"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PrintOffsetX {
+            get {
+                return ((int)(this["PrintOffsetX"]));
+            }
+            set {
+                this["PrintOffsetX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PrintOffsetY {
+            get {
+                return ((int)(this["PrintOffsetY"]));
+            }
+            set {
+                this["PrintOffsetY"] = value;
+            }
+        }
     }
 }

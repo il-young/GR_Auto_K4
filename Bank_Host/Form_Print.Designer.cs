@@ -62,13 +62,23 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox_receivedata = new System.Windows.Forms.TextBox();
             this.label_state = new System.Windows.Forms.Label();
+            this.OffsetX = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.OffsetY = new System.Windows.Forms.NumericUpDown();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OffsetY)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGreen;
+            this.panel1.Controls.Add(this.label13);
+            this.panel1.Controls.Add(this.OffsetY);
+            this.panel1.Controls.Add(this.label12);
+            this.panel1.Controls.Add(this.OffsetX);
             this.panel1.Controls.Add(this.pictureBox_bcr);
             this.panel1.Controls.Add(this.textBox_dcc);
             this.panel1.Controls.Add(this.textBox_coo);
@@ -428,6 +438,56 @@
             this.label_state.Text = "-";
             this.label_state.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // OffsetX
+            // 
+            this.OffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.OffsetX.Location = new System.Drawing.Point(718, 229);
+            this.OffsetX.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.OffsetX.Name = "OffsetX";
+            this.OffsetX.Size = new System.Drawing.Size(172, 43);
+            this.OffsetX.TabIndex = 9;
+            this.OffsetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OffsetX.ValueChanged += new System.EventHandler(this.OffsetX_ValueChanged);
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label12.Location = new System.Drawing.Point(542, 224);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(160, 50);
+            this.label12.TabIndex = 10;
+            this.label12.Text = "Offset X :";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label13.Location = new System.Drawing.Point(542, 287);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(160, 50);
+            this.label13.TabIndex = 12;
+            this.label13.Text = "Offset Y :";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // OffsetY
+            // 
+            this.OffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.OffsetY.Location = new System.Drawing.Point(718, 292);
+            this.OffsetY.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.OffsetY.Name = "OffsetY";
+            this.OffsetY.Size = new System.Drawing.Size(172, 43);
+            this.OffsetY.TabIndex = 11;
+            this.OffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OffsetY.ValueChanged += new System.EventHandler(this.OffsetY_ValueChanged);
+            // 
             // Form_Print
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -450,9 +510,12 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form_Print";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Print_FormClosing);
+            this.Load += new System.EventHandler(this.Form_Print_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OffsetY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,5 +556,9 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TextBox textBox_receivedata;
         private System.Windows.Forms.Label label_state;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown OffsetY;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.NumericUpDown OffsetX;
     }
 }

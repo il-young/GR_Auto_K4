@@ -392,7 +392,7 @@ namespace Bank_Host
             strbill1 += string.Format("({0}/{1})", DateTime.Now.Month, DateTime.Now.Day);
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = string.Format("^FO 17,70^A0N,80^FD{0}^FS\r\n", strbill1);
+            string P_SC_3 = string.Format("^FO{0},{1}^A0N,80^FD{2}^FS\r\n",17 + Properties.Settings.Default.PrintOffsetX,70 + Properties.Settings.Default.PrintOffsetY, strbill1);
             string P_SC_END = "^XZ\r\n";
 
             string P_OUT = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_END;
@@ -446,13 +446,13 @@ namespace Bank_Host
 
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = "^FO 690,50\r\n";
+            string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 50 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,3\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
             string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.CUST, AmkorBarcode.DQTY, strwfrqty);
             string strData1_2 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t", AmkorBarcode.CUST, AmkorBarcode.DQTY, strwfrqty);
 
-            strLine1 = string.Format("^FO 17,40^A0N,30^FD{0}^FS", strData1_1);
+            strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
 
             //if (BankHost_main.nScanMode == 1)
             //{
@@ -476,13 +476,13 @@ namespace Bank_Host
             else
                 strData2 = string.Format("LOT# : {0}", AmkorBarcode.Lot);
 
-            strLine2 = string.Format("^FO 17,75^A0N,30^FD{0}^FS", strData2);
+            strLine2 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS",17 + Properties.Settings.Default.PrintOffsetX, 75 + Properties.Settings.Default.PrintOffsetY, strData2);
 
             string strData3 = string.Format("DEVICE : {0}", AmkorBarcode.Device);
-            strLine3 = string.Format("^FO 17,110^A0N,30^FD{0}^FS", strData3);
+            strLine3 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 110 + Properties.Settings.Default.PrintOffsetY, strData3);
 
             string strData6 = string.Format("WAFER LOT NO : {0}", AmkorBarcode.Wafer_ID);
-            strLine6 = string.Format("^FO 17,145^AON,30^FD{0}^FS", strData6);
+            strLine6 = string.Format("^FO {0},{1}^AON,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData6);
             //string strData4 = string.Format("RCV-DATE : {0}     BILL# : {1}", AmkorBarcode.strRcvdate, AmkorBarcode.strBillNo);
             //strLine4 = string.Format("^FO 20,145^ADN,18,10^FD{0}^FS", strData4);
 
@@ -562,7 +562,7 @@ namespace Bank_Host
 
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = "^FO 690,50\r\n";
+            string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 50 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,3\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
             string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.strCust, AmkorBarcode.strDiettl, strwfrqty);
@@ -570,17 +570,17 @@ namespace Bank_Host
 
             if (BankHost_main.nScanMode == 1)
             {
-                strLine1 = string.Format("^FO 17,40^A0N,30^FD{0}^FS", strData1_1);
+                strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS",17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
             }
             else
             {
                 if (nIndex > 0 && nttl > 1)
                 {
-                    strLine1 = string.Format("^FO 17,40^A0N,30^FD{0}^FS", strData1_2);
+                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_2);
                 }
                 else
                 {
-                    strLine1 = string.Format("^FO 17,40^A0N,30^FD{0}^FS", strData1_1);
+                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
                 }
             }
 
@@ -590,13 +590,13 @@ namespace Bank_Host
             else
                 strData2 = string.Format("LOT# : {0}", AmkorBarcode.strLotNo);
 
-            strLine2 = string.Format("^FO 17,75^A0N,30^FD{0}^FS", strData2);
+            strLine2 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 75 + Properties.Settings.Default.PrintOffsetY, strData2);
 
             string strData3 = string.Format("DEVICE : {0}", AmkorBarcode.strDevice);
-            strLine3 = string.Format("^FO 17,110^A0N,30^FD{0}^FS", strData3);
+            strLine3 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 110 + Properties.Settings.Default.PrintOffsetY, strData3);
 
             string strData4 = string.Format("RCV-DATE : {0}     BILL# : {1}", AmkorBarcode.strRcvdate, AmkorBarcode.strBillNo);
-            strLine4 = string.Format("^FO 20,145^ADN,18,10^FD{0}^FS", strData4);
+            strLine4 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData4);
 
             string P_SC_END = "^XZ\r\n";
 
@@ -611,7 +611,7 @@ namespace Bank_Host
             else if(nType == 2)
             {
                 string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
-                strLine5 = string.Format("^FO 20,165^ADN,18,10^FD{0}^FS", strData5);
+                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
                 dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5;
             }
@@ -623,17 +623,17 @@ namespace Bank_Host
                     AmkorBarcode.strLotType = "PRO";
 
                 string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
-                strLine5 = string.Format("^FO 20,165^ADN,18,10^FD{0}^FS", strData5);
+                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
                 string strData6 = string.Format("WAFER LOT NO : {0}", AmkorBarcode.strWaferLotNo);
-                strLine6 = string.Format("^FO 20,185^ADN,18,10^FD{0}^FS", strData6);
+                strLine6 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 185 + Properties.Settings.Default.PrintOffsetY, strData6);
 
                 dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5 + strLine6;
             }
             else if (nType == 4)
             {
                 string strData5 = string.Format("COO : {0}", AmkorBarcode.strCoo);
-                strLine5 = string.Format("^FO 20,165^ADN,18,10^FD{0}^FS", strData5);
+                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
                 dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5;
             }
@@ -672,18 +672,18 @@ namespace Bank_Host
 
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = "^FO 630,2\r\n";
+            string P_SC_3 = string.Format("^FO {0},{1}\r\n", 630 + Properties.Settings.Default.PrintOffsetX, 2 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,2\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
             string strData1_1 = string.Format("LOT# : {0}       QTY : {1}  /  {2}", AmkorBarcode.strLotNo, AmkorBarcode.strDiettl, strwfrqty);
-            strLine1 = string.Format("^FO 75,20^A0N,28^FD{0}^FS", strData1_1);
+            strLine1 = string.Format("^FO {0},{1}^A0N,28^FD{2}^FS", 75 + Properties.Settings.Default.PrintOffsetX, 20 + Properties.Settings.Default.PrintOffsetY, strData1_1);
 
             //string strData2 = "";
             //strData2 = string.Format("QTY : {0}  /  {1}", AmkorBarcode.strDiettl, strwfrqty);
             //strLine2 = string.Format("^FO 97,38^A0N,25^FD{0}^FS", strData2);
 
             string strData3 = string.Format("CUST : {0}         DEVICE : {1}", AmkorBarcode.strCust, AmkorBarcode.strDevice);
-            strLine3 = string.Format("^FO 75,60^A0N,20^FD{0}^FS", strData3);
+            strLine3 = string.Format("^FO {0},{1}^A0N,20^FD{2}^FS", 75 + Properties.Settings.Default.PrintOffsetX, 60 + Properties.Settings.Default.PrintOffsetY, strData3);
 
             string P_SC_END = "^XZ\r\n";
 
@@ -933,6 +933,24 @@ namespace Bank_Host
             {
                 textBox_device.Focus();
             }
+        }
+
+        private void OffsetX_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.PrintOffsetX = (int)OffsetX.Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void OffsetY_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.PrintOffsetY = (int)OffsetY.Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Form_Print_Load(object sender, EventArgs e)
+        {
+            OffsetX.Value = Properties.Settings.Default.PrintOffsetX;
+            OffsetY.Value = Properties.Settings.Default.PrintOffsetY;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
