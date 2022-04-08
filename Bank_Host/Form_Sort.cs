@@ -5073,10 +5073,10 @@ namespace Bank_Host
                 temp.Lot = str_temp[0];
                 temp.DCC = str_temp[1];
                 temp.Device = str_temp[2];
-                temp.DQTY = int.Parse(str_temp[3]).ToString();
-                temp.WQTY = int.Parse(str_temp[4]).ToString();
-                temp.AMKOR_ID = int.Parse(str_temp[5]).ToString();
-                temp.CUST = int.Parse(str_temp[6]).ToString();
+                temp.DQTY = string.Format("{0:%D10}",str_temp[3]);
+                temp.WQTY = string.Format("{0:%D5}",str_temp[4]);
+                temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5]);
+                temp.CUST = string.Format("{0:D10}",str_temp[6]);
                 temp.Wafer_ID = "";
 
                 if (check_duplicate(temp.AMKOR_ID) == false)
@@ -5111,10 +5111,10 @@ namespace Bank_Host
                 temp.Lot = str_temp[0];
                 temp.DCC = str_temp[1];
                 temp.Device = str_temp[2];
-                temp.DQTY = int.Parse(str_temp[3]).ToString();
-                temp.WQTY = int.Parse(str_temp[4]).ToString();
-                temp.AMKOR_ID = int.Parse(str_temp[5]).ToString();
-                temp.CUST = int.Parse(str_temp[6]).ToString();
+                temp.DQTY = string.Format("{0:%D10}", str_temp[3]);
+                temp.WQTY = string.Format("{0:%D5}", str_temp[4]);
+                temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5]);
+                temp.CUST = string.Format("{0:D10}", str_temp[6]);
                 temp.Wafer_ID = str_temp[7];
 
                 if (check_duplicate(temp.AMKOR_ID) == false)
@@ -8861,17 +8861,18 @@ namespace Bank_Host
 
                 ///작업자 사번 입력 
                 Form_Input Frm_Input = new Form_Input();
-
-                Frm_Input.Fnc_Init(nSel);
-                Frm_Input.ShowDialog();
+                
+                //Frm_Input.Fnc_Init(nSel);
+                Fnc_Information_Init2();
+                //Frm_Input.ShowDialog();
 
                 if (BankHost_main.strOperator == "")
                     return;
 
                 label_opinfo.Text = BankHost_main.strOperator;
 
-                strGetJobName = strGetJobName + ".txt";
-                string strName = strGetJobName;
+                strSelJobName = strSelJobName + ".txt";
+                string strName = strSelJobName;
                 if (strName.Length > 0)
                 {
                     string str = strName.Substring(strName.Length - 3, 3);
@@ -9959,6 +9960,7 @@ namespace Bank_Host
             }
             
         }
+
         public void Fnc_Information_Init2()
         {
             Form_Input Frm_Input = new Form_Input();

@@ -428,12 +428,12 @@ namespace Bank_Host
 
             if (BankHost_main.nScanMode == 1)
             {
-                strwfrqty = AmkorBarcode.WQTY;
+                strwfrqty = int.Parse(AmkorBarcode.WQTY).ToString();
             }
             else
             {
 
-                strwfrqty = AmkorBarcode.WQTY;
+                strwfrqty = int.Parse(AmkorBarcode.WQTY).ToString();
                 //if (nIndex > 0 && nttl > 1)
                 //{
                 //    strwfrqty = AmkorBarcode.WQTY;
@@ -449,8 +449,8 @@ namespace Bank_Host
             string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 50 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,3\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
-            string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.CUST, AmkorBarcode.DQTY, strwfrqty);
-            string strData1_2 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t", AmkorBarcode.CUST, AmkorBarcode.DQTY, strwfrqty);
+            string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", int.Parse(AmkorBarcode.CUST).ToString(), int.Parse(AmkorBarcode.DQTY).ToString(), strwfrqty);
+            string strData1_2 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t", int.Parse(AmkorBarcode.CUST).ToString(), int.Parse(AmkorBarcode.DQTY).ToString(), strwfrqty);
 
             strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
 
@@ -472,7 +472,7 @@ namespace Bank_Host
 
             string strData2 = "";
             if (AmkorBarcode.DCC != "")
-                strData2 = string.Format("LOT# : {0}  /  {1}", AmkorBarcode.Lot, AmkorBarcode.DCC);
+                strData2 = string.Format("LOT# : {0}  /  {1}",AmkorBarcode.Lot, AmkorBarcode.DCC);
             else
                 strData2 = string.Format("LOT# : {0}", AmkorBarcode.Lot);
 

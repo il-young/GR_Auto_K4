@@ -273,9 +273,31 @@
             this.label42 = new System.Windows.Forms.Label();
             this.tb_split_tot_lot = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.DGVQualcommReturn = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button11 = new System.Windows.Forms.Button();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button14 = new System.Windows.Forms.Button();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -311,6 +333,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_split_log)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVQualcommReturn)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl_Sort
@@ -323,6 +351,7 @@
             this.tabControl_Sort.Controls.Add(this.tabPage6);
             this.tabControl_Sort.Controls.Add(this.tabPage7);
             this.tabControl_Sort.Controls.Add(this.tabPage8);
+            this.tabControl_Sort.Controls.Add(this.tabPage9);
             this.tabControl_Sort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl_Sort.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tabControl_Sort.ImageList = this.imageList1;
@@ -2313,7 +2342,7 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.dataGridView_label);
             // 
-            // splitContainer1.Panel2
+            // 
             // 
             this.splitContainer1.Panel2.Controls.Add(this.button10);
             this.splitContainer1.Panel2.Controls.Add(this.label40);
@@ -3129,6 +3158,18 @@
             this.label43.TabIndex = 0;
             this.label43.Text = "Total Lots : ";
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.splitContainer2);
+            this.tabPage9.ImageIndex = 8;
+            this.tabPage9.Location = new System.Drawing.Point(4, 29);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(1542, 1028);
+            this.tabPage9.TabIndex = 8;
+            this.tabPage9.Text = "Qualcomm Return";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -3141,10 +3182,232 @@
             this.imageList1.Images.SetKeyName(5, "pngwing.com.png");
             this.imageList1.Images.SetKeyName(6, "return.png");
             this.imageList1.Images.SetKeyName(7, "email_setting.png");
+            this.imageList1.Images.SetKeyName(8, "Qualcomm.png");
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.DGVQualcommReturn);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.button11);
+            this.splitContainer2.Panel2.Controls.Add(this.label47);
+            this.splitContainer2.Panel2.Controls.Add(this.label48);
+            this.splitContainer2.Panel2.Controls.Add(this.label49);
+            this.splitContainer2.Panel2.Controls.Add(this.label50);
+            this.splitContainer2.Panel2.Controls.Add(this.label51);
+            this.splitContainer2.Panel2.Controls.Add(this.label52);
+            this.splitContainer2.Panel2.Controls.Add(this.button12);
+            this.splitContainer2.Panel2.Controls.Add(this.button13);
+            this.splitContainer2.Panel2.Controls.Add(this.textBox2);
+            this.splitContainer2.Panel2.Controls.Add(this.button14);
+            this.splitContainer2.Size = new System.Drawing.Size(1536, 1022);
+            this.splitContainer2.SplitterDistance = 1322;
+            this.splitContainer2.TabIndex = 4;
+            // 
+            // DGVQualcommReturn
+            // 
+            this.DGVQualcommReturn.AllowUserToAddRows = false;
+            this.DGVQualcommReturn.AllowUserToOrderColumns = true;
+            this.DGVQualcommReturn.AllowUserToResizeColumns = false;
+            this.DGVQualcommReturn.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVQualcommReturn.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn11,
+            this.dataGridViewTextBoxColumn19,
+            this.dataGridViewTextBoxColumn20,
+            this.dataGridViewTextBoxColumn21,
+            this.dataGridViewTextBoxColumn22,
+            this.dataGridViewTextBoxColumn23,
+            this.dataGridViewTextBoxColumn24,
+            this.dataGridViewTextBoxColumn25});
+            this.DGVQualcommReturn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DGVQualcommReturn.Location = new System.Drawing.Point(0, 0);
+            this.DGVQualcommReturn.MultiSelect = false;
+            this.DGVQualcommReturn.Name = "DGVQualcommReturn";
+            this.DGVQualcommReturn.ReadOnly = true;
+            this.DGVQualcommReturn.RowTemplate.Height = 23;
+            this.DGVQualcommReturn.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DGVQualcommReturn.Size = new System.Drawing.Size(1322, 1022);
+            this.DGVQualcommReturn.TabIndex = 1;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.HeaderText = "No";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn19
+            // 
+            this.dataGridViewTextBoxColumn19.HeaderText = "LOT";
+            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            this.dataGridViewTextBoxColumn19.ReadOnly = true;
+            this.dataGridViewTextBoxColumn19.Width = 150;
+            // 
+            // dataGridViewTextBoxColumn20
+            // 
+            this.dataGridViewTextBoxColumn20.HeaderText = "Device";
+            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
+            this.dataGridViewTextBoxColumn20.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn21
+            // 
+            this.dataGridViewTextBoxColumn21.HeaderText = "Die_Qty";
+            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
+            this.dataGridViewTextBoxColumn21.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn22
+            // 
+            this.dataGridViewTextBoxColumn22.HeaderText = "WFT_QTY";
+            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
+            this.dataGridViewTextBoxColumn22.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn23
+            // 
+            this.dataGridViewTextBoxColumn23.HeaderText = "AMKOR_ID";
+            this.dataGridViewTextBoxColumn23.Name = "dataGridViewTextBoxColumn23";
+            this.dataGridViewTextBoxColumn23.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn24
+            // 
+            this.dataGridViewTextBoxColumn24.HeaderText = "CUST_CODE";
+            this.dataGridViewTextBoxColumn24.Name = "dataGridViewTextBoxColumn24";
+            this.dataGridViewTextBoxColumn24.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn25
+            // 
+            this.dataGridViewTextBoxColumn25.HeaderText = "Wafer_lot";
+            this.dataGridViewTextBoxColumn25.Name = "dataGridViewTextBoxColumn25";
+            this.dataGridViewTextBoxColumn25.ReadOnly = true;
+            // 
+            // button11
+            // 
+            this.button11.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button11.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button11.Location = new System.Drawing.Point(0, 852);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(210, 58);
+            this.button11.TabIndex = 21;
+            this.button11.Text = "초기화";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label47.Location = new System.Drawing.Point(12, 393);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(112, 45);
+            this.label47.TabIndex = 20;
+            this.label47.Text = "Wafer";
+            // 
+            // label48
+            // 
+            this.label48.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label48.ForeColor = System.Drawing.Color.Blue;
+            this.label48.Location = new System.Drawing.Point(3, 343);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(202, 50);
+            this.label48.TabIndex = 19;
+            this.label48.Text = "0000";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label49.Location = new System.Drawing.Point(12, 279);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(71, 45);
+            this.label49.TabIndex = 18;
+            this.label49.Text = "Die";
+            // 
+            // label50
+            // 
+            this.label50.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label50.ForeColor = System.Drawing.Color.Blue;
+            this.label50.Location = new System.Drawing.Point(3, 229);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(202, 50);
+            this.label50.TabIndex = 17;
+            this.label50.Text = "0000";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label51.Location = new System.Drawing.Point(12, 173);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(68, 45);
+            this.label51.TabIndex = 16;
+            this.label51.Text = "Lot";
+            // 
+            // label52
+            // 
+            this.label52.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label52.ForeColor = System.Drawing.Color.Blue;
+            this.label52.Location = new System.Drawing.Point(3, 123);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(202, 50);
+            this.label52.TabIndex = 15;
+            this.label52.Text = "0000";
+            // 
+            // button12
+            // 
+            this.button12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button12.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.button12.Image = ((System.Drawing.Image)(resources.GetObject("button12.Image")));
+            this.button12.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button12.Location = new System.Drawing.Point(0, 35);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(210, 74);
+            this.button12.TabIndex = 14;
+            this.button12.Text = "   출력";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            this.button13.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button13.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button13.Location = new System.Drawing.Point(0, 910);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(210, 58);
+            this.button13.TabIndex = 13;
+            this.button13.Text = "종  료";
+            this.button13.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox2.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.textBox2.Location = new System.Drawing.Point(0, 0);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(210, 35);
+            this.textBox2.TabIndex = 12;
+            // 
+            // button14
+            // 
+            this.button14.BackColor = System.Drawing.Color.White;
+            this.button14.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button14.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button14.FlatAppearance.BorderSize = 0;
+            this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button14.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button14.Image = ((System.Drawing.Image)(resources.GetObject("button14.Image")));
+            this.button14.Location = new System.Drawing.Point(0, 968);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(210, 54);
+            this.button14.TabIndex = 11;
+            this.button14.UseVisualStyleBackColor = false;
             // 
             // Form_Sort
             // 
@@ -3204,6 +3467,13 @@
             this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVQualcommReturn)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3412,5 +3682,27 @@
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.TextBox tb_com_lots;
         private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.DataGridView DGVQualcommReturn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn23;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn25;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button button14;
     }
 }
