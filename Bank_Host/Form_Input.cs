@@ -31,6 +31,12 @@ namespace Bank_Host
                 if (nMode == 0 || nMode == 2 || nMode == 99)
                     return;
 
+                if(nMode == 7)
+                {
+                    button_complete_Click(sender, e);
+                    return;
+                }
+
                 string strsid = textBox_sid.Text;
 
                 var dt = BankHost_main.SQL_GetUserDB(strsid);
@@ -100,6 +106,16 @@ namespace Bank_Host
 
                 comboBox_cust.Enabled = false;
                 dataGridView_bill.Enabled = true;
+                textBox_bill.Enabled = false;
+            }
+            else if(nIndex == 7)
+            {
+                label3.Enabled = false;
+                label4.Enabled = false;
+                label5.Enabled = false;
+
+                comboBox_cust.Enabled = false;
+                dataGridView_bill.Enabled = false;
                 textBox_bill.Enabled = false;
             }
             else 
@@ -343,7 +359,7 @@ namespace Bank_Host
 
         private void button_complete_Click(object sender, EventArgs e)
         {
-            if(textBox_sid.Text == "" && nMode == 0)
+            if(textBox_sid.Text == "" && (nMode == 0 || nMode == 7))
             {
                 MessageBox.Show("사번을 입력 해 주십시오");
                 textBox_sid.Focus();
@@ -452,7 +468,7 @@ namespace Bank_Host
                 string strname = dt.Rows[0]["NAME"].ToString(); strname = strname.Trim();
                 string strgrade = dt.Rows[0]["GRADE"].ToString(); strname = strname.Trim();
 
-                if(nMode == 0 || nMode == 1)
+                if(nMode == 0 || nMode == 1 ||nMode == 7)
                 {
                     if (strgrade != "A")
                     {
@@ -482,6 +498,11 @@ namespace Bank_Host
         {
             if(e.KeyChar == 13)
                 button_complete_Click(sender, e);
+        }
+
+        private void textBox_sid_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

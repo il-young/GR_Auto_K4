@@ -274,9 +274,6 @@
             this.tb_split_tot_lot = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.DGVQualcommReturn = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -298,6 +295,21 @@
             this.button13 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button14 = new System.Windows.Forms.Button();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.dgv_scrap = new System.Windows.Forms.DataGridView();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.tb_ScrapSt = new System.Windows.Forms.TextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.edt = new System.Windows.Forms.DateTimePicker();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btn_search = new System.Windows.Forms.Button();
+            this.sdt = new System.Windows.Forms.DateTimePicker();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button15 = new System.Windows.Forms.Button();
+            this.tb_input = new System.Windows.Forms.TextBox();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -339,6 +351,11 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVQualcommReturn)).BeginInit();
+            this.tabPage10.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).BeginInit();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl_Sort
@@ -352,6 +369,7 @@
             this.tabControl_Sort.Controls.Add(this.tabPage7);
             this.tabControl_Sort.Controls.Add(this.tabPage8);
             this.tabControl_Sort.Controls.Add(this.tabPage9);
+            this.tabControl_Sort.Controls.Add(this.tabPage10);
             this.tabControl_Sort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl_Sort.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tabControl_Sort.ImageList = this.imageList1;
@@ -2342,7 +2360,7 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.dataGridView_label);
             // 
-            // 
+            // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.button10);
             this.splitContainer1.Panel2.Controls.Add(this.label40);
@@ -3170,24 +3188,6 @@
             this.tabPage9.Text = "Qualcomm Return";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "fileopen_48.bmp");
-            this.imageList1.Images.SetKeyName(1, "Sort_48.bmp");
-            this.imageList1.Images.SetKeyName(2, "ringscan_48.bmp");
-            this.imageList1.Images.SetKeyName(3, "History_40.png");
-            this.imageList1.Images.SetKeyName(4, "print.png");
-            this.imageList1.Images.SetKeyName(5, "pngwing.com.png");
-            this.imageList1.Images.SetKeyName(6, "return.png");
-            this.imageList1.Images.SetKeyName(7, "email_setting.png");
-            this.imageList1.Images.SetKeyName(8, "Qualcomm.png");
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3409,6 +3409,154 @@
             this.button14.TabIndex = 11;
             this.button14.UseVisualStyleBackColor = false;
             // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.panel5);
+            this.tabPage10.ImageIndex = 9;
+            this.tabPage10.Location = new System.Drawing.Point(4, 29);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(1542, 1028);
+            this.tabPage10.TabIndex = 9;
+            this.tabPage10.Text = "Scrap";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.dgv_scrap);
+            this.panel5.Controls.Add(this.panel9);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 3);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1536, 1022);
+            this.panel5.TabIndex = 0;
+            // 
+            // dgv_scrap
+            // 
+            this.dgv_scrap.AllowUserToAddRows = false;
+            this.dgv_scrap.AllowUserToDeleteRows = false;
+            this.dgv_scrap.AllowUserToResizeRows = false;
+            this.dgv_scrap.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_scrap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_scrap.Location = new System.Drawing.Point(0, 0);
+            this.dgv_scrap.Name = "dgv_scrap";
+            this.dgv_scrap.ReadOnly = true;
+            this.dgv_scrap.RowTemplate.Height = 23;
+            this.dgv_scrap.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgv_scrap.Size = new System.Drawing.Size(1330, 1022);
+            this.dgv_scrap.TabIndex = 2;
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.tb_input);
+            this.panel9.Controls.Add(this.button15);
+            this.panel9.Controls.Add(this.tb_ScrapSt);
+            this.panel9.Controls.Add(this.progressBar1);
+            this.panel9.Controls.Add(this.edt);
+            this.panel9.Controls.Add(this.pictureBox2);
+            this.panel9.Controls.Add(this.btn_search);
+            this.panel9.Controls.Add(this.sdt);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel9.Location = new System.Drawing.Point(1330, 0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(206, 1022);
+            this.panel9.TabIndex = 1;
+            // 
+            // tb_ScrapSt
+            // 
+            this.tb_ScrapSt.Font = new System.Drawing.Font("맑은 고딕", 8F);
+            this.tb_ScrapSt.Location = new System.Drawing.Point(6, 97);
+            this.tb_ScrapSt.Name = "tb_ScrapSt";
+            this.tb_ScrapSt.ReadOnly = true;
+            this.tb_ScrapSt.Size = new System.Drawing.Size(192, 22);
+            this.tb_ScrapSt.TabIndex = 6;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(6, 125);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(192, 23);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 5;
+            // 
+            // edt
+            // 
+            this.edt.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.edt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.edt.Location = new System.Drawing.Point(35, 56);
+            this.edt.Name = "edt";
+            this.edt.Size = new System.Drawing.Size(163, 35);
+            this.edt.TabIndex = 4;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(6, 56);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(23, 35);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            // 
+            // btn_search
+            // 
+            this.btn_search.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_search.Location = new System.Drawing.Point(6, 154);
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(192, 39);
+            this.btn_search.TabIndex = 2;
+            this.btn_search.Text = "조  회";
+            this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            // 
+            // sdt
+            // 
+            this.sdt.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sdt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.sdt.Location = new System.Drawing.Point(6, 15);
+            this.sdt.Name = "sdt";
+            this.sdt.Size = new System.Drawing.Size(163, 35);
+            this.sdt.TabIndex = 0;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "fileopen_48.bmp");
+            this.imageList1.Images.SetKeyName(1, "Sort_48.bmp");
+            this.imageList1.Images.SetKeyName(2, "ringscan_48.bmp");
+            this.imageList1.Images.SetKeyName(3, "History_40.png");
+            this.imageList1.Images.SetKeyName(4, "print.png");
+            this.imageList1.Images.SetKeyName(5, "pngwing.com.png");
+            this.imageList1.Images.SetKeyName(6, "return.png");
+            this.imageList1.Images.SetKeyName(7, "email_setting.png");
+            this.imageList1.Images.SetKeyName(8, "Qualcomm.png");
+            this.imageList1.Images.SetKeyName(9, "trashcan.png");
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // button15
+            // 
+            this.button15.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button15.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.button15.Image = ((System.Drawing.Image)(resources.GetObject("button15.Image")));
+            this.button15.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button15.Location = new System.Drawing.Point(0, 948);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(206, 74);
+            this.button15.TabIndex = 15;
+            this.button15.Text = "   출력";
+            this.button15.UseVisualStyleBackColor = true;
+            // 
+            // tb_input
+            // 
+            this.tb_input.Location = new System.Drawing.Point(6, 199);
+            this.tb_input.Name = "tb_input";
+            this.tb_input.Size = new System.Drawing.Size(192, 27);
+            this.tb_input.TabIndex = 16;
+            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -3424,6 +3572,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form_Sort";
+            this.Load += new System.EventHandler(this.Form_Sort_Load);
             this.tabControl_Sort.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).EndInit();
@@ -3474,6 +3623,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVQualcommReturn)).EndInit();
+            this.tabPage10.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).EndInit();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3704,5 +3859,17 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.DataGridView dgv_scrap;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.DateTimePicker edt;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button btn_search;
+        private System.Windows.Forms.DateTimePicker sdt;
+        private System.Windows.Forms.TextBox tb_ScrapSt;
+        private System.Windows.Forms.TextBox tb_input;
+        private System.Windows.Forms.Button button15;
     }
 }

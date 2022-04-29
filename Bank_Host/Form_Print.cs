@@ -246,7 +246,7 @@ namespace Bank_Host
                 strCovert_dcc = temp.DCC;
             }
 
-            strBarcodeInfo = string.Format("{0} :{1} :{2} :{3}:{4}:{5}:{6}:{7}", temp.Lot, strCovert_dcc, temp.Device, strCovert_dieqty, strCovert_wfrqty, strCovert_amkorid, strCovert_cust, temp.Wafer_ID);
+            strBarcodeInfo = string.Format("{0}:{1}:{2}:{3}:{4}:{5}:{6}:{7}", temp.Lot, strCovert_dcc, temp.Device, strCovert_dieqty, strCovert_wfrqty, strCovert_amkorid, strCovert_cust, temp.Wafer_ID);
 
             if (pictureBox_bcr.Image != null)
             {
@@ -266,6 +266,10 @@ namespace Bank_Host
 
             string strPrint = "";
 
+            if(strBarcodeInfo.Substring(strBarcodeInfo.Length-1, 1) ==":")
+            {
+                strBarcodeInfo = strBarcodeInfo.Substring(0, strBarcodeInfo.Length-1);
+            }
 
             strPrint = Fnc_Get_PrintFormat(1, strBarcodeInfo, temp);
 

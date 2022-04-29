@@ -16,6 +16,10 @@ using System.Diagnostics;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualBasic.Devices;
 
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Data.SqlClient;
+
 namespace Bank_Host
 {
     public partial class Form_Sort : Form
@@ -3518,6 +3522,11 @@ namespace Bank_Host
                     tabControl_Sort.SelectedIndex = 5;
                     return;
                 }
+            }
+            else if(n== 9)
+            {
+                sdt.Value = DateTime.Now.AddDays(-1);
+                edt.Value = DateTime.Now;
             }
         }
 
@@ -8198,7 +8207,7 @@ namespace Bank_Host
 
         private void comboBox_mode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
                 if(label_cust.Text != "ALL")
                     comboBox_Name.Focus();
@@ -8211,14 +8220,14 @@ namespace Bank_Host
 
         private void comboBox_Name_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == System.Windows.Forms.Keys.Enter)
                 button1_Click(sender, e);
         }
 
         string Split_Scandata = "";
         private void tb_split_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if(e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
                 Split_Scandata = tb_split.Text;
 
@@ -8777,6 +8786,383 @@ namespace Bank_Host
 
         
 
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            if (bDownloadComp == false)
+            {
+                Thread ExcelDownThread = new Thread(ScrapExcelDown);
+                ExcelDownThread.Start();                
+            }
+        }
+
+        private void ExcelImport()
+        {
+            try
+            {
+                SetProgressba("Excel Data를 Memory에 복사 중 입니다.", 1);
+                Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+                Workbook workbook = application.Workbooks.Open(Filename: System.Windows.Forms.Application.StartupPath + "\\SCRAP\\" + file_name);
+                Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+                application.Visible = true;
+                SetProgressba("Excel Data를 Memory에 복사 완료 하였습니다.", 2);
+
+                Range range = worksheet1.UsedRange;
+                double dd = 0.0;
+                List<string> data = new List<string>();
+                string excelrow = "";
+                
+                progressBar1.Maximum = range.Rows.Count * range.Columns.Count;
+
+                for (int i = 1; i <= range.Rows.Count-2; ++i)
+                {
+                    excelrow = "";
+
+                    for (int j = 1; j <= range.Columns.Count; ++j)
+                    {   
+                        SetProgressba("Excel Data 정리 중입니다 : "+ (range.Cells[i, j] as Range).Value2, i*j);
+
+                        //if (j == 13 || j == 14 || j == 26)
+                        //{
+                        //    if ((range.Cells[i, j] as Range).Value2 != null)
+                        //    {
+                        //        if (double.TryParse((range.Cells[i, j] as Range).Value2.ToString(), out dd))
+                        //            excelrow += ((range.Cells[i, j] as Range).Value2 != null ? DateTime.FromOADate(dd) + "," : ",");
+                        //        else
+                        //            excelrow += ((range.Cells[i, j] as Range).Value2 != null ? (range.Cells[i, j] as Range).Value2.ToString() + "," : ",");
+                        //    }
+                        //}
+                        //else 
+                        if(j== 9)
+                        {
+                            if (double.TryParse((range.Cells[i, j] as Range).Value2.ToString(), out dd))
+                                excelrow += ((range.Cells[i, j] as Range).Value2 != null ? DateTime.FromOADate(dd) + "," : ",");
+                            else
+                                excelrow += ((range.Cells[i, j] as Range).Value2 != null ? (range.Cells[i, j] as Range).Value2.ToString() + "," : ",");
+                        }
+                        else if (j != range.Columns.Count)
+                            excelrow += ((range.Cells[i, j] as Range).Value2 != null ? (range.Cells[i, j] as Range).Value2.ToString() + "," : ",");
+                        else
+                            excelrow += ((range.Cells[i, j] as Range).Value2 != null ? (range.Cells[i, j] as Range).Value2.ToString() : "");
+                    }
+
+                    data.Add(excelrow);
+                }
+
+                /*메모리 할당 해제*/
+                Marshal.ReleaseComObject(range);
+                Marshal.ReleaseComObject(worksheet1);
+                workbook.Close();
+                Marshal.ReleaseComObject(workbook);
+                application.Quit();
+                Marshal.ReleaseComObject(application);
+
+                string[] datatemp;
+                string sqlstr = "";
+                int DBrowcount = -1;
+                string datastr = "";
+                int next_no = int.Parse(SearchData("select max(No) from TB_SCRAP2").Rows[0][0].ToString()) + 1;
+
+                progressBar1.Maximum = data.Count;
+
+                for (int i = 1; i < data.Count ; i++)
+                {                    
+                    datatemp = data[i].Split(',');
+                    SetProgressba("Database와 비교 중입니다 : " + datatemp[3], i);
+
+                    sqlstr = string.Format("select count(*) from TB_SCRAP2 with(NOLOCK) where [DEVICE]='{0}' and [LOT]='{1}' and [DIE]='{2}' and [WAFER]='{3}' and [CUST]='{4}'",
+                        datatemp[2], datatemp[4], datatemp[5], datatemp[6], datatemp[1]);
+
+                    DBrowcount = run_count(sqlstr);
+
+                    if (DBrowcount == 0)
+                    {
+                        datastr = "";
+
+                        for (int j = 0; j < datatemp.Length; j++)
+                        {
+                            if (j == 6 && j == 5)
+                            {
+                                datastr += string.Format("{0},", datatemp[j].Substring(0, 1) == "'" ? datatemp[j].Substring(1, datatemp[j].Length - 1) : datatemp[j]);
+                            }
+                            else
+                            {
+                                if (datatemp[j] != "")
+                                    datastr += string.Format("'{0}',", datatemp[j].Substring(0, 1) == "'" ? datatemp[j].Substring(1, datatemp[j].Length - 1) : datatemp[j]);
+                                else
+                                    datastr += string.Format("'{0}',", datatemp[j]);
+                            }
+                        }
+
+                        SetProgressba("Database 삽입 중", i);
+
+                        sqlstr = string.Format("Set IDENTITY_INSERT TB_SCRAP2 ON; Insert into TB_SCRAP2 " +
+                            "(No,[DATE],[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[LOCATION],[REQUEST_ON],[REQUEST_BY],[CERITIFICATE],[1ST],[2ND],[3RD]) " +
+                            "values({0},getdate(),{1}'','','') Set IDENTITY_INSERT TB_SCRAP2 OFF;", next_no++, datastr);
+                        run_sql_command(sqlstr);
+                    }
+                }
+                                
+                SetProgressba("Data 검증 완료", progressBar1.Maximum);
+                datastr = "";
+
+                //datastr = string.Format("[CHG_DATE_TIME] >= {0}", sdt.Value.ToString("yyyy"));
+               
+
+                datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[LOCATION],[CERITIFICATE],[1st],[2nd],[3rd] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}'", sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"));
+
+                dgv_scrap.DataSource = SearchData(datastr);
+
+                dgv_scrap.Columns[1].Width = 50;
+                dgv_scrap.Columns[4].Width = 130;
+                dgv_scrap.Columns[5].Width = 40;
+                dgv_scrap.Columns[6].Width = 40;
+                dgv_scrap.Columns[8].Width = 30;
+
+                bDownloadComp = false;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        private System.Data.DataTable SearchData(string sql)
+        {
+            System.Data.DataTable dt = new System.Data.DataTable();
+
+            try
+            {
+                using (SqlConnection c = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                {
+                    c.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, c))
+                    {
+                        using (SqlDataAdapter adt = new SqlDataAdapter(cmd))
+                        {
+                            adt.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dt;
+        }
+
+        private ChromeDriverService _driverService = null;
+        private ChromeOptions _options = null;
+        private ChromeDriver _driver = null;
+        string sUserPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        string sDownloadPath = "";
+        string file_path = "";
+        string file_name = "";
+        string sScrapFileDIR = System.Windows.Forms.Application.StartupPath + "\\SCRAP";
+        bool bDownloadComp = false;
+
+
+        private void ScrapExcelDown()
+        {
+            string id = "yblim";
+            string pw = "amkor9000";
+            string badge = "176524";
+            sDownloadPath = Path.Combine(sUserPath, "Downloads");
+
+            try
+            {
+                bDownloadComp = false;
+
+                _driverService = ChromeDriverService.CreateDefaultService();
+                _driverService.HideCommandPromptWindow = true;
+
+                _options = new ChromeOptions();
+                _options.AddArgument("disable-gpu");
+
+                _driver = new ChromeDriver(_driverService, _options);
+                _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                progressBar1.Maximum = 15;
+                progressBar1.Value = 1;
+                
+                SetProgressba("eMes에 접속 중입니다.", 1);                                           
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                SetProgressba("Login 중입니다.", 2);
+
+                _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
+
+                //SetProgressba("시작 날짜 설정", 4);
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[1]").Clear();   // 시작 날짜
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[1]").SendKeys(sdt.Value.ToString("yyyyMMdd"));
+
+                //SetProgressba("종료 날짜 설정", 5);
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[3]").Clear();   // 종료 날짜
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[3]").SendKeys(edt.Value.ToString("yyyyMMdd"));
+
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[4]").Clear();   // 종료 시간
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[4]").SendKeys("235959");
+
+
+                //SetProgressba("ComboBox 설정", 6);
+                //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[4]/p/font/select").SendKeys("SCRAP"); // ComboBox 설정
+
+                SetProgressba("데이터 조회 중입니다.", 7);
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[2]/p/a/img").Click();    //Find 버튼 누름
+                
+
+                SetProgressba("Excel File Down 중 입니다.", 8);
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();  // Excel Down 누름
+
+                Thread.Sleep(1000);
+
+                System.IO.DirectoryInfo di = new DirectoryInfo(sDownloadPath);
+
+                FileInfo[] fi = di.GetFiles("*.*.crdownload");
+
+                DateTime dCrdownloadChecktime = DateTime.Now;
+
+                while (fi.Length != 0)
+                {
+                    fi = di.GetFiles("*.*.crdownload");
+                    Console.WriteLine((DateTime.Now - dCrdownloadChecktime).TotalSeconds);
+
+                    if ((DateTime.Now - dCrdownloadChecktime).TotalSeconds >= 120)
+                        SetProgressba("Download 시간을 초과 했습니다.", progressBar1.Maximum);
+                    Thread.Sleep(100);
+                }
+
+                _driver.Close();
+
+                SetProgressba("Excel File Down 완료", 9);
+
+                fi = di.GetFiles("WaitingForScrap*.xls");
+                              
+                DateTime lastdate = new DateTime();
+
+                for (int i = 0; i < fi.Length; i++)
+                {
+                    if (fi[i].CreationTime > lastdate)
+                    {
+                        file_path = fi[i].DirectoryName;
+                        file_name = fi[i].Name;
+                        lastdate = fi[i].CreationTime;
+
+                        SetProgressba(String.Format("최신파일 검사중입니다 {0}/{1}", i, fi.Length), 10);
+                    }
+                }
+
+                SetProgressba("Directory 확인중 입니다.", 11);
+
+                if (System.IO.Directory.Exists(System.Windows.Forms.Application.StartupPath + "\\SCRAP") == false)
+                {
+                    SetProgressba("Directory 생성 중 입니다.", 12);
+                    System.IO.Directory.CreateDirectory(System.Windows.Forms.Application.StartupPath + "\\SCRAP");
+                }
+
+                if (System.IO.File.Exists(file_path + "\\" + file_name) == true)
+                {
+                    if (System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + "\\SCRAP\\" + file_name) == true)
+                    {
+                        SetProgressba("기존 Excel File을 삭제 합니다.", 13);
+                        System.IO.File.Delete(System.Windows.Forms.Application.StartupPath + "\\SCRAP\\" + file_name);
+                    }
+                    SetProgressba("Excel File을 복사 중 입니다.", 14);
+                    System.IO.File.Move(file_path + "\\" + file_name, System.Windows.Forms.Application.StartupPath + "\\SCRAP\\" + file_name);
+                }
+
+                bDownloadComp = true;
+
+                SetProgressba("Excel File 복사 완료하였습니다.", 15);
+
+                Thread tExcelImport = new Thread(ExcelImport);
+                if(bDownloadComp== true)
+                    tExcelImport.Start();
+
+                
+            }
+            catch (Exception ex)
+            {
+                if(ex.HResult == -2147024864)   // 파일 사용 중
+                {
+
+                }
+                
+            }
+        }
+
+        public void run_sql_command(string sql)
+        {
+            try
+            {
+                //lock (this)
+                {
+                    SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation");
+                    ssconn.Open();
+                    SqlCommand scom = new SqlCommand(sql, ssconn);
+                    scom.CommandType = System.Data.CommandType.Text;
+                    scom.CommandText = sql;
+                    scom.ExecuteReader();
+
+                    ssconn.Close();
+                    ssconn.Dispose();
+                    scom.Dispose();
+                }
+                //frm_Main.save_log(string.Format("Call:{0} -> Function:{1}, Param:{2}", System.Reflection.MethodBase.GetCurrentMethod().ReflectedType.Name, System.Reflection.MethodBase.GetCurrentMethod().Name, sql));
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        public int run_count(string sql_str)
+        {
+            int res = -1;
+            try
+            {
+                SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation");
+                ssconn.Open();
+                SqlCommand scom = new SqlCommand(sql_str, ssconn);
+                scom.CommandType = System.Data.CommandType.Text;
+                scom.CommandText = sql_str;
+                res = (int)scom.ExecuteScalar();
+
+                ssconn.Close();
+                ssconn.Dispose();
+                scom.Dispose();
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return res;
+        }
+
+        private void SetProgressba(string msg, int val)
+        {
+            tb_ScrapSt.Text = msg;
+            progressBar1.Value = val;
+        }
+
+        private void Form_Sort_Load(object sender, EventArgs e)
+        {
+            CheckForIllegalCrossThreadCalls = false;
+        }
+
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
         {
             tb_split.Text = e.KeyCode.ToString();
@@ -9135,6 +9521,22 @@ namespace Bank_Host
                     Thread.Sleep(3000);
                     Frm_Process.Form_Hide();
                 }
+            }
+            else if(nSel == 7)
+            {
+                BankHost_main.strOperator = "";
+                dgv_split_log.Rows.Clear();
+
+                Form_Input Frm_Input = new Form_Input();
+                Frm_Input.Fnc_Init(nSel);
+                Frm_Input.ShowDialog();                
+
+                if (BankHost_main.strOperator != "")
+                {
+                    bmode8 = true;
+                    tabControl_Sort.SelectedIndex = 9;
+                }
+
             }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
@@ -9628,7 +10030,7 @@ namespace Bank_Host
         }
 
         bool bselected_mode_index = false;
-        bool bmode6 = false, bmode7 = false;
+        bool bmode6 = false, bmode7 = false, bmode8 = false;
 
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -10017,6 +10419,7 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
                 comboBox_mode.Items.Add("모드6: Location History");
                 comboBox_mode.Items.Add("모드7: Split Log");
+                comboBox_mode.Items.Add("모드8: Scrap");
             }
             else if(loc == "K5")
             {
