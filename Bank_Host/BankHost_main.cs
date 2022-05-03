@@ -61,7 +61,7 @@ namespace Bank_Host
         public static bool IsGRrun = false, IsAutoFocus = false;
 
         public static string strLogfilePath = "", strFilPath = "";
-        public static string strAdminID = "", strAdminPW = "", strOperator = "";
+        public static string strAdminID = "", strAdminPW = "", strOperator = "", strID = "", strGrade;
         public static bool bAdminLogin = false, bVisionConnect = false;
         public static int nStartup = 0, nProcess = 0, nGRprocess = 0, nSortTabNo = 0;
 

@@ -8790,20 +8790,25 @@ namespace Bank_Host
         {
             if (bDownloadComp == false)
             {
+                SetProgressba("조회를 시작 합니다.", 0);
+
                 Thread ExcelDownThread = new Thread(ScrapExcelDown);
                 ExcelDownThread.Start();                
             }
+
+            tb_scrapinput.Focus();
         }
 
         private void ExcelImport()
         {
             try
             {
+                
                 SetProgressba("Excel Data를 Memory에 복사 중 입니다.", 1);
                 Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
                 Workbook workbook = application.Workbooks.Open(Filename: System.Windows.Forms.Application.StartupPath + "\\SCRAP\\" + file_name);
                 Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
-                application.Visible = true;
+                application.Visible = checkBox1.Checked;
                 SetProgressba("Excel Data를 Memory에 복사 완료 하였습니다.", 2);
 
                 Range range = worksheet1.UsedRange;
@@ -8860,7 +8865,7 @@ namespace Bank_Host
                 string sqlstr = "";
                 int DBrowcount = -1;
                 string datastr = "";
-                int next_no = int.Parse(SearchData("select max(No) from TB_SCRAP2").Rows[0][0].ToString()) + 1;
+                int next_no = int.Parse(SearchData("select max(No) from TB_SCRAP2").Tables[0].Rows[0][0].ToString()) + 1;
 
                 progressBar1.Maximum = data.Count;
 
@@ -8906,19 +8911,9 @@ namespace Bank_Host
                 datastr = "";
 
                 //datastr = string.Format("[CHG_DATE_TIME] >= {0}", sdt.Value.ToString("yyyy"));
-               
 
-                datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[LOCATION],[CERITIFICATE],[1st],[2nd],[3rd] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}'", sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"));
 
-                dgv_scrap.DataSource = SearchData(datastr);
-
-                dgv_scrap.Columns[1].Width = 50;
-                dgv_scrap.Columns[4].Width = 130;
-                dgv_scrap.Columns[5].Width = 40;
-                dgv_scrap.Columns[6].Width = 40;
-                dgv_scrap.Columns[8].Width = 30;
-
-                bDownloadComp = false;
+                ReadScrapData();
             }
             catch (Exception ex)
             {
@@ -8927,9 +8922,46 @@ namespace Bank_Host
             }
         }
 
-        private System.Data.DataTable SearchData(string sql)
+        System.Data.DataSet dtScrap;
+
+        private void ReadScrapData()
         {
-            System.Data.DataTable dt = new System.Data.DataTable();
+            string datastr = "";
+            datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}'", sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"));
+            dtScrap = SearchData(datastr);
+
+            dgv_scrap.DataSource = dtScrap.Tables[0];
+
+            dgv_scrap.Columns[1].Width = 50;
+            dgv_scrap.Columns[4].Width = 130;
+            dgv_scrap.Columns[5].Width = 40;
+            dgv_scrap.Columns[6].Width = 40;
+
+            bDownloadComp = false;
+
+            dgv_scrap.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+
+            for (int i = 0; i < dgv_scrap.RowCount; i++)
+            {
+                if(dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() == "" && dtScrap.Tables[0].Rows[i][9].ToString() == "")
+                {
+                    dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                }
+                else if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() != "" && dtScrap.Tables[0].Rows[i][9].ToString() == "")
+                {
+                    dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                }
+                else if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() == "" && dtScrap.Tables[0].Rows[i][9].ToString() == "")
+                {
+                    dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
+                }
+            }
+
+        }
+
+        private System.Data.DataSet SearchData(string sql)
+        {
+            System.Data.DataSet dt = new System.Data.DataSet();
 
             try
             {
@@ -8949,7 +8981,7 @@ namespace Bank_Host
             catch (Exception ex)
             {
 
-            }
+            }   
             return dt;
         }
 
@@ -8977,9 +9009,17 @@ namespace Bank_Host
 
                 _driverService = ChromeDriverService.CreateDefaultService();
                 _driverService.HideCommandPromptWindow = true;
-
+                
                 _options = new ChromeOptions();
                 _options.AddArgument("disable-gpu");
+
+                if (checkBox1.Checked == false)
+                {
+                    _options.AddArgument("headless");
+                    _options.AddUserProfilePreference("download.default_directory", sDownloadPath);
+                    _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);                    
+                }
+                
 
                 _driver = new ChromeDriver(_driverService, _options);
                 _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
@@ -9076,6 +9116,10 @@ namespace Bank_Host
                     SetProgressba("Excel File을 복사 중 입니다.", 14);
                     System.IO.File.Move(file_path + "\\" + file_name, System.Windows.Forms.Application.StartupPath + "\\SCRAP\\" + file_name);
                 }
+                else
+                {
+                    ReadScrapData();
+                }
 
                 bDownloadComp = true;
 
@@ -9090,6 +9134,10 @@ namespace Bank_Host
             catch (Exception ex)
             {
                 if(ex.HResult == -2147024864)   // 파일 사용 중
+                {
+
+                }
+                else if(ex.HResult == -2146233088)  // eMes 응답 없음
                 {
 
                 }
@@ -9163,6 +9211,138 @@ namespace Bank_Host
             CheckForIllegalCrossThreadCalls = false;
         }
 
+        private void tb_input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Enter)
+            {
+                string[] inputstr = tb_scrapinput.Text.Split(':');   // 0: Lot, 1: Empty, 2: DEV, 3: QTY, 4: WFR, 5: ??, 6: CUST
+                int selectedindex = CheckScrapLOT(inputstr);
+                tb_scrapinput.Text = "";
+
+                if (dgv_scrap.RowCount == 0)
+                {
+                    tb_ScrapSt.Text = "검색을 먼저 진행해 주세요";
+                    speech.SpeakAsync("검색을 먼저 진행해 주세요");
+                    return;
+                }
+
+
+                if (selectedindex != -1)
+                {
+                    Color c = new Color();
+                    if (dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() != "")  // 검수 완료 된 자제
+                    {// 검수 완료된 자네
+                        tb_ScrapSt.Text = "완료된 자제";
+                        speech.SpeakAsync("완료된 자제");
+                    }
+                    else
+                    {
+                        if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")   
+                        {//1st
+                            dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID);                            
+                            c = Color.Yellow;
+
+                            ScrapDataUpdate(selectedindex);
+                        }
+                        else if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")
+                        {//2nd
+                            if (dtScrap.Tables[0].Rows[selectedindex][7].ToString().Contains(BankHost_main.strID) == false)
+                            {
+                                dtScrap.Tables[0].Rows[selectedindex][8] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
+                                c = Color.Green;
+                                dtScrap.AcceptChanges();
+                            }
+                            else
+                            {
+                                tb_ScrapSt.Text = "검수자 중복";
+                                speech.SpeakAsync("검수자 중복");
+                            }
+                        }
+                        else if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")
+                        {//3rd
+
+                            if (BankHost_main.strGrade == "A")
+                            {
+                                dtScrap.Tables[0].Rows[selectedindex][9] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
+                                c = Color.Blue;
+                                dtScrap.AcceptChanges();
+                            }
+                            else
+                            {
+                                tb_ScrapSt.Text = "권한 없음";
+                                speech.SpeakAsync("권한 없음");
+                            }
+                        }
+                    }
+
+                    dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                }
+
+
+            }
+        }
+
+
+        private void ScrapDataUpdate(int index)
+        {   // 0         1      2        3       4     5    6        7      8    9     10          11
+            //[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]   
+            string sqlstring = string.Format("update TB_SCRAP2 set [1st]='{0}',[2nd]='{1}',[3rd]='{2}' " +
+                "where [CUST]={3} and [DEVICE]='{4}' and [LOT]='{5}' and [DIE]={6} and [WAFER]={7}",
+                dtScrap.Tables[0].Rows[index][7],
+                dtScrap.Tables[0].Rows[index][8],
+                dtScrap.Tables[0].Rows[index][9],
+                dtScrap.Tables[0].Rows[index][1],
+                dtScrap.Tables[0].Rows[index][2],
+                dtScrap.Tables[0].Rows[index][4],
+                dtScrap.Tables[0].Rows[index][5],
+                dtScrap.Tables[0].Rows[index][6]);
+
+            run_sql_command(sqlstring);
+        }
+        private int CheckScrapLOT(string[] inputstr)
+        {
+            int res = -1;
+            try
+            {
+                for (int i = 0; i < dtScrap.Tables[0].Rows.Count; i++)
+                {
+                    if (dtScrap.Tables[0].Rows[i][1].ToString() == inputstr[6])    // CUST
+                    {
+                        string scrapTemp = dtScrap.Tables[0].Rows[i][4].ToString().Trim();
+
+                        if (scrapTemp == inputstr[0].Trim())   // LOT
+                        {
+                            if (dtScrap.Tables[0].Rows[i][2].ToString().Trim() == inputstr[2].Trim())   // DEV
+                            {
+                                if (dtScrap.Tables[0].Rows[i][5].ToString().Trim() == inputstr[3].Trim())   // QTY
+                                {
+                                    if (dtScrap.Tables[0].Rows[i][6].ToString().Trim() == inputstr[4].Trim())   //WFR
+                                    {
+                                        res = i;
+                                        return res;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return res;
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            dgv_scrap.Rows[0].DefaultCellStyle.BackColor = Color.Yellow;
+        }
+
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
         {
             tb_split.Text = e.KeyCode.ToString();
@@ -9174,6 +9354,8 @@ namespace Bank_Host
                 ChangeIME(tb_split);
             }
         }
+
+
 
         private void comboBox_mode_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -9535,6 +9717,11 @@ namespace Bank_Host
                 {
                     bmode8 = true;
                     tabControl_Sort.SelectedIndex = 9;
+
+                    if (GetIME() == true)
+                    {
+                        ChangeIME(tb_scrapinput);
+                    }
                 }
 
             }

@@ -299,6 +299,15 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.dgv_scrap = new System.Windows.Forms.DataGridView();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tb_scrapinput = new System.Windows.Forms.TextBox();
+            this.button15 = new System.Windows.Forms.Button();
             this.tb_ScrapSt = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.edt = new System.Windows.Forms.DateTimePicker();
@@ -308,8 +317,6 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.button15 = new System.Windows.Forms.Button();
-            this.tb_input = new System.Windows.Forms.TextBox();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -355,6 +362,9 @@
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).BeginInit();
             this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -3436,6 +3446,8 @@
             this.dgv_scrap.AllowUserToAddRows = false;
             this.dgv_scrap.AllowUserToDeleteRows = false;
             this.dgv_scrap.AllowUserToResizeRows = false;
+            this.dgv_scrap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgv_scrap.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgv_scrap.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_scrap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_scrap.Location = new System.Drawing.Point(0, 0);
@@ -3448,7 +3460,14 @@
             // 
             // panel9
             // 
-            this.panel9.Controls.Add(this.tb_input);
+            this.panel9.Controls.Add(this.label55);
+            this.panel9.Controls.Add(this.label54);
+            this.panel9.Controls.Add(this.label53);
+            this.panel9.Controls.Add(this.pictureBox5);
+            this.panel9.Controls.Add(this.pictureBox4);
+            this.panel9.Controls.Add(this.pictureBox3);
+            this.panel9.Controls.Add(this.checkBox1);
+            this.panel9.Controls.Add(this.tb_scrapinput);
             this.panel9.Controls.Add(this.button15);
             this.panel9.Controls.Add(this.tb_ScrapSt);
             this.panel9.Controls.Add(this.progressBar1);
@@ -3461,6 +3480,95 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(206, 1022);
             this.panel9.TabIndex = 1;
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label55.Location = new System.Drawing.Point(55, 335);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(144, 25);
+            this.label55.TabIndex = 23;
+            this.label55.Text = ": 3차 검수 완료";
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label54.Location = new System.Drawing.Point(55, 298);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(144, 25);
+            this.label54.TabIndex = 22;
+            this.label54.Text = ": 2차 검수 완료";
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label53.Location = new System.Drawing.Point(55, 259);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(144, 25);
+            this.label53.TabIndex = 21;
+            this.label53.Text = ": 1차 검수 완료";
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.BackColor = System.Drawing.Color.Green;
+            this.pictureBox5.Location = new System.Drawing.Point(6, 294);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox5.TabIndex = 20;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackColor = System.Drawing.Color.Blue;
+            this.pictureBox4.Location = new System.Drawing.Point(6, 332);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox4.TabIndex = 19;
+            this.pictureBox4.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Yellow;
+            this.pictureBox3.Location = new System.Drawing.Point(6, 256);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox3.TabIndex = 18;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(175, 25);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 17;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // tb_scrapinput
+            // 
+            this.tb_scrapinput.Location = new System.Drawing.Point(6, 199);
+            this.tb_scrapinput.Name = "tb_scrapinput";
+            this.tb_scrapinput.Size = new System.Drawing.Size(192, 27);
+            this.tb_scrapinput.TabIndex = 16;
+            this.tb_scrapinput.Text = "P6396200-SKT ::DA00N59U:24:24:123445:463";
+            this.tb_scrapinput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_input_KeyDown);
+            // 
+            // button15
+            // 
+            this.button15.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button15.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.button15.Image = ((System.Drawing.Image)(resources.GetObject("button15.Image")));
+            this.button15.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button15.Location = new System.Drawing.Point(0, 948);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(206, 74);
+            this.button15.TabIndex = 15;
+            this.button15.Text = "   출력";
+            this.button15.UseVisualStyleBackColor = true;
             // 
             // tb_ScrapSt
             // 
@@ -3537,26 +3645,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button15
-            // 
-            this.button15.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button15.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.button15.Image = ((System.Drawing.Image)(resources.GetObject("button15.Image")));
-            this.button15.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button15.Location = new System.Drawing.Point(0, 948);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(206, 74);
-            this.button15.TabIndex = 15;
-            this.button15.Text = "   출력";
-            this.button15.UseVisualStyleBackColor = true;
-            // 
-            // tb_input
-            // 
-            this.tb_input.Location = new System.Drawing.Point(6, 199);
-            this.tb_input.Name = "tb_input";
-            this.tb_input.Size = new System.Drawing.Size(192, 27);
-            this.tb_input.TabIndex = 16;
-            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -3628,6 +3716,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).EndInit();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
@@ -3869,7 +3960,14 @@
         private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.DateTimePicker sdt;
         private System.Windows.Forms.TextBox tb_ScrapSt;
-        private System.Windows.Forms.TextBox tb_input;
+        private System.Windows.Forms.TextBox tb_scrapinput;
         private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBox3;
     }
 }

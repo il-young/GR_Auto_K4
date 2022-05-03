@@ -114,6 +114,10 @@ namespace Bank_Host
                 label4.Enabled = false;
                 label5.Enabled = false;
 
+                BankHost_main.strOperator = "";
+                BankHost_main.strID = "";
+                BankHost_main.strGrade = "";
+
                 comboBox_cust.Enabled = false;
                 dataGridView_bill.Enabled = false;
                 textBox_bill.Enabled = false;
@@ -466,7 +470,8 @@ namespace Bank_Host
             else
             {
                 string strname = dt.Rows[0]["NAME"].ToString(); strname = strname.Trim();
-                string strgrade = dt.Rows[0]["GRADE"].ToString(); strname = strname.Trim();
+                string strgrade = dt.Rows[0]["GRADE"].ToString(); strgrade = strgrade.Trim();
+                string strid = dt.Rows[0]["ID"].ToString(); strid = strid.Trim();
 
                 if(nMode == 0 || nMode == 1 ||nMode == 7)
                 {
@@ -482,7 +487,8 @@ namespace Bank_Host
                 }
 
                 BankHost_main.strOperator = strname;
-
+                BankHost_main.strID = strid;
+                BankHost_main.strGrade = strgrade;
                 bok = true;
 
                 Fnc_Exit();
