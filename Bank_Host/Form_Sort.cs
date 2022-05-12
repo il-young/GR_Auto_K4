@@ -2340,10 +2340,11 @@ namespace Bank_Host
                 string strDate = dtWorkinfo.Rows[n]["DATETIME"].ToString(); strDate = strDate.Trim();
                 strDate = strDate.Substring(0, 8);
 
+
                 string strEqid = dtWorkinfo.Rows[n]["EQID"].ToString(); strEqid = strEqid.Trim();
                 string strHAWB = dtWorkinfo.Rows[n]["HAWB"].ToString(); strHAWB = strHAWB.Trim();
 
-                if (strEqid == BankHost_main.strEqid && strToday == strDate && strHAWB != "")
+                if (strEqid == BankHost_main.strEqid && strToday == strDate && strHAWB != "") // 0505                
                 {
                     nBillcount++;
                     dataGridView_workbill.Rows.Add(new object[2] { nBillcount, strHAWB });
@@ -9211,18 +9212,30 @@ namespace Bank_Host
             CheckForIllegalCrossThreadCalls = false;
         }
 
+        private void SpeakST(string MSG)
+        {
+            tb_ScrapSt.Text = MSG;
+            speech.SpeakAsync(MSG);
+        }
+
         private void tb_input_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
                 string[] inputstr = tb_scrapinput.Text.Split(':');   // 0: Lot, 1: Empty, 2: DEV, 3: QTY, 4: WFR, 5: ??, 6: CUST
+
+                if(tb_scrapinput.Text == "")
+                {
+                    return;
+                }
+
                 int selectedindex = CheckScrapLOT(inputstr);
                 tb_scrapinput.Text = "";
 
                 if (dgv_scrap.RowCount == 0)
                 {
-                    tb_ScrapSt.Text = "검색을 먼저 진행해 주세요";
-                    speech.SpeakAsync("검색을 먼저 진행해 주세요");
+                    SpeakST("검색을 먼저 진행해 주세요");
+                    
                     return;
                 }
 
@@ -9232,8 +9245,7 @@ namespace Bank_Host
                     Color c = new Color();
                     if (dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() != "")  // 검수 완료 된 자제
                     {// 검수 완료된 자네
-                        tb_ScrapSt.Text = "완료된 자제";
-                        speech.SpeakAsync("완료된 자제");
+                        SpeakST("완료된 자제");
                     }
                     else
                     {
@@ -9241,6 +9253,8 @@ namespace Bank_Host
                         {//1st
                             dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID);                            
                             c = Color.Yellow;
+
+                            SpeakST("1차 완료");
 
                             ScrapDataUpdate(selectedindex);
                         }
@@ -9250,32 +9264,37 @@ namespace Bank_Host
                             {
                                 dtScrap.Tables[0].Rows[selectedindex][8] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                                 c = Color.Green;
-                                dtScrap.AcceptChanges();
+
+                                SpeakST("2차 완료");
                             }
                             else
                             {
-                                tb_ScrapSt.Text = "검수자 중복";
-                                speech.SpeakAsync("검수자 중복");
+                                SpeakST("검수자 중복");
                             }
                         }
                         else if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")
                         {//3rd
-
-                            if (BankHost_main.strGrade == "A")
+                            if(dtScrap.Tables[0].Rows[selectedindex][7].ToString().Contains(BankHost_main.strID) == false &&
+                                dtScrap.Tables[0].Rows[selectedindex][8].ToString().Contains(BankHost_main.strID) == false)
                             {
                                 dtScrap.Tables[0].Rows[selectedindex][9] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                                 c = Color.Blue;
-                                dtScrap.AcceptChanges();
+
+                                SpeakST("3차 완료");
                             }
                             else
                             {
-                                tb_ScrapSt.Text = "권한 없음";
-                                speech.SpeakAsync("권한 없음");
+                                SpeakST("검수자 중복");
                             }
                         }
+                        ScrapDataUpdate(selectedindex);
                     }
 
                     dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                }
+                else
+                {
+
                 }
 
 
@@ -9304,6 +9323,9 @@ namespace Bank_Host
             int res = -1;
             try
             {
+                if (inputstr.Length < 7)
+                    return res;
+
                 for (int i = 0; i < dtScrap.Tables[0].Rows.Count; i++)
                 {
                     if (dtScrap.Tables[0].Rows[i][1].ToString() == inputstr[6])    // CUST
@@ -9326,8 +9348,6 @@ namespace Bank_Host
                         }
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -9420,6 +9440,7 @@ namespace Bank_Host
                 button_sel.Text = "GR Job File 선택";
 
                 string strGetJobName = BankHost_main.Host.Host_Get_JobName(BankHost_main.strEqid);
+
 
                 if(strGetJobName == "")
                 {

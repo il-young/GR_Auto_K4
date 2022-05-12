@@ -317,6 +317,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button16 = new System.Windows.Forms.Button();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -3460,6 +3461,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.button16);
             this.panel9.Controls.Add(this.label55);
             this.panel9.Controls.Add(this.label54);
             this.panel9.Controls.Add(this.label53);
@@ -3644,6 +3646,19 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // button16
+            // 
+            this.button16.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.button16.Image = ((System.Drawing.Image)(resources.GetObject("button16.Image")));
+            this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button16.Location = new System.Drawing.Point(0, 874);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(206, 74);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "   입고증";
+            this.button16.UseVisualStyleBackColor = true;
             // 
             // Form_Sort
             // 
@@ -3969,5 +3984,6 @@
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Button button16;
     }
 }
