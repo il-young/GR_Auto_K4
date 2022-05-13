@@ -299,6 +299,8 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.dgv_scrap = new System.Windows.Forms.DataGridView();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.btn_CommentEdit = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
             this.label55 = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
@@ -307,7 +309,7 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tb_scrapinput = new System.Windows.Forms.TextBox();
-            this.button15 = new System.Windows.Forms.Button();
+            this.btn_ExcelOut = new System.Windows.Forms.Button();
             this.tb_ScrapSt = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.edt = new System.Windows.Forms.DateTimePicker();
@@ -317,7 +319,6 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.button16 = new System.Windows.Forms.Button();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -3461,6 +3462,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.btn_CommentEdit);
             this.panel9.Controls.Add(this.button16);
             this.panel9.Controls.Add(this.label55);
             this.panel9.Controls.Add(this.label54);
@@ -3470,7 +3472,7 @@
             this.panel9.Controls.Add(this.pictureBox3);
             this.panel9.Controls.Add(this.checkBox1);
             this.panel9.Controls.Add(this.tb_scrapinput);
-            this.panel9.Controls.Add(this.button15);
+            this.panel9.Controls.Add(this.btn_ExcelOut);
             this.panel9.Controls.Add(this.tb_ScrapSt);
             this.panel9.Controls.Add(this.progressBar1);
             this.panel9.Controls.Add(this.edt);
@@ -3482,6 +3484,33 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(206, 1022);
             this.panel9.TabIndex = 1;
+            // 
+            // btn_CommentEdit
+            // 
+            this.btn_CommentEdit.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_CommentEdit.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
+            this.btn_CommentEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_CommentEdit.ImageKey = "Doc.png";
+            this.btn_CommentEdit.Location = new System.Drawing.Point(0, 800);
+            this.btn_CommentEdit.Name = "btn_CommentEdit";
+            this.btn_CommentEdit.Size = new System.Drawing.Size(206, 74);
+            this.btn_CommentEdit.TabIndex = 25;
+            this.btn_CommentEdit.Text = "  Comment Edit";
+            this.btn_CommentEdit.UseVisualStyleBackColor = true;
+            // 
+            // button16
+            // 
+            this.button16.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button16.ImageKey = "(없음)";
+            this.button16.Location = new System.Drawing.Point(0, 874);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(206, 74);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "     입고증";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // label55
             // 
@@ -3559,18 +3588,21 @@
             this.tb_scrapinput.Text = "P6396200-SKT ::DA00N59U:24:24:123445:463";
             this.tb_scrapinput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_input_KeyDown);
             // 
-            // button15
+            // btn_ExcelOut
             // 
-            this.button15.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button15.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.button15.Image = ((System.Drawing.Image)(resources.GetObject("button15.Image")));
-            this.button15.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button15.Location = new System.Drawing.Point(0, 948);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(206, 74);
-            this.button15.TabIndex = 15;
-            this.button15.Text = "   출력";
-            this.button15.UseVisualStyleBackColor = true;
+            this.btn_ExcelOut.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_ExcelOut.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_ExcelOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_ExcelOut.Image")));
+            this.btn_ExcelOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_ExcelOut.Location = new System.Drawing.Point(0, 948);
+            this.btn_ExcelOut.Name = "btn_ExcelOut";
+            this.btn_ExcelOut.Size = new System.Drawing.Size(206, 74);
+            this.btn_ExcelOut.TabIndex = 15;
+            this.btn_ExcelOut.Text = "     출력";
+            this.btn_ExcelOut.UseVisualStyleBackColor = true;
+            this.btn_ExcelOut.Click += new System.EventHandler(this.button15_Click);
+            this.btn_ExcelOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseDown);
+            this.btn_ExcelOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseUp);
             // 
             // tb_ScrapSt
             // 
@@ -3642,23 +3674,11 @@
             this.imageList1.Images.SetKeyName(7, "email_setting.png");
             this.imageList1.Images.SetKeyName(8, "Qualcomm.png");
             this.imageList1.Images.SetKeyName(9, "trashcan.png");
+            this.imageList1.Images.SetKeyName(10, "Doc.png");
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button16
-            // 
-            this.button16.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.button16.Image = ((System.Drawing.Image)(resources.GetObject("button16.Image")));
-            this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button16.Location = new System.Drawing.Point(0, 874);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(206, 74);
-            this.button16.TabIndex = 24;
-            this.button16.Text = "   입고증";
-            this.button16.UseVisualStyleBackColor = true;
             // 
             // Form_Sort
             // 
@@ -3976,7 +3996,7 @@
         private System.Windows.Forms.DateTimePicker sdt;
         private System.Windows.Forms.TextBox tb_ScrapSt;
         private System.Windows.Forms.TextBox tb_scrapinput;
-        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button btn_ExcelOut;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label55;
         private System.Windows.Forms.Label label54;
@@ -3985,5 +4005,6 @@
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button btn_CommentEdit;
     }
 }

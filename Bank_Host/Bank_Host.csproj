@@ -193,6 +193,12 @@
     <Compile Include="Form_Option.Designer.cs">
       <DependentUpon>Form_Option.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Receipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Receipt.Designer.cs">
+      <DependentUpon>Form_Receipt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Print.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -259,6 +265,9 @@
     <EmbeddedResource Include="Form_Option.resx">
       <DependentUpon>Form_Option.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Receipt.resx">
+      <DependentUpon>Form_Receipt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Print.resx">
       <DependentUpon>Form_Print.cs</DependentUpon>
     </EmbeddedResource>
@@ -283,6 +292,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -302,6 +312,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="host.ico" />
+    <None Include="Properties\setting.png" />
+    <None Include="Properties\Doc.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

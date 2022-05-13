@@ -3528,6 +3528,8 @@ namespace Bank_Host
             {
                 sdt.Value = DateTime.Now.AddDays(-1);
                 edt.Value = DateTime.Now;
+
+                btn_CommentEdit.Text = "   Comment\n   Edit";
             }
         }
 
@@ -9361,6 +9363,27 @@ namespace Bank_Host
         private void pictureBox3_Click(object sender, EventArgs e)
         {
             dgv_scrap.Rows[0].DefaultCellStyle.BackColor = Color.Yellow;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_ExcelOut_MouseDown(object sender, MouseEventArgs e)
+        {
+            btn_ExcelOut.BackColor = Color.CadetBlue;
+        }
+
+        private void btn_ExcelOut_MouseUp(object sender, MouseEventArgs e)
+        {
+            btn_ExcelOut.BackColor = Color.Transparent;
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            Form_InBill biil = new Form_InBill();
+            biil.Show();
         }
 
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
