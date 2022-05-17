@@ -29,11 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_InBill));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.tp = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btn_ExcelOut = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -45,14 +50,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(629, 433);
             this.panel1.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel2.Location = new System.Drawing.Point(496, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(133, 433);
-            this.panel2.TabIndex = 1;
             // 
             // tp
             // 
@@ -86,6 +83,34 @@
             this.tp.Size = new System.Drawing.Size(496, 433);
             this.tp.TabIndex = 2;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btn_ExcelOut);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel2.Location = new System.Drawing.Point(496, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(133, 433);
+            this.panel2.TabIndex = 1;
+            // 
+            // btn_ExcelOut
+            // 
+            this.btn_ExcelOut.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_ExcelOut.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_ExcelOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_ExcelOut.Image")));
+            this.btn_ExcelOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_ExcelOut.Location = new System.Drawing.Point(0, 359);
+            this.btn_ExcelOut.Name = "btn_ExcelOut";
+            this.btn_ExcelOut.Size = new System.Drawing.Size(133, 74);
+            this.btn_ExcelOut.TabIndex = 16;
+            this.btn_ExcelOut.Text = "   출력";
+            this.btn_ExcelOut.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_ExcelOut.UseVisualStyleBackColor = true;
+            this.btn_ExcelOut.Click += new System.EventHandler(this.btn_ExcelOut_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form_InBill
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -103,6 +128,7 @@
             this.Text = "입고증 출력";
             this.Load += new System.EventHandler(this.Form_InBill_Load);
             this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -112,5 +138,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TableLayoutPanel tp;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btn_ExcelOut;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
