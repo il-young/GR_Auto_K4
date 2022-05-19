@@ -134,7 +134,7 @@ namespace Bank_Host
                     bool t = Convert.ToBoolean(dgv_Comment.Rows[i].Cells[0].Value);
                     if(t == true)
                     {
-                        sql = string.Format("delete TB_SCRAP_COMMENT where NO={0}", SelectedNum);
+                        sql = string.Format("delete TB_SCRAP_COMMENT where NO={0}", dgv_Comment.Rows[i].Cells[2].Value.ToString());
                         run_sql_command(sql);
                     }
                 }

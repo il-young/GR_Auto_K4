@@ -9443,6 +9443,51 @@ namespace Bank_Host
 
         private void button15_Click(object sender, EventArgs e)
         {
+            ShowRequest();
+
+            ScrapExcelOut();
+        }
+
+        DataGridView ScrapGrid = new DataGridView();
+
+        private void ScrapDataVaildation()
+        {
+            for(int i = 0; i < dgv_scrap.RowCount; i++)
+            {// [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
+                if (dgv_scrap.Rows[i].Cells[0].Value.ToString() == RequestSelectNum)
+                {
+                    ScrapGrid.Rows.Add(dgv_scrap.Rows[i]);
+                }
+            }
+        }
+
+        private void ScrapExcelOut()
+        {
+            string DestFilePath = System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\" + String.Format("Scrap Validation_{0}.xlsx", DateTime.Now.ToString("yyyyMMdd"));
+
+            saveFileDialog1.InitialDirectory = System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\";
+            saveFileDialog1.FileName = String.Format("Scrap Validation_{0}.xlsx", DateTime.Now.ToString("yyyyMMdd"));
+
+            if (DialogResult.OK == saveFileDialog1.ShowDialog())
+            {
+                DestFilePath = saveFileDialog1.FileName;
+            }
+
+            if(DestFilePath.Substring(DestFilePath.Length-4, 4) != "xlsx")
+            {
+                DestFilePath = DestFilePath + ".xlsx";
+            }
+
+            if (System.IO.Directory.Exists(System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\") == false)
+                System.IO.Directory.CreateDirectory(System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\");
+
+            File.Copy(System.Windows.Forms.Application.StartupPath + "\\Excel file\\Scrap Vaildation List.xlsx", DestFilePath);
+
+            Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+            Workbook workbook = application.Workbooks.Open(DestFilePath);
+            Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+            application.Visible = false;
+
 
         }
 
@@ -9456,13 +9501,13 @@ namespace Bank_Host
             btn_ExcelOut.BackColor = Color.Transparent;
         }
 
-        private void button16_Click(object sender, EventArgs e)
+        private void ShowRequest()
         {
             List<string> Request = new List<string>();
-            
-            for(int i =0; i < dgv_scrap.RowCount; i++)
+
+            for (int i = 0; i < dgv_scrap.RowCount; i++)
             {
-                if(Request.Contains(dgv_scrap.Rows[i].Cells[0].Value.ToString()) == false)
+                if (Request.Contains(dgv_scrap.Rows[i].Cells[0].Value.ToString()) == false)
                 {
                     Request.Add(dgv_scrap.Rows[i].Cells[0].Value.ToString());
                 }
@@ -9473,6 +9518,11 @@ namespace Bank_Host
             re.PressOK_Event += Re_PressOK_Event;
 
             re.ShowDialog();
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            
 
             if (RequestSelectCancel == false)
             {
