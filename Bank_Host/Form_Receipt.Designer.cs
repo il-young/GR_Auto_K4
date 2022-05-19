@@ -117,7 +117,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(629, 433);
-            this.ControlBox = false;
             this.Controls.Add(this.panel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -126,6 +125,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "입고증 출력";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form_InBill_Load);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);

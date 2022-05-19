@@ -27,16 +27,16 @@ namespace Bank_Host
         System.Windows.Forms.TextBox tb_BCustCode = new System.Windows.Forms.TextBox { Text = "tb_BCustCode", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
         System.Windows.Forms.TextBox tb_BLineCode = new System.Windows.Forms.TextBox { Text = "tb_BLineCode", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
         DateTimePicker dtB = new DateTimePicker { Format = DateTimePickerFormat.Custom, CustomFormat = "yyyy-MM-dd", Dock = DockStyle.Fill, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BTTL = new System.Windows.Forms.TextBox { Text = "tb_BTTL", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BGross = new System.Windows.Forms.TextBox { Text = "tb_BGross", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox tb_BTTL = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox tb_BGross = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
         System.Windows.Forms.TextBox tb_BRequest = new System.Windows.Forms.TextBox { Text = "tb_BRequest", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
         System.Windows.Forms.TextBox tb_BQTY = new System.Windows.Forms.TextBox { Text = "tb_BQTY", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BWeight = new System.Windows.Forms.TextBox { Text = "tb_BWeight", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox tb_BWeight = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
         System.Windows.Forms.Label lBRecipient = new System.Windows.Forms.Label { Text = "인  수  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
         System.Windows.Forms.Label lBSender = new System.Windows.Forms.Label { Text = "입  고  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
-        System.Windows.Forms.TextBox tb_BRecipient = new System.Windows.Forms.TextBox { Text = "인  수  자", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BSender = new System.Windows.Forms.TextBox { Text = "입  고  자", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BSpec = new System.Windows.Forms.TextBox { Text = "tb_BSpec", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox tb_BRecipient = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox tb_BSender = new System.Windows.Forms.TextBox { Text = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID), Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox tb_BSpec = new System.Windows.Forms.TextBox { Text = "SPEC NO : 001-2698", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
 
         System.Windows.Forms.Label lStore = new System.Windows.Forms.Label { Text = "SCRAP MAT'L 입고증 / K4 STORE", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 16, FontStyle.Bold) };
         System.Windows.Forms.Label lSCust = new System.Windows.Forms.Label { Text = "CUSTOMER", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
@@ -45,16 +45,25 @@ namespace Bank_Host
         System.Windows.Forms.TextBox tb_SCustCode = new System.Windows.Forms.TextBox { Text = "tb_BCustCode", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
         System.Windows.Forms.TextBox tb_SLineCode = new System.Windows.Forms.TextBox { Text = "tb_BLineCode", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
         DateTimePicker dtS = new DateTimePicker { Format = DateTimePickerFormat.Custom, CustomFormat = "yyyy-MM-dd", Dock = DockStyle.Fill, Margin = Padding.Empty,Enabled = false };
-        System.Windows.Forms.TextBox tb_STTL = new System.Windows.Forms.TextBox { Text = "tb_BTTL", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
-        System.Windows.Forms.TextBox tb_SGross = new System.Windows.Forms.TextBox { Text = "tb_BGross", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+        System.Windows.Forms.TextBox tb_STTL = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+        System.Windows.Forms.TextBox tb_SGross = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
         System.Windows.Forms.TextBox tb_SRequest = new System.Windows.Forms.TextBox { Text = "tb_BRequest", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
         System.Windows.Forms.TextBox tb_SQTY = new System.Windows.Forms.TextBox { Text = "tb_BQTY", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
-        System.Windows.Forms.TextBox tb_SWeight = new System.Windows.Forms.TextBox { Text = "tb_BWeight", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+        System.Windows.Forms.TextBox tb_SWeight = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
         System.Windows.Forms.Label lSRecipient = new System.Windows.Forms.Label { Text = "인  수  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
         System.Windows.Forms.Label lSSender = new System.Windows.Forms.Label { Text = "입  고  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
-        System.Windows.Forms.TextBox tb_SRecipient = new System.Windows.Forms.TextBox { Text = "인  수  자", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
-        System.Windows.Forms.TextBox tb_SSender = new System.Windows.Forms.TextBox { Text = "입  고  자", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
-        System.Windows.Forms.TextBox tb_SSpec = new System.Windows.Forms.TextBox { Text = "tb_SSpec", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+        System.Windows.Forms.TextBox tb_SRecipient = new System.Windows.Forms.TextBox { Text = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID), Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+        System.Windows.Forms.TextBox tb_SSender = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+        System.Windows.Forms.TextBox tb_SSpec = new System.Windows.Forms.TextBox { Text = "SPEC NO : 001-2698", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty, ReadOnly = true };
+
+        string sCustCode = "";
+        string sCustName = "";
+        string sTTL = "";
+        string sWT = "";
+        string sRequest = "";
+        string sQTY = "";
+        string sWeight = "";
+
 
 
         public Form_InBill()
@@ -62,11 +71,38 @@ namespace Bank_Host
             InitializeComponent();
         }
 
-        
+        public Form_InBill(string CustCode , string CustName, string TTL, string WT, string Request, string QTY, string Weight)
+        {
+            sCustCode = CustCode;
+            sCustName = CustName;
+            sTTL = TTL;
+            sWT = WT;
+            sRequest = Request;
+            sQTY = QTY;
+            sWeight = Weight;
+
+            InitializeComponent();
+        }
+
+
         private void Form_InBill_Load(object sender, EventArgs e)
         {
             TableLayout();
             TableEvent();
+
+            FillText();
+        }
+
+        private void FillText()
+        {
+            tb_BCustCode.Text = sCustCode;
+            tb_BCustName.Text = sCustName;
+            tb_BTTL.Text = "";
+            tb_BGross.Text = "";
+            tb_BRequest.Text = sRequest;
+            tb_BQTY.Text = sQTY;
+            tb_BWeight.Text = "";
+            //tb_BRecipient.Text = BankHost_main.strOperator;
         }
 
         private void TableEvent()
@@ -190,6 +226,7 @@ namespace Bank_Host
             tp.SetColumnSpan(tb_BRecipient, 2);
 
             tp.Controls.Add(tb_BSpec, 3, 7);
+            tp.SetColumnSpan(tb_BSpec, 2);
 
             tp.Controls.Add(lStore, 0, 8);
             tp.SetColumnSpan(lStore, 5);
@@ -236,6 +273,7 @@ namespace Bank_Host
 
 
             tp.Controls.Add(tb_SSpec, 3, 15);
+            tp.SetColumnSpan(tb_SSpec, 2);
         }
 
         private void btn_ExcelOut_Click(object sender, EventArgs e)
@@ -293,6 +331,8 @@ namespace Bank_Host
             worksheet1.SaveAs(DestFilePath);
 
             workbook.Close();
+
+            Close();
         }
     }
 

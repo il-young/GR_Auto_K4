@@ -211,6 +211,18 @@
     <Compile Include="Form_Progress.Designer.cs">
       <DependentUpon>Form_Progress.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Request.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Request.Designer.cs">
+      <DependentUpon>Form_Request.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_ScrapComment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_ScrapComment.Designer.cs">
+      <DependentUpon>Form_ScrapComment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Set.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,6 +240,11 @@
     </Compile>
     <Compile Include="Form_Splitlog_Input.Designer.cs">
       <DependentUpon>Form_Splitlog_Input.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GR_AutomationDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GR_AutomationDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -274,6 +291,12 @@
     <EmbeddedResource Include="Form_Progress.resx">
       <DependentUpon>Form_Progress.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Request.resx">
+      <DependentUpon>Form_Request.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_ScrapComment.resx">
+      <DependentUpon>Form_ScrapComment.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Set.resx">
       <DependentUpon>Form_Set.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,6 +317,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="GR_AutomationDataSet.xsc">
+      <DependentUpon>GR_AutomationDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="GR_AutomationDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GR_AutomationDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GR_AutomationDataSet.xss">
+      <DependentUpon>GR_AutomationDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -130,5 +130,16 @@ namespace Bank_Host.Properties {
                 this["PrintOffsetY"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=10.135.200.35;Initial Catalog=GR_Automation;Persist Security Info=Tru" +
+            "e;User ID=amm")]
+        public string GR_AutomationConnectionString {
+            get {
+                return ((string)(this["GR_AutomationConnectionString"]));
+            }
+        }
     }
 }

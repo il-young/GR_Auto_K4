@@ -472,6 +472,8 @@ namespace Bank_Host
                 string strname = dt.Rows[0]["NAME"].ToString(); strname = strname.Trim();
                 string strgrade = dt.Rows[0]["GRADE"].ToString(); strgrade = strgrade.Trim();
                 string strid = dt.Rows[0]["ID"].ToString(); strid = strid.Trim();
+                string strMESID = dt.Rows[0]["MES_ID"].ToString(); strMESID = strMESID.Trim();
+                string strMESPW = dt.Rows[0]["MES_PASSWORD"].ToString(); strMESPW = strMESPW.Trim();
 
                 if(nMode == 0 || nMode == 1 ||nMode == 7)
                 {
@@ -489,6 +491,8 @@ namespace Bank_Host
                 BankHost_main.strOperator = strname;
                 BankHost_main.strID = strid;
                 BankHost_main.strGrade = strgrade;
+                BankHost_main.strMESID = strMESID;
+                BankHost_main.strMESPW = strMESPW;
                 bok = true;
 
                 Fnc_Exit();
