@@ -8202,12 +8202,6 @@ namespace Bank_Host
             }
         }
 
-
-        private void serach_data()
-        {
-
-        }
-
         private void comboBox_mode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
@@ -8977,7 +8971,7 @@ namespace Bank_Host
                     dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Green;
                     n2ndCnt++;
                 }
-                else if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() == "" && dtScrap.Tables[0].Rows[i][9].ToString() == "")
+                else if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() != "" && dtScrap.Tables[0].Rows[i][9].ToString() != "")
                 {
                     dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
                     n3rdCnt++;
@@ -9456,46 +9450,109 @@ namespace Bank_Host
             ScrapExcelExport();
         }
 
+
         DataGridView ScrapGrid = new DataGridView();
-        
 
         private string ScrapDataVaildation()
         {
             string res = "SUCCESS";
             string s1st = "", s2nd = "", s3rd = "";
 
-            ScrapGrid.Rows.Clear();
 
-            for(int i = 0; i < dgv_scrap.RowCount; i++)
+            for (int i = 0; i < dgv_scrap.ColumnCount; i++)
+            {
+                ScrapGrid.Columns.Add(dgv_scrap.Columns[i].Name, dgv_scrap.Columns[i].HeaderText);
+            }
+            //ScrapGrid.Rows.Clear();
+
+            //for (int i = 0; i < dtScrap.Tables[0].Columns.Count; i++)
+            //{
+            //    ScrapGrid.Columns.Add(dtScrap.Tables[0].Columns[i].ColumnName, dtScrap.Tables[0].Columns[i].Caption);
+            //}
+            
+            ScrapGrid.Rows.Clear();
+            ScrapGrid.AllowUserToAddRows = false;
+
+            for (int i = 0; i < dgv_scrap.Rows.Count; i++)
             {
                 //      0       1      2         3     4    5       6      7    8     9        10           11
                 // [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
-                if (dgv_scrap.Rows[i].Cells[0].Value.ToString() == RequestSelectNum)
+                if ((string)dtScrap.Tables[0].Rows[i][0] == RequestSelectNum)
                 {
-                    if (s1st != "" && s1st != dgv_scrap.Rows[i].Cells[7].Value.ToString())
+                    if (s1st != "" && s1st != (string)dtScrap.Tables[0].Rows[i][7])
                         return "1st";
                     else
-                        s1st = dgv_scrap.Rows[i].Cells[7].Value.ToString();
+                        s1st = (string)dtScrap.Tables[0].Rows[i][7];
 
-                    if (s2nd != "" && s2nd != dgv_scrap.Rows[i].Cells[8].Value.ToString())
+                    if (s2nd != "" && s2nd != (string)dtScrap.Tables[0].Rows[i][8])
                         return "2nd";
                     else
-                        s2nd = dgv_scrap.Rows[i].Cells[8].Value.ToString();
+                        s2nd = (string)dtScrap.Tables[0].Rows[i][8];
 
-                    if (s3rd != "" && s3rd != dgv_scrap.Rows[i].Cells[9].Value.ToString())
+                    if (s3rd != "" && s3rd != (string)dtScrap.Tables[0].Rows[i][9])
                         return "3rd";
                     else
-                        s3rd = dgv_scrap.Rows[i].Cells[9].Value.ToString();
-                                       
-                    ScrapGrid.Rows.Add(dgv_scrap.Rows[i]);
+                        s3rd = (string)dtScrap.Tables[0].Rows[i][9];
+
+                    string[] rows = new string[dgv_scrap.ColumnCount];
+
+                    for (int j = 0; j < dgv_scrap.ColumnCount; j++)
+                    {
+                        rows[j] = dgv_scrap.Rows[i].Cells[j].Value.ToString();
+                    }                    
+
+                    ScrapGrid.Rows.Add(rows);
                 }
             }
 
             return res;
         }
 
+        private List<string> GetScrapCommentList()
+        {
+            List<string> ltemp = new List<string>();
+
+            string CustCode =ScrapGrid.Rows[0].Cells[1].Value.ToString();
+
+            System.Data.DataSet dt = SearchData(string.Format("SELECT [COMMENT] FROM [GR_Automation].[dbo].[TB_SCRAP_COMMENT] with(nolock) where [CUST]= '{0}'", CustCode));
+
+            
+            for(int i = 0; i< dt.Tables[0].Rows.Count; i++)
+            {
+                ltemp.Add((string)dt.Tables[0].Rows[i][0]);
+            }
+
+            return ltemp;
+        }
+
+
+        private void copyfile(string scr, string des)
+        {
+            File.Copy(scr, des);
+        }
+
+        string SelectedComment = "";
+
         private void ScrapExcelExport()
         {
+            List<string> CommentTemp = GetScrapCommentList();
+
+            if (CommentTemp.Count == 1)
+            {
+                SelectedComment = CommentTemp[0];
+            }
+            else
+            {
+                using (Form_CommentSelecter comment = new Form_CommentSelecter(CommentTemp))
+                {
+                    comment.UnSelect_event += Comment_UnSelect_event;
+                    comment.SelectedComment_event += Comment_SelectedComment_event;
+
+                    comment.ShowDialog();
+                }
+            }
+
+
             string DestFilePath = System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\" + String.Format("Scrap Validation_{0}.xlsx", DateTime.Now.ToString("yyyyMMdd"));
 
             saveFileDialog1.InitialDirectory = System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\";
@@ -9514,53 +9571,114 @@ namespace Bank_Host
             if (System.IO.Directory.Exists(System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\") == false)
                 System.IO.Directory.CreateDirectory(System.Windows.Forms.Application.StartupPath + "\\Scrap Validation\\");
 
-            File.Copy(System.Windows.Forms.Application.StartupPath + "\\Excel file\\Scrap Vaildation List.xlsx", DestFilePath);
+
+            //copyfile(System.Windows.Forms.Application.StartupPath + "\\Excel file\\Scrap Validation List.xlsx", DestFilePath);
+
 
             Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
-            Workbook workbook = application.Workbooks.Open(DestFilePath);
+            Workbook workbook = application.Workbooks.Open(System.Windows.Forms.Application.StartupPath + "\\Excel file\\Scrap Validation List.xlsx");
             Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
             application.Visible = false;
 
             string[] saLotTemp;
-            if(ScrapGrid.RowCount <= 10)
-            {
-                int totdie = 0, totwfr = 0;
+            int totdie = 0, totwfr = 0;
 
+            if (ScrapGrid.Rows.Count <= 10)
+            {
                 //      0       1      2         3     4    5       6      7    8     9        10           11
                 // [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
-                for (int i = 0; i < ScrapGrid.RowCount; i++)
+                for (int i = 0; i < ScrapGrid.Rows.Count; i++)
                 {
-                    saLotTemp = ScrapGrid.Rows[i].Cells[4].Value.ToString().Split('/');
+                    saLotTemp = ((string)ScrapGrid.Rows[i].Cells[4].Value).Split('/');
 
-                    ((Range)worksheet1.Rows[4 + i, 1]).Value2 = ScrapGrid.Rows[i].Cells[0].Value.ToString();    // request#
-                    ((Range)worksheet1.Rows[4 + i, 2]).Value2 = ScrapGrid.Rows[i].Cells[1].Value.ToString();    // cust code
-                    ((Range)worksheet1.Rows[4 + i, 3]).Value2 = ScrapGrid.Rows[i].Cells[2].Value.ToString();    // device
-                    ((Range)worksheet1.Rows[4 + i, 4]).Value2 = saLotTemp[0].Trim();                            // lot#
-                    ((Range)worksheet1.Rows[4 + i, 5]).Value2 = saLotTemp.Length > 1 ? saLotTemp[1] : "";       //dcc
-                    ((Range)worksheet1.Rows[4 + i, 6]).Value2 = ScrapGrid.Rows[i].Cells[5].Value.ToString();    // scrap die qty
-                    ((Range)worksheet1.Rows[4 + i, 7]).Value2 = ScrapGrid.Rows[i].Cells[6].Value.ToString();    // wafer
-                    ((Range)worksheet1.Rows[4 + i, 8]).Value2 = ScrapGrid.Rows[i].Cells[10].Value.ToString();    // location
-                    ((Range)worksheet1.Rows[4 + i, 9]).Value2 = "";    // status
+                    ((Range)worksheet1.Cells[(4 + i), 1]).Value2 = (string)ScrapGrid.Rows[i].Cells[0].Value;    // request#
+                    ((Range)worksheet1.Cells[(4 + i), 2]).Value2 = (string)ScrapGrid.Rows[i].Cells[1].Value;    // cust code
+                    ((Range)worksheet1.Cells[(4 + i), 3]).Value2 = (string)ScrapGrid.Rows[i].Cells[2].Value;    // device
+                    ((Range)worksheet1.Cells[(4 + i), 4]).Value2 = saLotTemp[0].Trim();                            // lot#
+                    ((Range)worksheet1.Cells[(4 + i), 5]).Value2 = saLotTemp.Length > 1 ? saLotTemp[1] : "";       //dcc
+                    ((Range)worksheet1.Cells[(4 + i), 6]).Value2 = (string)ScrapGrid.Rows[i].Cells[5].Value;    // scrap die qty
+                    ((Range)worksheet1.Cells[(4 + i), 7]).Value2 = (string)ScrapGrid.Rows[i].Cells[6].Value;    // wafer
+                    ((Range)worksheet1.Cells[(4 + i), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[10].Value;    // location
+                    ((Range)worksheet1.Cells[(4 + i), 9]).Value2 = "";    // status
 
-                    totdie += int.Parse(ScrapGrid.Rows[i].Cells[5].Value.ToString());
-                    totwfr += int.Parse(ScrapGrid.Rows[i].Cells[6].Value.ToString());
+                    totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
+                    totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[6].Value);
                 }
 
-                ((Range)worksheet1.Rows[15, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.RowCount);
-                ((Range)worksheet1.Rows[15, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
-                ((Range)worksheet1.Rows[15, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
-
-                ((Range)worksheet1.Rows[20, 1]).Value2 = ScrapGrid.Rows[0].Cells[7].Value.ToString();
-                ((Range)worksheet1.Rows[20, 3]).Value2 = ScrapGrid.Rows[0].Cells[8].Value.ToString();
-                ((Range)worksheet1.Rows[20, 5]).Value2 = ScrapGrid.Rows[0].Cells[9].Value.ToString();
+                ((Range)worksheet1.Cells[15, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.Rows.Count);
+                ((Range)worksheet1.Cells[15, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
+                ((Range)worksheet1.Cells[15, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
+                                   
+                ((Range)worksheet1.Cells[22, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //1st
+                ((Range)worksheet1.Cells[22, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[8].Value;   //2nd   
+                ((Range)worksheet1.Cells[22, 4]).Value2 = (string)ScrapGrid.Rows[0].Cells[9].Value;   //3rd
+                                   
+                ((Range)worksheet1.Cells[19, 5]).Value2 = SelectedComment;
             }
             else
             {
+                Range sourceRange = worksheet1.get_Range("A1:I22");
+                sourceRange.Copy();
 
+                int len = ScrapGrid.Rows.Count / 10;
+
+                for (int i = 0; i < len + 1 ; i++)
+                {
+                    Range last = worksheet1.Cells.SpecialCells(XlCellType.xlCellTypeLastCell, Type.Missing);
+                    Range destinationRange = worksheet1.get_Range(string.Format("A{0}", 26 * i), last);
+                    destinationRange.PasteSpecial(XlPasteType.xlPasteFormats);
+                }
+
+                for (int i = 0; i < ScrapGrid.Rows.Count; i++)
+                {
+                    saLotTemp = ((string)ScrapGrid.Rows[i].Cells[4].Value).Split('/');
+
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 1]).Value2 = (string)ScrapGrid.Rows[i].Cells[0].Value;    // request#
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 2]).Value2 = (string)ScrapGrid.Rows[i].Cells[1].Value;    // cust code
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 3]).Value2 = (string)ScrapGrid.Rows[i].Cells[2].Value;    // device
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 4]).Value2 = saLotTemp[0].Trim();                            // lot#
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 5]).Value2 = saLotTemp.Length > 1 ? saLotTemp[1] : "";       //dcc
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 6]).Value2 = (string)ScrapGrid.Rows[i].Cells[5].Value;    // scrap die qty
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 7]).Value2 = (string)ScrapGrid.Rows[i].Cells[6].Value;    // wafer
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[10].Value;    // location
+                    ((Range)worksheet1.Cells[((i / 10) * 26) + 4 + i, 9]).Value2 = "";    // status
+
+                    totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
+                    totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[6].Value);
+                }
+
+                for (int i = 0; i < len + 1; i++)
+                {
+                    ((Range)worksheet1.Cells[len * 26 + 15, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.Rows.Count);
+                    ((Range)worksheet1.Cells[len * 26 + 15, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
+                    ((Range)worksheet1.Cells[len * 26 + 15, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
+                                       
+                    ((Range)worksheet1.Cells[len * 26 + 15, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //1st
+                    ((Range)worksheet1.Cells[len * 26 + 15, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[8].Value;   //2nd   
+                    ((Range)worksheet1.Cells[len * 26 + 15, 4]).Value2 = (string)ScrapGrid.Rows[0].Cells[9].Value;   //3rd
+                                       
+                    ((Range)worksheet1.Cells[len * 26 + 19, 5]).Value2 = SelectedComment;
+                }
             }
 
             worksheet1.SaveAs(DestFilePath);
-            workbook.Close();
+            workbook.Close(false);
+            workbook = null;
+            application.Quit();
+            application = null;
+
+            
+            MessageBox.Show("Scrap Vaildation File 출력이 완료 되었습니다.");
+        }
+
+        private void Comment_SelectedComment_event(string msg)
+        {
+            SelectedComment = msg;
+        }
+
+        private void Comment_UnSelect_event()
+        {
+            SelectedComment = "";
         }
 
         private void btn_ExcelOut_MouseDown(object sender, MouseEventArgs e)

@@ -42,6 +42,7 @@
             this.cb_RequestList.Name = "cb_RequestList";
             this.cb_RequestList.Size = new System.Drawing.Size(169, 29);
             this.cb_RequestList.TabIndex = 0;
+            this.cb_RequestList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_RequestList_KeyDown);
             // 
             // label1
             // 

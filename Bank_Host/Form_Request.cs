@@ -50,5 +50,13 @@ namespace Bank_Host
         {
             PressCancel_Event();
         }
+
+        private void cb_RequestList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyValue == 13)
+            {
+                btn_OK_Click(sender, e);
+            }
+        }
     }
 }
