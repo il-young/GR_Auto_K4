@@ -311,5 +311,11 @@ namespace Bank_Host
             textBox_bcr15.Text = dataGridView_bcrconfig.Rows[rowIndex].Cells[14].Value.ToString();
             textBox_bcr16.Text = dataGridView_bcrconfig.Rows[rowIndex].Cells[15].Value.ToString();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form_MesPWChange mespw = new Form_MesPWChange();
+            mespw.ShowDialog();
+        }
     }
 }

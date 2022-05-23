@@ -115,6 +115,7 @@
             this.textBox_bcr15 = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.textBox_bcr16 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_List)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_custType)).BeginInit();
@@ -129,9 +130,9 @@
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(3, 4);
+            this.label4.Location = new System.Drawing.Point(3, 2);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(438, 43);
+            this.label4.Size = new System.Drawing.Size(332, 43);
             this.label4.TabIndex = 9;
             this.label4.Text = "사용자 등록";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -286,9 +287,9 @@
             // button_add
             // 
             this.button_add.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_add.Location = new System.Drawing.Point(443, 3);
+            this.button_add.Location = new System.Drawing.Point(462, 2);
             this.button_add.Name = "button_add";
-            this.button_add.Size = new System.Drawing.Size(136, 45);
+            this.button_add.Size = new System.Drawing.Size(117, 45);
             this.button_add.TabIndex = 3;
             this.button_add.Text = "등록";
             this.button_add.UseVisualStyleBackColor = true;
@@ -1025,11 +1026,23 @@
             this.textBox_bcr16.TabIndex = 20;
             this.textBox_bcr16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button1.Location = new System.Drawing.Point(339, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(117, 45);
+            this.button1.TabIndex = 24;
+            this.button1.Text = "MES 변경";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form_Set
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1609, 930);
             this.ControlBox = false;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.button_savebcr);
             this.Controls.Add(this.button_savetype);
             this.Controls.Add(this.button_allsave);
@@ -1185,5 +1198,6 @@
         private System.Windows.Forms.TextBox textBox_bcr15;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox textBox_bcr16;
+        private System.Windows.Forms.Button button1;
     }
 }

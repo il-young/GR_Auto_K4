@@ -181,6 +181,12 @@
     <Compile Include="Form_Lotchange.Designer.cs">
       <DependentUpon>Form_Lotchange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_MesPWChange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_MesPWChange.Designer.cs">
+      <DependentUpon>Form_MesPWChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_MultiBcrIn2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Lotchange.resx">
       <DependentUpon>Form_Lotchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_MesPWChange.resx">
+      <DependentUpon>Form_MesPWChange.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_MultiBcrIn2.resx">
       <DependentUpon>Form_MultiBcrIn2.cs</DependentUpon>
