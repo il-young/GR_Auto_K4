@@ -141,5 +141,29 @@ namespace Bank_Host.Properties {
                 return ((string)(this["GR_AutomationConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SCRAP_DEFAULT_PATH {
+            get {
+                return ((string)(this["SCRAP_DEFAULT_PATH"]));
+            }
+            set {
+                this["SCRAP_DEFAULT_PATH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SCRAP_EXCEL_EXPORT_PATH {
+            get {
+                return ((string)(this["SCRAP_EXCEL_EXPORT_PATH"]));
+            }
+            set {
+                this["SCRAP_EXCEL_EXPORT_PATH"] = value;
+            }
+        }
     }
 }

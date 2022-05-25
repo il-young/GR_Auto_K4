@@ -923,7 +923,11 @@ namespace Bank_Host
 
         public void Fnc_Init()
         {
-            Version = Application.ProductVersion;
+            if (System.IO.File.Exists(Application.StartupPath + "\\FileUpdateinfo.ini") == true)
+                Version =  System.IO.File.ReadAllText(Application.StartupPath + "\\FileUpdateinfo.ini");
+            
+
+            //Version = strtemp;// Application.ProductVersion;
             Text = "S/W Version:" + Version;
 
             Frm_Sort.MdiParent = this;

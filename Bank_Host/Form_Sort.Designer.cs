@@ -107,9 +107,7 @@
             this.dataGridView_workbill = new System.Windows.Forms.DataGridView();
             this.dataGridView_workinfo = new System.Windows.Forms.DataGridView();
             this.button_workend2 = new System.Windows.Forms.Button();
-            this.button_download = new System.Windows.Forms.Button();
             this.textBox_search = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -123,6 +121,8 @@
             this.label_filename = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView_sort = new System.Windows.Forms.DataGridView();
+            this.button_download = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -303,6 +303,7 @@
             this.btn_CommentEdit = new System.Windows.Forms.Button();
             this.dgv_scrap = new System.Windows.Forms.DataGridView();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.button15 = new System.Windows.Forms.Button();
             this.cb_download = new System.Windows.Forms.CheckBox();
             this.lTOTWfr = new System.Windows.Forms.Label();
             this.lTOTDie = new System.Windows.Forms.Label();
@@ -335,8 +336,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_shipment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workbill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workinfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_sort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Lot)).BeginInit();
@@ -753,9 +754,7 @@
             this.tabPage2.Controls.Add(this.dataGridView_workbill);
             this.tabPage2.Controls.Add(this.dataGridView_workinfo);
             this.tabPage2.Controls.Add(this.button_workend2);
-            this.tabPage2.Controls.Add(this.button_download);
             this.tabPage2.Controls.Add(this.textBox_search);
-            this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.label3);
@@ -769,6 +768,8 @@
             this.tabPage2.Controls.Add(this.label_filename);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.dataGridView_sort);
+            this.tabPage2.Controls.Add(this.button_download);
+            this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.ImageIndex = 1;
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
@@ -984,23 +985,6 @@
             this.button_workend2.UseVisualStyleBackColor = true;
             this.button_workend2.Click += new System.EventHandler(this.button_workend2_Click);
             // 
-            // button_download
-            // 
-            this.button_download.FlatAppearance.BorderSize = 0;
-            this.button_download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_download.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_download.Image = ((System.Drawing.Image)(resources.GetObject("button_download.Image")));
-            this.button_download.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button_download.Location = new System.Drawing.Point(1067, 6);
-            this.button_download.Name = "button_download";
-            this.button_download.Size = new System.Drawing.Size(119, 100);
-            this.button_download.TabIndex = 4;
-            this.button_download.Text = "다운로드";
-            this.button_download.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button_download.UseVisualStyleBackColor = true;
-            this.button_download.Visible = false;
-            this.button_download.Click += new System.EventHandler(this.button_download_Click);
-            // 
             // textBox_search
             // 
             this.textBox_search.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -1010,17 +994,6 @@
             this.textBox_search.TabIndex = 3;
             this.textBox_search.Visible = false;
             this.textBox_search.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_search_KeyPress);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(1134, 244);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 34);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
             // 
             // label4
             // 
@@ -1222,6 +1195,34 @@
             this.dataGridView_sort.Size = new System.Drawing.Size(1023, 192);
             this.dataGridView_sort.TabIndex = 0;
             this.dataGridView_sort.Visible = false;
+            // 
+            // button_download
+            // 
+            this.button_download.FlatAppearance.BorderSize = 0;
+            this.button_download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_download.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_download.Image = ((System.Drawing.Image)(resources.GetObject("button_download.Image")));
+            this.button_download.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button_download.Location = new System.Drawing.Point(1067, 6);
+            this.button_download.Name = "button_download";
+            this.button_download.Size = new System.Drawing.Size(119, 100);
+            this.button_download.TabIndex = 4;
+            this.button_download.Text = "다운로드";
+            this.button_download.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button_download.UseVisualStyleBackColor = true;
+            this.button_download.Visible = false;
+            this.button_download.Click += new System.EventHandler(this.button_download_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(1134, 244);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(36, 34);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             // 
             // tabPage3
             // 
@@ -3514,8 +3515,6 @@
             this.dgv_scrap.AllowUserToAddRows = false;
             this.dgv_scrap.AllowUserToDeleteRows = false;
             this.dgv_scrap.AllowUserToResizeRows = false;
-            this.dgv_scrap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgv_scrap.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgv_scrap.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_scrap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_scrap.Location = new System.Drawing.Point(0, 0);
@@ -3528,6 +3527,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.button15);
             this.panel9.Controls.Add(this.cb_download);
             this.panel9.Controls.Add(this.lTOTWfr);
             this.panel9.Controls.Add(this.lTOTDie);
@@ -3555,6 +3555,18 @@
             this.panel9.Size = new System.Drawing.Size(206, 1022);
             this.panel9.TabIndex = 1;
             // 
+            // button15
+            // 
+            this.button15.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button15.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button15.Location = new System.Drawing.Point(0, 952);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(206, 70);
+            this.button15.TabIndex = 36;
+            this.button15.Text = "종  료";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click_1);
+            // 
             // cb_download
             // 
             this.cb_download.AutoSize = true;
@@ -3568,9 +3580,8 @@
             // lTOTWfr
             // 
             this.lTOTWfr.AutoSize = true;
-            this.lTOTWfr.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lTOTWfr.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lTOTWfr.Location = new System.Drawing.Point(0, 926);
+            this.lTOTWfr.Location = new System.Drawing.Point(6, 433);
             this.lTOTWfr.Name = "lTOTWfr";
             this.lTOTWfr.Size = new System.Drawing.Size(137, 32);
             this.lTOTWfr.TabIndex = 34;
@@ -3579,9 +3590,8 @@
             // lTOTDie
             // 
             this.lTOTDie.AutoSize = true;
-            this.lTOTDie.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lTOTDie.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lTOTDie.Location = new System.Drawing.Point(0, 958);
+            this.lTOTDie.Location = new System.Drawing.Point(6, 465);
             this.lTOTDie.Name = "lTOTDie";
             this.lTOTDie.Size = new System.Drawing.Size(133, 32);
             this.lTOTDie.TabIndex = 32;
@@ -3623,9 +3633,8 @@
             // lTOTLot
             // 
             this.lTOTLot.AutoSize = true;
-            this.lTOTLot.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lTOTLot.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lTOTLot.Location = new System.Drawing.Point(0, 990);
+            this.lTOTLot.Location = new System.Drawing.Point(6, 497);
             this.lTOTLot.Name = "lTOTLot";
             this.lTOTLot.Size = new System.Drawing.Size(139, 32);
             this.lTOTLot.TabIndex = 26;
@@ -3808,8 +3817,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_shipment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workbill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workinfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_sort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).EndInit();
@@ -4118,5 +4127,6 @@
         private System.Windows.Forms.Label lTOTWfr;
         private System.Windows.Forms.Label lTOTDie;
         private System.Windows.Forms.CheckBox cb_download;
+        private System.Windows.Forms.Button button15;
     }
 }

@@ -37,5 +37,11 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=10.135.200.35;Initial Catalog=GR_Automation;Persist Security Info=True;User ID=amm</Value>
     </Setting>
+    <Setting Name="SCRAP_DEFAULT_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SCRAP_EXCEL_EXPORT_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
