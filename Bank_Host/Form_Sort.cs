@@ -9065,55 +9065,79 @@ namespace Bank_Host
                         _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
                     }
 
-
                     _driver = new ChromeDriver(_driverService, _options);
-                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/");  // 웹 사이트에 접속합니다. 
                     _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
                     progressBar1.Maximum = 15;
                     progressBar1.Value = 1;
 
                     SetProgressba("eMes에 접속 중입니다.", 1);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys("abc4");    // ID 입력          
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys("abc4");   // PW 입력            
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys("362808");   // 사번 입력         
                     _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
                     SetProgressba("Login 확인 중", 2);
 
-
-
-                    System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font"));
-
-
-
-                    if (temp.Count != 0)
-                    {
-                        if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
-                        {
-                            MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
-                            return;
-                        }
-                        else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
-                        {
-                            MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
-                            return;
-                        }
-                        else
-                        {
-                            MessageBox.Show("알수 없는 에러가 발생하였습니다.");
-                            return;
-                        }
-                    }
-
-                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
                     SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
 
 
-                    while (_driver.Url != "http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp")
+                    while (_driver.Url != "http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp")
                     {
-                        _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                        _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
                         Thread.Sleep(500);
                     }
+
+
+                    //_driver = new ChromeDriver(_driverService, _options);
+                    //_driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+                    //_driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                    //progressBar1.Maximum = 15;
+                    //progressBar1.Value = 1;
+
+                    //SetProgressba("eMes에 접속 중입니다.", 1);
+                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
+                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
+                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
+                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                    //SetProgressba("Login 확인 중", 2);
+
+
+
+                    //System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font"));
+
+
+
+                    //if (temp.Count != 0)
+                    //{
+                    //    if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                    //    {
+                    //        MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
+                    //        return;
+                    //    }
+                    //    else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                    //    {
+                    //        MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
+                    //        return;
+                    //    }
+                    //    else
+                    //    {
+                    //        MessageBox.Show("알수 없는 에러가 발생하였습니다.");
+                    //        return;
+                    //    }
+                    //}
+
+                    //_driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                    //SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
+
+
+                    //while (_driver.Url != "http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp")
+                    //{
+                    //    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                    //    Thread.Sleep(500);
+                    //}
 
                     //SetProgressba("시작 날짜 설정", 4);
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[1]").Clear();   // 시작 날짜
@@ -9331,11 +9355,12 @@ namespace Bank_Host
                         {//1st
                             dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID);                            
                             c = Color.Yellow;
-
-                            SpeakST("1차 완료");
+                            dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                            SpeakST("일차 완료");
 
                             n1stCnt++;
                             ScrapDataUpdate(selectedindex);
+                            dgv_scrap.Rows[selectedindex].Selected = true;
                         }
                         else if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")
                         {//2nd
@@ -9343,8 +9368,8 @@ namespace Bank_Host
                             {
                                 dtScrap.Tables[0].Rows[selectedindex][8] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                                 c = Color.Green;
-
-                                SpeakST("2차 완료");
+                                dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                                SpeakST("이차 완료");
                                 n2ndCnt++;
                             }
                             else
@@ -9359,8 +9384,8 @@ namespace Bank_Host
                             {
                                 dtScrap.Tables[0].Rows[selectedindex][9] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                                 c = Color.Blue;
-
-                                SpeakST("3차 완료");
+                                dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                                SpeakST("삼차 완료");
                                 n3rdCnt++;
                             }
                             else
@@ -9371,7 +9396,7 @@ namespace Bank_Host
                         ScrapDataUpdate(selectedindex);
                     }
 
-                    dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                    
                 }
                 else
                 {
