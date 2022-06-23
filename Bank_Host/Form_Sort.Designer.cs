@@ -303,19 +303,17 @@
             this.btn_CommentEdit = new System.Windows.Forms.Button();
             this.dgv_scrap = new System.Windows.Forms.DataGridView();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.cbRequest = new System.Windows.Forms.ComboBox();
             this.button15 = new System.Windows.Forms.Button();
             this.cb_download = new System.Windows.Forms.CheckBox();
             this.lTOTWfr = new System.Windows.Forms.Label();
             this.lTOTDie = new System.Windows.Forms.Label();
-            this.l3rdComp = new System.Windows.Forms.Label();
             this.l2ndComp = new System.Windows.Forms.Label();
             this.l1stComp = new System.Windows.Forms.Label();
             this.lTOTLot = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tb_scrapinput = new System.Windows.Forms.TextBox();
@@ -375,7 +373,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).BeginInit();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -3527,19 +3524,17 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.cbRequest);
             this.panel9.Controls.Add(this.button15);
             this.panel9.Controls.Add(this.cb_download);
             this.panel9.Controls.Add(this.lTOTWfr);
             this.panel9.Controls.Add(this.lTOTDie);
-            this.panel9.Controls.Add(this.l3rdComp);
             this.panel9.Controls.Add(this.l2ndComp);
             this.panel9.Controls.Add(this.l1stComp);
             this.panel9.Controls.Add(this.lTOTLot);
-            this.panel9.Controls.Add(this.label55);
             this.panel9.Controls.Add(this.label54);
             this.panel9.Controls.Add(this.label53);
             this.panel9.Controls.Add(this.pictureBox5);
-            this.panel9.Controls.Add(this.pictureBox4);
             this.panel9.Controls.Add(this.pictureBox3);
             this.panel9.Controls.Add(this.checkBox1);
             this.panel9.Controls.Add(this.tb_scrapinput);
@@ -3554,6 +3549,15 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(206, 1022);
             this.panel9.TabIndex = 1;
+            // 
+            // cbRequest
+            // 
+            this.cbRequest.FormattingEnabled = true;
+            this.cbRequest.Location = new System.Drawing.Point(6, 364);
+            this.cbRequest.Name = "cbRequest";
+            this.cbRequest.Size = new System.Drawing.Size(121, 28);
+            this.cbRequest.TabIndex = 37;
+            this.cbRequest.SelectedIndexChanged += new System.EventHandler(this.cbRequest_SelectedIndexChanged);
             // 
             // button15
             // 
@@ -3597,22 +3601,11 @@
             this.lTOTDie.TabIndex = 32;
             this.lTOTDie.Text = "Total Die :";
             // 
-            // l3rdComp
-            // 
-            this.l3rdComp.BackColor = System.Drawing.Color.Blue;
-            this.l3rdComp.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.l3rdComp.Location = new System.Drawing.Point(10, 389);
-            this.l3rdComp.Name = "l3rdComp";
-            this.l3rdComp.Size = new System.Drawing.Size(37, 21);
-            this.l3rdComp.TabIndex = 29;
-            this.l3rdComp.Text = "000";
-            this.l3rdComp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // l2ndComp
             // 
             this.l2ndComp.BackColor = System.Drawing.Color.Green;
             this.l2ndComp.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.l2ndComp.Location = new System.Drawing.Point(10, 352);
+            this.l2ndComp.Location = new System.Drawing.Point(9, 333);
             this.l2ndComp.Name = "l2ndComp";
             this.l2ndComp.Size = new System.Drawing.Size(37, 21);
             this.l2ndComp.TabIndex = 28;
@@ -3623,7 +3616,7 @@
             // 
             this.l1stComp.BackColor = System.Drawing.Color.Yellow;
             this.l1stComp.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
-            this.l1stComp.Location = new System.Drawing.Point(10, 313);
+            this.l1stComp.Location = new System.Drawing.Point(9, 294);
             this.l1stComp.Name = "l1stComp";
             this.l1stComp.Size = new System.Drawing.Size(37, 21);
             this.l1stComp.TabIndex = 27;
@@ -3640,21 +3633,11 @@
             this.lTOTLot.TabIndex = 26;
             this.lTOTLot.Text = "Total Lot : ";
             // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label55.Location = new System.Drawing.Point(55, 386);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(144, 25);
-            this.label55.TabIndex = 23;
-            this.label55.Text = ": 3차 검수 완료";
-            // 
             // label54
             // 
             this.label54.AutoSize = true;
             this.label54.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label54.Location = new System.Drawing.Point(55, 349);
+            this.label54.Location = new System.Drawing.Point(54, 330);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(144, 25);
             this.label54.TabIndex = 22;
@@ -3664,7 +3647,7 @@
             // 
             this.label53.AutoSize = true;
             this.label53.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label53.Location = new System.Drawing.Point(55, 310);
+            this.label53.Location = new System.Drawing.Point(54, 291);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(144, 25);
             this.label53.TabIndex = 21;
@@ -3673,25 +3656,16 @@
             // pictureBox5
             // 
             this.pictureBox5.BackColor = System.Drawing.Color.Green;
-            this.pictureBox5.Location = new System.Drawing.Point(6, 345);
+            this.pictureBox5.Location = new System.Drawing.Point(5, 326);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(43, 32);
             this.pictureBox5.TabIndex = 20;
             this.pictureBox5.TabStop = false;
             // 
-            // pictureBox4
-            // 
-            this.pictureBox4.BackColor = System.Drawing.Color.Blue;
-            this.pictureBox4.Location = new System.Drawing.Point(6, 383);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(43, 32);
-            this.pictureBox4.TabIndex = 19;
-            this.pictureBox4.TabStop = false;
-            // 
             // pictureBox3
             // 
             this.pictureBox3.BackColor = System.Drawing.Color.Yellow;
-            this.pictureBox3.Location = new System.Drawing.Point(6, 307);
+            this.pictureBox3.Location = new System.Drawing.Point(5, 288);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(43, 32);
             this.pictureBox3.TabIndex = 18;
@@ -3865,7 +3839,6 @@
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
@@ -4111,15 +4084,12 @@
         private System.Windows.Forms.TextBox tb_scrapinput;
         private System.Windows.Forms.Button btn_ExcelOut;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label label55;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button btn_CommentEdit;
-        private System.Windows.Forms.Label l3rdComp;
         private System.Windows.Forms.Label l2ndComp;
         private System.Windows.Forms.Label l1stComp;
         private System.Windows.Forms.Label lTOTLot;
@@ -4128,5 +4098,6 @@
         private System.Windows.Forms.Label lTOTDie;
         private System.Windows.Forms.CheckBox cb_download;
         private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.ComboBox cbRequest;
     }
 }

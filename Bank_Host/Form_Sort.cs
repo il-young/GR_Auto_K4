@@ -8943,63 +8943,105 @@ namespace Bank_Host
             // 
             try
             {
+                DataSet request = SearchData(string.Format("select DISTINCT [REQUEST] from TB_SCRAP2 with(NOLOCK)  where [DATE] >= '{0}' and [DATE] <= '{1}'", sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd")));
+                List<string> RequestID = new List<string>();
 
-                datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}'", sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"));
-                dtScrap = SearchData(datastr);
+                cbRequest.Items.Clear();
 
-                //dgv_scrap = new DataGridView();
-
-                if (dgv_scrap.DataSource != null)
-                    dgv_scrap.DataSource = null;
-
-                dgv_scrap.DataSource = dtScrap.Tables[0];
-
-                dgv_scrap.Columns[1].Width = 50;
-                dgv_scrap.Columns[4].Width = 130;
-                dgv_scrap.Columns[5].Width = 40;
-                dgv_scrap.Columns[6].Width = 40;
-
-                bDownloadComp = false;
-
-                dgv_scrap.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-                nTotLot = dgv_scrap.RowCount;
-
-                for (int i = 0; i < dgv_scrap.RowCount; i++)
+                for(int i = 0; i< request.Tables[0].Rows.Count; i++)
                 {
-                    nTotDie += (int)dtScrap.Tables[0].Rows[i][5];
-                    nTotWfr += (int)dtScrap.Tables[0].Rows[i][6];
-                    if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() == "" && dtScrap.Tables[0].Rows[i][9].ToString() == "")
-                    {
-                        dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
-                        n1stCnt++;
-                    }
-                    else if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() != "" && dtScrap.Tables[0].Rows[i][9].ToString() == "")
-                    {
-                        dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Green;
-                        n2ndCnt++;
-                    }
-                    else if (dtScrap.Tables[0].Rows[i][7].ToString() != "" && dtScrap.Tables[0].Rows[i][8].ToString() != "" && dtScrap.Tables[0].Rows[i][9].ToString() != "")
-                    {
-                        dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
-                        n3rdCnt++;
-                    }
+                    RequestID.Add(request.Tables[0].Rows[i][0].ToString());
+                    cbRequest.Items.Add(request.Tables[0].Rows[i][0].ToString());
+                }                               
+
+                string SelRequest =  SelectRequest(RequestID, "Vaildation할 Request를 선택해 주세요");
+
+                if(SelRequest == "EMPTY")
+                {
+                    return; 
                 }
 
-                l1stComp.Text = n1stCnt.ToString();
-                l2ndComp.Text = n2ndCnt.ToString();
-                l3rdComp.Text = n3rdCnt.ToString();
-
-                lTOTLot.Text = string.Format("Total Lot : {0}", nTotLot);
-                lTOTDie.Text = string.Format("Total Die : {0}", nTotDie);
-                lTOTWfr.Text = string.Format("Total Wfr : {0}", nTotWfr);
-
-                button16.Enabled = true;
+                ReadScrapDBData(SelRequest);
             }
             catch (Exception ex)
             {
 
                 throw;
             }
+        }
+
+        private void ReadScrapDBData(string SelectRequte)
+        {
+            string datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[LOT],[DIE],[WAFER],[1st],[2nd],[LOCATION],[CERITIFICATE] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}' and [REQUEST]='{2}'",
+                sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"), SelectRequte);
+            dtScrap = SearchData(datastr);
+
+            //dgv_scrap = new DataGridView();
+
+            if (dgv_scrap.DataSource != null)
+                dgv_scrap.DataSource = null;
+
+            dgv_scrap.DataSource = dtScrap.Tables[0];
+
+            dgv_scrap.Columns[1].Width = 50;
+            dgv_scrap.Columns[3].Width = 130;
+            dgv_scrap.Columns[4].Width = 70;
+            dgv_scrap.Columns[5].Width = 40;
+
+            bDownloadComp = false;
+
+            dgv_scrap.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            nTotLot = dgv_scrap.RowCount;
+
+            for (int i = 0; i < dgv_scrap.RowCount; i++)
+            {
+                nTotDie += (int)dtScrap.Tables[0].Rows[i][4];
+                nTotWfr += (int)dtScrap.Tables[0].Rows[i][5];
+                if (dtScrap.Tables[0].Rows[i][6].ToString() != "" && dtScrap.Tables[0].Rows[i][7].ToString() == "")
+                {
+                    dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                    n1stCnt++;
+                }
+                else if (dtScrap.Tables[0].Rows[i][6].ToString() != "" && dtScrap.Tables[0].Rows[i][7].ToString() != "")
+                {
+                    dgv_scrap.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+                    n2ndCnt++;
+                }
+            }
+
+            l1stComp.Text = n1stCnt.ToString();
+            l2ndComp.Text = n2ndCnt.ToString();
+
+            lTOTLot.Text = string.Format("Total Lot : {0}", nTotLot);
+            lTOTDie.Text = string.Format("Total Die : {0}", nTotDie);
+            lTOTWfr.Text = string.Format("Total Wfr : {0}", nTotWfr);
+
+            button16.Enabled = true;
+        }
+
+        string SelectedRequest = "";
+
+        private string SelectRequest(List<string> RequestID,string msg)
+        {
+            Form_Request RequestSelecter = new Form_Request(RequestID, msg);
+            RequestSelecter.PressOK_Event += RequestSelecter_PressOK_Event;
+            SelectedRequest = "";
+
+            RequestSelecter.ShowDialog();
+
+            if (SelectedRequest == "")
+            {
+                MessageBox.Show("Request를 선택 하세요");
+                return "EMPTY";
+            }
+
+            return SelectedRequest;
+        }
+
+
+        private void RequestSelecter_PressOK_Event(string RequestNum)
+        {
+            SelectedRequest = RequestNum;
         }
 
         private System.Data.DataSet SearchData(string sql)
@@ -9345,15 +9387,15 @@ namespace Bank_Host
                 if (selectedindex != -1)
                 {
                     Color c = new Color();
-                    if (dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() != "")  // 검수 완료 된 자제
+                    if (dtScrap.Tables[0].Rows[selectedindex][6].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "")  // 검수 완료 된 자제
                     {// 검수 완료된 자네
                         SpeakST("완료된 자제");
                     }
                     else
                     {
-                        if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")   
+                        if(dtScrap.Tables[0].Rows[selectedindex][6].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")   
                         {//1st
-                            dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID);                            
+                            dtScrap.Tables[0].Rows[selectedindex][6] = string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID);                            
                             c = Color.Yellow;
                             dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
                             SpeakST("일차 완료");
@@ -9361,15 +9403,19 @@ namespace Bank_Host
                             n1stCnt++;
                             ScrapDataUpdate(selectedindex);
                             dgv_scrap.Rows[selectedindex].Selected = true;
+                            dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;
                         }
-                        else if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")
+                        else if(dtScrap.Tables[0].Rows[selectedindex][6].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")
                         {//2nd
-                            if (dtScrap.Tables[0].Rows[selectedindex][7].ToString().Contains(BankHost_main.strID) == false)
+                            if (dtScrap.Tables[0].Rows[selectedindex][6].ToString().Contains(BankHost_main.strID) == false)
                             {
-                                dtScrap.Tables[0].Rows[selectedindex][8] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
+                                dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                                 c = Color.Green;
                                 dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
                                 SpeakST("이차 완료");
+                                ScrapDataUpdate(selectedindex);
+                                dgv_scrap.Rows[selectedindex].Selected = true;
+                                dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;
                                 n2ndCnt++;
                             }
                             else
@@ -9377,26 +9423,9 @@ namespace Bank_Host
                                 SpeakST("검수자 중복");
                             }
                         }
-                        else if(dtScrap.Tables[0].Rows[selectedindex][7].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][8].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][9].ToString() == "")
-                        {//3rd
-                            if(dtScrap.Tables[0].Rows[selectedindex][7].ToString().Contains(BankHost_main.strID) == false &&
-                                dtScrap.Tables[0].Rows[selectedindex][8].ToString().Contains(BankHost_main.strID) == false)
-                            {
-                                dtScrap.Tables[0].Rows[selectedindex][9] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
-                                c = Color.Blue;
-                                dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
-                                SpeakST("삼차 완료");
-                                n3rdCnt++;
-                            }
-                            else
-                            {
-                                SpeakST("검수자 중복");
-                            }
-                        }
-                        ScrapDataUpdate(selectedindex);
-                    }
 
-                    
+                        ScrapDataUpdate(selectedindex);
+                    }                    
                 }
                 else
                 {
@@ -9407,7 +9436,6 @@ namespace Bank_Host
 
             l1stComp.Text = n1stCnt.ToString();
             l2ndComp.Text = n2ndCnt.ToString();
-            l3rdComp.Text = n3rdCnt.ToString();
         }
 
 
@@ -9445,9 +9473,9 @@ namespace Bank_Host
                         {
                             if (dtScrap.Tables[0].Rows[i][2].ToString().Trim() == inputstr[2].Trim())   // DEV
                             {
-                                if (int.Parse(dtScrap.Tables[0].Rows[i][5].ToString().Trim()) == int.Parse(inputstr[3].Trim()))   // QTY
+                                if (int.Parse(dtScrap.Tables[0].Rows[i][4].ToString().Trim()) == int.Parse(inputstr[3].Trim()))   // QTY
                                 {
-                                    if (int.Parse(dtScrap.Tables[0].Rows[i][6].ToString().Trim()) == int.Parse(inputstr[4].Trim()))   //WFR
+                                    if (int.Parse(dtScrap.Tables[0].Rows[i][5].ToString().Trim()) == int.Parse(inputstr[4].Trim()))   //WFR
                                     {
                                         res = i;
                                         return res;
@@ -9516,20 +9544,17 @@ namespace Bank_Host
                 // [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
                 if ((string)dtScrap.Tables[0].Rows[i][0] == RequestSelectNum)
                 {
-                    if (s1st != "" && s1st != (string)dtScrap.Tables[0].Rows[i][7])
+                    if (s1st != "" && s1st != (string)dtScrap.Tables[0].Rows[i][6])
                         return "1st";
                     else
-                        s1st = (string)dtScrap.Tables[0].Rows[i][7];
+                        s1st = (string)dtScrap.Tables[0].Rows[i][6];
 
-                    if (s2nd != "" && s2nd != (string)dtScrap.Tables[0].Rows[i][8])
+                    if (s2nd != "" && s2nd != (string)dtScrap.Tables[0].Rows[i][7])
                         return "2nd";
                     else
-                        s2nd = (string)dtScrap.Tables[0].Rows[i][8];
+                        s2nd = (string)dtScrap.Tables[0].Rows[i][7];
 
-                    if (s3rd != "" && s3rd != (string)dtScrap.Tables[0].Rows[i][9])
-                        return "3rd";
-                    else
-                        s3rd = (string)dtScrap.Tables[0].Rows[i][9];
+                   
 
                     string[] rows = new string[dgv_scrap.ColumnCount];
 
@@ -9650,9 +9675,9 @@ namespace Bank_Host
                         ((Range)worksheet1.Cells[(4 + i), 3]).Value2 = (string)ScrapGrid.Rows[i].Cells[2].Value;    // device
                         ((Range)worksheet1.Cells[(4 + i), 4]).Value2 = saLotTemp[0].Trim();                            // lot#
                         ((Range)worksheet1.Cells[(4 + i), 5]).Value2 = saLotTemp.Length > 1 ? saLotTemp[1] : "";       //dcc
-                        ((Range)worksheet1.Cells[(4 + i), 6]).Value2 = (string)ScrapGrid.Rows[i].Cells[5].Value;    // scrap die qty
-                        ((Range)worksheet1.Cells[(4 + i), 7]).Value2 = (string)ScrapGrid.Rows[i].Cells[6].Value;    // wafer
-                        ((Range)worksheet1.Cells[(4 + i), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[10].Value;    // location
+                        ((Range)worksheet1.Cells[(4 + i), 6]).Value2 = (string)ScrapGrid.Rows[i].Cells[4].Value;    // scrap die qty
+                        ((Range)worksheet1.Cells[(4 + i), 7]).Value2 = (string)ScrapGrid.Rows[i].Cells[5].Value;    // wafer
+                        ((Range)worksheet1.Cells[(4 + i), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[9].Value;    // location
                         ((Range)worksheet1.Cells[(4 + i), 9]).Value2 = "";    // status
 
                         totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
@@ -9663,9 +9688,8 @@ namespace Bank_Host
                     ((Range)worksheet1.Cells[15, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
                     ((Range)worksheet1.Cells[15, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
 
-                    ((Range)worksheet1.Cells[22, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //1st
-                    ((Range)worksheet1.Cells[22, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[8].Value;   //2nd   
-                    ((Range)worksheet1.Cells[22, 4]).Value2 = (string)ScrapGrid.Rows[0].Cells[9].Value;   //3rd
+                    ((Range)worksheet1.Cells[22, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[6].Value;   //1st
+                    ((Range)worksheet1.Cells[22, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //2nd  
 
                     ((Range)worksheet1.Cells[19, 5]).Value2 = SelectedComment;
                 }
@@ -9700,9 +9724,9 @@ namespace Bank_Host
                         ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 3]).Value2 = (string)ScrapGrid.Rows[i].Cells[2].Value;    // device
                         ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 4]).Value2 = saLotTemp[0].Trim();                            // lot#
                         ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 5]).Value2 = saLotTemp.Length > 1 ? saLotTemp[1] : "";       //dcc
-                        ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 6]).Value2 = (string)ScrapGrid.Rows[i].Cells[5].Value;    // scrap die qty
-                        ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 7]).Value2 = (string)ScrapGrid.Rows[i].Cells[6].Value;    // wafer
-                        ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[10].Value;    // location
+                        ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 6]).Value2 = (string)ScrapGrid.Rows[i].Cells[4].Value;    // scrap die qty
+                        ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 7]).Value2 = (string)ScrapGrid.Rows[i].Cells[5].Value;    // wafer
+                        ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[9].Value;    // location
                         ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 9]).Value2 = "";    // status
 
                         totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
@@ -9715,9 +9739,8 @@ namespace Bank_Host
                         ((Range)worksheet1.Cells[i * 25 + 15, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.Rows.Count);
                         ((Range)worksheet1.Cells[i * 25 + 15, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
                         ((Range)worksheet1.Cells[i * 25 + 15, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
-                        ((Range)worksheet1.Cells[i * 25 + 22, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //1st
-                        ((Range)worksheet1.Cells[i * 25 + 22, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[8].Value;   //2nd   
-                        ((Range)worksheet1.Cells[i * 25 + 22, 4]).Value2 = (string)ScrapGrid.Rows[0].Cells[9].Value;   //3rd
+                        ((Range)worksheet1.Cells[i * 25 + 22, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[6].Value;   //1st
+                        ((Range)worksheet1.Cells[i * 25 + 22, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //2nd 
                         ((Range)worksheet1.Cells[i * 25 + 19, 5]).Value2 = SelectedComment;
                     }
                 }
@@ -9868,6 +9891,12 @@ namespace Bank_Host
             BankHost_main.strOperator = "";
             BankHost_main.strID = "";
 
+        }
+
+        private void cbRequest_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Request를 변경 하시겠습니까?", "Request 변경", MessageBoxButtons.YesNo, MessageBoxIcon.Information)) ;
+                ReadScrapDBData(cbRequest.Text);
         }
 
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
