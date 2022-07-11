@@ -9502,7 +9502,7 @@ namespace Bank_Host
 
         private void button15_Click(object sender, EventArgs e)
         {
-            ShowRequest();
+            ShowRequest("Excel 출력할 Request를 선택해 주세요.");
             string res = ScrapDataVaildation();
 
             if(res != "SUCCESS")
@@ -9789,6 +9789,25 @@ namespace Bank_Host
             }
 
             Form_Request re = new Form_Request(Request);
+            re.PressCancel_Event += Re_PressCancel_Event;
+            re.PressOK_Event += Re_PressOK_Event;
+
+            re.ShowDialog();
+        }
+
+        private void ShowRequest(string msg)
+        {
+            List<string> Request = new List<string>();
+
+            for (int i = 0; i < dgv_scrap.RowCount; i++)
+            {
+                if (Request.Contains(dgv_scrap.Rows[i].Cells[0].Value.ToString()) == false)
+                {
+                    Request.Add(dgv_scrap.Rows[i].Cells[0].Value.ToString());
+                }
+            }
+
+            Form_Request re = new Form_Request(Request, msg);
             re.PressCancel_Event += Re_PressCancel_Event;
             re.PressOK_Event += Re_PressOK_Event;
 

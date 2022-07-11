@@ -32,6 +32,8 @@ namespace Bank_Host
             InitializeComponent();
         }
 
+        
+
         public Form_Request(List<string> RequestList, string msg)
         {
             request = RequestList;
