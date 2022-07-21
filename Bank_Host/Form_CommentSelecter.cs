@@ -41,7 +41,7 @@ namespace Bank_Host
             }
 
             cb_comment.Text = "1";
-            tb_comment.Text = lComment[0];
+            tb_comment.Text = lComment.Count == 0 ? "" : lComment[0];
 
             cb_comment.Focus();
         }

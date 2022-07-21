@@ -389,6 +389,50 @@ namespace Bank_Host
             return bPrintState;
         }
 
+        public void Fnc_Print_MSG_1Line_Max(string MSG)
+        {
+            string[] strbill1 = MSG.Split(';');
+            int[] Width = new int[strbill1.Length];
+
+            for(int i = 0; i < strbill1.Length; i++)
+            {
+                if (strbill1[i].Length > 21)
+                    Width[i] = 1680 / strbill1[i].Length;
+            }
+            
+            string P_SC_1 = "^XA\r\n";
+            string P_SC_2 = "^BY,,10\r\n";
+            string P_SC_3 = "";
+
+            for (int i = 0; i < strbill1.Length; i++)
+            {
+                P_SC_3 += string.Format("^FO{0},{1}^A0N,80,{3} ^FD{2}^FS\r\n", 2 + Properties.Settings.Default.PrintOffsetX, 15 + (110*i) + Properties.Settings.Default.PrintOffsetY, strbill1[i], Width[i]);
+            }
+            string P_SC_END = "^XZ\r\n";
+
+            string P_OUT = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_END;
+
+            if (strPrintComType != "ETHERNET")
+            {
+                bPrintState = SendStringToPrinter(strPrinterName, P_OUT);
+            }
+            else
+            {
+                Socket_MessageSend(P_OUT);
+                /*
+                while (true)
+                {
+                    if (Frm_Scanner.strReceivedata == "OK,FTUNE")
+                        break;
+
+                    Thread.Sleep(1);
+
+                }
+                */
+                bPrintState = true;
+            }
+        }
+
         public void Fnc_Print_Billinfo(string strBill)
         {
             string strbill1 = strBill;
@@ -700,6 +744,36 @@ namespace Bank_Host
 
             return dados;
         }
+
+        public string Fnc_Get_PrintFormat_MSG(int nType, string msg)
+        {
+            //변경 처리 하는 부분
+            string strLine1 = "", strLine2 = "", strLine3 = "";
+
+            string strwfrqty = "";
+
+
+            string P_SC_1 = "^XA\r\n";      // 시작            
+            string P_SC_2 = string.Format("^FO {0},{1}\r\n", 2 + Properties.Settings.Default.PrintOffsetX, 2 + Properties.Settings.Default.PrintOffsetY); // 출력 시작 위치
+            string P_SC_3 = "^A0,N,160,100";
+            //string P_SC_4 = "^BQN,2,2\r\n";
+            string P_SC_4 = "^FDM," + msg + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의             
+            
+
+            //string strData2 = "";
+            //strData2 = string.Format("QTY : {0}  /  {1}", AmkorBarcode.strDiettl, strwfrqty);
+            //strLine2 = string.Format("^FO 97,38^A0N,25^FD{0}^FS", strData2);
+
+            string P_SC_END = "^XZ\r\n";
+
+            string dados = "";
+
+            //nType = 3;
+            dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 +  strLine1 + strLine3 + P_SC_END;            
+
+            return dados;
+        }
+
 
         public bool SendStringToPrinter(string szPrinterName, string szString)
         {

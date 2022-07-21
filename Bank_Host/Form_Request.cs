@@ -64,6 +64,7 @@ namespace Bank_Host
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
             PressCancel_Event();
+            Close();
         }
 
         private void cb_RequestList_KeyDown(object sender, KeyEventArgs e)

@@ -364,6 +364,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="host.ico" />
+    <None Include="Properties\Receipt %28사용자 지정%29 %281%29.jpg" />
+    <None Include="Properties\Doc %28사용자 지정%29.png" />
     <None Include="Properties\setting.png" />
     <None Include="Properties\Doc.png" />
   </ItemGroup>

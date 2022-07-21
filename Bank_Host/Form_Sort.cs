@@ -8977,6 +8977,13 @@ namespace Bank_Host
                 sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"), SelectRequte);
             dtScrap = SearchData(datastr);
 
+
+            n1stCnt = 0;
+            n2ndCnt = 0;
+            nTotLot = 0;
+            nTotDie = 0;
+            nTotWfr = 0;
+
             //dgv_scrap = new DataGridView();
 
             if (dgv_scrap.DataSource != null)
@@ -9026,6 +9033,7 @@ namespace Bank_Host
         {
             Form_Request RequestSelecter = new Form_Request(RequestID, msg);
             RequestSelecter.PressOK_Event += RequestSelecter_PressOK_Event;
+            RequestSelecter.PressCancel_Event += RequestSelecter_PressCancel_Event;
             SelectedRequest = "";
 
             RequestSelecter.ShowDialog();
@@ -9039,6 +9047,10 @@ namespace Bank_Host
             return SelectedRequest;
         }
 
+        private void RequestSelecter_PressCancel_Event()
+        {
+            SelectedRequest = "EMPTY";
+        }
 
         private void RequestSelecter_PressOK_Event(string RequestNum)
         {
@@ -9585,7 +9597,7 @@ namespace Bank_Host
             //    return ltemp;
             //}
 
-            if ((string)dt.Tables[0].Rows[0][0] == "")
+            if (dt.Tables[0].Rows.Count == 0)
             {
                 MessageBox.Show(string.Format("고객 코드 : {0}\n에 등록된 Comment가 없습니다.", string.Join(",", CustCode)));
                 return ltemp;
@@ -10313,6 +10325,7 @@ namespace Bank_Host
                     {
                         ChangeIME(tb_split);
                     }
+                    btn_CommentEdit.Text = "  Comment\nEdit";
                     tb_split.Focus();
                 }
                 catch (Exception ex)

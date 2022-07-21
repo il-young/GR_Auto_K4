@@ -345,7 +345,7 @@ namespace Bank_Host
                 ((Range)worksheet1.Cells[14, 6]).Value2 = tb_BWeight.Text;
                 ((Range)worksheet1.Cells[16, 2]).Value2 = tb_BSender.Text;
                 ((Range)worksheet1.Cells[16, 5]).Value2 = tb_BRecipient.Text;
-                ((Range)worksheet1.Cells[18, 5]).Value2 = "SPEC NO : " + tb_BSpec.Text;
+                ((Range)worksheet1.Cells[18, 5]).Value2 = tb_BSpec.Text;
 
                 ((Range)worksheet1.Cells[25, 2]).Value2 = tb_SCustName.Text;
                 ((Range)worksheet1.Cells[25, 3]).Value2 = tb_SCustCode.Text;
@@ -357,11 +357,13 @@ namespace Bank_Host
                 ((Range)worksheet1.Cells[27, 6]).Value2 = tb_SWeight.Text;
                 ((Range)worksheet1.Cells[29, 2]).Value2 = tb_SSender.Text;
                 ((Range)worksheet1.Cells[29, 5]).Value2 = tb_SRecipient.Text;
-                ((Range)worksheet1.Cells[31, 5]).Value2 = "SPEC NO : " + tb_SSpec.Text;
+                ((Range)worksheet1.Cells[31, 5]).Value2 = tb_SSpec.Text;
 
                 worksheet1.SaveAs(DestFilePath + string.Format("\\SCRAP MATL 입고증 {0}_{1}.xlsx", sRequest, DateTime.Now.ToString("yyyyMMdd")));
-
+                               
                 workbook.Close();
+
+                //MessageBox.Show(string.Format("{2}\\SCRAP MATL 입고증 {0}_{1}.xlsx \n에 저장 되었습니다.", sRequest, DateTime.Now.ToString("yyyyMMdd"), DestFilePath));
 
                 Close();
             }
