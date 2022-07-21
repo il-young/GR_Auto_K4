@@ -5097,7 +5097,7 @@ namespace Bank_Host
                              
 
                     tot_lots++;
-                    dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+                    dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.DCC, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
 
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
@@ -5134,7 +5134,7 @@ namespace Bank_Host
                     label_list.Add(temp);
 
                     tot_lots++;
-                    dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
+                    dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.DCC, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp);
@@ -7344,7 +7344,7 @@ namespace Bank_Host
         {
             try
             {
-                string str_temp = "No.,LOT,Device,Lot_QTY,Wafer_QTY,Amkor_ID,Cust,Wafer_Lot";
+                string str_temp = "No.,LOT,DCC,Device,Lot_QTY,Wafer_QTY,Amkor_ID,Cust,Wafer_Lot";
                 System.IO.StreamWriter st = System.IO.File.AppendText(path);
 
                 st.WriteLine(str_temp);
@@ -7357,7 +7357,8 @@ namespace Bank_Host
                     str_temp += dataGridView_label.Rows[i].Cells[3].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[4].Value.ToString() + ",";
                     str_temp += dataGridView_label.Rows[i].Cells[5].Value.ToString() + ",";
-                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString();
+                    str_temp += dataGridView_label.Rows[i].Cells[6].Value.ToString() + ",";
+                    str_temp += dataGridView_label.Rows[i].Cells[7].Value.ToString();
 
                     st.WriteLine(str_temp);
                     Thread.Sleep(10);
@@ -9875,6 +9876,23 @@ namespace Bank_Host
             return res;
         }
 
+        private async Task<string> GetCustName(string Codes)
+        {
+            string res = "";
+            string where = "";
+
+
+            string sql = string.Format("select [CUST], [NAME] from TB_CUST_INFO with(NOLOCK) where [CUST]={0}", Codes);
+            DataSet ds = SearchData(sql);
+
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                res = row[1].ToString().Split('_')[0].ToString();
+            }
+
+            return res;
+        }
+
         bool RequestSelectCancel = false;
         string RequestSelectNum = "";
 
@@ -9916,6 +9934,34 @@ namespace Bank_Host
         {
             if (DialogResult.Yes == MessageBox.Show("Request를 변경 하시겠습니까?", "Request 변경", MessageBoxButtons.YesNo, MessageBoxIcon.Information)) ;
                 ReadScrapDBData(cbRequest.Text);
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            ShowRequest("출력할 Request를 선택해 주세요");
+
+            string CustNum = "";            
+
+            if (RequestSelectNum != "")
+            {
+                for (int i = 0; i < dgv_scrap.RowCount; i++)
+                {
+                    if (dgv_scrap.Rows[i].Cells[0].Value.ToString() == RequestSelectNum)
+                    {
+                        CustNum = dgv_scrap.Rows[i].Cells[1].Value.ToString();
+                        break;
+                    }
+                }
+
+                var taskResut = Task.Run(async () =>
+                {
+                    return await GetCustName(CustNum);
+                });
+
+                string custname = taskResut.Result;
+
+                Frm_Print.Fnc_Print_MSG_1Line_Max(string.Format("Requset# : {0};{1}({2}) SCRAP", RequestSelectNum, custname, CustNum));
+            }            
         }
 
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)

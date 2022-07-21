@@ -198,14 +198,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dataGridView_label = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LOT = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Device = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Die_Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WFT_QTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AMKOR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CUST_CODE = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Wafer_lot = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button10 = new System.Windows.Forms.Button();
             this.label40 = new System.Windows.Forms.Label();
             this.lwfr = new System.Windows.Forms.Label();
@@ -298,6 +290,7 @@
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.button17 = new System.Windows.Forms.Button();
             this.btn_ExcelOut = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.btn_CommentEdit = new System.Windows.Forms.Button();
@@ -326,6 +319,15 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LOT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Device = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Die_Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WFT_QTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AMKOR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CUST_CODE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Wafer_lot = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -2405,6 +2407,7 @@
             this.dataGridView_label.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.LOT,
+            this.Column2,
             this.Device,
             this.Die_Qty,
             this.WFT_QTY,
@@ -2423,55 +2426,6 @@
             this.dataGridView_label.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView_label.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView_label_RowsRemoved);
             this.dataGridView_label.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView_label_KeyPress);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "No";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // LOT
-            // 
-            this.LOT.HeaderText = "LOT";
-            this.LOT.Name = "LOT";
-            this.LOT.ReadOnly = true;
-            this.LOT.Width = 150;
-            // 
-            // Device
-            // 
-            this.Device.HeaderText = "Device";
-            this.Device.Name = "Device";
-            this.Device.ReadOnly = true;
-            // 
-            // Die_Qty
-            // 
-            this.Die_Qty.HeaderText = "Die_Qty";
-            this.Die_Qty.Name = "Die_Qty";
-            this.Die_Qty.ReadOnly = true;
-            // 
-            // WFT_QTY
-            // 
-            this.WFT_QTY.HeaderText = "WFT_QTY";
-            this.WFT_QTY.Name = "WFT_QTY";
-            this.WFT_QTY.ReadOnly = true;
-            // 
-            // AMKOR_ID
-            // 
-            this.AMKOR_ID.HeaderText = "AMKOR_ID";
-            this.AMKOR_ID.Name = "AMKOR_ID";
-            this.AMKOR_ID.ReadOnly = true;
-            // 
-            // CUST_CODE
-            // 
-            this.CUST_CODE.HeaderText = "CUST_CODE";
-            this.CUST_CODE.Name = "CUST_CODE";
-            this.CUST_CODE.ReadOnly = true;
-            // 
-            // Wafer_lot
-            // 
-            this.Wafer_lot.HeaderText = "Wafer_lot";
-            this.Wafer_lot.Name = "Wafer_lot";
-            this.Wafer_lot.ReadOnly = true;
             // 
             // button10
             // 
@@ -3453,6 +3407,7 @@
             // 
             // panel10
             // 
+            this.panel10.Controls.Add(this.button17);
             this.panel10.Controls.Add(this.btn_ExcelOut);
             this.panel10.Controls.Add(this.button16);
             this.panel10.Controls.Add(this.btn_CommentEdit);
@@ -3461,6 +3416,18 @@
             this.panel10.Name = "panel10";
             this.panel10.Size = new System.Drawing.Size(1330, 70);
             this.panel10.TabIndex = 3;
+            // 
+            // button17
+            // 
+            this.button17.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button17.Font = new System.Drawing.Font("맑은 고딕", 17F, System.Drawing.FontStyle.Bold);
+            this.button17.Location = new System.Drawing.Point(412, 0);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(94, 70);
+            this.button17.TabIndex = 26;
+            this.button17.Text = "라벨 출력";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // btn_ExcelOut
             // 
@@ -3766,6 +3733,61 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "No";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            // 
+            // LOT
+            // 
+            this.LOT.HeaderText = "LOT";
+            this.LOT.Name = "LOT";
+            this.LOT.ReadOnly = true;
+            this.LOT.Width = 150;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "DCC";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Device
+            // 
+            this.Device.HeaderText = "Device";
+            this.Device.Name = "Device";
+            this.Device.ReadOnly = true;
+            // 
+            // Die_Qty
+            // 
+            this.Die_Qty.HeaderText = "Die_Qty";
+            this.Die_Qty.Name = "Die_Qty";
+            this.Die_Qty.ReadOnly = true;
+            // 
+            // WFT_QTY
+            // 
+            this.WFT_QTY.HeaderText = "WFT_QTY";
+            this.WFT_QTY.Name = "WFT_QTY";
+            this.WFT_QTY.ReadOnly = true;
+            // 
+            // AMKOR_ID
+            // 
+            this.AMKOR_ID.HeaderText = "AMKOR_ID";
+            this.AMKOR_ID.Name = "AMKOR_ID";
+            this.AMKOR_ID.ReadOnly = true;
+            // 
+            // CUST_CODE
+            // 
+            this.CUST_CODE.HeaderText = "CUST_CODE";
+            this.CUST_CODE.Name = "CUST_CODE";
+            this.CUST_CODE.ReadOnly = true;
+            // 
+            // Wafer_lot
+            // 
+            this.Wafer_lot.HeaderText = "Wafer_lot";
+            this.Wafer_lot.Name = "Wafer_lot";
+            this.Wafer_lot.ReadOnly = true;
+            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -4035,14 +4057,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LOT;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Device;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Die_Qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WFT_QTY;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AMKOR_ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CUST_CODE;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Wafer_lot;
         private System.Windows.Forms.TextBox tb_com_wfr;
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.TextBox tb_com_die;
@@ -4099,5 +4113,15 @@
         private System.Windows.Forms.CheckBox cb_download;
         private System.Windows.Forms.Button button15;
         private System.Windows.Forms.ComboBox cbRequest;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LOT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Device;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Die_Qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WFT_QTY;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AMKOR_ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CUST_CODE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Wafer_lot;
     }
 }
