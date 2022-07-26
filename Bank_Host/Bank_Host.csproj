@@ -139,6 +139,12 @@
     <Compile Include="Form1_Split_email.Designer.cs">
       <DependentUpon>Form1_Split_email.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Board.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Board.Designer.cs">
+      <DependentUpon>Form_Board.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_CommentSelecter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -272,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1_Split_email.resx">
       <DependentUpon>Form1_Split_email.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Board.resx">
+      <DependentUpon>Form_Board.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_CommentSelecter.resx">
       <DependentUpon>Form_CommentSelecter.cs</DependentUpon>

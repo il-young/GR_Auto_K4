@@ -363,9 +363,9 @@ namespace Bank_Host
 
                 if (cnt == 0)
                 {
-                    string query = string.Format("Insert INTO TB_SCRAP_RECEIPT values('{0}', {1}, '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}')",
+                    string query = string.Format("Insert INTO TB_SCRAP_RECEIPT values('{0}', {1}, '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}')",
                         tb_BCustName.Text, tb_BCustCode.Text, tb_BLineCode.Text, dtB.Text, tb_BTTL.Text, tb_BGross.Text, tb_BRequest.Text, tb_BQTY.Text,
-                        tb_BWeight.Text, tb_BRecipient.Text, tb_BSender.Text);
+                        tb_BWeight.Text, tb_BRecipient.Text, tb_BSender.Text, string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID));
 
                     run_sql_command(query);
 
@@ -419,9 +419,9 @@ namespace Bank_Host
                     if (DialogResult.Yes == MessageBox.Show("금일 동일한 Request로 발행된 입고증이 있습니다.\n새로 발행 하시겠습니까?", "재발행", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                     {
                         string query = string.Format("update TB_SCRAP_RECEIPT set CUSTOMER_NAME='{0}', CUSTOMER_CODE={1}, LINE_CODE='{2}', [DATE]='{3}', TTL_CT='{4}'," +
-                            " GROSS_WT='{5}', REQUEST_NUM={6}, LOT_QTY={7}, WEIGHT='{8}', RECEIPT='{9}', CONSIGNEE='{10}' where REQUEST_NUM={11} and [DATE]='{12}'",
+                            " GROSS_WT='{5}', REQUEST_NUM={6}, LOT_QTY={7}, WEIGHT='{8}', RECEIPT='{9}', CONSIGNEE='{10}', EMPLOYEE='{11}' where REQUEST_NUM={11} and [DATE]='{12}'",
                         tb_BCustName.Text, tb_BCustCode.Text, tb_BLineCode.Text, dtB.Text, tb_BTTL.Text, tb_BGross.Text, tb_BRequest.Text, tb_BQTY.Text,
-                        tb_BWeight.Text, tb_BRecipient.Text, tb_BSender.Text, tb_BRequest.Text, dtB.Text);
+                        tb_BWeight.Text, tb_BRecipient.Text, tb_BSender.Text, tb_BRequest.Text, dtB.Text, string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID));
 
                         run_sql_command(query);
 

@@ -43,5 +43,8 @@
     <Setting Name="SCRAP_EXCEL_EXPORT_PATH" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="TimeOutMin" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

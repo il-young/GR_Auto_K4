@@ -137,6 +137,9 @@ namespace Bank_Host
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
 
+            Properties.Settings.Default.TimeOutMin = int.Parse(tb_TimeOutMin.Text);
+            Properties.Settings.Default.Save();
+
             BankHost_main.nStartup = nIndex;
         }
 
@@ -316,6 +319,20 @@ namespace Bank_Host
         {
             Form_MesPWChange mespw = new Form_MesPWChange();
             mespw.ShowDialog();
+        }
+
+        private void Form_Set_Load(object sender, EventArgs e)
+        {
+            tb_TimeOutMin.Text = Properties.Settings.Default.TimeOutMin.ToString();          
+        }
+
+        private void tb_TimeOutMin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == Keys.Enter)
+            {
+                Properties.Settings.Default.TimeOutMin = int.Parse(tb_TimeOutMin.Text);
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }

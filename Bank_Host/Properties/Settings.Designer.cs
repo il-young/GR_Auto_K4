@@ -165,5 +165,17 @@ namespace Bank_Host.Properties {
                 this["SCRAP_EXCEL_EXPORT_PATH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int TimeOutMin {
+            get {
+                return ((int)(this["TimeOutMin"]));
+            }
+            set {
+                this["TimeOutMin"] = value;
+            }
+        }
     }
 }

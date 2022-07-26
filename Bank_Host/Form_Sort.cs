@@ -5070,6 +5070,7 @@ namespace Bank_Host
         {
             if (Convert.ToInt32(e.KeyChar) == 13)
             {
+                ClickTime();
                 Amkor_label_Print_Process(textBox1.Text.ToUpper());
                 textBox1.Text = "";
             }
@@ -7184,6 +7185,7 @@ namespace Bank_Host
 
         private void button4_Click(object sender, EventArgs e)
         {
+            ClickTime();
             if (!BankHost_main.IsAutoFocus)
                 BankHost_main.IsAutoFocus = true;
         }
@@ -7288,6 +7290,7 @@ namespace Bank_Host
         {
             if (blabel_save == true)
             {
+                bTimeOutSt = true;
                 bselected_mode_index = false;
                 tabControl_Sort.SelectedIndex = 0;
                 blabel_save = false;
@@ -7300,6 +7303,7 @@ namespace Bank_Host
 
                 if(res == DialogResult.Yes)
                 {
+                    bTimeOutSt = true;
                     bselected_mode_index = false;
                     tabControl_Sort.SelectedIndex = 0;
                     blabel_save = false;
@@ -7315,6 +7319,7 @@ namespace Bank_Host
             saveFileDialog1.InitialDirectory = Properties.Settings.Default.file_save_path;
             saveFileDialog1.Filter = "CSV file(*.csv)|";
 
+            ClickTime();
             DialogResult res = saveFileDialog1.ShowDialog();
 
             if(res == DialogResult.OK)
@@ -7756,6 +7761,7 @@ namespace Bank_Host
 
         private void btn_exit_Click(object sender, EventArgs e)
         {
+            bTimeOutSt = true;
             bmode6 = false;
             dgv_loc.Rows.Clear();
             tabControl_Sort.SelectedIndex = 0;
@@ -7765,6 +7771,7 @@ namespace Bank_Host
         {
             string nowDateTime = DateTime.Now.ToString("yyyyMMddHHmmss");
             string pathFilename = string.Empty;
+            ClickTime();
 
             SaveFileDialog saveFile = new SaveFileDialog
             {
@@ -7919,6 +7926,7 @@ namespace Bank_Host
 
         private void btn_mail_Click(object sender, EventArgs e)
         {
+            ClickTime();
             Form1_Split_email email = new Form1_Split_email();
             email.ShowDialog();
         }
@@ -8046,6 +8054,7 @@ namespace Bank_Host
 
         private void button8_Click(object sender, EventArgs e)
         {
+            bTimeOutSt = true;
             label26.Text = "작업 모델";
             bmode7 = false;
 
@@ -8053,8 +8062,10 @@ namespace Bank_Host
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {   
-            if(BankHost_main.nScanMode == 0)
+        {
+            int nMode = comboBox_mode.SelectedIndex;
+
+            if (BankHost_main.nScanMode == 0)
             {
                 if (!BankHost_main.bVisionConnect)
                 {
@@ -8092,14 +8103,15 @@ namespace Bank_Host
 
             try
             {
-                BankHost_main.strWork_Shot1Lot = BankHost_main.Host.Host_Get_Shot1Lot(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+                if(nMode != 6)
+                    BankHost_main.strWork_Shot1Lot = BankHost_main.Host.Host_Get_Shot1Lot(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
             }
             catch
             {
                 BankHost_main.strWork_Shot1Lot = "NO";
             }
 
-            int nMode = comboBox_mode.SelectedIndex;
+            
 
             string str = "";
 
@@ -8135,6 +8147,8 @@ namespace Bank_Host
                 tot_lots = 0;
                 tot_wfr = 0;
 
+                LastClickTime = DateTime.Now;
+                bgw_timeout.RunWorkerAsync();
 
                 Set_split_lot_data();
 
@@ -8156,6 +8170,9 @@ namespace Bank_Host
                 BankHost_main.nWorkMode = 2;
 
                 BankHost_main.Host.Host_Set_Workinfo(BankHost_main.strEqid, strWorkFileName, strSelBillno[0], "", "WORK");
+
+                LastClickTime = DateTime.Now;
+                bgw_timeout.RunWorkerAsync();
 
                 //button_autogr.BackColor = Color.LightGray;
                 button_autogr.Enabled = false;
@@ -8227,6 +8244,7 @@ namespace Bank_Host
         {
             if(e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
+                ClickTime();
                 Split_Scandata = tb_split.Text;
 
                 if (Split_Scandata == "")
@@ -8471,6 +8489,7 @@ namespace Bank_Host
         {
             string nowDateTime = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string pathFilename = string.Empty;
+            ClickTime();
 
             SaveFileDialog saveFile = new SaveFileDialog
             {
@@ -8693,6 +8712,7 @@ namespace Bank_Host
 
         private void button10_Click(object sender, EventArgs e)
         {
+            ClickTime();
             dataGridView_label.Rows.Clear();
             tot_lots = 0;
             tot_die = 0;
@@ -8760,6 +8780,7 @@ namespace Bank_Host
         private void button9_Click(object sender, EventArgs e)
         {
             string dgv_str_val = "";
+            ClickTime();
 
             for (int i = 0; i < dgv_split_log.RowCount; i++)
             {
@@ -8786,6 +8807,7 @@ namespace Bank_Host
 
         private void btn_search_Click(object sender, EventArgs e)
         {
+            ClickTime();
             if (bDownloadComp == false)
             {
                 SetProgressba("조회를 시작 합니다.", 0);
@@ -9026,18 +9048,44 @@ namespace Bank_Host
             lDieCnt.Text = string.Format("{0}", nTotDie);
             lTOTWfr.Text = string.Format("Total Wfr : {0}", nTotWfr);
 
-            if(nTotLot != n1stCnt)
+            if(nTotLot != n1stCnt && n2ndCnt == 0)
             {
                 ScrapMode = 1;
                 SetProgressba("1차 검수 완료 후 2차 검수 진행 가능 합니다.",0);
+
+                using(Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Red))
+                {
+                    board.ShowDialog();
+                }
             }
-            else if(nTotLot != n1stCnt)
+            else if(nTotLot == n1stCnt)
             {
                 ScrapMode = 2;
                 SetProgressba("2차 검수 진행 가능 합니다.", 0);
             }
 
+            ShowComment(dgv_scrap.Rows[0].Cells[1].Value.ToString());            
+            
             button16.Enabled = true;
+        }
+
+        private void ShowComment(string code)
+        {
+            DataSet ds = SearchData(string.Format("select COMMENT from TB_SCRAP_COMMENT with(nolock) where [CUST]='{0}'", code));
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                using (Form_Board board = new Form_Board(string.Format("고객 정보 : \r\n{0}", ds.Tables[0].Rows[0][0].ToString()), Color.Orange))
+                {
+                    board.ShowDialog();
+                }
+            }
+            else
+            {
+                using (Form_Board board = new Form_Board(string.Format("고객 정보 : \r\nComment를 등록 하세요"), Color.Orange))
+                {
+                    board.ShowDialog();
+                }
+            }
         }
 
         string SelectedRequest = "";
@@ -9401,7 +9449,9 @@ namespace Bank_Host
             {
                 string[] inputstr = tb_scrapinput.Text.Split(':');   // 0: Lot, 1: Empty, 2: DEV, 3: QTY, 4: WFR, 5: ??, 6: CUST
 
-                if(tb_scrapinput.Text == "")
+                
+
+                if (tb_scrapinput.Text == "")
                 {
                     return;
                 }
@@ -9543,6 +9593,7 @@ namespace Bank_Host
 
         private void button15_Click(object sender, EventArgs e)
         {
+            ClickTime();
             ShowRequest("Excel 출력할 Request를 선택해 주세요.");
             string res = ScrapDataVaildation();
 
@@ -9875,6 +9926,7 @@ namespace Bank_Host
 
         private void button16_Click(object sender, EventArgs e)
         {
+            ClickTime();
             ShowRequest();
 
             if (RequestSelectCancel == false)
@@ -9978,6 +10030,7 @@ namespace Bank_Host
 
         private void btn_CommentEdit_Click(object sender, EventArgs e)
         {
+            ClickTime();
             using (Form_ScrapComment comment = new Form_ScrapComment())
             {
                 comment.ShowDialog();
@@ -9987,7 +10040,14 @@ namespace Bank_Host
         private void button15_Click_1(object sender, EventArgs e)
         {
             //dgv_scrap.Rows.Clear();
-            dtScrap.Tables[0].Rows.Clear();
+            bTimeOutSt = true;
+
+            if (dtScrap != null)
+            {
+                ShowComment(dgv_scrap.Rows[0].Cells[1].Value.ToString());
+                dtScrap.Tables[0].Rows.Clear();
+            }
+
             tabControl_Sort.SelectedIndex = 0;
             BankHost_main.strAdminID = "";
             BankHost_main.strAdminPW = "";
@@ -9996,16 +10056,20 @@ namespace Bank_Host
             BankHost_main.strOperator = "";
             BankHost_main.strID = "";
 
+            
+
         }
 
         private void cbRequest_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ClickTime();
             if (DialogResult.Yes == MessageBox.Show("Request를 변경 하시겠습니까?", "Request 변경", MessageBoxButtons.YesNo, MessageBoxIcon.Information)) ;
                 ReadScrapDBData(cbRequest.Text);
         }
 
         private void button17_Click(object sender, EventArgs e)
         {
+            ClickTime();
             ShowRequest("출력할 Request를 선택해 주세요");
 
             string CustNum = "";            
@@ -10030,6 +10094,56 @@ namespace Bank_Host
 
                 Frm_Print.Fnc_Print_MSG_1Line_Max(string.Format("Requset# : {0};{1}({2}) SCRAP", RequestSelectNum, custname, CustNum));
             }            
+        }
+
+        bool bTimeOutSt = false;
+        DateTime LastClickTime = new DateTime();
+
+        private void ClickTime()
+        {
+            LastClickTime = DateTime.Now;
+        }
+
+        private void bgw_timeout_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(true)
+            {
+                if((DateTime.Now - LastClickTime).TotalMinutes >= Properties.Settings.Default.TimeOutMin || bTimeOutSt == true)
+                {
+                    bTimeOutSt = false;
+
+                    tabControl_Sort.SelectedIndex = 0;
+                    BankHost_main.strAdminID = "";
+                    BankHost_main.strAdminPW = "";
+                    BankHost_main.strAmkorID = "";
+                    BankHost_main.strCust = "";
+                    BankHost_main.strOperator = "";
+                    BankHost_main.strID = "";
+                    break;
+                }
+
+                System.Threading.Thread.Sleep(1000);
+            }
+        }
+
+        private void cb_download_CheckStateChanged(object sender, EventArgs e)
+        {
+            ClickTime();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            ClickTime();
+        }
+
+        private void dgv_split_log_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            ClickTime();
         }
 
         private void dgv_split_log_KeyDown(object sender, KeyEventArgs e)
@@ -10280,6 +10394,8 @@ namespace Bank_Host
                 tabControl_Sort.SelectedIndex = 5;
                 bselected_mode_index = true;
                 textBox1.Focus();
+                LastClickTime = DateTime.Now;
+                bgw_timeout.RunWorkerAsync();
 
                 tot_lots = 0;
                 tot_wfr = 0;
@@ -10332,6 +10448,8 @@ namespace Bank_Host
                     tabControl_Sort.SelectedIndex = 6;
 
                     bmode6 = true;
+                    LastClickTime = DateTime.Now;
+                    bgw_timeout.RunWorkerAsync();
                     Frm_Process.Form_Hide();
                 }
                 catch (Exception ex)
@@ -10382,6 +10500,8 @@ namespace Bank_Host
                         ChangeIME(tb_split);
                     }
                     btn_CommentEdit.Text = "  Comment\nEdit";
+
+                    
                     tb_split.Focus();
                 }
                 catch (Exception ex)
@@ -10413,6 +10533,9 @@ namespace Bank_Host
                     {
                         ChangeIME(tb_scrapinput);
                     }
+
+                    LastClickTime = DateTime.Now;
+                    bgw_timeout.RunWorkerAsync();
                 }
 
             }
