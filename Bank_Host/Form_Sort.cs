@@ -8973,7 +8973,7 @@ namespace Bank_Host
 
         private void ReadScrapDBData(string SelectRequte)
         {
-            string datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[LOT],[DIE],[WAFER],[1st],[2nd],[LOCATION],[CERITIFICATE] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}' and [REQUEST]='{2}'",
+            string datastr = string.Format("select [REQUEST],[CUST],[DEVICE],[LOT],[DIE],[WAFER],[1st],[2nd],[LOCATION],[CERITIFICATE] from TB_SCRAP2 with(NOLOCK) where [DATE] >= '{0}' and [DATE] <= '{1}' and [REQUEST]='{2}' order by [LOT]",
                 sdt.Value.ToString("yyyyMMdd"), edt.Value.AddDays(1).ToString("yyyyMMdd"), SelectRequte);
             dtScrap = SearchData(datastr);
 
@@ -9017,12 +9017,25 @@ namespace Bank_Host
                 }
             }
 
+            
+
             l1stComp.Text = n1stCnt.ToString();
             l2ndComp.Text = n2ndCnt.ToString();
 
             lTOTLot.Text = string.Format("Total Lot : {0}", nTotLot);
-            lTOTDie.Text = string.Format("Total Die : {0}", nTotDie);
+            lDieCnt.Text = string.Format("{0}", nTotDie);
             lTOTWfr.Text = string.Format("Total Wfr : {0}", nTotWfr);
+
+            if(nTotLot != n1stCnt)
+            {
+                ScrapMode = 1;
+                SetProgressba("1차 검수 완료 후 2차 검수 진행 가능 합니다.",0);
+            }
+            else if(nTotLot != n1stCnt)
+            {
+                ScrapMode = 2;
+                SetProgressba("2차 검수 진행 가능 합니다.", 0);
+            }
 
             button16.Enabled = true;
         }
@@ -9120,6 +9133,7 @@ namespace Bank_Host
                         _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
                     }
 
+                    /* test server
                     _driver = new ChromeDriver(_driverService, _options);
                     _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/");  // 웹 사이트에 접속합니다. 
                     _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -9143,62 +9157,62 @@ namespace Bank_Host
                         _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
                         Thread.Sleep(500);
                     }
+                    */
 
+                    _driver = new ChromeDriver(_driverService, _options);
+                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+                    _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-                    //_driver = new ChromeDriver(_driverService, _options);
-                    //_driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
-                    //_driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                    progressBar1.Maximum = 15;
+                    progressBar1.Value = 1;
 
-                    //progressBar1.Maximum = 15;
-                    //progressBar1.Value = 1;
-
-                    //SetProgressba("eMes에 접속 중입니다.", 1);
-                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
-                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
-                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
-                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
-                    //SetProgressba("Login 확인 중", 2);
-
-
-
-                    //System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font"));
+                    SetProgressba("eMes에 접속 중입니다.", 1);
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                    SetProgressba("Login 확인 중", 2);
 
 
 
-                    //if (temp.Count != 0)
-                    //{
-                    //    if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
-                    //    {
-                    //        MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
-                    //        return;
-                    //    }
-                    //    else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
-                    //    {
-                    //        MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
-                    //        return;
-                    //    }
-                    //    else
-                    //    {
-                    //        MessageBox.Show("알수 없는 에러가 발생하였습니다.");
-                    //        return;
-                    //    }
-                    //}
-
-                    //_driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
-                    //SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
+                    System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font"));
 
 
-                    //while (_driver.Url != "http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp")
-                    //{
-                    //    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
-                    //    Thread.Sleep(500);
-                    //}
 
-                    //SetProgressba("시작 날짜 설정", 4);
+                    if (temp.Count != 0)
+                    {
+                        if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                        {
+                            MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
+                            return;
+                        }
+                        else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                        {
+                            MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
+                            return;
+                        }
+                        else
+                        {
+                            MessageBox.Show("알수 없는 에러가 발생하였습니다.");
+                            return;
+                        }
+                    }
+
+                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                    SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
+
+
+                    while (_driver.Url != "http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp")
+                    {
+                        _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                        Thread.Sleep(500);
+                    }
+
+                    SetProgressba("시작 날짜 설정", 4);
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[1]").Clear();   // 시작 날짜
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[1]").SendKeys(sdt.Value.ToString("yyyyMMdd"));
 
-                    //SetProgressba("종료 날짜 설정", 5);
+                    SetProgressba("종료 날짜 설정", 5);
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[3]").Clear();   // 종료 날짜
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[1]/td[2]/p/font/span/span/input[3]").SendKeys(edt.Value.ToString("yyyyMMdd"));
 
@@ -9210,7 +9224,7 @@ namespace Bank_Host
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[4]/p/font/select").SendKeys("SCRAP"); // ComboBox 설정
 
                     SetProgressba("데이터 조회 중입니다.", 7);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[2]/p/a/img").Click();    //Find 버튼 누름
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();    //Find 버튼 누름
 
 
                     SetProgressba("Excel File Down 중 입니다.", 8);
@@ -9309,16 +9323,19 @@ namespace Bank_Host
             {
                 //lock (this)
                 {
-                    SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation");
-                    ssconn.Open();
-                    SqlCommand scom = new SqlCommand(sql, ssconn);
-                    scom.CommandType = System.Data.CommandType.Text;
-                    scom.CommandText = sql;
-                    scom.ExecuteReader();
-
-                    ssconn.Close();
-                    ssconn.Dispose();
-                    scom.Dispose();
+                    using (SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                    {
+                        ssconn.Open();
+                        using (SqlCommand scom = new SqlCommand(sql, ssconn))
+                        {
+                            scom.CommandType = System.Data.CommandType.Text;
+                            scom.CommandText = sql;
+                            scom.ExecuteReader();
+                        }
+                    }
+                    //ssconn.Close();
+                    //ssconn.Dispose();
+                    //scom.Dispose();
                 }
                 //frm_Main.save_log(string.Format("Call:{0} -> Function:{1}, Param:{2}", System.Reflection.MethodBase.GetCurrentMethod().ReflectedType.Name, System.Reflection.MethodBase.GetCurrentMethod().Name, sql));
             }
@@ -9375,6 +9392,9 @@ namespace Bank_Host
             speech.SpeakAsync(MSG);
         }
 
+
+        int ScrapMode = 0;
+
         private void tb_input_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
@@ -9408,7 +9428,7 @@ namespace Bank_Host
                     {
                         if(dtScrap.Tables[0].Rows[selectedindex][6].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")   
                         {//1st
-                            dtScrap.Tables[0].Rows[selectedindex][6] = string.Format("{0}({1})",BankHost_main.strOperator, BankHost_main.strID);                            
+                            dtScrap.Tables[0].Rows[selectedindex][6] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                             c = Color.Yellow;
                             dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
                             SpeakST("일차 완료");
@@ -9416,24 +9436,32 @@ namespace Bank_Host
                             n1stCnt++;
                             ScrapDataUpdate(selectedindex);
                             dgv_scrap.Rows[selectedindex].Selected = true;
-                            dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;
+                            dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;                            
                         }
                         else if(dtScrap.Tables[0].Rows[selectedindex][6].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")
                         {//2nd
-                            if (dtScrap.Tables[0].Rows[selectedindex][6].ToString().Contains(BankHost_main.strID) == false)
+                            if (ScrapMode == 2)
                             {
-                                dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
-                                c = Color.Green;
-                                dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
-                                SpeakST("이차 완료");
-                                ScrapDataUpdate(selectedindex);
-                                dgv_scrap.Rows[selectedindex].Selected = true;
-                                dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;
-                                n2ndCnt++;
+                                if (dtScrap.Tables[0].Rows[selectedindex][6].ToString().Contains(BankHost_main.strID) == false)
+                                {
+                                    dtScrap.Tables[0].Rows[selectedindex][7] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
+                                    c = Color.Green;
+                                    dgv_scrap.Rows[selectedindex].DefaultCellStyle.BackColor = c;
+                                    SpeakST("이차 완료");
+                                    ScrapDataUpdate(selectedindex);
+                                    dgv_scrap.Rows[selectedindex].Selected = true;
+                                    dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;
+                                    n2ndCnt++;
+                                }
+                                else
+                                {
+                                    SpeakST("검수자 중복");
+                                }
                             }
                             else
                             {
-                                SpeakST("검수자 중복");
+                                SetProgressba("1차 검수 완료 후 2차 검수 진행 할 수 있습니다.",0);
+                                SpeakST("1차 먼저 완료 해야 합니다.");
                             }
                         }
 
@@ -9455,16 +9483,16 @@ namespace Bank_Host
         private void ScrapDataUpdate(int index)
         {   // 0         1      2        3       4     5    6        7      8    9     10          11
             //[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]   
-            string sqlstring = string.Format("update TB_SCRAP2 set [1st]='{0}',[2nd]='{1}',[3rd]='{2}' " +
+            string sqlstring = string.Format("update TB_SCRAP2 set [1st]='{0}',[2nd]='{1}' " +
                 "where [CUST]={3} and [DEVICE]='{4}' and [LOT]='{5}' and [DIE]={6} and [WAFER]={7}",
-                dtScrap.Tables[0].Rows[index][7],
-                dtScrap.Tables[0].Rows[index][8],
-                dtScrap.Tables[0].Rows[index][9],
-                dtScrap.Tables[0].Rows[index][1],
-                dtScrap.Tables[0].Rows[index][2],
-                dtScrap.Tables[0].Rows[index][4],
-                dtScrap.Tables[0].Rows[index][5],
-                dtScrap.Tables[0].Rows[index][6]);
+                dtScrap.Tables[0].Rows[index][6],   //1
+                dtScrap.Tables[0].Rows[index][7],   //2
+                dtScrap.Tables[0].Rows[index][8],   //3
+                dtScrap.Tables[0].Rows[index][1],   //CUST
+                dtScrap.Tables[0].Rows[index][2],   //DEV//
+                dtScrap.Tables[0].Rows[index][3],   //LOT
+                dtScrap.Tables[0].Rows[index][4],   // DIE
+                dtScrap.Tables[0].Rows[index][5]);  //WAFER
 
             run_sql_command(sqlstring);
         }
@@ -9480,7 +9508,7 @@ namespace Bank_Host
                 {
                     if (int.Parse(dtScrap.Tables[0].Rows[i][1].ToString()) == int.Parse(inputstr[6]))    // CUST
                     {
-                        string scrapTemp = dtScrap.Tables[0].Rows[i][4].ToString().Trim();
+                        string scrapTemp = dtScrap.Tables[0].Rows[i][3].ToString().Trim();
 
                         if (scrapTemp == inputstr[0].Trim())   // LOT
                         {
@@ -9620,7 +9648,7 @@ namespace Bank_Host
 
         string SelectedComment = "";
 
-        private void ScrapExcelExport()
+        private async Task<string> ScrapExcelExport()
         {
             List<string> CommentTemp = GetScrapCommentList();
 
@@ -9675,13 +9703,22 @@ namespace Bank_Host
                 string[] saLotTemp;
                 int totdie = 0, totwfr = 0;
 
-                if (ScrapGrid.Rows.Count <= 10)
+                Excel.Range copyrow = worksheet1.Range["A5:I5"].EntireRow;
+                
+
+                //if (ScrapGrid.Rows.Count <= 10)
                 {
                     //      0       1      2         3     4    5       6      7    8     9        10           11
                     // [REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
                     for (int i = 0; i < ScrapGrid.Rows.Count; i++)
                     {
                         saLotTemp = ((string)ScrapGrid.Rows[i].Cells[4].Value).Split('/');
+
+                        if (i >= 10)
+                        {
+                            Excel.Range insetrow = worksheet1.Range[string.Format("A{0}", 4 + i)].EntireRow;
+                            insetrow.Insert(Excel.XlInsertShiftDirection.xlShiftDown, copyrow.Copy(Type.Missing));
+                        }
 
                         ((Range)worksheet1.Cells[(4 + i), 1]).Value2 = (string)ScrapGrid.Rows[i].Cells[0].Value;    // request#
                         ((Range)worksheet1.Cells[(4 + i), 2]).Value2 = (string)ScrapGrid.Rows[i].Cells[1].Value;    // cust code
@@ -9693,20 +9730,24 @@ namespace Bank_Host
                         ((Range)worksheet1.Cells[(4 + i), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[9].Value;    // location
                         ((Range)worksheet1.Cells[(4 + i), 9]).Value2 = "";    // status
 
-                        totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
-                        totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[6].Value);
+                        totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[4].Value);
+                        totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
+
+                        SetProgressba(string.Format("{0}번째 줄을 출력 중입니다.", i),i);
                     }
 
-                    ((Range)worksheet1.Cells[15, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.Rows.Count);
-                    ((Range)worksheet1.Cells[15, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
-                    ((Range)worksheet1.Cells[15, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
+                    ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 1, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.Rows.Count);
+                    ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 1, 4]).Value2 = String.Format("TOTAL DIE Q'TY : {0}", totdie);
+                    ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 1, 6]).Value2 = String.Format("TOTAL WAFER Q'TY : {0}", totwfr);
 
-                    ((Range)worksheet1.Cells[22, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[6].Value;   //1st
-                    ((Range)worksheet1.Cells[22, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //2nd  
+                    ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 8, 1]).Value2 = (string)ScrapGrid.Rows[0].Cells[6].Value;   //1st
+                    ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 8, 3]).Value2 = (string)ScrapGrid.Rows[0].Cells[7].Value;   //2nd  
 
-                    ((Range)worksheet1.Cells[19, 5]).Value2 = SelectedComment;
+                    ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 5, 5]).Value2 = SelectedComment;
                 }
-                else
+                 
+                /*          
+                else        // 10개 단위로 자름
                 {
                     //Range sourceRange = worksheet1.get_Range("A1:I22");
                     //sourceRange.Copy();
@@ -9742,8 +9783,8 @@ namespace Bank_Host
                         ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 8]).Value2 = (string)ScrapGrid.Rows[i].Cells[9].Value;    // location
                         ((Range)worksheet1.Cells[((i / 10) * 25) + 4 + (i % 10), 9]).Value2 = "";    // status
 
-                        totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
-                        totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[6].Value);
+                        totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[4].Value);
+                        totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
                     }
 
                     
@@ -9757,6 +9798,7 @@ namespace Bank_Host
                         ((Range)worksheet1.Cells[i * 25 + 19, 5]).Value2 = SelectedComment;
                     }
                 }
+                */
 
                 worksheet1.SaveAs(DestFilePath);
                 workbook.Close(false);
@@ -9764,9 +9806,10 @@ namespace Bank_Host
                 application.Quit();
                 application = null;
 
-
+                SetProgressba("Excel 출력이 완료 되었습니다.", 100);
                 MessageBox.Show("Scrap Vaildation File 출력이 완료 되었습니다.");
             }
+            return "";
         }
 
         private void Comment_SelectedComment_event(string msg)
@@ -9800,6 +9843,9 @@ namespace Bank_Host
                     Request.Add(dgv_scrap.Rows[i].Cells[0].Value.ToString());
                 }
             }
+
+
+            Request.Add("DataBase");
 
             Form_Request re = new Form_Request(Request);
             re.PressCancel_Event += Re_PressCancel_Event;
@@ -9836,26 +9882,36 @@ namespace Bank_Host
                 //[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
                 //     0       1     2         3       4   5      6       7     8      9     10        11
 
-                List<string> custcode = new List<string>(), custname = new List<string>();
-                string   weight = "", requestnum = RequestSelectNum;
-                int ttl = 0, wt = 0, qty = 0;
-
-                for (int i = 0; i< dgv_scrap.RowCount; i++)
+                if(RequestSelectNum != "DataBase")
                 {
-                    if(dgv_scrap.Rows[i].Cells[0].Value.ToString() == RequestSelectNum)
+                    List<string> custcode = new List<string>(), custname = new List<string>();
+                    string weight = "", requestnum = RequestSelectNum;
+                    int ttl = 0, wt = 0, qty = 0;
+
+                    for (int i = 0; i < dgv_scrap.RowCount; i++)
                     {
-                        if(custcode.Contains(dgv_scrap.Rows[i].Cells[1].Value.ToString()) == false)
-                            custcode.Add(dgv_scrap.Rows[i].Cells[1].Value.ToString());
+                        if (dgv_scrap.Rows[i].Cells[0].Value.ToString() == RequestSelectNum)
+                        {
+                            if (custcode.Contains(dgv_scrap.Rows[i].Cells[1].Value.ToString()) == false)
+                                custcode.Add(dgv_scrap.Rows[i].Cells[1].Value.ToString());
 
-                        qty += 1;
+                            qty += 1;
+                        }
                     }
+
+                    custname = GetCustName(custcode);
+
+                    //                         string CustCode , string CustName, string TTL, string WT, string Request, string QTY, string Weight
+                    Form_InBill biil = new Form_InBill(custcode, custname, ttl.ToString(), wt.ToString(), requestnum, qty.ToString(), weight);
+                    biil.Show();
                 }
+                else
+                {
+                    Form_ReceiptDB receiptDB = new Form_ReceiptDB();
 
-                custname = GetCustName(custcode);
-
-                //                         string CustCode , string CustName, string TTL, string WT, string Request, string QTY, string Weight
-                Form_InBill biil = new Form_InBill(custcode, custname, ttl.ToString(), wt.ToString(), requestnum, qty.ToString(), weight  );
-                biil.Show();
+                    receiptDB.ShowDialog();
+                }
+                
             }
         }
 

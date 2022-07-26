@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Sort));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -73,9 +74,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Sort));
             this.tabControl_Sort = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button_option = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.dataGridView_worklist = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -119,7 +121,15 @@
             this.label_filename = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView_sort = new System.Windows.Forms.DataGridView();
+            this.button_download = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button_Autofocus = new System.Windows.Forms.Button();
+            this.button_lotdownload = new System.Windows.Forms.Button();
+            this.button_autogr = new System.Windows.Forms.Button();
+            this.button_workend = new System.Windows.Forms.Button();
             this.label_printstate = new System.Windows.Forms.Label();
             this.label_filename2 = new System.Windows.Forms.Label();
             this.dataGridView_Device = new System.Windows.Forms.DataGridView();
@@ -204,8 +214,10 @@
             this.ldie = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.lprinted_lots = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgv_loc = new System.Windows.Forms.DataGridView();
@@ -221,6 +233,7 @@
             this.Wfr_Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Rcv_Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btn_excleout = new System.Windows.Forms.Button();
             this.btn_exit = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tb_totalwafer = new System.Windows.Forms.TextBox();
@@ -244,6 +257,9 @@
             this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel7 = new System.Windows.Forms.Panel();
             this.tb_split = new System.Windows.Forms.TextBox();
+            this.button9 = new System.Windows.Forms.Button();
+            this.btn_mail = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.panel8 = new System.Windows.Forms.Panel();
             this.tb_com_wfr = new System.Windows.Forms.TextBox();
@@ -276,14 +292,20 @@
             this.label50 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
             this.label52 = new System.Windows.Forms.Label();
+            this.button12 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button14 = new System.Windows.Forms.Button();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.button17 = new System.Windows.Forms.Button();
+            this.btn_ExcelOut = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.btn_CommentEdit = new System.Windows.Forms.Button();
             this.dgv_scrap = new System.Windows.Forms.DataGridView();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.lDieCnt = new System.Windows.Forms.Label();
             this.cbRequest = new System.Windows.Forms.ComboBox();
             this.button15 = new System.Windows.Forms.Button();
             this.cb_download = new System.Windows.Forms.CheckBox();
@@ -294,40 +316,19 @@
             this.lTOTLot = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tb_scrapinput = new System.Windows.Forms.TextBox();
             this.tb_ScrapSt = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.edt = new System.Windows.Forms.DateTimePicker();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.btn_search = new System.Windows.Forms.Button();
             this.sdt = new System.Windows.Forms.DateTimePicker();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.button_option = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button_download = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button_Autofocus = new System.Windows.Forms.Button();
-            this.button_lotdownload = new System.Windows.Forms.Button();
-            this.button_autogr = new System.Windows.Forms.Button();
-            this.button_workend = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.btn_excleout = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.btn_mail = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
-            this.btn_ExcelOut = new System.Windows.Forms.Button();
-            this.button16 = new System.Windows.Forms.Button();
-            this.btn_CommentEdit = new System.Windows.Forms.Button();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -337,6 +338,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workbill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workinfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_sort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Lot)).BeginInit();
@@ -373,7 +375,6 @@
             this.panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).BeginInit();
             this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -431,6 +432,39 @@
             this.tabPage1.Size = new System.Drawing.Size(1542, 1028);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Host";
+            // 
+            // button_option
+            // 
+            this.button_option.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.button_option.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button_option.FlatAppearance.BorderSize = 0;
+            this.button_option.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button_option.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button_option.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_option.Image = ((System.Drawing.Image)(resources.GetObject("button_option.Image")));
+            this.button_option.Location = new System.Drawing.Point(533, 21);
+            this.button_option.Name = "button_option";
+            this.button_option.Size = new System.Drawing.Size(78, 76);
+            this.button_option.TabIndex = 13;
+            this.button_option.UseVisualStyleBackColor = false;
+            this.button_option.Click += new System.EventHandler(this.button_option_Click);
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Location = new System.Drawing.Point(768, 21);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(205, 173);
+            this.button1.TabIndex = 4;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dataGridView_worklist
             // 
@@ -1162,6 +1196,34 @@
             this.dataGridView_sort.TabIndex = 0;
             this.dataGridView_sort.Visible = false;
             // 
+            // button_download
+            // 
+            this.button_download.FlatAppearance.BorderSize = 0;
+            this.button_download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_download.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_download.Image = ((System.Drawing.Image)(resources.GetObject("button_download.Image")));
+            this.button_download.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button_download.Location = new System.Drawing.Point(1067, 6);
+            this.button_download.Name = "button_download";
+            this.button_download.Size = new System.Drawing.Size(119, 100);
+            this.button_download.TabIndex = 4;
+            this.button_download.Text = "다운로드";
+            this.button_download.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button_download.UseVisualStyleBackColor = true;
+            this.button_download.Visible = false;
+            this.button_download.Click += new System.EventHandler(this.button_download_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(1134, 244);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(36, 34);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.button3);
@@ -1210,6 +1272,97 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "SCAN 정보";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button3.Location = new System.Drawing.Point(590, 3);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(35, 87);
+            this.button3.TabIndex = 12;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.Location = new System.Drawing.Point(497, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(87, 87);
+            this.button2.TabIndex = 11;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button_Autofocus
+            // 
+            this.button_Autofocus.BackColor = System.Drawing.Color.White;
+            this.button_Autofocus.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button_Autofocus.FlatAppearance.BorderSize = 0;
+            this.button_Autofocus.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button_Autofocus.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button_Autofocus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Autofocus.Image = ((System.Drawing.Image)(resources.GetObject("button_Autofocus.Image")));
+            this.button_Autofocus.Location = new System.Drawing.Point(974, 588);
+            this.button_Autofocus.Name = "button_Autofocus";
+            this.button_Autofocus.Size = new System.Drawing.Size(57, 54);
+            this.button_Autofocus.TabIndex = 10;
+            this.button_Autofocus.UseVisualStyleBackColor = false;
+            this.button_Autofocus.Click += new System.EventHandler(this.button_Autofocus_Click);
+            // 
+            // button_lotdownload
+            // 
+            this.button_lotdownload.BackColor = System.Drawing.Color.White;
+            this.button_lotdownload.FlatAppearance.BorderSize = 0;
+            this.button_lotdownload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_lotdownload.Image = ((System.Drawing.Image)(resources.GetObject("button_lotdownload.Image")));
+            this.button_lotdownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_lotdownload.Location = new System.Drawing.Point(1059, 492);
+            this.button_lotdownload.Name = "button_lotdownload";
+            this.button_lotdownload.Size = new System.Drawing.Size(188, 63);
+            this.button_lotdownload.TabIndex = 9;
+            this.button_lotdownload.Text = "액셀 다운로드";
+            this.button_lotdownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_lotdownload.UseVisualStyleBackColor = false;
+            this.button_lotdownload.Visible = false;
+            this.button_lotdownload.Click += new System.EventHandler(this.button_lotdownload_Click);
+            // 
+            // button_autogr
+            // 
+            this.button_autogr.BackColor = System.Drawing.Color.White;
+            this.button_autogr.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.button_autogr.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button_autogr.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button_autogr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_autogr.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_autogr.ForeColor = System.Drawing.Color.Blue;
+            this.button_autogr.Image = ((System.Drawing.Image)(resources.GetObject("button_autogr.Image")));
+            this.button_autogr.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_autogr.Location = new System.Drawing.Point(769, 93);
+            this.button_autogr.Name = "button_autogr";
+            this.button_autogr.Size = new System.Drawing.Size(262, 54);
+            this.button_autogr.TabIndex = 7;
+            this.button_autogr.Text = "      Auto GR";
+            this.button_autogr.UseVisualStyleBackColor = false;
+            this.button_autogr.Click += new System.EventHandler(this.button_autogr_Click);
+            // 
+            // button_workend
+            // 
+            this.button_workend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(100)))), ((int)(((byte)(99)))));
+            this.button_workend.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button_workend.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_workend.ForeColor = System.Drawing.Color.White;
+            this.button_workend.Image = ((System.Drawing.Image)(resources.GetObject("button_workend.Image")));
+            this.button_workend.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_workend.Location = new System.Drawing.Point(769, 148);
+            this.button_workend.Name = "button_workend";
+            this.button_workend.Size = new System.Drawing.Size(262, 60);
+            this.button_workend.TabIndex = 7;
+            this.button_workend.Text = "      작업 종료";
+            this.button_workend.UseVisualStyleBackColor = false;
+            this.button_workend.Click += new System.EventHandler(this.button_workend_Click);
             // 
             // label_printstate
             // 
@@ -2402,6 +2555,20 @@
             this.lprinted_lots.TabIndex = 15;
             this.lprinted_lots.Text = "0000";
             // 
+            // button6
+            // 
+            this.button6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button6.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.button6.Image = ((System.Drawing.Image)(resources.GetObject("button6.Image")));
+            this.button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button6.Location = new System.Drawing.Point(0, 35);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(210, 74);
+            this.button6.TabIndex = 14;
+            this.button6.Text = "   출력";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // button5
             // 
             this.button5.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -2423,6 +2590,23 @@
             this.textBox1.Size = new System.Drawing.Size(210, 35);
             this.textBox1.TabIndex = 12;
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.White;
+            this.button4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
+            this.button4.Location = new System.Drawing.Point(0, 968);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(210, 54);
+            this.button4.TabIndex = 11;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // tabPage7
             // 
@@ -2571,6 +2755,19 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1028, 445);
             this.panel4.TabIndex = 18;
+            // 
+            // btn_excleout
+            // 
+            this.btn_excleout.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.btn_excleout.Image = ((System.Drawing.Image)(resources.GetObject("btn_excleout.Image")));
+            this.btn_excleout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_excleout.Location = new System.Drawing.Point(3, 3);
+            this.btn_excleout.Name = "btn_excleout";
+            this.btn_excleout.Size = new System.Drawing.Size(209, 52);
+            this.btn_excleout.TabIndex = 16;
+            this.btn_excleout.Text = "   출력";
+            this.btn_excleout.UseVisualStyleBackColor = true;
+            this.btn_excleout.Click += new System.EventHandler(this.btn_excleout_Click);
             // 
             // btn_exit
             // 
@@ -2813,6 +3010,47 @@
             this.tb_split.Size = new System.Drawing.Size(255, 27);
             this.tb_split.TabIndex = 20;
             this.tb_split.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_split_KeyDown);
+            // 
+            // button9
+            // 
+            this.button9.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button9.Image = ((System.Drawing.Image)(resources.GetObject("button9.Image")));
+            this.button9.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button9.Location = new System.Drawing.Point(10, 6);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(209, 52);
+            this.button9.TabIndex = 19;
+            this.button9.Text = "Send Mail";
+            this.button9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // btn_mail
+            // 
+            this.btn_mail.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_mail.Image = ((System.Drawing.Image)(resources.GetObject("btn_mail.Image")));
+            this.btn_mail.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_mail.Location = new System.Drawing.Point(701, 6);
+            this.btn_mail.Name = "btn_mail";
+            this.btn_mail.Size = new System.Drawing.Size(209, 52);
+            this.btn_mail.TabIndex = 18;
+            this.btn_mail.Text = "Setting";
+            this.btn_mail.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_mail.UseVisualStyleBackColor = true;
+            this.btn_mail.Click += new System.EventHandler(this.btn_mail_Click);
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button7.Image = ((System.Drawing.Image)(resources.GetObject("button7.Image")));
+            this.button7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button7.Location = new System.Drawing.Point(225, 6);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(209, 52);
+            this.button7.TabIndex = 16;
+            this.button7.Text = "   출  력";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
@@ -3151,6 +3389,19 @@
             this.label52.TabIndex = 15;
             this.label52.Text = "0000";
             // 
+            // button12
+            // 
+            this.button12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button12.Font = new System.Drawing.Font("맑은 고딕", 24F);
+            this.button12.Image = ((System.Drawing.Image)(resources.GetObject("button12.Image")));
+            this.button12.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button12.Location = new System.Drawing.Point(0, 35);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(210, 74);
+            this.button12.TabIndex = 14;
+            this.button12.Text = "   출력";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
             // button13
             // 
             this.button13.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -3170,6 +3421,22 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(210, 35);
             this.textBox2.TabIndex = 12;
+            // 
+            // button14
+            // 
+            this.button14.BackColor = System.Drawing.Color.White;
+            this.button14.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button14.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button14.FlatAppearance.BorderSize = 0;
+            this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button14.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button14.Image = ((System.Drawing.Image)(resources.GetObject("button14.Image")));
+            this.button14.Location = new System.Drawing.Point(0, 968);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(210, 54);
+            this.button14.TabIndex = 11;
+            this.button14.UseVisualStyleBackColor = false;
             // 
             // tabPage10
             // 
@@ -3218,6 +3485,54 @@
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
+            // btn_ExcelOut
+            // 
+            this.btn_ExcelOut.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btn_ExcelOut.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_ExcelOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_ExcelOut.Image")));
+            this.btn_ExcelOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_ExcelOut.Location = new System.Drawing.Point(1148, 0);
+            this.btn_ExcelOut.Name = "btn_ExcelOut";
+            this.btn_ExcelOut.Size = new System.Drawing.Size(182, 70);
+            this.btn_ExcelOut.TabIndex = 15;
+            this.btn_ExcelOut.Text = "     출력";
+            this.btn_ExcelOut.UseVisualStyleBackColor = true;
+            this.btn_ExcelOut.Click += new System.EventHandler(this.button15_Click);
+            this.btn_ExcelOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseDown);
+            this.btn_ExcelOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseUp);
+            // 
+            // button16
+            // 
+            this.button16.BackgroundImage = global::Bank_Host.Properties.Resources.Receipt__사용자_지정___1_;
+            this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button16.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button16.ImageKey = "(없음)";
+            this.button16.Location = new System.Drawing.Point(206, 0);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(206, 70);
+            this.button16.TabIndex = 24;
+            this.button16.Text = " ";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // btn_CommentEdit
+            // 
+            this.btn_CommentEdit.BackgroundImage = global::Bank_Host.Properties.Resources.Doc__사용자_지정_;
+            this.btn_CommentEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_CommentEdit.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btn_CommentEdit.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
+            this.btn_CommentEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_CommentEdit.ImageKey = "(없음)";
+            this.btn_CommentEdit.Location = new System.Drawing.Point(0, 0);
+            this.btn_CommentEdit.Name = "btn_CommentEdit";
+            this.btn_CommentEdit.Size = new System.Drawing.Size(206, 70);
+            this.btn_CommentEdit.TabIndex = 25;
+            this.btn_CommentEdit.Text = "  CommentEdit";
+            this.btn_CommentEdit.UseVisualStyleBackColor = true;
+            this.btn_CommentEdit.Click += new System.EventHandler(this.btn_CommentEdit_Click);
+            // 
             // dgv_scrap
             // 
             this.dgv_scrap.AllowUserToAddRows = false;
@@ -3235,6 +3550,7 @@
             // 
             // panel9
             // 
+            this.panel9.Controls.Add(this.lDieCnt);
             this.panel9.Controls.Add(this.cbRequest);
             this.panel9.Controls.Add(this.button15);
             this.panel9.Controls.Add(this.cb_download);
@@ -3260,6 +3576,15 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(206, 1022);
             this.panel9.TabIndex = 1;
+            // 
+            // lDieCnt
+            // 
+            this.lDieCnt.AutoSize = true;
+            this.lDieCnt.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lDieCnt.Location = new System.Drawing.Point(13, 519);
+            this.lDieCnt.Name = "lDieCnt";
+            this.lDieCnt.Size = new System.Drawing.Size(0, 32);
+            this.lDieCnt.TabIndex = 38;
             // 
             // cbRequest
             // 
@@ -3296,7 +3621,7 @@
             // 
             this.lTOTWfr.AutoSize = true;
             this.lTOTWfr.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lTOTWfr.Location = new System.Drawing.Point(6, 433);
+            this.lTOTWfr.Location = new System.Drawing.Point(7, 455);
             this.lTOTWfr.Name = "lTOTWfr";
             this.lTOTWfr.Size = new System.Drawing.Size(137, 32);
             this.lTOTWfr.TabIndex = 34;
@@ -3306,7 +3631,7 @@
             // 
             this.lTOTDie.AutoSize = true;
             this.lTOTDie.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lTOTDie.Location = new System.Drawing.Point(6, 465);
+            this.lTOTDie.Location = new System.Drawing.Point(7, 487);
             this.lTOTDie.Name = "lTOTDie";
             this.lTOTDie.Size = new System.Drawing.Size(133, 32);
             this.lTOTDie.TabIndex = 32;
@@ -3338,7 +3663,7 @@
             // 
             this.lTOTLot.AutoSize = true;
             this.lTOTLot.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lTOTLot.Location = new System.Drawing.Point(6, 497);
+            this.lTOTLot.Location = new System.Drawing.Point(7, 423);
             this.lTOTLot.Name = "lTOTLot";
             this.lTOTLot.Size = new System.Drawing.Size(139, 32);
             this.lTOTLot.TabIndex = 26;
@@ -3363,6 +3688,25 @@
             this.label53.Size = new System.Drawing.Size(144, 25);
             this.label53.TabIndex = 21;
             this.label53.Text = ": 1차 검수 완료";
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.BackColor = System.Drawing.Color.Green;
+            this.pictureBox5.Location = new System.Drawing.Point(5, 326);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox5.TabIndex = 20;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Yellow;
+            this.pictureBox3.Location = new System.Drawing.Point(5, 288);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox3.TabIndex = 18;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // checkBox1
             // 
@@ -3408,6 +3752,16 @@
             this.edt.Size = new System.Drawing.Size(163, 35);
             this.edt.TabIndex = 4;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(6, 107);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(23, 35);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            // 
             // btn_search
             // 
             this.btn_search.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -3448,350 +3802,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button_option
-            // 
-            this.button_option.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.button_option.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button_option.FlatAppearance.BorderSize = 0;
-            this.button_option.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button_option.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.button_option.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_option.Image = ((System.Drawing.Image)(resources.GetObject("button_option.Image")));
-            this.button_option.Location = new System.Drawing.Point(533, 21);
-            this.button_option.Name = "button_option";
-            this.button_option.Size = new System.Drawing.Size(78, 76);
-            this.button_option.TabIndex = 13;
-            this.button_option.UseVisualStyleBackColor = false;
-            this.button_option.Click += new System.EventHandler(this.button_option_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(768, 21);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(205, 173);
-            this.button1.TabIndex = 4;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button_download
-            // 
-            this.button_download.FlatAppearance.BorderSize = 0;
-            this.button_download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_download.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_download.Image = ((System.Drawing.Image)(resources.GetObject("button_download.Image")));
-            this.button_download.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button_download.Location = new System.Drawing.Point(1067, 6);
-            this.button_download.Name = "button_download";
-            this.button_download.Size = new System.Drawing.Size(119, 100);
-            this.button_download.TabIndex = 4;
-            this.button_download.Text = "다운로드";
-            this.button_download.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button_download.UseVisualStyleBackColor = true;
-            this.button_download.Visible = false;
-            this.button_download.Click += new System.EventHandler(this.button_download_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(1134, 244);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 34);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
-            // 
-            // button3
-            // 
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button3.Location = new System.Drawing.Point(590, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(35, 87);
-            this.button3.TabIndex = 12;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.Location = new System.Drawing.Point(497, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(87, 87);
-            this.button2.TabIndex = 11;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button_Autofocus
-            // 
-            this.button_Autofocus.BackColor = System.Drawing.Color.White;
-            this.button_Autofocus.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button_Autofocus.FlatAppearance.BorderSize = 0;
-            this.button_Autofocus.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button_Autofocus.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.button_Autofocus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_Autofocus.Image = ((System.Drawing.Image)(resources.GetObject("button_Autofocus.Image")));
-            this.button_Autofocus.Location = new System.Drawing.Point(974, 588);
-            this.button_Autofocus.Name = "button_Autofocus";
-            this.button_Autofocus.Size = new System.Drawing.Size(57, 54);
-            this.button_Autofocus.TabIndex = 10;
-            this.button_Autofocus.UseVisualStyleBackColor = false;
-            this.button_Autofocus.Click += new System.EventHandler(this.button_Autofocus_Click);
-            // 
-            // button_lotdownload
-            // 
-            this.button_lotdownload.BackColor = System.Drawing.Color.White;
-            this.button_lotdownload.FlatAppearance.BorderSize = 0;
-            this.button_lotdownload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_lotdownload.Image = ((System.Drawing.Image)(resources.GetObject("button_lotdownload.Image")));
-            this.button_lotdownload.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_lotdownload.Location = new System.Drawing.Point(1059, 492);
-            this.button_lotdownload.Name = "button_lotdownload";
-            this.button_lotdownload.Size = new System.Drawing.Size(188, 63);
-            this.button_lotdownload.TabIndex = 9;
-            this.button_lotdownload.Text = "액셀 다운로드";
-            this.button_lotdownload.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_lotdownload.UseVisualStyleBackColor = false;
-            this.button_lotdownload.Visible = false;
-            this.button_lotdownload.Click += new System.EventHandler(this.button_lotdownload_Click);
-            // 
-            // button_autogr
-            // 
-            this.button_autogr.BackColor = System.Drawing.Color.White;
-            this.button_autogr.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
-            this.button_autogr.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button_autogr.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.button_autogr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_autogr.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_autogr.ForeColor = System.Drawing.Color.Blue;
-            this.button_autogr.Image = ((System.Drawing.Image)(resources.GetObject("button_autogr.Image")));
-            this.button_autogr.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_autogr.Location = new System.Drawing.Point(769, 93);
-            this.button_autogr.Name = "button_autogr";
-            this.button_autogr.Size = new System.Drawing.Size(262, 54);
-            this.button_autogr.TabIndex = 7;
-            this.button_autogr.Text = "      Auto GR";
-            this.button_autogr.UseVisualStyleBackColor = false;
-            this.button_autogr.Click += new System.EventHandler(this.button_autogr_Click);
-            // 
-            // button_workend
-            // 
-            this.button_workend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(100)))), ((int)(((byte)(99)))));
-            this.button_workend.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button_workend.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_workend.ForeColor = System.Drawing.Color.White;
-            this.button_workend.Image = ((System.Drawing.Image)(resources.GetObject("button_workend.Image")));
-            this.button_workend.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_workend.Location = new System.Drawing.Point(769, 148);
-            this.button_workend.Name = "button_workend";
-            this.button_workend.Size = new System.Drawing.Size(262, 60);
-            this.button_workend.TabIndex = 7;
-            this.button_workend.Text = "      작업 종료";
-            this.button_workend.UseVisualStyleBackColor = false;
-            this.button_workend.Click += new System.EventHandler(this.button_workend_Click);
-            // 
-            // button6
-            // 
-            this.button6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button6.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.button6.Image = ((System.Drawing.Image)(resources.GetObject("button6.Image")));
-            this.button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button6.Location = new System.Drawing.Point(0, 35);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(210, 74);
-            this.button6.TabIndex = 14;
-            this.button6.Text = "   출력";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.Location = new System.Drawing.Point(0, 968);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(210, 54);
-            this.button4.TabIndex = 11;
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // btn_excleout
-            // 
-            this.btn_excleout.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.btn_excleout.Image = ((System.Drawing.Image)(resources.GetObject("btn_excleout.Image")));
-            this.btn_excleout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_excleout.Location = new System.Drawing.Point(3, 3);
-            this.btn_excleout.Name = "btn_excleout";
-            this.btn_excleout.Size = new System.Drawing.Size(209, 52);
-            this.btn_excleout.TabIndex = 16;
-            this.btn_excleout.Text = "   출력";
-            this.btn_excleout.UseVisualStyleBackColor = true;
-            this.btn_excleout.Click += new System.EventHandler(this.btn_excleout_Click);
-            // 
-            // button9
-            // 
-            this.button9.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button9.Image = ((System.Drawing.Image)(resources.GetObject("button9.Image")));
-            this.button9.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button9.Location = new System.Drawing.Point(10, 6);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(209, 52);
-            this.button9.TabIndex = 19;
-            this.button9.Text = "Send Mail";
-            this.button9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // btn_mail
-            // 
-            this.btn_mail.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_mail.Image = ((System.Drawing.Image)(resources.GetObject("btn_mail.Image")));
-            this.btn_mail.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_mail.Location = new System.Drawing.Point(701, 6);
-            this.btn_mail.Name = "btn_mail";
-            this.btn_mail.Size = new System.Drawing.Size(209, 52);
-            this.btn_mail.TabIndex = 18;
-            this.btn_mail.Text = "Setting";
-            this.btn_mail.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_mail.UseVisualStyleBackColor = true;
-            this.btn_mail.Click += new System.EventHandler(this.btn_mail_Click);
-            // 
-            // button7
-            // 
-            this.button7.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button7.Image = ((System.Drawing.Image)(resources.GetObject("button7.Image")));
-            this.button7.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button7.Location = new System.Drawing.Point(225, 6);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(209, 52);
-            this.button7.TabIndex = 16;
-            this.button7.Text = "   출  력";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // button12
-            // 
-            this.button12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button12.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.button12.Image = ((System.Drawing.Image)(resources.GetObject("button12.Image")));
-            this.button12.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button12.Location = new System.Drawing.Point(0, 35);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(210, 74);
-            this.button12.TabIndex = 14;
-            this.button12.Text = "   출력";
-            this.button12.UseVisualStyleBackColor = true;
-            // 
-            // button14
-            // 
-            this.button14.BackColor = System.Drawing.Color.White;
-            this.button14.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button14.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button14.FlatAppearance.BorderSize = 0;
-            this.button14.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button14.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button14.Image = ((System.Drawing.Image)(resources.GetObject("button14.Image")));
-            this.button14.Location = new System.Drawing.Point(0, 968);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(210, 54);
-            this.button14.TabIndex = 11;
-            this.button14.UseVisualStyleBackColor = false;
-            // 
-            // btn_ExcelOut
-            // 
-            this.btn_ExcelOut.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btn_ExcelOut.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_ExcelOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_ExcelOut.Image")));
-            this.btn_ExcelOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_ExcelOut.Location = new System.Drawing.Point(1148, 0);
-            this.btn_ExcelOut.Name = "btn_ExcelOut";
-            this.btn_ExcelOut.Size = new System.Drawing.Size(182, 70);
-            this.btn_ExcelOut.TabIndex = 15;
-            this.btn_ExcelOut.Text = "     출력";
-            this.btn_ExcelOut.UseVisualStyleBackColor = true;
-            this.btn_ExcelOut.Click += new System.EventHandler(this.button15_Click);
-            this.btn_ExcelOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseDown);
-            this.btn_ExcelOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseUp);
-            // 
-            // button16
-            // 
-            this.button16.BackgroundImage = global::Bank_Host.Properties.Resources.Receipt__사용자_지정___1_;
-            this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.button16.Dock = System.Windows.Forms.DockStyle.Left;
-            this.button16.Enabled = false;
-            this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button16.ImageKey = "(없음)";
-            this.button16.Location = new System.Drawing.Point(206, 0);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(206, 70);
-            this.button16.TabIndex = 24;
-            this.button16.Text = "     입고증";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // btn_CommentEdit
-            // 
-            this.btn_CommentEdit.BackgroundImage = global::Bank_Host.Properties.Resources.Doc__사용자_지정_;
-            this.btn_CommentEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btn_CommentEdit.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btn_CommentEdit.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
-            this.btn_CommentEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_CommentEdit.ImageKey = "(없음)";
-            this.btn_CommentEdit.Location = new System.Drawing.Point(0, 0);
-            this.btn_CommentEdit.Name = "btn_CommentEdit";
-            this.btn_CommentEdit.Size = new System.Drawing.Size(206, 70);
-            this.btn_CommentEdit.TabIndex = 25;
-            this.btn_CommentEdit.Text = "  CommentEdit";
-            this.btn_CommentEdit.UseVisualStyleBackColor = true;
-            this.btn_CommentEdit.Click += new System.EventHandler(this.btn_CommentEdit_Click);
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.BackColor = System.Drawing.Color.Green;
-            this.pictureBox5.Location = new System.Drawing.Point(5, 326);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(43, 32);
-            this.pictureBox5.TabIndex = 20;
-            this.pictureBox5.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackColor = System.Drawing.Color.Yellow;
-            this.pictureBox3.Location = new System.Drawing.Point(5, 288);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(43, 32);
-            this.pictureBox3.TabIndex = 18;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(6, 107);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(23, 35);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
-            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -3818,6 +3828,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workbill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workinfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_sort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).EndInit();
@@ -3863,7 +3874,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).EndInit();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -4127,5 +4137,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AMKOR_ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn CUST_CODE;
         private System.Windows.Forms.DataGridViewTextBoxColumn Wafer_lot;
+        private System.Windows.Forms.Label lDieCnt;
     }
 }

@@ -15,28 +15,29 @@ using System.Threading;
 using MICube.SmartDriver.Base.TCP;
 using TCPConfig = MICube.SmartDriver.Base.TCP.Config;
 using Microsoft.Office.Interop.Excel;
+using System.Data.SqlClient;
 
 namespace Bank_Host
 {
     public partial class Form_InBill : Form
     {
-        System.Windows.Forms.Label title1 = new System.Windows.Forms.Label { Text = "SCRAP MAT'L 입고증 / K4 BANK", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 16, FontStyle.Bold) };
-        System.Windows.Forms.Label lCust = new System.Windows.Forms.Label { Text = "CUSTOMER", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
-        System.Windows.Forms.Label ldate = new System.Windows.Forms.Label { Text = "DATE", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
-        System.Windows.Forms.ComboBox tb_BCustName = new System.Windows.Forms.ComboBox { Text = "tb_BCustName", Dock = DockStyle.Fill, Margin = Padding.Empty };
-        System.Windows.Forms.ComboBox tb_BCustCode = new System.Windows.Forms.ComboBox { Text = "tb_BCustCode", Dock = DockStyle.Fill, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BLineCode = new System.Windows.Forms.TextBox { Text = "AJ45400", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        DateTimePicker dtB = new DateTimePicker { Format = DateTimePickerFormat.Custom, CustomFormat = "yyyy-MM-dd", Dock = DockStyle.Fill, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BTTL = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BGross = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BRequest = new System.Windows.Forms.TextBox { Text = "tb_BRequest", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BQTY = new System.Windows.Forms.TextBox { Text = "tb_BQTY", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BWeight = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.Label lBRecipient = new System.Windows.Forms.Label { Text = "인  수  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
-        System.Windows.Forms.Label lBSender = new System.Windows.Forms.Label { Text = "입  고  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
-        System.Windows.Forms.TextBox tb_BRecipient = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BSender = new System.Windows.Forms.TextBox { Text = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID), Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
-        System.Windows.Forms.TextBox tb_BSpec = new System.Windows.Forms.TextBox { Text = "SPEC NO : 001-2698", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.Label      title1          = new System.Windows.Forms.Label { Text = "SCRAP MAT'L 입고증 / K4 BANK", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 16, FontStyle.Bold) };
+        System.Windows.Forms.Label      lCust           = new System.Windows.Forms.Label { Text = "CUSTOMER", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
+        System.Windows.Forms.Label      ldate           = new System.Windows.Forms.Label { Text = "DATE", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
+        System.Windows.Forms.ComboBox   tb_BCustName     = new System.Windows.Forms.ComboBox { Text = "tb_BCustName", Dock = DockStyle.Fill, Margin = Padding.Empty };
+        System.Windows.Forms.ComboBox   tb_BCustCode     = new System.Windows.Forms.ComboBox { Text = "tb_BCustCode", Dock = DockStyle.Fill, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BLineCode     = new System.Windows.Forms.TextBox { Text = "AJ45400", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        DateTimePicker                  dtB             = new DateTimePicker { Format = DateTimePickerFormat.Custom, CustomFormat = "yyyy-MM-dd", Dock = DockStyle.Fill, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BTTL         = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BGross       = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BRequest     = new System.Windows.Forms.TextBox { Text = "tb_BRequest", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BQTY         = new System.Windows.Forms.TextBox { Text = "tb_BQTY", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BWeight      = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.Label      lBRecipient     = new System.Windows.Forms.Label { Text = "인  수  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
+        System.Windows.Forms.Label      lBSender        = new System.Windows.Forms.Label { Text = "입  고  자", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
+        System.Windows.Forms.TextBox    tb_BRecipient   = new System.Windows.Forms.TextBox { Text = "", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BSender      = new System.Windows.Forms.TextBox { Text = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID), Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
+        System.Windows.Forms.TextBox    tb_BSpec        = new System.Windows.Forms.TextBox { Text = "SPEC NO : 001-2698", Dock = DockStyle.Fill, TextAlign = HorizontalAlignment.Center, Margin = Padding.Empty };
 
         System.Windows.Forms.Label lStore = new System.Windows.Forms.Label { Text = "SCRAP MAT'L 입고증 / K4 STORE", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Font = new System.Drawing.Font("Arial", 16, FontStyle.Bold) };
         System.Windows.Forms.Label lSCust = new System.Windows.Forms.Label { Text = "CUSTOMER", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter };
@@ -58,12 +59,16 @@ namespace Bank_Host
 
         List<string> sCustCode = new List<string>();
         List<string> sCustName = new List<string>();
+        string sLineCode = "";
+        string sDate = "";
         string sTTL = "";
         string sWT = "";
         string sRequest = "";
         string sQTY = "";
         string sWeight = "";
-
+        string sReceipt = "";
+        string sConsignee = "";
+        bool en = true;
 
 
         public Form_InBill()
@@ -84,6 +89,25 @@ namespace Bank_Host
             InitializeComponent();
         }
 
+        public Form_InBill(List<string> CustCode, List<string> CustName, string LineCode, string Date, string TTL, string WT, 
+            string Request, string QTY, string Weight, string Receipt, string Consignee)
+        {
+            sCustCode = CustCode;
+            sCustName = CustName;
+            sLineCode = LineCode;
+            sDate = Date;
+            sTTL = TTL;
+            sWT = WT;
+            sRequest = Request;
+            sQTY = QTY;
+            sWeight = Weight;
+            sReceipt = Receipt;
+            sConsignee = Consignee;
+
+            en = false;
+
+            InitializeComponent();
+        }
 
         private void Form_InBill_Load(object sender, EventArgs e)
         {
@@ -107,12 +131,32 @@ namespace Bank_Host
 
             tb_BCustCode.Text = sCustCode[0];
             tb_BCustName.Text = sCustName[0];
-            tb_BTTL.Text = "";
-            tb_BGross.Text = "";
+            tb_BLineCode.Text = sLineCode == "" ? tb_BLineCode.Text : sLineCode;
+            dtB.Text = sDate == "" ? dtB.Text : sDate;
+            tb_BTTL.Text = sTTL == "" ? tb_BTTL.Text : sTTL;
+            tb_BGross.Text = sWT == "" ? tb_BGross.Text : sWT;
             tb_BRequest.Text = sRequest;
             tb_BQTY.Text = sQTY;
-            tb_BWeight.Text = "";
+            tb_BWeight.Text = sWeight == "" ? tb_BWeight.Text : sWeight;
+            tb_BRecipient.Text = sReceipt == "" ? tb_BRecipient.Text : sReceipt;
+            tb_BSender.Text = sConsignee;
             //tb_BRecipient.Text = BankHost_main.strOperator;
+
+            tb_BCustName.Enabled = en;
+            tb_BCustCode.Enabled = en;
+            tb_BLineCode.Enabled = en;
+            dtB.Enabled = en;
+            tb_BTTL.Enabled = en;
+            tb_BGross.Enabled = en;
+            tb_BRequest.Enabled = en;
+            tb_BQTY.Enabled = en;
+            tb_BWeight.Enabled = en;
+            lBRecipient.Enabled = en;
+            lBSender.Enabled = en;
+            tb_BRecipient.Enabled = en;
+            tb_BSender.Enabled = en;
+            tb_BSpec.Enabled = en;
+
         }
 
         private void TableEvent()
@@ -314,59 +358,259 @@ namespace Bank_Host
 
             if (DialogResult.OK == saveFileDialog1.ShowDialog())
             {
-                DestFilePath = string.Join(@"\", saveFileDialog1.FileName.Split('\\'),0, saveFileDialog1.FileName.Split('\\').Length-1);
+                string query1 = string.Format("Select count(*) from TB_SCRAP_RECEIPT with(NOLOCK) where [REQUEST_NUM]={0} and [DATE]='{1}'", tb_BRequest.Text, dtB.Text);
+                int cnt = run_count(query1);
 
-                Properties.Settings.Default.SCRAP_DEFAULT_PATH = DestFilePath;
-                Properties.Settings.Default.Save();
+                if (cnt == 0)
+                {
+                    string query = string.Format("Insert INTO TB_SCRAP_RECEIPT values('{0}', {1}, '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}')",
+                        tb_BCustName.Text, tb_BCustCode.Text, tb_BLineCode.Text, dtB.Text, tb_BTTL.Text, tb_BGross.Text, tb_BRequest.Text, tb_BQTY.Text,
+                        tb_BWeight.Text, tb_BRecipient.Text, tb_BSender.Text);
 
-                if (System.IO.Directory.Exists(DestFilePath) == false)
-                    System.IO.Directory.CreateDirectory(DestFilePath);
+                    run_sql_command(query);
 
-                //if (File.Exists(DestFilePath) == true)
-                //{
-                //    File.Delete(DestFilePath);
-                //}
+                    DestFilePath = string.Join(@"\", saveFileDialog1.FileName.Split('\\'), 0, saveFileDialog1.FileName.Split('\\').Length - 1);
 
-                //System.IO.File.Copy(System.Windows.Forms.Application.StartupPath + "\\Excel file\\SCRAP MATL 입고증.xlsx", DestFilePath);
+                    Properties.Settings.Default.SCRAP_DEFAULT_PATH = DestFilePath;
+                    Properties.Settings.Default.Save();
 
-                Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
-                Workbook workbook = application.Workbooks.Open(System.Windows.Forms.Application.StartupPath + "\\Excel file\\SCRAP MATL 입고증.xlsx");
-                Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
-                application.Visible = false;
+                    if (System.IO.Directory.Exists(DestFilePath) == false)
+                        System.IO.Directory.CreateDirectory(DestFilePath);
 
+                    Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+                    Workbook workbook = application.Workbooks.Open(System.Windows.Forms.Application.StartupPath + "\\Excel file\\SCRAP MATL 입고증.xlsx");
+                    Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+                    application.Visible = false;
 
-                ((Range)worksheet1.Cells[12, 2]).Value2 = tb_BCustName.Text;
-                ((Range)worksheet1.Cells[12, 3]).Value2 = tb_BCustCode.Text;
-                ((Range)worksheet1.Cells[12, 5]).Value2 = dtB.Text;
-                ((Range)worksheet1.Cells[14, 2]).Value2 = tb_BTTL.Text;
-                ((Range)worksheet1.Cells[14, 3]).Value2 = tb_BGross.Text;
-                ((Range)worksheet1.Cells[14, 4]).Value2 = tb_BRequest.Text;
-                ((Range)worksheet1.Cells[14, 5]).Value2 = tb_BQTY.Text;
-                ((Range)worksheet1.Cells[14, 6]).Value2 = tb_BWeight.Text;
-                ((Range)worksheet1.Cells[16, 2]).Value2 = tb_BSender.Text;
-                ((Range)worksheet1.Cells[16, 5]).Value2 = tb_BRecipient.Text;
-                ((Range)worksheet1.Cells[18, 5]).Value2 = tb_BSpec.Text;
+                    ((Range)worksheet1.Cells[12, 2]).Value2 = tb_BCustName.Text;
+                    ((Range)worksheet1.Cells[12, 3]).Value2 = tb_BCustCode.Text;
+                    ((Range)worksheet1.Cells[12, 5]).Value2 = dtB.Text;
+                    ((Range)worksheet1.Cells[14, 2]).Value2 = tb_BTTL.Text;
+                    ((Range)worksheet1.Cells[14, 3]).Value2 = tb_BGross.Text;
+                    ((Range)worksheet1.Cells[14, 4]).Value2 = tb_BRequest.Text;
+                    ((Range)worksheet1.Cells[14, 5]).Value2 = tb_BQTY.Text;
+                    ((Range)worksheet1.Cells[14, 6]).Value2 = tb_BWeight.Text;
+                    ((Range)worksheet1.Cells[16, 2]).Value2 = tb_BSender.Text;
+                    ((Range)worksheet1.Cells[16, 5]).Value2 = tb_BRecipient.Text;
+                    ((Range)worksheet1.Cells[18, 5]).Value2 = tb_BSpec.Text;
 
-                ((Range)worksheet1.Cells[25, 2]).Value2 = tb_SCustName.Text;
-                ((Range)worksheet1.Cells[25, 3]).Value2 = tb_SCustCode.Text;
-                ((Range)worksheet1.Cells[25, 5]).Value2 = dtS.Text;
-                ((Range)worksheet1.Cells[27, 2]).Value2 = tb_STTL.Text;
-                ((Range)worksheet1.Cells[27, 3]).Value2 = tb_SGross.Text;
-                ((Range)worksheet1.Cells[27, 4]).Value2 = tb_SRequest.Text;
-                ((Range)worksheet1.Cells[27, 5]).Value2 = tb_SQTY.Text;
-                ((Range)worksheet1.Cells[27, 6]).Value2 = tb_SWeight.Text;
-                ((Range)worksheet1.Cells[29, 2]).Value2 = tb_SSender.Text;
-                ((Range)worksheet1.Cells[29, 5]).Value2 = tb_SRecipient.Text;
-                ((Range)worksheet1.Cells[31, 5]).Value2 = tb_SSpec.Text;
+                    ((Range)worksheet1.Cells[25, 2]).Value2 = tb_SCustName.Text;
+                    ((Range)worksheet1.Cells[25, 3]).Value2 = tb_SCustCode.Text;
+                    ((Range)worksheet1.Cells[25, 5]).Value2 = dtS.Text;
+                    ((Range)worksheet1.Cells[27, 2]).Value2 = tb_STTL.Text;
+                    ((Range)worksheet1.Cells[27, 3]).Value2 = tb_SGross.Text;
+                    ((Range)worksheet1.Cells[27, 4]).Value2 = tb_SRequest.Text;
+                    ((Range)worksheet1.Cells[27, 5]).Value2 = tb_SQTY.Text;
+                    ((Range)worksheet1.Cells[27, 6]).Value2 = tb_SWeight.Text;
+                    ((Range)worksheet1.Cells[29, 2]).Value2 = tb_SSender.Text;
+                    ((Range)worksheet1.Cells[29, 5]).Value2 = tb_SRecipient.Text;
+                    ((Range)worksheet1.Cells[31, 5]).Value2 = tb_SSpec.Text;
 
-                worksheet1.SaveAs(DestFilePath + string.Format("\\SCRAP MATL 입고증 {0}_{1}.xlsx", sRequest, DateTime.Now.ToString("yyyyMMdd")));
-                               
-                workbook.Close();
+                    worksheet1.SaveAs(DestFilePath + string.Format("\\SCRAP MATL 입고증 {0}_{1}.xlsx", sRequest, DateTime.Now.ToString("yyyyMMdd")));
 
-                //MessageBox.Show(string.Format("{2}\\SCRAP MATL 입고증 {0}_{1}.xlsx \n에 저장 되었습니다.", sRequest, DateTime.Now.ToString("yyyyMMdd"), DestFilePath));
+                    workbook.Close();
 
-                Close();
+                    //MessageBox.Show(string.Format("{2}\\SCRAP MATL 입고증 {0}_{1}.xlsx \n에 저장 되었습니다.", sRequest, DateTime.Now.ToString("yyyyMMdd"), DestFilePath));
+
+                    Close();
+                }
+                else
+                {
+                    if (DialogResult.Yes == MessageBox.Show("금일 동일한 Request로 발행된 입고증이 있습니다.\n새로 발행 하시겠습니까?", "재발행", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                    {
+                        string query = string.Format("update TB_SCRAP_RECEIPT set CUSTOMER_NAME='{0}', CUSTOMER_CODE={1}, LINE_CODE='{2}', [DATE]='{3}', TTL_CT='{4}'," +
+                            " GROSS_WT='{5}', REQUEST_NUM={6}, LOT_QTY={7}, WEIGHT='{8}', RECEIPT='{9}', CONSIGNEE='{10}' where REQUEST_NUM={11} and [DATE]='{12}'",
+                        tb_BCustName.Text, tb_BCustCode.Text, tb_BLineCode.Text, dtB.Text, tb_BTTL.Text, tb_BGross.Text, tb_BRequest.Text, tb_BQTY.Text,
+                        tb_BWeight.Text, tb_BRecipient.Text, tb_BSender.Text, tb_BRequest.Text, dtB.Text);
+
+                        run_sql_command(query);
+
+                        DestFilePath = string.Join(@"\", saveFileDialog1.FileName.Split('\\'), 0, saveFileDialog1.FileName.Split('\\').Length - 1);
+
+                        Properties.Settings.Default.SCRAP_DEFAULT_PATH = DestFilePath;
+                        Properties.Settings.Default.Save();
+
+                        if (System.IO.Directory.Exists(DestFilePath) == false)
+                            System.IO.Directory.CreateDirectory(DestFilePath);
+
+                        Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+                        Workbook workbook = application.Workbooks.Open(System.Windows.Forms.Application.StartupPath + "\\Excel file\\SCRAP MATL 입고증.xlsx");
+                        Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+                        application.Visible = false;
+
+                        ((Range)worksheet1.Cells[12, 2]).Value2 = tb_BCustName.Text;
+                        ((Range)worksheet1.Cells[12, 3]).Value2 = tb_BCustCode.Text;
+                        ((Range)worksheet1.Cells[12, 5]).Value2 = dtB.Text;
+                        ((Range)worksheet1.Cells[14, 2]).Value2 = tb_BTTL.Text;
+                        ((Range)worksheet1.Cells[14, 3]).Value2 = tb_BGross.Text;
+                        ((Range)worksheet1.Cells[14, 4]).Value2 = tb_BRequest.Text;
+                        ((Range)worksheet1.Cells[14, 5]).Value2 = tb_BQTY.Text;
+                        ((Range)worksheet1.Cells[14, 6]).Value2 = tb_BWeight.Text;
+                        ((Range)worksheet1.Cells[16, 2]).Value2 = tb_BSender.Text;
+                        ((Range)worksheet1.Cells[16, 5]).Value2 = tb_BRecipient.Text;
+                        ((Range)worksheet1.Cells[18, 5]).Value2 = tb_BSpec.Text;
+
+                        ((Range)worksheet1.Cells[25, 2]).Value2 = tb_SCustName.Text;
+                        ((Range)worksheet1.Cells[25, 3]).Value2 = tb_SCustCode.Text;
+                        ((Range)worksheet1.Cells[25, 5]).Value2 = dtS.Text;
+                        ((Range)worksheet1.Cells[27, 2]).Value2 = tb_STTL.Text;
+                        ((Range)worksheet1.Cells[27, 3]).Value2 = tb_SGross.Text;
+                        ((Range)worksheet1.Cells[27, 4]).Value2 = tb_SRequest.Text;
+                        ((Range)worksheet1.Cells[27, 5]).Value2 = tb_SQTY.Text;
+                        ((Range)worksheet1.Cells[27, 6]).Value2 = tb_SWeight.Text;
+                        ((Range)worksheet1.Cells[29, 2]).Value2 = tb_SSender.Text;
+                        ((Range)worksheet1.Cells[29, 5]).Value2 = tb_SRecipient.Text;
+                        ((Range)worksheet1.Cells[31, 5]).Value2 = tb_SSpec.Text;
+
+                        worksheet1.SaveAs(DestFilePath + string.Format("\\SCRAP MATL 입고증 {0}_{1}.xlsx", sRequest, DateTime.Now.ToString("yyyyMMdd")));
+
+                        workbook.Close();
+
+                        //MessageBox.Show(string.Format("{2}\\SCRAP MATL 입고증 {0}_{1}.xlsx \n에 저장 되었습니다.", sRequest, DateTime.Now.ToString("yyyyMMdd"), DestFilePath));
+
+                        Close();
+                    }
+                    else
+                    {
+                        if(DialogResult.Yes == MessageBox.Show("기존 입고증으로 출력하시겠습니까?", "기존 입고증", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                        {
+                            string ReceiptQuery = string.Format("select [CUSTOMER_NAME], [CUSTOMER_CODE], [LINE_CODE], [DATE], [TTL_CT], [GROSS_WT], [REQUEST_NUM], " +
+                                "[LOT_QTY], [WEIGHT], [RECEIPT], [CONSIGNEE] from TB_SCRAP_RECEIPT with(NOLOCK) where [REQUEST_NUM]={0} and [DATE]='{1}'", tb_BRequest.Text, dtB.Text);
+                            DataSet dt = SearchData(ReceiptQuery);
+
+                            DestFilePath = string.Join(@"\", saveFileDialog1.FileName.Split('\\'), 0, saveFileDialog1.FileName.Split('\\').Length - 1);
+
+                            Properties.Settings.Default.SCRAP_DEFAULT_PATH = DestFilePath;
+                            Properties.Settings.Default.Save();
+
+                            if (System.IO.Directory.Exists(DestFilePath) == false)
+                                System.IO.Directory.CreateDirectory(DestFilePath);
+
+                            Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+                            Workbook workbook = application.Workbooks.Open(System.Windows.Forms.Application.StartupPath + "\\Excel file\\SCRAP MATL 입고증.xlsx");
+                            Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+                            application.Visible = false;
+
+                            ((Range)worksheet1.Cells[12, 2]).Value2 = dt.Tables[0].Rows[0][0].ToString();
+                            ((Range)worksheet1.Cells[12, 3]).Value2 = dt.Tables[0].Rows[0][1].ToString();
+                            ((Range)worksheet1.Cells[12, 4]).Value2 = dt.Tables[0].Rows[0][2].ToString();
+                            ((Range)worksheet1.Cells[12, 5]).Value2 = dt.Tables[0].Rows[0][3].ToString();
+                            ((Range)worksheet1.Cells[14, 2]).Value2 = dt.Tables[0].Rows[0][4].ToString();
+                            ((Range)worksheet1.Cells[14, 3]).Value2 = dt.Tables[0].Rows[0][5].ToString();
+                            ((Range)worksheet1.Cells[14, 4]).Value2 = dt.Tables[0].Rows[0][6].ToString();
+                            ((Range)worksheet1.Cells[14, 5]).Value2 = dt.Tables[0].Rows[0][7].ToString();
+                            ((Range)worksheet1.Cells[14, 6]).Value2 = dt.Tables[0].Rows[0][8].ToString();
+                            ((Range)worksheet1.Cells[16, 2]).Value2 = dt.Tables[0].Rows[0][9].ToString();
+                            ((Range)worksheet1.Cells[16, 5]).Value2 = dt.Tables[0].Rows[0][10].ToString();
+                            ((Range)worksheet1.Cells[18, 5]).Value2 = tb_BSpec.Text;
+
+                            ((Range)worksheet1.Cells[25, 2]).Value2 = dt.Tables[0].Rows[0][0].ToString();
+                            ((Range)worksheet1.Cells[25, 3]).Value2 = dt.Tables[0].Rows[0][1].ToString();
+                            ((Range)worksheet1.Cells[25, 4]).Value2 = dt.Tables[0].Rows[0][2].ToString();
+                            ((Range)worksheet1.Cells[25, 5]).Value2 = dt.Tables[0].Rows[0][3].ToString();
+                            ((Range)worksheet1.Cells[27, 2]).Value2 = dt.Tables[0].Rows[0][4].ToString();
+                            ((Range)worksheet1.Cells[27, 3]).Value2 = dt.Tables[0].Rows[0][5].ToString();
+                            ((Range)worksheet1.Cells[27, 4]).Value2 = dt.Tables[0].Rows[0][6].ToString();
+                            ((Range)worksheet1.Cells[27, 5]).Value2 = dt.Tables[0].Rows[0][7].ToString();
+                            ((Range)worksheet1.Cells[27, 6]).Value2 = dt.Tables[0].Rows[0][8].ToString();
+                            ((Range)worksheet1.Cells[29, 2]).Value2 = dt.Tables[0].Rows[0][9].ToString();
+                            ((Range)worksheet1.Cells[29, 5]).Value2 = dt.Tables[0].Rows[0][10].ToString();
+                            ((Range)worksheet1.Cells[31, 5]).Value2 = tb_SSpec.Text;
+
+                            worksheet1.SaveAs(DestFilePath + string.Format("\\SCRAP MATL 입고증 {0}_{1}.xlsx", sRequest, DateTime.Now.ToString("yyyyMMdd")));
+                            workbook.Close();                           
+                            Close();
+
+                            //MessageBox.Show(string.Format("{2}\\SCRAP MATL 입고증 {0}_{1}.xlsx \n에 저장 되었습니다.", sRequest, DateTime.Now.ToString("yyyyMMdd"), DestFilePath));
+                        }
+                    }
+                }
             }
+        }
+
+
+        public void run_sql_command(string sql)
+        {
+            try
+            {
+                //lock (this)
+                {
+                    using (SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                    {
+                        ssconn.Open();
+                        using (SqlCommand scom = new SqlCommand(sql, ssconn))
+                        {
+                            scom.CommandType = System.Data.CommandType.Text;
+                            scom.CommandText = sql;
+                            scom.ExecuteReader();
+                        }
+                    }
+                    //ssconn.Close();
+                    //ssconn.Dispose();
+                    //scom.Dispose();
+                }
+                //frm_Main.save_log(string.Format("Call:{0} -> Function:{1}, Param:{2}", System.Reflection.MethodBase.GetCurrentMethod().ReflectedType.Name, System.Reflection.MethodBase.GetCurrentMethod().Name, sql));
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
+        private System.Data.DataSet SearchData(string sql)
+        {
+            System.Data.DataSet dt = new System.Data.DataSet();
+
+            try
+            {
+                using (SqlConnection c = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                {
+                    c.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, c))
+                    {
+                        using (SqlDataAdapter adt = new SqlDataAdapter(cmd))
+                        {
+                            adt.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dt;
+        }
+
+        public int run_count(string sql_str)
+        {
+            int res = -1;
+            try
+            {
+                using (SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                {
+                    ssconn.Open();
+                    using (SqlCommand scom = new SqlCommand(sql_str, ssconn))
+                    {
+                        scom.CommandType = System.Data.CommandType.Text;
+                        scom.CommandText = sql_str;
+                        res = (int)scom.ExecuteScalar();
+                    }
+                }
+                
+                return res;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return res;
         }
     }
 

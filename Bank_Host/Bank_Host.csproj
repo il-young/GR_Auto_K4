@@ -223,6 +223,12 @@
     <Compile Include="Form_Progress.Designer.cs">
       <DependentUpon>Form_Progress.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_ReceiptDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_ReceiptDB.Designer.cs">
+      <DependentUpon>Form_ReceiptDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Request.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -308,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Progress.resx">
       <DependentUpon>Form_Progress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_ReceiptDB.resx">
+      <DependentUpon>Form_ReceiptDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Request.resx">
       <DependentUpon>Form_Request.cs</DependentUpon>
