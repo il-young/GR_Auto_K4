@@ -5160,7 +5160,7 @@ namespace Bank_Host
 
             for(int i = 0; i< dataGridView_label.RowCount;i++)
             {
-                if(dataGridView_label.Rows[i].Cells[5].Value.ToString() == amkor_id)
+                if(dataGridView_label.Rows[i].Cells[6].Value.ToString() == amkor_id)
                 {
                     dataGridView_label.Rows[i].Selected = true;
                     dataGridView_label.FirstDisplayedScrollingRowIndex = i;
