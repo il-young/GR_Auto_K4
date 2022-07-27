@@ -179,7 +179,7 @@ namespace Bank_Host
 
         private void Tb_BCustCode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tb_BCustName.SelectedIndex = tb_BCustCode.SelectedIndex;
+            tb_BCustName.Text = tb_BCustCode.Text;
         }
 
         private void Tb_BCustName_SelectedIndexChanged(object sender, EventArgs e)
