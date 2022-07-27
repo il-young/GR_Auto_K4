@@ -5159,8 +5159,8 @@ namespace Bank_Host
             bool res = false;
 
             for(int i = 0; i< dataGridView_label.RowCount;i++)
-            {
-                if(dataGridView_label.Rows[i].Cells[6].Value.ToString() == amkor_id)
+            {                
+                if (dataGridView_label.Rows[i].Cells["AMKOR_ID"].Value.ToString() == amkor_id)
                 {
                     dataGridView_label.Rows[i].Selected = true;
                     dataGridView_label.FirstDisplayedScrollingRowIndex = i;
@@ -9272,7 +9272,7 @@ namespace Bank_Host
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[4]/p/font/select").SendKeys("SCRAP"); // ComboBox 설정
 
                     SetProgressba("데이터 조회 중입니다.", 7);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();    //Find 버튼 누름
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[2]/p/a/img").Click();    //Find 버튼 누름
 
 
                     SetProgressba("Excel File Down 중 입니다.", 8);
@@ -9520,7 +9520,9 @@ namespace Bank_Host
                 }
                 else
                 {
-
+                    SpeakST("스크랩 자재가 아닙니다.");
+                    Form_Board warring = new Form_Board("스크랩 자재가 아닙니다.", Color.Red);
+                    warring.ShowDialog();
                 }
 
             }
@@ -9992,6 +9994,9 @@ namespace Bank_Host
                 if(res.Contains(row[1].ToString().Split('_')[0]) == false)  
                     res.Add(row[1].ToString().Split('_')[0]);
             }
+
+            if (res.Count == 0)
+                res.Add("EMPTY");
 
             return res;
         }
