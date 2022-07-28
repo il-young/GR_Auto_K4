@@ -5159,7 +5159,7 @@ namespace Bank_Host
             bool res = false;
 
             for(int i = 0; i< dataGridView_label.RowCount;i++)
-            {                
+            {   
                 if (dataGridView_label.Rows[i].Cells["AMKOR_ID"].Value.ToString() == amkor_id)
                 {
                     dataGridView_label.Rows[i].Selected = true;
@@ -5169,6 +5169,8 @@ namespace Bank_Host
                 }
             }
 
+
+            
             return res;
         }
 
@@ -9209,7 +9211,7 @@ namespace Bank_Host
 
                     _driver = new ChromeDriver(_driverService, _options);
                     _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
-                    _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                    _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
                     progressBar1.Maximum = 15;
                     progressBar1.Value = 1;
@@ -9978,15 +9980,15 @@ namespace Bank_Host
             {
                 if(i != Codes.Count - 1)
                 {
-                    where += string.Format("[CUST]={0} or ", Codes[i]);
+                    where += string.Format("[CUST_CODE]={0} or ", Codes[i]);
                 }
                 else
                 {
-                    where += string.Format("[CUST]={0}", Codes[i]);
+                    where += string.Format("[CUST_CODE]={0}", Codes[i]);
                 }
             }
 
-            string sql = string.Format("select [CUST], [NAME] from TB_CUST_INFO with(NOLOCK) where {0}", where);
+            string sql = string.Format("select [CUST_CODE], [CUST_NAME] from TB_SCRAP_CUST with(NOLOCK) where {0}", where);
             DataSet ds = SearchData(sql);
 
             foreach(DataRow  row in ds.Tables[0].Rows)
@@ -10007,7 +10009,7 @@ namespace Bank_Host
             string where = "";
 
 
-            string sql = string.Format("select [CUST], [NAME] from TB_CUST_INFO with(NOLOCK) where [CUST]={0}", Codes);
+            string sql = string.Format("select [CUST_CODE], [CUST_NAME] from TB_SCRAP_CUST with(NOLOCK) where [CUST_CODE]={0}", Codes);
             DataSet ds = SearchData(sql);
 
             foreach (DataRow row in ds.Tables[0].Rows)
@@ -10054,12 +10056,12 @@ namespace Bank_Host
             }
 
             tabControl_Sort.SelectedIndex = 0;
-            BankHost_main.strAdminID = "";
-            BankHost_main.strAdminPW = "";
-            BankHost_main.strAmkorID = "";
-            BankHost_main.strCust = "";
-            BankHost_main.strOperator = "";
-            BankHost_main.strID = "";
+            //BankHost_main.strAdminID = "";
+            //BankHost_main.strAdminPW = "";
+            //BankHost_main.strAmkorID = "";
+            //BankHost_main.strCust = "";
+            //BankHost_main.strOperator = "";
+            //BankHost_main.strID = "";
 
             
 

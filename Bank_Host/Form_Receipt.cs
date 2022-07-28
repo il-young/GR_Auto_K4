@@ -119,18 +119,12 @@ namespace Bank_Host
 
         private void FillText()
         {
-            for(int i = 0; i < sCustCode.Count; i++)
-            {
-                tb_BCustCode.Items.Add(sCustCode[i]);                
-            }
+            tb_BCustCode.Items.Add(string.Join(",", sCustCode));
+            tb_BCustCode.SelectedIndex = 0;
 
-            for(int i = 0; i < sCustName.Count; i++)
-            {
-                tb_BCustName.Items.Add(sCustName[i]);
-            }
-
-            tb_BCustCode.Text = sCustCode[0];
-            tb_BCustName.Text = sCustName[0];
+            tb_BCustName.Items.Add(string.Join(",", sCustName));
+            tb_BCustName.SelectedIndex = 0;
+            
             tb_BLineCode.Text = sLineCode == "" ? tb_BLineCode.Text : sLineCode;
             dtB.Text = sDate == "" ? dtB.Text : sDate;
             tb_BTTL.Text = sTTL == "" ? tb_BTTL.Text : sTTL;

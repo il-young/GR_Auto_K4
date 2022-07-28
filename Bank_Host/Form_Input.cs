@@ -493,6 +493,7 @@ namespace Bank_Host
                 BankHost_main.strGrade = strgrade;
                 BankHost_main.strMESID = strMESID;
                 BankHost_main.strMESPW = strMESPW;
+                
                 bok = true;
 
                 Fnc_Exit();
