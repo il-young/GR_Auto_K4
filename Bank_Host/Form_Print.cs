@@ -723,9 +723,17 @@ namespace Bank_Host
             string P_SC_3 = string.Format("^FO {0},{1}\r\n", 630 + Properties.Settings.Default.PrintOffsetX, 2 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,2\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
-            string strData1_1 = string.Format("LOT# : {0}       QTY : {1}  /  {2}", AmkorBarcode.strLotNo, AmkorBarcode.strDiettl, strwfrqty);
-            strLine1 = string.Format("^FO {0},{1}^A0N,28^FD{2}^FS", 75 + Properties.Settings.Default.PrintOffsetX, 20 + Properties.Settings.Default.PrintOffsetY, strData1_1);
 
+            string strData1_1 = "";
+
+            if (AmkorBarcode.strLotDcc != "")
+                strData1_1 = string.Format("LOT# : {0} / {1} QTY : {2} / {3}", AmkorBarcode.strLotNo, AmkorBarcode.strLotDcc, AmkorBarcode.strDiettl, strwfrqty);
+            else
+                strData1_1 = string.Format("LOT# : {0}       QTY : {1}  /  {2}", AmkorBarcode.strLotNo, AmkorBarcode.strDiettl, strwfrqty);
+
+
+            strLine1 = string.Format("^FO {0},{1}^A0N,28^FD{2}^FS", 75 + Properties.Settings.Default.PrintOffsetX, 20 + Properties.Settings.Default.PrintOffsetY, strData1_1);
+            
             //string strData2 = "";
             //strData2 = string.Format("QTY : {0}  /  {1}", AmkorBarcode.strDiettl, strwfrqty);
             //strLine2 = string.Format("^FO 97,38^A0N,25^FD{0}^FS", strData2);
