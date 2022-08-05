@@ -43,7 +43,6 @@
             this.cb_RequestList.Size = new System.Drawing.Size(169, 29);
             this.cb_RequestList.TabIndex = 0;
             this.cb_RequestList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cb_RequestList_KeyDown);
-            this.cb_RequestList.ImeModeChanged += new System.EventHandler(this.cb_RequestList_ImeModeChanged);
             // 
             // label1
             // 

@@ -19,7 +19,6 @@ using Microsoft.VisualBasic.Devices;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Data.SqlClient;
-using System.Collections.ObjectModel;
 
 namespace Bank_Host
 {
@@ -9275,16 +9274,12 @@ namespace Bank_Host
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[4]/p/font/select").SendKeys("SCRAP"); // ComboBox 설정
 
                     SetProgressba("데이터 조회 중입니다.", 7);
-                    //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[2]/p/a/img").Click();    //Find 버튼 누름
-                    _driver.FindElementByName("find").Click();
-
-
-                    ReadOnlyCollection<IWebElement> links = _driver.FindElements(By.TagName("a"));
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[2]/p/a/img").Click();    //Find 버튼 누름
 
 
                     SetProgressba("Excel File Down 중 입니다.", 8);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();  // Excel Down 누름                    
-                    
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();  // Excel Down 누름
+
                     Thread.Sleep(1000);
 
                     System.IO.DirectoryInfo di = new DirectoryInfo(sDownloadPath);

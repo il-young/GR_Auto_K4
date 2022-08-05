@@ -71,14 +71,8 @@ namespace Bank_Host
         {
             if(e.KeyValue == 13)
             {
-                if(cb_RequestList.Text != "")
                 btn_OK_Click(sender, e);
             }
-        }
-
-        private void cb_RequestList_ImeModeChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
