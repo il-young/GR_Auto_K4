@@ -10124,6 +10124,7 @@ namespace Bank_Host
                 {
                     bTimeOutSt = false;
 
+                    ClickTime();
                     tabControl_Sort.SelectedIndex = 0;
                     BankHost_main.strAdminID = "";
                     BankHost_main.strAdminPW = "";
@@ -10184,6 +10185,7 @@ namespace Bank_Host
             strSelCust = "";
 
             int nSel = comboBox_mode.SelectedIndex;
+            ClickTime();
 
             if (nSel == 0) //GR Mode
             {
