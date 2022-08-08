@@ -193,9 +193,9 @@ namespace Bank_Host
             dataGridView_bill.Columns.Insert(4, checkBoxColumn);
 
             dataGridView_bill.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-            dataGridView_bill.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView_bill.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView_bill.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+            dataGridView_bill.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView_bill.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView_bill.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         public void Fnc_datagrid_add(string strCust, string strBill, string strLotcount, string strStatus)

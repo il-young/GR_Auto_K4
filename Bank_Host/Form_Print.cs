@@ -727,7 +727,7 @@ namespace Bank_Host
             string strData1_1 = "";
 
             if (AmkorBarcode.strLotDcc != "")
-                strData1_1 = string.Format("LOT# : {0} / {1} QTY : {2} / {3}", AmkorBarcode.strLotNo, AmkorBarcode.strLotDcc, AmkorBarcode.strDiettl, strwfrqty);
+                strData1_1 = string.Format("LOT# : {0} / {1}\tQTY : {2} / {3}", AmkorBarcode.strLotNo, AmkorBarcode.strLotDcc, AmkorBarcode.strDiettl, strwfrqty);
             else
                 strData1_1 = string.Format("LOT# : {0}       QTY : {1}  /  {2}", AmkorBarcode.strLotNo, AmkorBarcode.strDiettl, strwfrqty);
 
