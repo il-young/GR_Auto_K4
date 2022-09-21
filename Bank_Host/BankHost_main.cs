@@ -23,6 +23,7 @@ namespace Bank_Host
         public static Host.Host Host = new Host.Host();
         public static bool bHost_connect = false;
 
+        public static int LabelAddVal = 15;// 라벨 추가로 출력할 웨이퍼 갯수
         ///Mode 추가 
         public static int nScanMode = 0; //2021.04.07 추가  0: Vision, 1: Gun, 2: 개별 입력, 3: Multi scan
         public static string strScanData = ""; //mode1,3 GunRing scan data
@@ -51,7 +52,7 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "";
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "";
 
         public string ForcePrintName = "QUALCOMM STD Multi-2D";
 
@@ -417,7 +418,10 @@ namespace Bank_Host
 
                     if (!Read_Bcr.unprinted_device)
                     {
+
+                        
                         Frm_Sort.Fnc_Print_Start(Amkor, nWork_BcrType, true, Form_Sort.nLabelcount, Form_Sort.nLabelttl);
+                        
 
                         if (nInputMode == 1)
                         {
@@ -1388,6 +1392,7 @@ namespace Bank_Host
             strWork_WfrQtyPos = Info.strWfrPos;
             strWork_MtlType = Info.strMtlType;
             strLot2Wfr = Info.strLot2Wfr;
+            strMultiLot = Info.strMultiLot;
         }        
     }
 }

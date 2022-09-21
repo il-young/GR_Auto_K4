@@ -388,7 +388,18 @@ namespace Bank_Host
                 return;
             }
 
-            bool bJudge = Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
+            bool bJudge = false;
+            bJudge = Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
+
+            if (BankHost_main.strMultiLot == "YES")
+            {
+                for(int i = 0; i < (nttl / BankHost_main.LabelAddVal); i++)
+                {
+                    Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
+                }
+            }
+            
+            
 
             if (bJudge)
             {
