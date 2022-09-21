@@ -51,7 +51,9 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = ""; 
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "";
+
+        public string ForcePrintName = "QUALCOMM STD Multi-2D";
 
         Thread Thread_Progress = null;
 
@@ -68,7 +70,7 @@ namespace Bank_Host
         /// <summary>
         /// Amkor 바코드 출력
         /// </summary>
-        public static string strLotNo = "", strDeviceNo = "", strDieQty = "", strWfrQrt = "", strAmkorID = "", strCust = "";
+        public static string strLotNo = "", strDeviceNo = "", strDieQty = "", strWfrQrt = "", strAmkorID = "", strCust = "", strCustName = "";
 
         Form_Sort Frm_Sort = new Form_Sort();
         Form_Set Frm_Set = new Form_Set();
@@ -410,6 +412,9 @@ namespace Bank_Host
                     if (strWork_Shot1Lot == "YES")
                         Form_Sort.nLabelcount = 0;
 
+                    if (ForcePrintName.Contains(BankHost_main.strCustName))
+                        Read_Bcr.unprinted_device = false;
+
                     if (!Read_Bcr.unprinted_device)
                     {
                         Frm_Sort.Fnc_Print_Start(Amkor, nWork_BcrType, true, Form_Sort.nLabelcount, Form_Sort.nLabelttl);
@@ -474,6 +479,9 @@ namespace Bank_Host
 
                     if (strWork_Shot1Lot == "YES")
                         Form_Sort.nLabelcount = 0;
+
+                    if (ForcePrintName.Contains(BankHost_main.strCustName))
+                        Read_Bcr.unprinted_device = false;
 
                     if (!Read_Bcr.unprinted_device)
                     {
@@ -671,6 +679,9 @@ namespace Bank_Host
             
             if (strWork_Shot1Lot == "YES")
                 Form_Sort.nLabelcount = 0;
+
+            if (ForcePrintName.Contains(BankHost_main.strCustName))
+                Read_Bcr.unprinted_device = false;
 
             if (!Read_Bcr.unprinted_device)
             {

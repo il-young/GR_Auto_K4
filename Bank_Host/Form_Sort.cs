@@ -5623,8 +5623,17 @@ namespace Bank_Host
                 }
             }
 
-            int nCheckUnprint = BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device);
-            if (nCheckUnprint > 0)
+            bool isUnPrint = false;
+
+            if (BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device) > 0)
+                isUnPrint = true;
+
+            if (BankHost_main.strCustName == "QUALCOMM STD Multi-2D")
+                isUnPrint = false;
+
+
+            
+            if (isUnPrint == true)
                 bcr.unprinted_device = true;
 
             string strlog = string.Format("PARSING+{0}+{1}+{2}+{3}+{4}+{5}+{6}", bcr.Device, bcr.Lot, bcr.DieQty, bcr.DieTTL, bcr.WfrTTL, bcr.result, BankHost_main.strOperator);
@@ -5991,8 +6000,15 @@ namespace Bank_Host
                 }
             }
 
-            int nCheckUnprint = BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device);
-            if (nCheckUnprint > 0)
+            bool isUnPrint = false;
+
+            if (BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device) > 0)
+                isUnPrint = true;
+
+            if (BankHost_main.strCustName == "QUALCOMM STD Multi-2D")
+                isUnPrint = false;
+
+            if (isUnPrint == true)
                 bcr.unprinted_device = true;
 
             string strlog = string.Format("PARSING+{0}+{1}+{2}+{3}+{4}+{5}+{6}", bcr.Device, bcr.Lot, bcr.DieQty, bcr.DieTTL, bcr.WfrTTL, bcr.result, BankHost_main.strOperator);
@@ -8049,8 +8065,10 @@ namespace Bank_Host
 
         private void comboBox_Name_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(bmode7 == true)
+            BankHost_main.strCustName = comboBox_Name.Text;
+            if (bmode7 == true)
             {
+                
                 Split_data_display();
             }
         }
@@ -8175,7 +8193,9 @@ namespace Bank_Host
                 BankHost_main.Host.Host_Set_Workinfo(BankHost_main.strEqid, strWorkFileName, strSelBillno[0], "", "WORK");
 
                 LastClickTime = DateTime.Now;
-                bgw_timeout.RunWorkerAsync();
+
+                if(bgw_timeout.IsBusy == false)
+                    bgw_timeout.RunWorkerAsync();
 
                 //button_autogr.BackColor = Color.LightGray;
                 button_autogr.Enabled = false;
@@ -11380,37 +11400,45 @@ namespace Bank_Host
 
         public void Fnc_Information_Init2()
         {
-            Form_Input Frm_Input = new Form_Input();
-
-            Frm_Input.Fnc_Init(99);
-
-            int nTotal = dataGridView_worklist.Rows.Count;
-
-            Frm_Input.Fnc_cust_init();
-            Frm_Input.Fnc_datagrid_init();
-
-            var dtWorkinfo = BankHost_main.Host.Host_Get_Workinfo(BankHost_main.strEqid);
-
-            string strToday = string.Format("{0}{1:00}{2:00}", DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-
-            for (int n = 0; n < dtWorkinfo.Rows.Count; n++)
+            try
             {
-                string strDate = dtWorkinfo.Rows[n]["DATETIME"].ToString(); strDate = strDate.Trim();
-                strDate = strDate.Substring(0, 8);
+                Form_Input Frm_Input = new Form_Input();
 
-                string strEqid = dtWorkinfo.Rows[n]["EQID"].ToString(); strEqid = strEqid.Trim();
-                string strHAWB = dtWorkinfo.Rows[n]["HAWB"].ToString(); strHAWB = strHAWB.Trim();
-                string strJobName = dtWorkinfo.Rows[n]["JOB_NAME"].ToString(); strJobName = strJobName.Trim();
-                string strCust = strJobName.Substring(4, 3);
-                int nCount = n + 1;
+                Frm_Input.Fnc_Init(99);
 
-                if (strDate == strToday)
-                {            
-                    Frm_Input.Fnc_datagrid_add(strCust, strHAWB, "-", strJobName);
+                int nTotal = dataGridView_worklist.Rows.Count;
+
+                Frm_Input.Fnc_cust_init();
+                Frm_Input.Fnc_datagrid_init();
+
+                var dtWorkinfo = BankHost_main.Host.Host_Get_Workinfo(BankHost_main.strEqid);
+
+                string strToday = string.Format("{0}{1:00}{2:00}", DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+                for (int n = 0; n < dtWorkinfo.Rows.Count; n++)
+                {
+                    string strDate = dtWorkinfo.Rows[n]["DATETIME"].ToString(); strDate = strDate.Trim();
+                    strDate = strDate.Substring(0, 8);
+
+                    string strEqid = dtWorkinfo.Rows[n]["EQID"].ToString(); strEqid = strEqid.Trim();
+                    string strHAWB = dtWorkinfo.Rows[n]["HAWB"].ToString(); strHAWB = strHAWB.Trim();
+                    string strJobName = dtWorkinfo.Rows[n]["JOB_NAME"].ToString(); strJobName = strJobName.Trim();
+                    string strCust = strJobName == "" ? "NONE" : strJobName.Substring(4, 3);
+                    int nCount = n + 1;
+
+                    if (strDate == strToday)
+                    {
+                        Frm_Input.Fnc_datagrid_add(strCust, strHAWB, "-", strJobName);
+                    }
                 }
-            }
 
-            Frm_Input.ShowDialog();
+                Frm_Input.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private delegate void Update();
