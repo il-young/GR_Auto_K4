@@ -21,6 +21,8 @@ using OpenQA.Selenium.Chrome;
 using System.Data.SqlClient;
 using System.Collections.ObjectModel;
 
+using Zebra.Sdk.Comm;
+
 namespace Bank_Host
 {
     public partial class Form_Sort : Form
@@ -162,7 +164,17 @@ namespace Bank_Host
             public string CUST;
             public string Wafer_ID;
         }
-                
+
+        public struct st2ndSumLabelInfo
+        {
+            public string Lot;
+            public string DCC;
+            public string QTY;
+        }
+
+        public const string ZPL_START = "^XA";
+        public const string ZPL_END = "^XZ";
+
         public List<stAmkor_Label> label_list = new List<stAmkor_Label>();
         public List<string> split_log_lowdata = new List<string>();
         public List<string> split_log_cust = new List<string>();
@@ -187,6 +199,8 @@ namespace Bank_Host
 
         private int tot_die = -1, tot_wfr = -1, tot_lots = -1;
         private int com_die = -1, com_wfr = -1, com_lots = -1;
+
+        public bool SecondPrinterMode = false;
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
@@ -389,17 +403,22 @@ namespace Bank_Host
             }
 
             bool bJudge = false;
-            bJudge = Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
+            
 
             if (BankHost_main.strMultiLot == "YES")
             {
-                for(int i = 0; i < (nttl / BankHost_main.LabelAddVal); i++)
+                for(int i = 0; i <= (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal); i++)
                 {
-                    Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
+                    Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, i+1, (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal) + 1);
                 }
             }
-            
-            
+            else
+            {
+                bJudge = Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
+
+                if(SecondPrinterMode == true)
+                    PrintSum(amkorBcrInfo);
+            }
 
             if (bJudge)
             {
@@ -3348,6 +3367,14 @@ namespace Bank_Host
 
             try
             {
+                if (System.IO.File.Exists(strFileName) == false)
+                {
+                    FileInfo fi = new FileInfo(strFileName);
+
+                    fi.Create().Close();
+                    //System.IO.File.Create(strFileName).Close();
+                }
+
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(strFileName, true))
                 {
                     file.WriteLine(strLine);
@@ -3971,6 +3998,8 @@ namespace Bank_Host
                 label_info.ForeColor = Color.White;
                 st.state = "Complete";
 
+                //nLabelttl = int.Parse(dataGridView_Lot.Rows[Realindex].Cells[6].Value.ToString());
+
                 strSpeak = string.Format("{0} 완료", Realindex + 1);
 
                 strlog = string.Format("UPDATE+{0}+{1}+{2}+{3}+{4}+{5}+{6}", strDevice, strLot, nDieQty, nDiettl, nWfrttl, "COMPLETE", BankHost_main.strOperator);
@@ -4053,6 +4082,9 @@ namespace Bank_Host
                 label_info.BackColor = Color.Blue;
                 label_info.ForeColor = Color.White;
                 st.state = "Complete";
+
+
+                //nLabelttl = int.Parse(dataGridView_Lot.Rows[Realindex].Cells[6].Value.ToString());
 
                 strSpeak = string.Format("{0} 완료", Realindex + 1);
 
@@ -5836,36 +5868,52 @@ namespace Bank_Host
                         return null;
 
                     string strID = "";
-                    for (int n = 0; n < strSplit_Bcr.Length; n++)
+                    if (BankHost_main.strWork_Model != "QUALCOMM_SPI")
                     {
-                        string strBarcode = strSplit_Bcr[n];
+                        for (int n = 0; n < strSplit_Bcr.Length; n++)
+                        {
+                            string strBarcode = strSplit_Bcr[n];
 
-                        if (strBarcode.Substring(0, 2) == "1T")
-                        {
-                            //strWaferID = strBarcode;
-                            bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
-                            bcr.Lot = bcr.Lot.Trim();
-                        }
-                        else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
-                        {
-                            bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
-                            bcr.Device = bcr.Device.Trim();
-                        }
-                        else if (strBarcode.Substring(0, 1) == "Q")
-                        {
-                            bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
-                            bcr.DieQty = bcr.DieQty.Trim();
-                        }
-                        else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
-                        {
-                            bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
-                            bcr.Device = bcr.Device.Trim();
-                        }
 
-                        if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
-                        {
-                            strID = strBarcode;
+
+                            if (strBarcode.Substring(0, 2) == "1T")
+                            {
+                                //strWaferID = strBarcode;
+                                bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
+                                bcr.Lot = bcr.Lot.Trim();
+                            }
+                            else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
+                            {
+                                bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
+                                bcr.Device = bcr.Device.Trim();
+                            }
+                            else if (strBarcode.Substring(0, 1) == "Q")
+                            {
+                                bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
+                                bcr.DieQty = bcr.DieQty.Trim();
+                            }
+                            else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
+                            {
+                                bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
+                                bcr.Device = bcr.Device.Trim();
+                            }
+
+                            if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
+                            {
+                                strID = strBarcode;
+                            }
                         }
+                    }
+                    else if(BankHost_main.strWork_Model == "QUALCOMM_SPI")
+                    {
+                        bcr.Lot = strSplit_Bcr[1].Substring(2, strSplit_Bcr[1].Length - 2);
+                        bcr.Lot = bcr.Lot.Trim();
+
+                        bcr.DieQty = strSplit_Bcr[2].Substring(1, strSplit_Bcr[2].Length - 1);
+                        bcr.DieQty = bcr.DieQty.Trim();
+
+                        bcr.Device = strSplit_Bcr[0].Substring(3, strSplit_Bcr[0].Length - 3);
+                        bcr.Device = bcr.Device.Trim();
                     }
 
                     strWaferID = string.Format("{0}_{1}", bcr.Lot, strID);
@@ -6016,8 +6064,6 @@ namespace Bank_Host
             if (BankHost_main.Host.Host_Check_Unprinted_Device(bcr.Device) > 0)
                 isUnPrint = true;
 
-            if (BankHost_main.strCustName == "QUALCOMM STD Multi-2D")
-                isUnPrint = false;
 
             if (isUnPrint == true)
                 bcr.unprinted_device = true;
@@ -6832,6 +6878,132 @@ namespace Bank_Host
 
             dataGridView_shipment.ClearSelection();
         }
+
+
+        public string MakeTOTLabelTemplete110X170()
+        {
+            string msg = ZPL_START +
+
+                // 박스 그리기
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 129 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 228 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 327 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 426 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 525 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 624 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 723 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 822 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 921 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1020 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1119 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1218 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+                // 세로줄 그리기
+                string.Format("^FO{0},{1}^GB4,1093,4^FS", 403 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,99,4^FS", 403 + Properties.Settings.Default.SecondPrinterOffsetX, 1222 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,990,4^FS", 300 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,990,4^FS", 670 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,99,4^FS", 573 + Properties.Settings.Default.SecondPrinterOffsetX, 1222 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,1325,4^FS", 190 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,1093,4^FS", 573 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+                //Header
+                string.Format("^FO{0},{1}^AO,30,15^FDLOT#/DCC^FS", Properties.Settings.Default.SecondPrinterOffsetX + 30, 70 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDDie^FS", Properties.Settings.Default.SecondPrinterOffsetX + 200, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQ'TY^FS", Properties.Settings.Default.SecondPrinterOffsetX + 200, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQR^FS", Properties.Settings.Default.SecondPrinterOffsetX + 310, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDCODE^FS", Properties.Settings.Default.SecondPrinterOffsetX + 310, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDLOT#/DCC^FS", Properties.Settings.Default.SecondPrinterOffsetX + 410, 70 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDDie^FS", Properties.Settings.Default.SecondPrinterOffsetX + 590, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQ'TY^FS", Properties.Settings.Default.SecondPrinterOffsetX + 590, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQR^FS", Properties.Settings.Default.SecondPrinterOffsetX + 680, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDCODE^FS", Properties.Settings.Default.SecondPrinterOffsetX + 680, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+                //CUST
+                string.Format("^FO{0},{1}^AO,30,15^FDCUST^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY, BankHost_main.strCust) +
+
+                //Device
+                string.Format("^FO{0},{1}^AO,30,15^FDDEVICE^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1170 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 300 + Properties.Settings.Default.SecondPrinterOffsetX, 1170 + Properties.Settings.Default.SecondPrinterOffsetY, strValDevice) +
+
+                //DATE
+                string.Format("^FO{0},{1}^AO,30,15^FDRCV-^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1240 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDDATE^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1270 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 1250 + Properties.Settings.Default.SecondPrinterOffsetY, DateTime.Now.ToString("yyyy-MM-dd")) +
+
+            //DWafer QTY
+            string.Format("^FO{0},{1}^AO,30,15^FDWAFER^FS", 410 + Properties.Settings.Default.SecondPrinterOffsetX, 1050 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^AO,30,15^FDQ'TY^FS", 410 + Properties.Settings.Default.SecondPrinterOffsetX, 1080 + Properties.Settings.Default.SecondPrinterOffsetY);
+
+            return msg;
+        }
+
+        public string MakeTOTLabelTemplete130X200()
+        {
+            string msg = ZPL_START +
+
+                // 박스 그리기
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 129 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 228 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 327 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 426 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 525 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 624 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 723 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 822 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 921 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1020 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1119 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1218 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1317 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB970,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1416 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+
+                // 세로줄 그리기
+                string.Format("^FO{0},{1}^GB4,1093,4^FS", 403 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,99,4^FS", 403 + Properties.Settings.Default.SecondPrinterOffsetX, 1222 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,990,4^FS", 300 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,990,4^FS", 670 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,99,4^FS", 573 + Properties.Settings.Default.SecondPrinterOffsetX, 1222 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,1325,4^FS", 190 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^GB4,1093,4^FS", 573 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+                //Header
+                string.Format("^FO{0},{1}^AO,30,15^FDLOT#/DCC^FS", Properties.Settings.Default.SecondPrinterOffsetX + 30, 70 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDDie^FS", Properties.Settings.Default.SecondPrinterOffsetX + 200, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQ'TY^FS", Properties.Settings.Default.SecondPrinterOffsetX + 200, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQR^FS", Properties.Settings.Default.SecondPrinterOffsetX + 310, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDCODE^FS", Properties.Settings.Default.SecondPrinterOffsetX + 310, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDLOT#/DCC^FS", Properties.Settings.Default.SecondPrinterOffsetX + 410, 70 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDDie^FS", Properties.Settings.Default.SecondPrinterOffsetX + 590, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQ'TY^FS", Properties.Settings.Default.SecondPrinterOffsetX + 590, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDQR^FS", Properties.Settings.Default.SecondPrinterOffsetX + 680, 60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDCODE^FS", Properties.Settings.Default.SecondPrinterOffsetX + 680, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+                //CUST
+                string.Format("^FO{0},{1}^AO,30,15^FDCUST^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY, BankHost_main.strCust) +
+
+                //Device
+                string.Format("^FO{0},{1}^AO,30,15^FDDEVICE^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1170 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 300 + Properties.Settings.Default.SecondPrinterOffsetX, 1170 + Properties.Settings.Default.SecondPrinterOffsetY, strValDevice) +
+
+                //DATE
+                string.Format("^FO{0},{1}^AO,30,15^FDRCV-^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1240 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FDDATE^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 1270 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 1250 + Properties.Settings.Default.SecondPrinterOffsetY, DateTime.Now.ToString("yyyy-MM-dd")) +
+
+            //DWafer QTY
+            string.Format("^FO{0},{1}^AO,30,15^FDWAFER^FS", 410 + Properties.Settings.Default.SecondPrinterOffsetX, 1050 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^AO,30,15^FDQ'TY^FS", 410 + Properties.Settings.Default.SecondPrinterOffsetX, 1080 + Properties.Settings.Default.SecondPrinterOffsetY);
+
+            return msg;
+        }
+
+
 
         public void Fnc_GetGrList()
         {
@@ -7665,7 +7837,7 @@ namespace Bank_Host
                 dataGridView_Lot.Columns.Add("Shipment", "Shipment");
 
                 dataGridView_Lot.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-                dataGridView_Lot.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dataGridView_Lot.Columns[1].SortMode = DataGridViewColumnSortMode.Programmatic;
                 dataGridView_Lot.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
                 dataGridView_Lot.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
                 dataGridView_Lot.Columns[4].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -7778,6 +7950,8 @@ namespace Bank_Host
                 dataGridView_Lot.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
                 dataGridView_Lot.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
                 dataGridView_Lot.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+
+                dataGridView_Lot.Sort(dataGridView_Lot.Columns[1], ListSortDirection.Ascending);
             }
             catch
             {
@@ -8077,9 +8251,11 @@ namespace Bank_Host
         private void comboBox_Name_SelectedIndexChanged(object sender, EventArgs e)
         {
             BankHost_main.strCustName = comboBox_Name.Text;
+
+            
+
             if (bmode7 == true)
-            {
-                
+            {                
                 Split_data_display();
             }
         }
@@ -8108,9 +8284,22 @@ namespace Bank_Host
                     Frm_Process.Form_Hide();
                     return;
                 }
-            }  
-                       
-            if(BankHost_main.strOperator == "")
+            }
+
+            string[] SecondPrinterNames = Properties.Settings.Default.SecondPrinterCustName.Split(';');
+
+            SecondPrinterMode = false;
+
+            for (int i = 0; i < SecondPrinterNames.Length; i++)
+            {
+                if (SecondPrinterNames[i] == comboBox_Name.Text)
+                {
+                    SecondPrinterMode = true;
+                    break;
+                }
+            }
+
+            if (BankHost_main.strOperator == "")
             {
                 MessageBox.Show("작업 설정이 완료 되지 않았습니다.");
                 return;
@@ -8448,6 +8637,7 @@ namespace Bank_Host
                 AWork.strWfrPos = dt_list.Rows[n]["TTL_WFR_QTY"].ToString(); AWork.strWfrPos = AWork.strWfrPos.Trim();
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
                 AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
+                AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
 
                 if (strGetCust == AWork.strCust && strModelName == AWork.strModelName)
                 {
@@ -11514,6 +11704,165 @@ namespace Bank_Host
 
             return str;
         }
+
+        
+        
+        public void PrintSum(AmkorBcrInfo amkor)
+        {
+            string LotTemp = amkor.strLotNo.Split('.')[0];
+            bool isComplete = true;
+
+            List<st2ndSumLabelInfo> LabelInfo = new List<st2ndSumLabelInfo>();
+            List<st2ndSumLabelInfo> LabelBuff = new List<st2ndSumLabelInfo>();
+
+            for (int i = 0; i < dataGridView_Lot.Rows.Count; i++)
+            {
+                if(dataGridView_Lot.Rows[i].Cells[1].Value.ToString().Split('.')[0] == LotTemp)
+                {
+                    if (dataGridView_Lot.Rows[i].Cells[7].Value.ToString().ToUpper() != "COMPLETE")
+                    {
+                        isComplete = false;
+                        break;
+                    }
+                    else if(dataGridView_Lot.Rows[i].Cells[7].Value.ToString().ToUpper() == "COMPLETE")
+                    {
+                        st2ndSumLabelInfo LabelTemp = new st2ndSumLabelInfo();
+
+                        LabelTemp.Lot = dataGridView_Lot.Rows[i].Cells[1].Value.ToString();
+                        LabelTemp.DCC = dataGridView_Lot.Rows[i].Cells[2].Value.ToString();
+                        LabelTemp.QTY = dataGridView_Lot.Rows[i].Cells[4].Value.ToString();
+
+                        LabelBuff.Add(LabelTemp);
+                    }
+                }
+            }
+
+            if(isComplete == true)
+            {
+                LabelInfo = LabelBuff.OrderBy(x => x.Lot.Length).ThenBy(x => x.Lot).ToList();
+
+                string LabelMSG = MakeTOTLabelTemplete110X170();
+
+                //Bill
+                LabelMSG += 
+                    string.Format("^FO{0},{1}^AO,30,15^FDBILL^FS", 413 + Properties.Settings.Default.SecondPrinterOffsetX, 1250 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                    string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 583 + Properties.Settings.Default.SecondPrinterOffsetX, 1250 + Properties.Settings.Default.SecondPrinterOffsetY, amkor.strBillNo);
+
+                //CUST
+                LabelMSG += string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY, amkor.strCust);
+                //WAFER
+
+                LabelMSG += string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 590 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo.Count);
+
+
+                if (LabelInfo.Count <= 17)
+                {
+                    for(int i = 0; i < LabelInfo.Count; i++)
+                    {
+                        //Lot
+                        if (i <= 8)
+                        {
+                            //lot                                                                                                                  
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + i * 100 - 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].Lot);
+                            //DCC                                                                                                                  
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD/{2}^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + i * 100 + 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].DCC);
+                            //QTY                                                                                                                  
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + i * 100 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].QTY);
+                            //QR 출력                                                                                                              
+                            LabelMSG += string.Format("^FO{0},{1}^BQN,2,2^FD  {2}^FS", 330 + Properties.Settings.Default.SecondPrinterOffsetX, 140 + i * 100 + Properties.Settings.Default.SecondPrinterOffsetY, string.Format("{0},{1},{2}", LabelInfo[i].Lot, LabelInfo[i].DCC, LabelInfo[i].QTY));
+                        }
+                        else
+                        {
+                            //lot
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + (380) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + (i - 9) * 100 - 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].Lot);
+                            //DCC
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD/{2}^FS", 30 + (380) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + (i - 9) * 100 + 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].DCC);
+                            //QTY
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + (550) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + (i - 9) * 100 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].QTY);
+                            //QR 출력
+                            LabelMSG += string.Format("^FO{0},{1}^BQN,2,2^FD  {2}^FS", 690 + Properties.Settings.Default.SecondPrinterOffsetX, 140 + (i - 9) * 100 + Properties.Settings.Default.SecondPrinterOffsetY, string.Format("{0},{1},{2}", LabelInfo[i].Lot, LabelInfo[i].DCC, LabelInfo[i].QTY));
+                        }
+                    }
+
+                    LabelMSG += ZPL_END;
+
+                    Zebra.Sdk.Comm.Connection PrinterConnection = new Zebra.Sdk.Comm.TcpConnection(Properties.Settings.Default.SecondPrinterIP, Zebra.Sdk.Comm.TcpConnection.DEFAULT_ZPL_TCP_PORT);
+
+                    PrinterConnection.Open();
+                    PrinterConnection.Write(Encoding.UTF8.GetBytes(LabelMSG));
+
+                }
+                else
+                {
+                    for (int i = 0; i < LabelInfo.Count; i++)
+                    {
+                        if (i <= 17)
+                        {
+                            
+                            if (i <= 8)
+                            {
+                                //lot                                                                                                                  
+                                LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + i * 100 - 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].Lot);
+                                //DCC                                                                                                                  
+                                LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD/{2}^FS", 30 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + i * 100 + 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].DCC);
+                                //QTY                                                                                                                  
+                                LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + i * 100 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].QTY);
+                                //QR 출력                                                                                                              
+                                LabelMSG += string.Format("^FO{0},{1}^BQN,2,2^FD  {2}^FS", 330 + Properties.Settings.Default.SecondPrinterOffsetX, 140 + i * 100 + Properties.Settings.Default.SecondPrinterOffsetY, string.Format("{0},{1},{2}", LabelInfo[i].Lot, LabelInfo[i].DCC, LabelInfo[i].QTY));
+                            }
+                            else
+                            {
+                                //lot
+                                LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + (380) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + (i - 9 )* 100 - 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].Lot);
+                                //DCC
+                                LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD/{2}^FS", 30 + (380) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + (i - 9) * 100 + 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].DCC);
+                                //QTY
+                                LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + (550) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + (i - 9) * 100 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].QTY);
+                                //QR 출력
+                                LabelMSG += string.Format("^FO{0},{1}^BQN,2,2^FD  {2}^FS", 690 + Properties.Settings.Default.SecondPrinterOffsetX, 140 + (i - 9) * 100 + Properties.Settings.Default.SecondPrinterOffsetY, string.Format("{0},{1},{2}", LabelInfo[i].Lot, LabelInfo[i].DCC, LabelInfo[i].QTY));
+                            }
+
+                            if(i == 17)
+                            {
+                                LabelMSG += ZPL_END;
+                                LabelMSG += ZPL_START + 
+                                    //BILL
+                                    string.Format("^FO{0},{1}^AO,30,15^FDBILL^FS", 413 + Properties.Settings.Default.SecondPrinterOffsetX, 1250 + Properties.Settings.Default.SecondPrinterOffsetY) +
+                                    string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 583 + Properties.Settings.Default.SecondPrinterOffsetX, 1250 + Properties.Settings.Default.SecondPrinterOffsetY, amkor.strBillNo);
+                                //CUST
+                                LabelMSG += string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY, amkor.strCust);
+                                //WAFER
+
+                                LabelMSG += string.Format("^FO{0},{1}^AO,30,15^FD{2}^FS", 590 + Properties.Settings.Default.SecondPrinterOffsetX, 1070 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo.Count);
+
+                                LabelMSG += MakeTOTLabelTemplete110X170();
+                            }
+                        }
+                        else
+                        {
+                            //Lot
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 30 + (((i-18) / 9) * 390) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + ((i - 18) < 8 ? (i - 18) : (i - 18) - 9) * 100 - 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].Lot);
+                            //DCC
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD/{2}^FS", 30 + (((i - 18) / 9) * 390) + Properties.Settings.Default.SecondPrinterOffsetX, 170 + ((i - 18) < 8 ? (i - 18) : (i - 18) - 9) * 100 + 15 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].DCC);
+                            //QTY
+                            LabelMSG += string.Format("^FO{0},{1}^AO,20,15^FD{2}^FS", 200 + Properties.Settings.Default.SecondPrinterOffsetX, 170 + ((i - 18) < 8 ? (i - 18) : (i - 18) - 9) * 100 + Properties.Settings.Default.SecondPrinterOffsetY, LabelInfo[i].QTY);
+
+                            //QR 출력
+                            LabelMSG += string.Format("^FO{0},{1}^BQN,2,2^FD  {2}^FS", 330 + Properties.Settings.Default.SecondPrinterOffsetX, 140 + ((i - 18) < 8 ? (i - 18) : (i - 18) - 9) *100 + Properties.Settings.Default.SecondPrinterOffsetY, string.Format("{0},{1},{2}", LabelInfo[i].Lot, LabelInfo[i].DCC, LabelInfo[i].QTY));
+
+                        }
+                    }
+
+                    LabelMSG += ZPL_END;
+
+                    BankHost_main.Print2ndLabel(LabelMSG);
+                }
+
+                
+            }
+        }
+
+        
 
     }
 

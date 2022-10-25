@@ -177,5 +177,53 @@ namespace Bank_Host.Properties {
                 this["TimeOutMin"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string SecondPrinterIP {
+            get {
+                return ((string)(this["SecondPrinterIP"]));
+            }
+            set {
+                this["SecondPrinterIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SecondPrinterCustName {
+            get {
+                return ((string)(this["SecondPrinterCustName"]));
+            }
+            set {
+                this["SecondPrinterCustName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SecondPrinterOffsetX {
+            get {
+                return ((int)(this["SecondPrinterOffsetX"]));
+            }
+            set {
+                this["SecondPrinterOffsetX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SecondPrinterOffsetY {
+            get {
+                return ((int)(this["SecondPrinterOffsetY"]));
+            }
+            set {
+                this["SecondPrinterOffsetY"] = value;
+            }
+        }
     }
 }

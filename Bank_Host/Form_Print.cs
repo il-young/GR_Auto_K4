@@ -92,7 +92,7 @@ namespace Bank_Host
                 if (SocketManager != null)
                     return;
 
-                if (ConfigurationManager.AppSettings["CommunicationType"] != "Socket")
+                if (ConfigurationManager.AppSettings["CommunicationType2"] != "Socket")
                     return;
 
                 SocketManager = new TCP();
@@ -311,6 +311,8 @@ namespace Bank_Host
             
             strCovert_dieqty = AmkorBcr.strDiettl.PadLeft(10, '0');
 
+            AmkorBcr.strWfrttl = Math.Max(int.Parse(AmkorBcr.strWfrttl), int.Parse(AmkorBcr.strWfrQty)).ToString();
+
             string strCovert_wfrqty = "";
 
             if (BankHost_main.nScanMode == 1)
@@ -371,8 +373,8 @@ namespace Bank_Host
                 bPrintState = SendStringToPrinter(strPrinterName, strPrint);
             }
             else
-            {
-                Socket_MessageSend(strPrint);
+            {//20221021
+                //Socket_MessageSend(strPrint);
                 /*
                 while (true)
                 {
@@ -610,11 +612,11 @@ namespace Bank_Host
 
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 50 + Properties.Settings.Default.PrintOffsetY);
+            string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 10 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,3\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
             string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.strCust, AmkorBarcode.strDiettl, strwfrqty);
-            string strData1_2 = string.Format("CUST : {0}     QTY : {1}  /  {2}      ( {3} of {4} )\t\t", AmkorBarcode.strCust, AmkorBarcode.strDiettl, strwfrqty, nIndex.ToString(), nttl.ToString());
+            string strData1_2 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.strCust, AmkorBarcode.strDiettl, strwfrqty, nIndex.ToString(), nttl.ToString());
 
             if (BankHost_main.nScanMode == 1)
             {
@@ -631,6 +633,9 @@ namespace Bank_Host
                     strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
                 }
             }
+
+            
+
 
             string strData2 = "";
             if (AmkorBarcode.strLotDcc != "")
@@ -688,6 +693,14 @@ namespace Bank_Host
             else
             {
                 dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
+            }
+
+            if (BankHost_main.strMultiLot == "YES")
+            {
+                if(nttl != 1)
+                {
+                    dados += string.Format("^FO600,130^A0,90,90^FD{0}/{1}", nIndex, nttl);
+                }                
             }
 
             dados = dados + P_SC_END;
@@ -1037,6 +1050,77 @@ namespace Bank_Host
         {
             OffsetX.Value = Properties.Settings.Default.PrintOffsetX;
             OffsetY.Value = Properties.Settings.Default.PrintOffsetY;
+
+            SecondPrintOffsetX.Value = Properties.Settings.Default.SecondPrinterOffsetX;
+            SecondPrintOffsetY.Value = Properties.Settings.Default.SecondPrinterOffsetY;
+
+            tb_2ndPrinterIP.Text = Properties.Settings.Default.SecondPrinterIP;
+
+            if(Properties.Settings.Default.SecondPrinterCustName != "")
+            {
+                string[] temp = Properties.Settings.Default.SecondPrinterCustName.Split(';');
+
+                for(int i = 0; i < temp.Length; i++)
+                {
+                    lb_CustName.Items.Add(temp[i]);
+                }
+            }
+        }
+
+        private void btn_CustNameAdd_Click(object sender, EventArgs e)
+        {
+            bool isit = false;
+
+            for(int i = 0; i < lb_CustName.Items.Count; i++)
+            {
+                if (lb_CustName.Items[i].ToString() == tb_CustName.Text)
+                {
+                    isit = true;
+                    break;
+                }
+            }
+
+            if (isit == false)
+            {
+                lb_CustName.Items.Add(tb_CustName.Text);
+                tb_CustName.Text = "";
+            }
+            else
+            {
+                MessageBox.Show("동일한 고객명이 존재 합니다.");
+            }
+        }
+
+        private void btn_CustNameDel_Click(object sender, EventArgs e)
+        {
+            if(lb_CustName.SelectedIndex != -1)
+            {
+                lb_CustName.Items.RemoveAt(lb_CustName.SelectedIndex);
+            }
+            else
+            {
+                if(lb_CustName.Items.Count > 0)
+                    lb_CustName.Items.RemoveAt(0);
+            }
+        }
+
+        private void btn_2ndPrinterSave_Click(object sender, EventArgs e)
+        {
+            string CustNames = "";
+
+            Properties.Settings.Default.SecondPrinterIP = tb_2ndPrinterIP.Text.Replace(" " , "");
+
+            for(int i = 0; i< lb_CustName.Items.Count; i++)
+            {
+                CustNames += lb_CustName.Items[i] + ";";
+            }
+
+            Properties.Settings.Default.SecondPrinterCustName = CustNames;
+
+            Properties.Settings.Default.SecondPrinterOffsetX = (int)SecondPrintOffsetX.Value;
+            Properties.Settings.Default.SecondPrinterOffsetY = (int)SecondPrintOffsetY.Value;
+
+            Properties.Settings.Default.Save();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
