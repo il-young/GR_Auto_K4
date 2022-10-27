@@ -46,7 +46,6 @@
             this.label_state = new System.Windows.Forms.Label();
             this.label_type = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -259,22 +258,11 @@
             this.label3.Text = "K4";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(51, 523);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 21;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // BankHost_main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1264, 761);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label_state);
             this.Controls.Add(this.label_camera);
@@ -322,7 +310,6 @@
         private System.Windows.Forms.Label label_state;
         private System.Windows.Forms.Label label_type;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -225,5 +225,17 @@ namespace Bank_Host.Properties {
                 this["SecondPrinterOffsetY"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GreenLabelPrint {
+            get {
+                return ((bool)(this["GreenLabelPrint"]));
+            }
+            set {
+                this["GreenLabelPrint"] = value;
+            }
+        }
     }
 }

@@ -31,12 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tb_2ndPrinterIP = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.SecondPrintOffsetY = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.SecondPrintOffsetX = new System.Windows.Forms.NumericUpDown();
             this.btn_CustNameDel = new System.Windows.Forms.Button();
             this.btn_CustNameAdd = new System.Windows.Forms.Button();
             this.tb_CustName = new System.Windows.Forms.TextBox();
             this.lb_CustName = new System.Windows.Forms.ListBox();
             this.btn_2ndPrinterSave = new System.Windows.Forms.Button();
-            this.tb_2ndPrinterIP = new System.Windows.Forms.MaskedTextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.OffsetY = new System.Windows.Forms.NumericUpDown();
@@ -74,17 +78,14 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox_receivedata = new System.Windows.Forms.TextBox();
             this.label_state = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.SecondPrintOffsetY = new System.Windows.Forms.NumericUpDown();
-            this.label16 = new System.Windows.Forms.Label();
-            this.SecondPrintOffsetX = new System.Windows.Forms.NumericUpDown();
+            this.cb_GreenLabelPrint = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OffsetY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetX)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -127,6 +128,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_GreenLabelPrint);
+            this.groupBox1.Controls.Add(this.tb_2ndPrinterIP);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.SecondPrintOffsetY);
             this.groupBox1.Controls.Add(this.label16);
@@ -136,7 +139,6 @@
             this.groupBox1.Controls.Add(this.tb_CustName);
             this.groupBox1.Controls.Add(this.lb_CustName);
             this.groupBox1.Controls.Add(this.btn_2ndPrinterSave);
-            this.groupBox1.Controls.Add(this.tb_2ndPrinterIP);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.Location = new System.Drawing.Point(866, 20);
@@ -145,6 +147,61 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "2nd Printer";
+            // 
+            // tb_2ndPrinterIP
+            // 
+            this.tb_2ndPrinterIP.Location = new System.Drawing.Point(80, 38);
+            this.tb_2ndPrinterIP.Name = "tb_2ndPrinterIP";
+            this.tb_2ndPrinterIP.Size = new System.Drawing.Size(245, 39);
+            this.tb_2ndPrinterIP.TabIndex = 17;
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label15.Location = new System.Drawing.Point(6, 355);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(141, 50);
+            this.label15.TabIndex = 16;
+            this.label15.Text = "Offset Y :";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // SecondPrintOffsetY
+            // 
+            this.SecondPrintOffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SecondPrintOffsetY.Location = new System.Drawing.Point(153, 360);
+            this.SecondPrintOffsetY.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.SecondPrintOffsetY.Name = "SecondPrintOffsetY";
+            this.SecondPrintOffsetY.Size = new System.Drawing.Size(172, 43);
+            this.SecondPrintOffsetY.TabIndex = 15;
+            this.SecondPrintOffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label16
+            // 
+            this.label16.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label16.Location = new System.Drawing.Point(6, 306);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(141, 50);
+            this.label16.TabIndex = 14;
+            this.label16.Text = "Offset X :";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // SecondPrintOffsetX
+            // 
+            this.SecondPrintOffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SecondPrintOffsetX.Location = new System.Drawing.Point(153, 311);
+            this.SecondPrintOffsetX.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.SecondPrintOffsetX.Name = "SecondPrintOffsetX";
+            this.SecondPrintOffsetX.Size = new System.Drawing.Size(172, 43);
+            this.SecondPrintOffsetX.TabIndex = 13;
+            this.SecondPrintOffsetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // btn_CustNameDel
             // 
@@ -191,15 +248,6 @@
             this.btn_2ndPrinterSave.Text = "SAVE";
             this.btn_2ndPrinterSave.UseVisualStyleBackColor = true;
             this.btn_2ndPrinterSave.Click += new System.EventHandler(this.btn_2ndPrinterSave_Click);
-            // 
-            // tb_2ndPrinterIP
-            // 
-            this.tb_2ndPrinterIP.Location = new System.Drawing.Point(80, 40);
-            this.tb_2ndPrinterIP.Mask = "000.000.000.000";
-            this.tb_2ndPrinterIP.Name = "tb_2ndPrinterIP";
-            this.tb_2ndPrinterIP.Size = new System.Drawing.Size(245, 39);
-            this.tb_2ndPrinterIP.TabIndex = 1;
-            this.tb_2ndPrinterIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label14
             // 
@@ -589,53 +637,16 @@
             this.label_state.Text = "-";
             this.label_state.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label15
+            // cb_GreenLabelPrint
             // 
-            this.label15.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label15.Location = new System.Drawing.Point(6, 355);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(141, 50);
-            this.label15.TabIndex = 16;
-            this.label15.Text = "Offset Y :";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // SecondPrintOffsetY
-            // 
-            this.SecondPrintOffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SecondPrintOffsetY.Location = new System.Drawing.Point(153, 360);
-            this.SecondPrintOffsetY.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.SecondPrintOffsetY.Name = "SecondPrintOffsetY";
-            this.SecondPrintOffsetY.Size = new System.Drawing.Size(172, 43);
-            this.SecondPrintOffsetY.TabIndex = 15;
-            this.SecondPrintOffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label16
-            // 
-            this.label16.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label16.Location = new System.Drawing.Point(6, 306);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(141, 50);
-            this.label16.TabIndex = 14;
-            this.label16.Text = "Offset X :";
-            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // SecondPrintOffsetX
-            // 
-            this.SecondPrintOffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SecondPrintOffsetX.Location = new System.Drawing.Point(153, 311);
-            this.SecondPrintOffsetX.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.SecondPrintOffsetX.Name = "SecondPrintOffsetX";
-            this.SecondPrintOffsetX.Size = new System.Drawing.Size(172, 43);
-            this.SecondPrintOffsetX.TabIndex = 13;
-            this.SecondPrintOffsetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cb_GreenLabelPrint.AutoSize = true;
+            this.cb_GreenLabelPrint.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold);
+            this.cb_GreenLabelPrint.Location = new System.Drawing.Point(167, 6);
+            this.cb_GreenLabelPrint.Name = "cb_GreenLabelPrint";
+            this.cb_GreenLabelPrint.Size = new System.Drawing.Size(168, 20);
+            this.cb_GreenLabelPrint.TabIndex = 18;
+            this.cb_GreenLabelPrint.Text = "Green Label Print";
+            this.cb_GreenLabelPrint.UseVisualStyleBackColor = true;
             // 
             // Form_Print
             // 
@@ -664,11 +675,11 @@
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OffsetY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetX)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -715,7 +726,6 @@
         private System.Windows.Forms.NumericUpDown OffsetX;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btn_2ndPrinterSave;
-        private System.Windows.Forms.MaskedTextBox tb_2ndPrinterIP;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btn_CustNameDel;
         private System.Windows.Forms.Button btn_CustNameAdd;
@@ -725,5 +735,7 @@
         private System.Windows.Forms.NumericUpDown SecondPrintOffsetY;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.NumericUpDown SecondPrintOffsetX;
+        private System.Windows.Forms.TextBox tb_2ndPrinterIP;
+        private System.Windows.Forms.CheckBox cb_GreenLabelPrint;
     }
 }

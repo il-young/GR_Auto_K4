@@ -374,7 +374,18 @@ namespace Bank_Host
             }
             else
             {//20221021
-                //Socket_MessageSend(strPrint);
+
+                if (Properties.Settings.Default.SecondPrinterCustName.Contains(BankHost_main.strCustName) == false)
+                {
+                    Socket_MessageSend(strPrint);
+                }
+                else
+                {
+                    if(Properties.Settings.Default.GreenLabelPrint == true)
+                    {
+                        Socket_MessageSend(strPrint);
+                    }
+                }
                 /*
                 while (true)
                 {
@@ -1056,6 +1067,8 @@ namespace Bank_Host
 
             tb_2ndPrinterIP.Text = Properties.Settings.Default.SecondPrinterIP;
 
+            cb_GreenLabelPrint.Checked = Properties.Settings.Default.GreenLabelPrint;
+
             if(Properties.Settings.Default.SecondPrinterCustName != "")
             {
                 string[] temp = Properties.Settings.Default.SecondPrinterCustName.Split(';');
@@ -1109,6 +1122,8 @@ namespace Bank_Host
             string CustNames = "";
 
             Properties.Settings.Default.SecondPrinterIP = tb_2ndPrinterIP.Text.Replace(" " , "");
+
+            Properties.Settings.Default.GreenLabelPrint = cb_GreenLabelPrint.Checked;
 
             for(int i = 0; i< lb_CustName.Items.Count; i++)
             {
