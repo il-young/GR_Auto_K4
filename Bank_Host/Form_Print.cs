@@ -375,7 +375,20 @@ namespace Bank_Host
             else
             {//20221021
 
-                if (Properties.Settings.Default.SecondPrinterCustName.Contains(BankHost_main.strCustName) == false)
+                string[] CustNameTemp = Properties.Settings.Default.SecondPrinterCustName.Split(';');
+                bool isIn = false;
+
+                for(int  i = 0; i < CustNameTemp.Length; i++)
+                {
+                    if (CustNameTemp[i] == BankHost_main.strCustName)
+                    {                        
+                        isIn = true;
+                        break;
+                    }
+                }
+
+
+                if (isIn == false || BankHost_main.strCustName =="")
                 {
                     Socket_MessageSend(strPrint);
                 }
