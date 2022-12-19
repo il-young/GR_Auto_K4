@@ -237,5 +237,17 @@ namespace Bank_Host.Properties {
                 this["GreenLabelPrint"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LabelCopy {
+            get {
+                return ((bool)(this["LabelCopy"]));
+            }
+            set {
+                this["LabelCopy"] = value;
+            }
+        }
     }
 }

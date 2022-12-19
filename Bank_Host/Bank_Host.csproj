@@ -121,9 +121,6 @@
     <Reference Include="MICube.SmartDriver.Base.TCP">
       <HintPath>..\..\dll\MICube.SmartDriver.Base.TCP.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="SdkApi.Core, Version=2.15.2634.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Zebra.Printer.SDK.2.15.2634\lib\net471\SdkApi.Core.dll</HintPath>
     </Reference>
@@ -207,9 +204,6 @@
     </Reference>
     <Reference Include="WebDriver.Support, Version=3.141.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Selenium.Support.3.141.0\lib\net45\WebDriver.Support.dll</HintPath>
-    </Reference>
-    <Reference Include="ZebraPrinterSdk, Version=2.15.2634.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Zebra.Printer.SDK.2.15.2634\lib\net471\ZebraPrinterSdk.dll</HintPath>
     </Reference>
     <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.8\lib\net48\zxing.dll</HintPath>
