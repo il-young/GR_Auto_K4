@@ -536,10 +536,12 @@ namespace Bank_Host
 
             string strPrint = "";
 
-            if(BankHost_main.nAmkorBcrType == 0)
+            if (BankHost_main.nAmkorBcrType == 0)
                 strPrint = Fnc_Get_PrintFormat(nType, strBarcodeInfo, AmkorBcr, nIndex, nttl);
-            else
+            else if (BankHost_main.nAmkorBcrType == 1)
                 strPrint = Fnc_Get_PrintFormat_JAR(nType, strBarcodeInfo, AmkorBcr, nIndex, nttl);
+            
+
             //string printer = "ZDesigner ZD420-203dpi ZPL";
             //string printerName = "ZDesigner ZT410-203dpi ZPL (1 복사)"; //다이뱅크에서 실제 사용중인 프린터
 
@@ -1023,6 +1025,9 @@ namespace Bank_Host
                     dados += string.Format("^FO600,130^A0,90,90^FD{0}/{1}", nIndex, nttl);
                 }                
             }
+
+            if (nttl != 0)
+                dados += string.Format("^FO {0},{1}^A0N,80 ^FD{2}/{3}", 760 - ((nttl.ToString().Length + nIndex.ToString().Length) * 35), 125, nIndex, nttl);
 
             dados = dados + P_SC_END;
 

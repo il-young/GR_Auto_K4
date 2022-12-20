@@ -214,6 +214,9 @@ namespace Bank_Host
         public static string[] strSelBillno = new string[20] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
         public static string strSelCust = "" , strSelBill = "", strInputBill = "", strSelJobName = "";
 
+        public int TTLWafer = 0;
+        public int TTLWaferCnt = 0;
+
         public int AmkorLabelCnt = 1;
 
         public int real_index = -1;
@@ -431,6 +434,34 @@ namespace Bank_Host
                 for(int i = 0; i <= (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal); i++)
                 {
                     Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, i+1, (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal) + 1);
+                }
+            }
+            else if (BankHost_main.strTTLWFR == "TRUE")
+            {
+                if (GetAmkorLabelcnt() >= GetNumericValue())
+                {
+                    string waferttl = "";
+
+                    if (DialogResult.OK == InputBox("Wafer 수량을 입력 하세요", "Wafer 수량을 입력 하세요", ref waferttl))
+                    {
+                        SetnumeriValue(int.Parse(waferttl));
+                        SetAmkorlabelcnt(1);
+
+                        //Amkor_label_Print_Process(textBox1.Text.ToUpper(), AmkorLabelCnt);
+                        Frm_Print.Fnc_Print(amkorBcrInfo, 2, GetAmkorLabelcnt(), GetNumericValue());
+                    }
+                    else
+                    {
+                        Form_Board b = new Form_Board("Wafer 수량을 입력해야만 합니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    int cnt = GetAmkorLabelcnt();
+                    ++cnt;
+                    SetAmkorlabelcnt(cnt);
+                    Frm_Print.Fnc_Print(amkorBcrInfo, 2, GetAmkorLabelcnt(), GetNumericValue());
                 }
             }
             else
@@ -3735,6 +3766,7 @@ namespace Bank_Host
                         nLabelcount = 0;
                         nLabelttl = 0;
 
+                        --AmkorLabelCnt;
                         //if(strGrState == "Working")
                         //{ 
                         BankHost_main.strWork_Lotinfo = "";
@@ -5137,8 +5169,11 @@ namespace Bank_Host
             if (Convert.ToInt32(e.KeyChar) == 13)
             {
                 ClickTime();
-                Amkor_label_Print_Process(textBox1.Text.ToUpper(), AmkorLabelCnt);                
-                textBox1.Text = "";
+                
+                {
+                    Amkor_label_Print_Process(textBox1.Text.ToUpper(), AmkorLabelCnt);
+                    textBox1.Text = "";
+                }
             }
         }
 
@@ -8203,8 +8238,9 @@ namespace Bank_Host
                         nErrorcount++;
                     }
                 }
+                
 
-                DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+               DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
                 buttonColumn.Name = "재작업";
                 buttonColumn.UseColumnTextForButtonValue = true;
                 buttonColumn.Text = "리셋";
@@ -8912,6 +8948,7 @@ namespace Bank_Host
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
                 AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
                 AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
+                AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim().ToUpper();
 
                 if (strGetCust == AWork.strCust && strModelName == AWork.strModelName)
                 {
@@ -12252,6 +12289,68 @@ namespace Bank_Host
 
             return LabelMSG;
         }
+
+        public DialogResult InputBox(string title, string content, ref string value)
+        {
+            Form form = new Form();
+            PictureBox picture = new PictureBox();
+            System.Windows.Forms.Label label = new System.Windows.Forms.Label();
+            System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox();
+            System.Windows.Forms.Button buttonOk = new System.Windows.Forms.Button();
+            System.Windows.Forms.Button buttonCancel = new System.Windows.Forms.Button();
+
+            form.ClientSize = new Size(300, 100);
+            form.Controls.AddRange(new Control[] { label, picture, textBox, buttonOk, buttonCancel });
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.MaximizeBox = false;
+            form.MinimizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            form.Text = title;
+            //picture.Image = Properties.Resources.Clogo;
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            label.Text = content;
+            textBox.Text = value;
+            buttonOk.Text = "확인";
+            buttonCancel.Text = "취소";
+
+            buttonOk.DialogResult = DialogResult.OK;
+            buttonCancel.DialogResult = DialogResult.Cancel;
+
+            picture.SetBounds(10, 10, 50, 50);
+            label.SetBounds(65, 17, 100, 20);
+            textBox.SetBounds(65, 40, 220, 20);
+            buttonOk.SetBounds(135, 70, 70, 20);
+            buttonCancel.SetBounds(215, 70, 70, 20);
+
+            DialogResult dialogResult = form.ShowDialog();
+
+            value = textBox.Text;
+            return dialogResult;
+        }
+
+        public int GetNumericValue()
+        {
+            return (int)numericUpDown1.Value;
+        }
+
+        public int GetAmkorLabelcnt()
+        {
+            return AmkorLabelCnt;
+        }
+
+        public void SetAmkorlabelcnt(int  cnt)
+        {
+            AmkorLabelCnt = cnt;
+        }
+
+        public void SetnumeriValue(int  cnt)
+        {
+            numericUpDown1.Value = cnt;
+        }
+
 
     }
 

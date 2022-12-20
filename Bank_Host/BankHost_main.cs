@@ -55,7 +55,7 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "";
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "";
 
         public string ForcePrintName = "QUALCOMM STD Multi-2D";
 
@@ -775,7 +775,8 @@ namespace Bank_Host
             {
                 //Form_Sort.nLabelcount = 1;
                 //Form_Sort.nLabelttl = Form_Sort.nValWfrttl;
-                
+
+               
                 Frm_Sort.Fnc_Print_Start(Amkor, nWork_BcrType, true, Form_Sort.nLabelcount, Form_Sort.nLabelttl);
 
                 if(Frm_Sort.SecondPrinterMode == true)
@@ -1484,6 +1485,7 @@ namespace Bank_Host
             strWork_MtlType = Info.strMtlType;
             strLot2Wfr = Info.strLot2Wfr;
             strMultiLot = Info.strMultiLot;
+            strTTLWFR = Info.strTTLWFR;
         }        
     }
 }
@@ -1507,4 +1509,5 @@ public class WorkInfo
     public string strWfrPos = "";
     public string strMtlType = "";
     public string strLot2Wfr = "";
+    public string strTTLWFR = "";
 }

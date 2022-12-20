@@ -204,7 +204,7 @@ namespace Bank_Host
         {
             if (e.KeyChar == (char)13)
             {
-                string strInfo = textBox_2dbcr.Text.ToUpper();
+                    string strInfo = textBox_2dbcr.Text.ToUpper();
 
                 if (BankHost_main.nScanMode == 1)
                 {
