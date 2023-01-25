@@ -249,5 +249,29 @@ namespace Bank_Host.Properties {
                 this["LabelCopy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WaferReturnExcelOutPath {
+            get {
+                return ((string)(this["WaferReturnExcelOutPath"]));
+            }
+            set {
+                this["WaferReturnExcelOutPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WaferReturnCode {
+            get {
+                return ((string)(this["WaferReturnCode"]));
+            }
+            set {
+                this["WaferReturnCode"] = value;
+            }
+        }
     }
 }

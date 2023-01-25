@@ -22,6 +22,7 @@ using System.Data.SqlClient;
 using System.Collections.ObjectModel;
 
 using Zebra.Sdk.Comm;
+using Microsoft.Win32;
 
 namespace Bank_Host
 {
@@ -42,6 +43,9 @@ namespace Bank_Host
         public const int IME_CMODE_ALPHANUMERIC = 0x0000;
         private const int WM_IME_CONTROL = 643;
 
+        [DllImport("winspool.drv", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool SetDefaultPrinter(string Name);
+
         public enum SecondLabel
         {
             LineHeight = 73,
@@ -50,8 +54,8 @@ namespace Bank_Host
             QTYStartWidth = 230,
 
             QRStartWidth = 335,
-            QRStartHeight = 105,                        
-            
+            QRStartHeight = 105,
+
             LotStartWidth2 = 415,
             QTYStartWidth2 = 620,
 
@@ -59,8 +63,8 @@ namespace Bank_Host
         }
 
         #region VirtualKey 
-        public enum VKeys : int 
-        { 
+        public enum VKeys : int
+        {
             VK_LBUTTON = 0x01, //Left mouse button 
             VK_RBUTTON = 0x02, //Right mouse button 
             VK_CANCEL = 0x03, //Control-break processing 
@@ -163,10 +167,10 @@ namespace Bank_Host
             VK_RMENU = 0xA5, //Right MENU key 
             VK_PLAY = 0xFA, //Play key 
             VK_ZOOM = 0xFB, //Zoom key 
-        } 
+        }
         #endregion
 
-        
+
 
 
         public struct stAmkor_Label
@@ -191,6 +195,84 @@ namespace Bank_Host
             public string AmkorID;
         }
 
+        public struct stWaferReturnWebInfo
+        {
+            public string CustCode;
+            public string Status;
+            public string ReturnNum;
+            public string InputDate;
+            public string RequestDate;
+            public string UserID;
+            public int BoxQty;
+            public string Remark;
+
+            public void SetData(string cust, string st, string returncode, string indate, string redate, string id, int qty, string remark)
+            {
+                CustCode = cust;
+                Status = st;
+                ReturnNum = returncode;
+                InputDate = indate;
+                RequestDate = redate;
+                UserID = id;
+                BoxQty = qty;
+                Remark = remark;
+            }
+        }
+
+        public struct stWaferReturnExcelInfo
+        {
+            public string ReturnNum;
+            public string Seq;
+            public string PDL;
+            public string DeviceName;
+            public string LotNum;
+            public string Dcc;
+            public int DsQty;
+            public int ReturnQty;
+            public string Remark;
+            public string Loc;
+            public string SL;
+
+            public void Setdata(string returnNum, string seq, string pdl, string deviceName, string lotNum, string dcc, int dsQty, int returnQty, string remark, string loc, string sl)
+            {
+                ReturnNum = returnNum;
+                Seq = seq;
+                PDL = pdl;
+                DeviceName = deviceName;
+                LotNum = lotNum;
+                Dcc = dcc;
+                DsQty = dsQty;
+                ReturnQty = returnQty;
+                Remark = remark;
+                Loc = loc;
+                SL = sl;
+            }
+        }
+
+        public struct stWaferReturnInfo
+        {
+            public stWaferReturnWebInfo WebInfo;
+            public List<stWaferReturnExcelInfo> ExcelInfo;
+
+            public void init()
+            {
+                WebInfo.SetData("", "", "", "", "", "", -1, "");
+                ExcelInfo = new List<stWaferReturnExcelInfo>();
+            }
+
+
+
+            public void AddExcelInfo(stWaferReturnExcelInfo info)
+            {
+                if (ExcelInfo == null)
+                    ExcelInfo = new List<stWaferReturnExcelInfo>();
+
+                ExcelInfo.Add(info);
+            }
+        }
+
+        public List<stWaferReturnInfo> WaferReturnInfo = new List<stWaferReturnInfo>();
+
         public const string ZPL_START = "^XA";
         public const string ZPL_END = "^XZ";
 
@@ -212,7 +294,7 @@ namespace Bank_Host
         public static int nValDiettl = 0, nValDieQty = 0, nValWfrttl = 0, nValWfrQty = 0, nLabelcount = 0, nLabelttl = 0;
         public static bool bupdate = false, bRun = false, bGridViewUpdate = false, bunprinted_device = false, bGRrun = false;
         public static string[] strSelBillno = new string[20] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
-        public static string strSelCust = "" , strSelBill = "", strInputBill = "", strSelJobName = "";
+        public static string strSelCust = "", strSelBill = "", strInputBill = "", strSelJobName = "";
 
         public int TTLWafer = 0;
         public int TTLWaferCnt = 0;
@@ -233,7 +315,7 @@ namespace Bank_Host
         public Form_Sort()
         {
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(System.Windows.Forms.Application.StartupPath);
-            
+
             strExcutionPath = di.ToString();
 
             InitializeComponent();
@@ -323,7 +405,7 @@ namespace Bank_Host
                     {
                         if (BankHost_main.nMaterial_type == 1)
                         {
-                            if(AWork.strMtlType == "FOSB")
+                            if (AWork.strMtlType == "FOSB")
                                 comboBox_Name.Items.Add(strName);
                         }
                         else
@@ -363,6 +445,7 @@ namespace Bank_Host
                 AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
                 AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
+                AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim(); 
 
                 if (strCust == AWork.strCust)
                 {
@@ -427,13 +510,13 @@ namespace Bank_Host
             }
 
             bool bJudge = false;
-            
+
 
             if (BankHost_main.strMultiLot == "YES")
             {
-                for(int i = 0; i <= (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal); i++)
+                for (int i = 0; i <= (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal); i++)
                 {
-                    Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, i+1, (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal) + 1);
+                    Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, i + 1, (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal) + 1);
                 }
             }
             else if (BankHost_main.strTTLWFR == "TRUE")
@@ -468,7 +551,7 @@ namespace Bank_Host
             {
                 bJudge = Frm_Print.Fnc_Print(amkorBcrInfo, nBcrType, nIndex, nttl);
 
-                if(SecondPrinterMode == true)
+                if (SecondPrinterMode == true)
                     PrintSummary(amkorBcrInfo);
             }
 
@@ -502,8 +585,8 @@ namespace Bank_Host
             }
 
             int nSel = comboBox_mode.SelectedIndex;
-            
-            if(nSel == -1)
+
+            if (nSel == -1)
             {
                 string strMsg = string.Format("모드가 선택 되지 않았습니다.\n\n모드를 먼저 선택 하세요");
                 Frm_Process.Form_Show(strMsg);
@@ -523,7 +606,7 @@ namespace Bank_Host
             if (BankHost_main.strOperator == "")
                 return;
 
-            label_opinfo.Text = BankHost_main.strOperator;  
+            label_opinfo.Text = BankHost_main.strOperator;
 
             if (nSel == 0 || nSel == 1) //Auto GR
             {
@@ -751,7 +834,7 @@ namespace Bank_Host
                     {
                         str = str.Trim();
                         data.strCoo = str;
-                    }                    
+                    }
                 }
                 list.Add(data);
             }
@@ -1008,7 +1091,7 @@ namespace Bank_Host
             nCount = 1;
 
             foreach (var item in list)
-            {                
+            {
                 dataGridView_worklist.Rows.Add(new object[13] { nCount, item.Cust, item.Device, item.Lot, item.Lot_Dcc, item.Rcv_Qty, item.Default_WQty, item.Rcvddate,
                     item.Lot_type, item.Bill, item.Amkorid, item.Wafer_lot, item.shipment });
 
@@ -1249,19 +1332,19 @@ namespace Bank_Host
                             str = string.Format("{0}/{1}/{2}", conv.Year, conv.Month, conv.Day);
                         }
                     }
-                    
+
                     if (j == 0) //Plant
                     {
                         if (str == null)
                             str = "";
 
                         str = str.Trim();
-                        data.Plant = str;                        
+                        data.Plant = str;
                     }
                     else if (j == 1) //Cust
                     {
                         str = str.Trim();
-                        strWorkCust = str;                        
+                        strWorkCust = str;
                     }
                     else if (j == 2) //Loc
                     {
@@ -1271,7 +1354,7 @@ namespace Bank_Host
                     else if (j == 3)//Hawb#
                     {
                         str = str.Trim();
-                        data.Hawb = str;                        
+                        data.Hawb = str;
                     }
                     else if (j == 4) //Invoice#
                     {
@@ -1293,24 +1376,24 @@ namespace Bank_Host
                     else if (j == 7) //DCC
                     {
                         str = str.Trim();
-                        data.Lot_Dcc = str;                        
+                        data.Lot_Dcc = str;
                     }
                     else if (j == 8) //Die Qty
                     {
                         str = str.Trim();
-                        
+
                         data.Die_Qty = str;
                     }
                     else if (j == 9) //Wfr Qty
                     {
                         str = str.Trim();
                         data.Rcv_WQty = "0";
-                        data.Default_WQty = str;                        
+                        data.Default_WQty = str;
                     }
                     else if (j == 10) //Rev Date
                     {
                         str = str.Trim();
-                        data.Rcvddate = str;                        
+                        data.Rcvddate = str;
                     }
                 }
                 list.Add(data);
@@ -1368,13 +1451,13 @@ namespace Bank_Host
             {
                 strSelCust = item.Cust;
 
-                dgv_loc.Rows.Add(new object[11] {item.Plant, item.Cust, item.Loc, item.Hawb, item.Invoice, item.Device, item.Lot, item.Lot_Dcc, item.Die_Qty, item.Default_WQty, item.Rcv_WQty});
+                dgv_loc.Rows.Add(new object[11] { item.Plant, item.Cust, item.Loc, item.Hawb, item.Invoice, item.Device, item.Lot, item.Lot_Dcc, item.Die_Qty, item.Default_WQty, item.Rcv_WQty });
 
-                if(item.Loc == "")
+                if (item.Loc == "")
                 {
                     dgv_loc.Rows[nCount].DefaultCellStyle.BackColor = Color.Yellow;
                     dgv_loc.Rows[nCount].DefaultCellStyle.ForeColor = Color.Black;
-                }                  
+                }
 
                 nCount++;
             }
@@ -1688,11 +1771,11 @@ namespace Bank_Host
             list.Sort(CompareStorageData);
 
             string strDeviceName = "", strTotalDevice = "";
-            for(int n = 0; n<list.Count; n++ )
+            for (int n = 0; n < list.Count; n++)
             {
                 string str = list[n].Device;
 
-                if(strDeviceName != str)
+                if (strDeviceName != str)
                 {
                     strTotalDevice = strTotalDevice + str + "_";
                     strDeviceName = str;
@@ -2256,7 +2339,7 @@ namespace Bank_Host
                     nError++;
                 }
 
-                if(item.strGRstatus == "COMPLETE" || item.strGRstatus == "Complete")
+                if (item.strGRstatus == "COMPLETE" || item.strGRstatus == "Complete")
                 {
                     dataGridView_sort.Rows[nCount - 1].DefaultCellStyle.BackColor = Color.DarkBlue;
                     dataGridView_sort.Rows[nCount - 1].DefaultCellStyle.ForeColor = Color.White;
@@ -2406,7 +2489,7 @@ namespace Bank_Host
 
             dataGridView_workbill.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_workbill.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
-            
+
             var dtWorkinfo = BankHost_main.Host.Host_Get_Workinfo_All();
 
             int nCount = dtWorkinfo.Rows.Count;
@@ -2498,9 +2581,9 @@ namespace Bank_Host
             int nLotcount = dataGridView_sort.Rows.Count;
 
             int nCount = 0;
-            int nWait = 0, nWork = 0, nComplete = 0, nError = 0, nGr = 0;            
+            int nWait = 0, nWork = 0, nComplete = 0, nError = 0, nGr = 0;
 
-            for (int n = 0; n<nLotcount; n++)
+            for (int n = 0; n < nLotcount; n++)
             {
                 string strGetBill = dataGridView_sort.Rows[n].Cells[10].Value.ToString();
                 string strGetCust = dataGridView_sort.Rows[n].Cells[1].Value.ToString();
@@ -2556,7 +2639,7 @@ namespace Bank_Host
 
                         nGr++;
                     }
-                    else if(strGetGr == "ERROR")
+                    else if (strGetGr == "ERROR")
                     {
                         dataGridView_workinfo.Rows[nCount - 1].DefaultCellStyle.BackColor = Color.Red;
                         dataGridView_workinfo.Rows[nCount - 1].DefaultCellStyle.ForeColor = Color.White;
@@ -2635,7 +2718,7 @@ namespace Bank_Host
                             bool bDuplicate = false;
 
                             if (nCurrentcount > 0)
-                            {                                
+                            {
                                 for (int p = 0; p < nCurrentcount; p++)
                                 {
                                     string strGetShip = dataGridView_shipment.Rows[p].Cells[0].Value.ToString();
@@ -2645,7 +2728,7 @@ namespace Bank_Host
                                         bDuplicate = true;
                                         p = nCurrentcount;
                                     }
-                                }                                
+                                }
                             }
 
                             if (!bDuplicate)
@@ -2660,13 +2743,13 @@ namespace Bank_Host
                                     dataGridView_shipment.Rows[nAddcount].DefaultCellStyle.ForeColor = Color.White;
                                 }
                                 nAddcount++;
-                            }                            
+                            }
                         }
                     }
                 }
             }
 
-            if(dataGridView_shipment.Rows.Count > 0)
+            if (dataGridView_shipment.Rows.Count > 0)
             {
                 dataGridView_shipment.Columns.Insert(0, checkBoxColumn);
                 dataGridView_shipment.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
@@ -2674,7 +2757,7 @@ namespace Bank_Host
 
                 dataGridView_shipment.Sort(this.dataGridView_shipment.Columns["SHIPMENT"], ListSortDirection.Ascending);
 
-                for(int k=0; k< dataGridView_shipment.Rows.Count; k++)
+                for (int k = 0; k < dataGridView_shipment.Rows.Count; k++)
                 {
                     if (dataGridView_shipment.Rows[k].DefaultCellStyle.BackColor == Color.DarkBlue)
                         dataGridView_shipment.Rows[k].Cells[0].Value = true;
@@ -2773,7 +2856,7 @@ namespace Bank_Host
                     bjudge = true;
                 }
                 else
-                {                    
+                {
                     var taskResut2 = Task.Run(async () =>
                     {
                         return await BankHost_main.Host.Fnc_AutoGR(strGRinfo);
@@ -2820,7 +2903,7 @@ namespace Bank_Host
         public bool Gr_Process_Direct(string strDevice, string strLot, string strAmkorid, string strDieQty, string strWfrQty)
         {
             bool bjudge = false;
-            
+
             string strgr = string.Format("{0};{1};{2}", strAmkorid, strDieQty, strWfrQty);
 
             try
@@ -2891,8 +2974,8 @@ namespace Bank_Host
             string strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;
             string strlog = "";
 
-            int dataIndex = Fnc_Getline_GR(strValReadfile, strLot,"", "",false);
-            int deviceindex = Fnc_Getline_GR(strFileName_Device, strDevice,"", "", false);
+            int dataIndex = Fnc_Getline_GR(strValReadfile, strLot, "", "", false);
+            int deviceindex = Fnc_Getline_GR(strFileName_Device, strDevice, "", "", false);
 
             string strSpeak = "";
 
@@ -2902,8 +2985,8 @@ namespace Bank_Host
 
                 //if (BankHost_main.nInputMode == 1)
                 //{
-                    strSpeak = string.Format("리스트에 없는 자재 입니다.");
-                    speech.SpeakAsync(strSpeak);
+                strSpeak = string.Format("리스트에 없는 자재 입니다.");
+                speech.SpeakAsync(strSpeak);
                 //}
 
                 return "";
@@ -3435,7 +3518,7 @@ namespace Bank_Host
             catch
             {
 
-            }            
+            }
         }
 
         public string[] Fnc_ReadFile(string strPath)
@@ -3481,9 +3564,9 @@ namespace Bank_Host
                 speech.SpeakAsync("라벨출력 모드 종료 후 이동 할 수 있습니다.");
                 return;
             }
-                
-            
-            if(bmode6 == true && n != 6)
+
+
+            if (bmode6 == true && n != 6)
             {
                 tabControl_Sort.SelectedIndex = 6;
                 speech.SpeakAsyncCancelAll();
@@ -3491,7 +3574,7 @@ namespace Bank_Host
                 return;
             }
 
-            if(bmode7 == true && n != 7)
+            if (bmode7 == true && n != 7)
             {
                 tabControl_Sort.SelectedIndex = 7;
                 speech.SpeakAsyncCancelAll();
@@ -3508,7 +3591,7 @@ namespace Bank_Host
             if (n == 0)
             {
                 if (BankHost_main.nWorkMode != 0)
-                    tabControl_Sort.SelectedIndex = 2;                
+                    tabControl_Sort.SelectedIndex = 2;
             }
             else if (n == 1)
             {
@@ -3534,7 +3617,7 @@ namespace Bank_Host
                         tabControl_Sort.SelectedIndex = 0;
                     else
                         tabControl_Sort.SelectedIndex = 2;
-                }                
+                }
             }
             else if (n == 2)
             {
@@ -3598,12 +3681,12 @@ namespace Bank_Host
                 */
                 Fnc_Hist_Init();
             }
-            else if(n == 4)
-            {                     
+            else if (n == 4)
+            {
                 Fnc_Get_Unprinted_Deviceinfo();
                 textBox_unprinted_device.Text = "";
             }
-            else if(n == 5)
+            else if (n == 5)
             {
                 if (bselected_mode_index == false)
                 {
@@ -3616,12 +3699,13 @@ namespace Bank_Host
                     return;
                 }
             }
-            else if(n== 9)
+            else if (n == 9)
             {
                 sdt.Value = DateTime.Now.AddDays(-1);
                 edt.Value = DateTime.Now;
 
-                btn_CommentEdit.Text = "   Comment\n   Edit";
+
+
             }
         }
 
@@ -3682,7 +3766,7 @@ namespace Bank_Host
                 return;
 
             string strDevice = dataGridView_Device.Rows[rowIndex].Cells[1].Value.ToString();
-            
+
             while (bGridViewUpdate)
             {
                 Thread.Sleep(1);
@@ -3846,16 +3930,16 @@ namespace Bank_Host
             else
             {
                 strValReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
-                               
+
                 if (strDevice == "")
                 {
                     strValReadfile = find_dev(strValReadfile);
                 }
 
-                strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strValDevice + "\\" + strValDevice;                
+                strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strValDevice + "\\" + strValDevice;
             }
 
-            if(System.IO.File.Exists(strValReadfile) == false)
+            if (System.IO.File.Exists(strValReadfile) == false)
                 strValReadfile = find_dev(strValReadfile);
 
             string strlog = "";
@@ -3894,9 +3978,9 @@ namespace Bank_Host
             {
                 deviceindex = 0;
             }
-            
+
             if (dataGridView_Device.Rows.Count == 0)
-            {                
+            {
                 label_msg.Text = "리스트에 없는 자재 입니다.";
 
                 strSpeak = string.Format("리스트에 없는 자재 입니다.");
@@ -3951,7 +4035,7 @@ namespace Bank_Host
                 Realindex = Fnc_GetLotindex(strLot, strDcc, nDieQty.ToString(), bupdate);
 
             if (Realindex == -1)
-            {                
+            {
                 label_msg.Text = "리스트에 없는 자재 입니다.";
 
                 strSpeak = string.Format("리스트에 없는 자재 입니다.");
@@ -4004,7 +4088,7 @@ namespace Bank_Host
             int nttl = Int32.Parse(st.Rcv_Qty);
             int nWfrQry = Int32.Parse(st.Rcv_WQty) + BankHost_main.nWorkBcrcount;
 
-            if(BankHost_main.nMaterial_type == 1)
+            if (BankHost_main.nMaterial_type == 1)
             {
                 strValWfrcount = st.Default_WQty.ToString();
                 nWfrQry = Int32.Parse(strValWfrcount);
@@ -4028,7 +4112,7 @@ namespace Bank_Host
             if (st.state == "Complete")
             {
                 label_msg.Text = "완료 된 자재 입니다";
-                
+
 
                 return -1;
             }
@@ -4045,7 +4129,7 @@ namespace Bank_Host
                 label_info.ForeColor = Color.White;
                 st.state = "Waiting";
             }
-            else if(BankHost_main.strWork_QtyPos == "-1" ? true : nQty == nttl )
+            else if (BankHost_main.strWork_QtyPos == "-1" ? true : nQty == nttl)
             {
                 label_info.Text = string.Format("{0} - {1} 완료", deviceindex + 1, Realindex + 1);
                 label_info.BackColor = Color.Blue;
@@ -4127,7 +4211,7 @@ namespace Bank_Host
                     strSaveInfo[8] = nWfrttl.ToString();
                     strSaveInfo[9] = BankHost_main.strOperator;
 
-                    Fnc_SaveLog_Work(strSaveFileName_Device, strlog, strSaveInfo,1);
+                    Fnc_SaveLog_Work(strSaveFileName_Device, strlog, strSaveInfo, 1);
                 }
             }
             else if (nQty == nttl)
@@ -4297,7 +4381,7 @@ namespace Bank_Host
 
                     if (bunprint)
                         return 0;
-               
+
                     return 1;
                 }
                 else
@@ -4346,11 +4430,11 @@ namespace Bank_Host
             string strSaveFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strDevice + "\\" + strDevice;
             string strlog = "";
 
-            int dataIndex = Fnc_Getline_GR(strValReadfile, strLot,"", "", false);
-            int deviceindex = Fnc_Getline_GR(strFileName_Device, strDevice,"", "", false);
+            int dataIndex = Fnc_Getline_GR(strValReadfile, strLot, "", "", false);
+            int deviceindex = Fnc_Getline_GR(strFileName_Device, strDevice, "", "", false);
 
             string strSpeak = "";
-            
+
             if (dataIndex == -1 || deviceindex == -1)
             {
                 label_msg.Text = "리스트에 없는 자재 입니다.";
@@ -4359,7 +4443,7 @@ namespace Bank_Host
                 speech.SpeakAsync(strSpeak);
 
                 return "";
-            }            
+            }
 
             string[] info = Fnc_ReadFile(strValReadfile);
             string[] strSplit_data = info[dataIndex].Split('\t');
@@ -4429,7 +4513,7 @@ namespace Bank_Host
 
             info[dataIndex] = strTxtline;
             File.WriteAllLines(strValReadfile, info);
-           
+
             string strgr = string.Format("{0};{1};{2}", st.Amkorid, st.Die_Qty, st.Rcv_WQty);
             return strgr;
         }
@@ -4523,7 +4607,7 @@ namespace Bank_Host
 
         public int Fnc_Getline(string strfilepath, string strData, string strDcc, string strDie, bool bReset)
         {
-            if(System.IO.File.Exists(strfilepath) == false)
+            if (System.IO.File.Exists(strfilepath) == false)
             {
                 strfilepath = find_dev(strfilepath);
             }
@@ -4662,15 +4746,15 @@ namespace Bank_Host
 
             try
             {
-                if(System.IO.File.Exists(path) == false)
+                if (System.IO.File.Exists(path) == false)
                 {
-                    if(path.Contains("\\\\") == true)
+                    if (path.Contains("\\\\") == true)
                     {
-                        string[] file_path = path.Replace(@"\\", @"\").Split('\\');                    
+                        string[] file_path = path.Replace(@"\\", @"\").Split('\\');
 
-                        for(int i = 0; i < file_path.Length -1; i++)
+                        for (int i = 0; i < file_path.Length - 1; i++)
                         {
-                            if(i == file_path.Length -2)
+                            if (i == file_path.Length - 2)
                             {
                                 res += file_path[i];
                             }
@@ -4682,31 +4766,31 @@ namespace Bank_Host
 
                         string dev = "";
 
-                        if(System.IO.Directory.Exists(res)== true)
+                        if (System.IO.Directory.Exists(res) == true)
                         {
                             DirectoryInfo di = new DirectoryInfo(res);
 
                             string[] dirs = Directory.GetDirectories(res + "\\");
 
-                            for(int  i = 0; i< dirs.Length;i++)
+                            for (int i = 0; i < dirs.Length; i++)
                             {
                                 string[] files = Directory.GetFiles(dirs[i] + "\\");
 
-                                for(int j = 0; j < files.Length; j++)
+                                for (int j = 0; j < files.Length; j++)
                                 {
-                                     dev = find_lot(files[j]);
+                                    dev = find_lot(files[j]);
 
                                     if (dev != "")
                                     {
                                         res = files[j];
                                         strValDevice = dev;
                                         break;
-                                    }                                    
+                                    }
                                 }
 
                                 if (dev != "")
                                     break;
-                            }   
+                            }
                         }
                     }
                 }
@@ -4750,7 +4834,7 @@ namespace Bank_Host
                         }
                         else
                         {
-                            if(datas.Length > 2? datas[2] == strValLot : false)
+                            if (datas.Length > 2 ? datas[2] == strValLot : false)
                             {
                                 res = datas[1];
                                 real_index = i;
@@ -4774,7 +4858,7 @@ namespace Bank_Host
                 strfilepath = find_dev(strfilepath);
 
             string[] info = Fnc_ReadFile(strfilepath);
-         
+
 
             if (info == null)
                 return -1;
@@ -4848,7 +4932,7 @@ namespace Bank_Host
             return -1;
         }
 
-        public int Fnc_GetLotindex(string strData, string strDcc,  string strDieqty, bool bupdate)
+        public int Fnc_GetLotindex(string strData, string strDcc, string strDieqty, bool bupdate)
         {
             int nCount = dataGridView_Lot.Rows.Count;
 
@@ -4884,7 +4968,7 @@ namespace Bank_Host
                         }
                         else
                         {
-                            if(strGetState != "complete" && strGetState != "error")
+                            if (strGetState != "complete" && strGetState != "error")
                                 return n;
                         }
                     }
@@ -5109,16 +5193,16 @@ namespace Bank_Host
 
                 if (BankHost_main.strLot2Wfr == "TRUE")
                 {
-                    if(BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
+                    if (BankHost_main.strWork_QtyPos == "-1" && BankHost_main.strWork_WfrQtyPos == "-1")
                     {
                         return real_index;
                     }
                 }
-                else if(BankHost_main.strWork_QtyPos == "-1" ? true : strDieQty  == strQty 
+                else if (BankHost_main.strWork_QtyPos == "-1" ? true : strDieQty == strQty
                     && strLotno == strData)
-                {                    
-                        return n;
-                }                
+                {
+                    return n;
+                }
                 else
                 {
                     strLotno = dataGridView_Lot.Rows[n].Cells[1].Value.ToString();
@@ -5139,7 +5223,7 @@ namespace Bank_Host
 
         private void textBox_Readdata_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == (char)13)
+            if (e.KeyChar == (char)13)
             {
                 if (textBox_Readdata.ImeMode != ImeMode.Alpha)
                 {
@@ -5169,7 +5253,7 @@ namespace Bank_Host
             if (Convert.ToInt32(e.KeyChar) == 13)
             {
                 ClickTime();
-                
+
                 {
                     Amkor_label_Print_Process(textBox1.Text.ToUpper(), AmkorLabelCnt);
                     textBox1.Text = "";
@@ -5182,21 +5266,21 @@ namespace Bank_Host
             stAmkor_Label temp = new stAmkor_Label();
             string[] str_temp = strBcr.Replace(':', ',').Split(',');
 
-            if(str_temp.Length == 7)
+            if (str_temp.Length == 7)
             {
                 temp.Lot = str_temp[0];
                 temp.DCC = str_temp[1];
                 temp.Device = str_temp[2];
-                temp.DQTY = string.Format("{0:%D10}",str_temp[3]);
-                temp.WQTY = string.Format("{0:%D5}",str_temp[4]);
+                temp.DQTY = string.Format("{0:%D10}", str_temp[3]);
+                temp.WQTY = string.Format("{0:%D5}", str_temp[4]);
                 temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5]);
-                temp.CUST = string.Format("{0:D10}",str_temp[6]);
+                temp.CUST = string.Format("{0:D10}", str_temp[6]);
                 temp.Wafer_ID = "";
 
                 if (check_duplicate(temp.AMKOR_ID) == false)
                 {
                     label_list.Add(temp);
-                             
+
 
                     tot_lots++;
                     dataGridView_label.Rows.Add(tot_lots.ToString(), temp.Lot, temp.DCC, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
@@ -5287,7 +5371,7 @@ namespace Bank_Host
 
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
-                    Frm_Print.Fnc_Print(temp, cnt,int.Parse(numericUpDown1.Value.ToString()));
+                    Frm_Print.Fnc_Print(temp, cnt, int.Parse(numericUpDown1.Value.ToString()));
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync(tot_lots.ToString());
 
@@ -5320,13 +5404,13 @@ namespace Bank_Host
                 if (check_duplicate(temp.AMKOR_ID) == false)
                 {
                     label_list.Add(temp);
-                    
+
 
                     tot_lots++;
                     dataGridView_label.Rows.Add(cnt, temp.Lot, temp.DCC, temp.Device, temp.DQTY, temp.WQTY, temp.AMKOR_ID, temp.CUST, temp.Wafer_ID);
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
-                    Frm_Print.Fnc_Print(temp, cnt,int.Parse(numericUpDown1.Value.ToString()));
+                    Frm_Print.Fnc_Print(temp, cnt, int.Parse(numericUpDown1.Value.ToString()));
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync(tot_lots.ToString());
 
@@ -5340,19 +5424,74 @@ namespace Bank_Host
                 {
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync("중복된 라벨 입니다.");
-                }                
+                }
             }
-            
+
         }
 
+
+        private void WaferReturn_label_Print_Process(string strBcr, int cnt)
+        {
+            stAmkor_Label temp = new stAmkor_Label();
+            string[] str_temp = strBcr.Replace(':', ',').Split(',');
+
+            //3808013.2           :01   :ZT003 - J1            :0000004230:00001:0011106429:00379
+            //3808013.2:01:ZT003-J1:0000004230:00001:0011106429:00379
+            //FH513P005-03.01::FH513-2501-P-C250W-4KN4:8422:1::699
+
+
+            if (str_temp.Length == 7)
+            {
+                temp.Lot = str_temp[0].Trim();
+                temp.DCC = str_temp[1].Trim();
+                temp.Device = str_temp[2].Trim();
+                temp.DQTY = str_temp[3].Trim();// string.Format("{0:%D10}", str_temp[3]);
+                temp.WQTY = str_temp[4].Trim();// string.Format("{0:%D5}", str_temp[4]);
+                temp.AMKOR_ID = str_temp[5].Trim();// string.Format("{0:%D10}", str_temp[5]);
+                temp.CUST = str_temp[6].Trim();// string.Format("{0:D10}", str_temp[6]);
+                temp.Wafer_ID = "";
+
+                bool pass = false;
+
+                pass = check_WaferReturnDuplicate(temp);
+
+                if (pass == false)
+                {
+                    if (cb_WaferReturnPrint.Checked == false)
+                        Frm_Print.Fnc_Print(temp, int.Parse(l_WaferReturnCount.Text), dgv_ReturnWafer.RowCount);
+                }
+            }
+            else if (str_temp.Length == 8)
+            {
+                temp.Lot = str_temp[0].Trim();
+                temp.DCC = str_temp[1].Trim();
+                temp.Device = str_temp[2].Trim();
+                temp.DQTY = string.Format("{0:%D10}", str_temp[3].Trim());
+                temp.WQTY = string.Format("{0:%D5}", str_temp[4].Trim());
+                temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5].Trim());
+                temp.CUST = string.Format("{0:D10}", str_temp[6].Trim());
+                temp.Wafer_ID = str_temp[7].Trim();
+
+                bool pass = false;
+
+                pass = check_WaferReturnDuplicate(temp);
+
+                if (pass == false)
+                {
+                    if (cb_WaferReturnPrint.Checked == false)
+                        Frm_Print.Fnc_Print(temp, int.Parse(l_WaferReturnCount.Text), dgv_ReturnWafer.RowCount);
+                }
+            }
+
+        }
 
 
         bool check_duplicate(string amkor_id)
         {
             bool res = false;
 
-            for(int i = 0; i< dataGridView_label.RowCount;i++)
-            {   
+            for (int i = 0; i < dataGridView_label.RowCount; i++)
+            {
                 if (dataGridView_label.Rows[i].Cells["AMKOR_ID"].Value.ToString() == amkor_id)
                 {
                     dataGridView_label.Rows[i].Selected = true;
@@ -5362,20 +5501,119 @@ namespace Bank_Host
                 }
             }
 
-
-            
             return res;
         }
+
+        bool check_WaferReturnDuplicate(stAmkor_Label amkorLabel)
+        {
+            bool res = true;
+
+            for (int i = 0; i < dgv_ReturnWafer.RowCount; i++)
+            {
+                //   0         1         2     3      4          5     6     7            8                 9                  10                 11              12        13
+                // [SEQ],[DEVICE_NAME],[LOT],[DCC],[RETURN_QTY],[LOC],[SL],[REMARK],[SCAN_TIME_1st],[SACN_USER_NAME_1st],[SCAN_TIME_2nd],[SACN_USER_NAME_2nd],[AMKOR_ID],[CUST_CODE]
+
+                if (dgv_ReturnWafer.Rows[i].Cells[1].Value.ToString() == amkorLabel.Device)
+                {
+                    //FH513P005 - 03.01::FH513 - 2501 - P - C250W - 4KN4: 8422:1::699
+                    if (dgv_ReturnWafer.Rows[i].Cells[2].Value.ToString() == amkorLabel.Lot)
+                    {
+                        if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString() == "" ? "0" : dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString()) == (int.Parse(amkorLabel.DCC == "" ?  "0" : amkorLabel.DCC)))
+                        {
+                            if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[4].Value.ToString()) == int.Parse(amkorLabel.DQTY))
+                            {
+                                if (int.Parse(amkorLabel.CUST) == int.Parse(dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString()))
+                                {
+                                    if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Blue)
+                                    {
+                                        res = true;
+                                        speech.SpeakAsync("중복");
+                                        break;
+                                    }
+                                    else if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Yellow)        // 2차 검수
+                                    {
+                                        if (dgv_ReturnWafer.Rows[i].Cells["SCAN_USER_NAME_1st"].Value.ToString() == BankHost_main.strID)
+                                        {
+                                            speech.SpeakAsync("검수자 중복");
+                                        }
+                                        else
+                                        {
+                                            dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = i;
+                                            dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
+
+                                            dgv_ReturnWafer.Rows[i].Cells[10].Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                            dgv_ReturnWafer.Rows[i].Cells[11].Value = BankHost_main.strMESID;
+
+                                            dgv_ReturnWafer.Rows[i].Cells[12].Value = amkorLabel.AMKOR_ID;
+                                            res = false;
+
+                                            string q = string.Format("update [TB_RETURN_WAFER] set [SCAN_TIME_2nd]='{0}',[SCAN_USER_NAME_2nd]='{1}', [AMKOR_ID]='{6}' where [DEVICE_NAME]='{2}' and [LOT]='{3}' and [DCC]='{4}' and [RETURN_QTY]={5}",
+                                                DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
+                                                BankHost_main.strID,
+                                                amkorLabel.Device,
+                                                amkorLabel.Lot,
+                                                amkorLabel.DCC,
+                                                int.Parse(amkorLabel.DQTY).ToString(),
+                                                amkorLabel.AMKOR_ID
+                                                );
+                                            run_sql_command(q);
+
+                                            int a = int.Parse(l_WaferReturnCount.Text);
+
+                                            l_WaferReturnCount.Text = string.Format("{0}", ++a);
+
+                                            speech.SpeakAsync(string.Format("{0} 완료", dgv_ReturnWafer.Rows[i].Cells[0].Value));
+                                        }
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = i;
+                                        dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+
+                                        dgv_ReturnWafer.Rows[i].Cells[8].Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                        dgv_ReturnWafer.Rows[i].Cells[9].Value = BankHost_main.strMESID;
+
+                                        dgv_ReturnWafer.Rows[i].Cells[12].Value = amkorLabel.AMKOR_ID;
+                                        res = true;
+
+                                        string q = string.Format("update [TB_RETURN_WAFER] set [SCAN_TIME_1st]='{0}',[SCAN_USER_NAME_1st]='{1}', [AMKOR_ID]='{6}' where [DEVICE_NAME]='{2}' and [LOT]='{3}' and [DCC]='{4}' and [RETURN_QTY]={5}",
+                                            DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
+                                            BankHost_main.strID,
+                                            amkorLabel.Device,
+                                            amkorLabel.Lot,
+                                            amkorLabel.DCC,
+                                            int.Parse(amkorLabel.DQTY).ToString(),
+                                            amkorLabel.AMKOR_ID
+                                            );
+                                        run_sql_command(q);
+
+                                        int a = int.Parse(l_WaferReturnCount.Text);
+
+                                        l_WaferReturnCount.Text = string.Format("{0}", ++a);
+
+                                        speech.SpeakAsync(string.Format("{0} 완료", dgv_ReturnWafer.Rows[i].Cells[0].Value));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return res;
+        }
+
 
         public Bcrinfo Fnc_Bcr_Parsing(string strBcr)
         {
             Bcrinfo info = new Bcrinfo();
 
-            if(Properties.Settings.Default.LOCATION == "K4")
+            if (Properties.Settings.Default.LOCATION == "K4")
             {
                 info = K4_Parsing(strBcr);
             }
-            else if(Properties.Settings.Default.LOCATION == "K5")
+            else if (Properties.Settings.Default.LOCATION == "K5")
             {
                 info = K5_parsing(strBcr);
             }
@@ -5584,7 +5822,7 @@ namespace Bank_Host
                                     strID = strBarcode;
                                 }
                             }
-                            else if(Properties.Settings.Default.LOCATION =="K5")
+                            else if (Properties.Settings.Default.LOCATION == "K5")
                             {
                                 string[] strSplit_Bcr2 = strBcr.Split(seperator);
                                 if (strSplit_Bcr2.Length < 3)
@@ -5649,7 +5887,7 @@ namespace Bank_Host
                                     }
                                 }
 
-                                
+
                                 //if (n==0)
                                 //{
                                 //    bcr.Device = strBarcode.Trim();
@@ -5758,7 +5996,7 @@ namespace Bank_Host
 
 
 
-            if (((BankHost_main.strWork_QtyPos == "-1" ? false : bcr.DieQty == "") && (BankHost_main.strWork_WfrQtyPos == "-1" ?  false : bcr.WfrQty == "")) || bcr.Lot == "")
+            if (((BankHost_main.strWork_QtyPos == "-1" ? false : bcr.DieQty == "") && (BankHost_main.strWork_WfrQtyPos == "-1" ? false : bcr.WfrQty == "")) || bcr.Lot == "")
                 return null;
 
             int nDieTTL = 0, nWfrTTL = 0;
@@ -5824,7 +6062,7 @@ namespace Bank_Host
                 isUnPrint = false;
 
 
-            
+
             if (isUnPrint == true)
                 bcr.unprinted_device = true;
 
@@ -5914,7 +6152,7 @@ namespace Bank_Host
             if (strBcr.Contains(',') && !b1Dbcr && strBcrType != "PDF417" && BankHost_main.strWork_Shot1Lot == "YES")
             {
                 if (BankHost_main.strWork_Cust != "453" || BankHost_main.strWork_Cust != "734")
-                    if(BankHost_main.strWork_Cust == "488")
+                    if (BankHost_main.strWork_Cust == "488")
                         bmultibcr = true;
             }
 
@@ -6053,7 +6291,7 @@ namespace Bank_Host
                             }
                         }
                     }
-                    else if(BankHost_main.strWork_Model == "QUALCOMM_SPI")
+                    else if (BankHost_main.strWork_Model == "QUALCOMM_SPI")
                     {
                         bcr.Lot = strSplit_Bcr[1].Substring(2, strSplit_Bcr[1].Length - 2);
                         bcr.Lot = bcr.Lot.Trim();
@@ -6260,16 +6498,16 @@ namespace Bank_Host
 
             if (nLength < 4)
             {
-                if(strWorkCust == "736")
+                if (strWorkCust == "736")
                 {
 
                 }
                 else
                 {
                     return null;
-                }                
+                }
             }
-                
+
 
             bcr.Device = strSplit_Bcr[nDevicePos];
             //bcr.Lot = strSplit_Bcr[int.Parse(BankHost_main.strWork_LotidPos) == -1 ? 0 : int.Parse(BankHost_main.strWork_LotidPos)];
@@ -6322,7 +6560,7 @@ namespace Bank_Host
             {
                 if (strSplit_DevicePos[1].Substring(0, 1) == "L")
                 {
-                    int n = Int32.Parse(strSplit_DevicePos[1].Substring(1, strSplit_DevicePos[1].Length -1));
+                    int n = Int32.Parse(strSplit_DevicePos[1].Substring(1, strSplit_DevicePos[1].Length - 1));
                     bcr.Device = bcr.Device.Substring(n, bcr.Device.Length - n);
                 }
                 else
@@ -6387,7 +6625,7 @@ namespace Bank_Host
             nDieTTL = Fnc_GetTTL(bcr.Device, bcr.Lot, 0);
             nWfrTTL = Fnc_GetTTL(bcr.Device, bcr.Lot, 1);
 
-            if(bcr.WfrQty != "")
+            if (bcr.WfrQty != "")
                 BankHost_main.nWorkBcrcount = Int32.Parse(bcr.WfrQty);
 
             strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + strWorkFileName;
@@ -6412,7 +6650,7 @@ namespace Bank_Host
             {
                 strSetID = bcr.Lot + "_" + bcr.DieQty;
             }
-            
+
             string strGet = BankHost_main.Host.Host_Set_BcrReadInfo(BankHost_main.strEqid, bcr.Device, bcr.Lot, strSetID);
 
             if (strGet == "True")
@@ -6424,7 +6662,7 @@ namespace Bank_Host
                 if (BankHost_main.strWork_Lotinfo == "")
                 {
                     bcr.result = "OK";
-                }                
+                }
                 else if (BankHost_main.strWork_Lotinfo != bcr.Lot)
                 {
                     bcr.result = "MISSMATCH";
@@ -6718,7 +6956,7 @@ namespace Bank_Host
 
         private void button_register_Click(object sender, EventArgs e)
         {
-            if(textBox_unprinted_device.Text == "")
+            if (textBox_unprinted_device.Text == "")
             {
                 MessageBox.Show("디바이스 정보를 입력 하세요.");
                 textBox_unprinted_device.Focus();
@@ -6777,10 +7015,10 @@ namespace Bank_Host
             int nCount = dt.Rows.Count;
             for (int n = 0; n < nCount; n++)
             {
-                string strDev= dt.Rows[n]["DEVICE"].ToString();
+                string strDev = dt.Rows[n]["DEVICE"].ToString();
                 string strCust = dt.Rows[n]["CUST_CODE"].ToString();
 
-                dataGridView_unprintedinfo.Rows.Add(new object[3] { n+1, strDev, strCust });
+                dataGridView_unprintedinfo.Rows.Add(new object[3] { n + 1, strDev, strCust });
             }
 
             dataGridView_unprintedinfo.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
@@ -6800,7 +7038,7 @@ namespace Bank_Host
             {
                 return;
             }
-            
+
             string strDev = dataGridView_unprintedinfo.Rows[nIndex].Cells[1].Value.ToString();
             string strCust = dataGridView_unprintedinfo.Rows[nIndex].Cells[2].Value.ToString();
 
@@ -6817,7 +7055,7 @@ namespace Bank_Host
 
                 if (BankHost_main.bHost_connect)
                     BankHost_main.Host.Host_Hist_Unprint(strSaveInfo);
-               
+
                 Fnc_Get_Unprinted_Deviceinfo();
             }
             else
@@ -6847,7 +7085,7 @@ namespace Bank_Host
 
                 if (BankHost_main.bHost_connect)
                     BankHost_main.Host.Host_Hist_Unprint(strSaveInfo);
-                
+
                 Fnc_Get_Unprinted_Deviceinfo();
             }
             else
@@ -6856,7 +7094,7 @@ namespace Bank_Host
 
         private void button_Autofocus_Click(object sender, EventArgs e)
         {
-            if(!BankHost_main.IsAutoFocus)
+            if (!BankHost_main.IsAutoFocus)
                 BankHost_main.IsAutoFocus = true;
         }
 
@@ -6864,7 +7102,7 @@ namespace Bank_Host
         {
             int nSel = comboBox_hist_device.SelectedIndex;
 
-            if(nSel > 0)
+            if (nSel > 0)
             {
                 dataGridView_hist.Columns.Clear();
                 dataGridView_hist.Rows.Clear();
@@ -6873,13 +7111,13 @@ namespace Bank_Host
                 Thread.Sleep(300);
             }
 
-            if(nSel == 1) //시간별 조회
+            if (nSel == 1) //시간별 조회
             {
                 Fnc_Get_History();
             }
-            else if(nSel == 2) //Bill# 기준
+            else if (nSel == 2) //Bill# 기준
             {
-                if(textBox_input.Text == "")
+                if (textBox_input.Text == "")
                 {
                     MessageBox.Show("Bill# 를 입력 하세요!");
                     textBox_input.Focus();
@@ -6888,7 +7126,7 @@ namespace Bank_Host
 
                 Fnc_Get_History_Bill(textBox_input.Text);
             }
-            else if(nSel == 3) //Device 기준
+            else if (nSel == 3) //Device 기준
             {
                 if (textBox_input.Text == "")
                 {
@@ -6964,7 +7202,7 @@ namespace Bank_Host
 
             int nLotCount = dataGridView_workinfo.Rows.Count;
             string strCust = dataGridView_workinfo.Rows[0].Cells[1].Value.ToString();
-            string strDevice = dataGridView_workinfo.Rows[0].Cells[2].Value.ToString() ;
+            string strDevice = dataGridView_workinfo.Rows[0].Cells[2].Value.ToString();
 
             int nCheckUnprint = BankHost_main.Host.Host_Check_Unprinted_Device(strDevice);
             if (nCheckUnprint == 0)
@@ -6977,7 +7215,7 @@ namespace Bank_Host
             }
 
             int nDieTotalQty = 0, nWaferTotalQty = 0;
-            for (int n = 0; n<nLotCount; n++)
+            for (int n = 0; n < nLotCount; n++)
             {
                 string strDieqty = dataGridView_workinfo.Rows[n].Cells[4].Value.ToString();
                 string strWaferqty = dataGridView_workinfo.Rows[n].Cells[6].Value.ToString();
@@ -6993,7 +7231,7 @@ namespace Bank_Host
             string strTotalQty = string.Format("(4) Die Total Qty: {0} EA\n", nDieTotalQty);
             string strWaferTotalQty = string.Format("(5) Wafer Total Qty: {0} EA\n", nWaferTotalQty);
             string strBase2 = string.Format("\n감사합니다.\n");
-            string strMsg = strBase + strHawb + strCustNo +  strLots + strTotalQty + strWaferTotalQty + strBase2;
+            string strMsg = strBase + strHawb + strCustNo + strLots + strTotalQty + strWaferTotalQty + strBase2;
 
             string strSubject = string.Format("#{0} - 컴바인 요청", strCust);
 
@@ -7011,7 +7249,7 @@ namespace Bank_Host
                 return;
 
             int nIndex = dataGridView_shipment.CurrentCell.RowIndex;
-            if(dataGridView_shipment.Rows[nIndex].Cells[0].Value == null)
+            if (dataGridView_shipment.Rows[nIndex].Cells[0].Value == null)
             {
                 dataGridView_shipment.Rows[nIndex].Cells[0].Value = true;
             }
@@ -7520,9 +7758,9 @@ namespace Bank_Host
 
             searched_row = 0;
 
-            for (int n = 0; n < dataGridView_Lot.RowCount ; n++)
+            for (int n = 0; n < dataGridView_Lot.RowCount; n++)
             {
-                if(dataGridView_Lot.Rows[n].Cells[1].Value.ToString().IndexOf(input) != -1)
+                if (dataGridView_Lot.Rows[n].Cells[1].Value.ToString().IndexOf(input) != -1)
                 {
                     dataGridView_Lot.Rows[n].Selected = true;
                     dataGridView_Lot.FirstDisplayedScrollingRowIndex = n;
@@ -7577,9 +7815,9 @@ namespace Bank_Host
 
                 if (n == dataGridView_Lot.RowCount - 1)
                 {
-                    
+
                     MessageBox.Show("지정된 문자열을 찾을 수 없습니다.");
-                    
+
                 }
             }
         }
@@ -7591,14 +7829,14 @@ namespace Bank_Host
         {
             int lot_row = -1;
 
-            for(int i= device_row_num; i< dataGridView_Device.RowCount; i++)
+            for (int i = device_row_num; i < dataGridView_Device.RowCount; i++)
             {
                 lot_row = get_wait_position(dataGridView_Device.Rows[i].Cells[1].Value.ToString(), lot_row_num);
 
-                if(lot_row > -1)
+                if (lot_row > -1)
                 {
                     device_row_num = i;
-                    lot_row_num = lot_row +1;
+                    lot_row_num = lot_row + 1;
 
                     dataGridView_Device_CellClick(i, 0);
 
@@ -7615,7 +7853,7 @@ namespace Bank_Host
 
         private int get_wait_position(string dev_name, int start_lot)
         {
-            string res = "";            
+            string res = "";
 
             string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
             string strReadfile = "";
@@ -7634,7 +7872,7 @@ namespace Bank_Host
             if (info == null)
                 return -1;
 
-            for (int m = start_lot+1; m < info.Length; m++)
+            for (int m = start_lot + 1; m < info.Length; m++)
             {
                 string[] strSplit_data = info[m].Split('\t');
 
@@ -7697,8 +7935,8 @@ namespace Bank_Host
             if (!BankHost_main.IsAutoFocus)
                 BankHost_main.IsAutoFocus = true;
         }
-      
-       
+
+
 
         public void Fnc_Get_History_Bill(string strGetBill)
         {
@@ -7786,7 +8024,7 @@ namespace Bank_Host
                     strDevice, strLot, strDieqty, strDiettl, strWfrqty, strWfrttl, strOp });
             }
 
-            dataGridView_hist.Sort(dataGridView_hist.Columns["일자"], ListSortDirection.Ascending);           
+            dataGridView_hist.Sort(dataGridView_hist.Columns["일자"], ListSortDirection.Ascending);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -7809,7 +8047,7 @@ namespace Bank_Host
             {
                 DialogResult res = MessageBox.Show("저장 하지 않았습니다. 종료 하시겠습니까?", "종료", MessageBoxButtons.YesNo);
 
-                if(res == DialogResult.Yes)
+                if (res == DialogResult.Yes)
                 {
                     bTimeOutSt = true;
                     bselected_mode_index = false;
@@ -7830,9 +8068,9 @@ namespace Bank_Host
             ClickTime();
             DialogResult res = saveFileDialog1.ShowDialog();
 
-            if(res == DialogResult.OK)
+            if (res == DialogResult.OK)
             {
-                if(saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.Length-3, 3).ToUpper() != "CSV")
+                if (saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.Length - 3, 3).ToUpper() != "CSV")
                 {
                     file_path = saveFileDialog1.FileName + ".csv";
                 }
@@ -7878,12 +8116,12 @@ namespace Bank_Host
                 }
 
 
-                st.Write(string.Format("Lot Qty : ,{0},Die Qty : ,{1},Wfr QTY :,{2}",tot_lots,tot_die,tot_wfr));
+                st.Write(string.Format("Lot Qty : ,{0},Die Qty : ,{1},Wfr QTY :,{2}", tot_lots, tot_die, tot_wfr));
                 st.Close();
                 st.Dispose();
                 blabel_save = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -7931,7 +8169,7 @@ namespace Bank_Host
         {
             textBox1.Text = e.KeyChar.ToString();
             textBox1.Select(textBox1.TextLength, 0);
-            textBox1.Focus();         
+            textBox1.Focus();
         }
 
         private void button_grstart_Click(object sender, EventArgs e)
@@ -7990,7 +8228,7 @@ namespace Bank_Host
 
             int nGRNG = 0;
 
-            for (int n = 0; n<nLotCount; n++)
+            for (int n = 0; n < nLotCount; n++)
             {
                 bool bcheck = false;
 
@@ -8028,7 +8266,7 @@ namespace Bank_Host
                         strMsg = string.Format("\n\nGR 진행 중. 현재 Lot:{0}\nGR 처리 수량:{1}", strLot, nGrcount);
                         Frm_Process.Form_Display(strMsg);
 
-                        bJudge = Gr_Process_Direct(strDevice, strLot,strAmkorid, strDieqty, strWfrqty);
+                        bJudge = Gr_Process_Direct(strDevice, strLot, strAmkorid, strDieqty, strWfrqty);
 
                         if (!bJudge)
                         {
@@ -8044,8 +8282,8 @@ namespace Bank_Host
                 }
                 Thread.Sleep(30);
             }
-            
-            strMsg = string.Format("\n\nGR 진행 Lot 수량: OK - {0}, NG - {1}", nGrcount-nGRNG, nGRNG);
+
+            strMsg = string.Format("\n\nGR 진행 Lot 수량: OK - {0}, NG - {1}", nGrcount - nGRNG, nGRNG);
 
             if (nGRNG > 0)
                 Frm_Process.Form_Display_Warning(strMsg);
@@ -8056,7 +8294,7 @@ namespace Bank_Host
             speech.SpeakAsync(strSpeak);
 
             Thread.Sleep(3000);
-            
+
             Gr_GetInfo(strSelBill);
 
             Frm_Process.Form_Display("\n작업을 마침니다.");
@@ -8078,7 +8316,7 @@ namespace Bank_Host
 
             if (res == DialogResult.OK)
             {
-                
+
 
                 if (saveFileDialog1.FileName.Substring(saveFileDialog1.FileName.Length - 3, 3).ToUpper() != "CSV")
                 {
@@ -8238,9 +8476,9 @@ namespace Bank_Host
                         nErrorcount++;
                     }
                 }
-                
 
-               DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+
+                DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
                 buttonColumn.Name = "재작업";
                 buttonColumn.UseColumnTextForButtonValue = true;
                 buttonColumn.Text = "리셋";
@@ -8294,9 +8532,9 @@ namespace Bank_Host
                 DefaultExt = "xlsx",
                 Filter = "Xlsx files(*.xlsx)|*.xlsx"
             };
-            
 
-            if(saveFile.ShowDialog() == DialogResult.OK)
+
+            if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 pathFilename = saveFile.FileName.ToString();
                 Properties.Settings.Default.Loc_file_save_path = pathFilename;
@@ -8355,7 +8593,7 @@ namespace Bank_Host
                 ModRange.Font.Size = 16; //폰트 키우고
                 ModRange.Font.Bold = true; //Bold 주고
                 ModRange.HorizontalAlignment = XlHAlign.xlHAlignCenter; //좌측 정렬
-                                                                      //테두리 까지 끝
+                                                                        //테두리 까지 끝
                 ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlMedium, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
 
                 //5. 2번째 줄에는 리포트 기간 및 파일 설명 추가
@@ -8464,7 +8702,7 @@ namespace Bank_Host
 
             if (nMode == 1)
             {
-                if(BankHost_main.bHost_connect)
+                if (BankHost_main.bHost_connect)
                     BankHost_main.Host.Host_Hist_Job(strinfo);
             }
         }
@@ -8484,7 +8722,7 @@ namespace Bank_Host
                 comboBox_Min_st.Enabled = false;
                 comboBox_Min_ed.Enabled = false;
             }
-            else if(nSel == 1)
+            else if (nSel == 1)
             {
                 label_histsel.Text = "-";
                 textBox_input.Enabled = false;
@@ -8495,7 +8733,7 @@ namespace Bank_Host
                 comboBox_Min_st.Enabled = true;
                 comboBox_Min_ed.Enabled = true;
             }
-            else if(nSel == 2)
+            else if (nSel == 2)
             {
                 label_histsel.Text = "Bill#";
                 textBox_input.Enabled = true;
@@ -8562,10 +8800,10 @@ namespace Bank_Host
         {
             BankHost_main.strCustName = comboBox_Name.Text;
 
-            
+
 
             if (bmode7 == true)
-            {                
+            {
                 Split_data_display();
             }
         }
@@ -8634,7 +8872,7 @@ namespace Bank_Host
 
             try
             {
-                if(nMode != 6)
+                if (nMode != 6)
                     BankHost_main.strWork_Shot1Lot = BankHost_main.Host.Host_Get_Shot1Lot(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
             }
             catch
@@ -8642,7 +8880,7 @@ namespace Bank_Host
                 BankHost_main.strWork_Shot1Lot = "NO";
             }
 
-            
+
 
             string str = "";
 
@@ -8691,7 +8929,7 @@ namespace Bank_Host
                 }
                 tb_split.Focus();
 
-                bmode7 = true;                
+                bmode7 = true;
             }
             else
             {
@@ -8704,7 +8942,7 @@ namespace Bank_Host
 
                 LastClickTime = DateTime.Now;
 
-                if(bgw_timeout.IsBusy == false)
+                if (bgw_timeout.IsBusy == false)
                     bgw_timeout.RunWorkerAsync();
 
                 //button_autogr.BackColor = Color.LightGray;
@@ -8716,7 +8954,7 @@ namespace Bank_Host
             //필요한 정보만 가져오기
             Frm_Process.Hide();
 
-            
+
 
             BankHost_main.nProcess = 1000; //스캔 대기
             if (nMode != 6)
@@ -8757,12 +8995,12 @@ namespace Bank_Host
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
-                if(label_cust.Text != "ALL")
+                if (label_cust.Text != "ALL")
                     comboBox_Name.Focus();
                 else
                     button1_Click(sender, e);
             }
-                
+
         }
 
 
@@ -8775,7 +9013,7 @@ namespace Bank_Host
         string Split_Scandata = "";
         private void tb_split_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == System.Windows.Forms.Keys.Enter)
+            if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
                 ClickTime();
                 Split_Scandata = tb_split.Text;
@@ -8801,18 +9039,18 @@ namespace Bank_Host
 
             string[] scandata = Split_Scandata.Split(':');
 
-            for(int i = 0; i < scandata.Length; i++)
+            for (int i = 0; i < scandata.Length; i++)
             {
                 scandata[i] = scandata[i].Trim();
             }
-            
-            for(int  i= 0; i < dgv_split_log.RowCount; i++)
+
+            for (int i = 0; i < dgv_split_log.RowCount; i++)
             {
                 if (dgv_split_log.Rows[i].Cells[4].Value.ToString() == scandata[2] &&   //DEV  
                     dgv_split_log.Rows[i].Cells[5].Value.ToString() == scandata[0] &&   //LOT                    
                     dgv_split_log.Rows[i].Cells[6].Value.ToString() == scandata[1])     //DCC   
                 {
-                    if(dgv_split_log.Rows[i].Cells[1].Value.ToString() == scandata[6]) //cust
+                    if (dgv_split_log.Rows[i].Cells[1].Value.ToString() == scandata[6]) //cust
                     {
                         speech.SpeakAsync("고객 코드가 틀립니다.");
                         return;
@@ -8825,7 +9063,7 @@ namespace Bank_Host
                         {
                             dgv_split_log.Rows[i].Selected = true;
                             dgv_split_log.FirstDisplayedScrollingRowIndex = i;
-                            
+
                             if (dgv_split_log.Rows[i].Cells[11].Value.ToString() == "COMPLETE")
                             {
                                 speech.SpeakAsync("이미 완료된 자재 입니다.");
@@ -8869,7 +9107,7 @@ namespace Bank_Host
                         is_in = true;
                         dgv_split_log.Rows[i].DefaultCellStyle.BackColor = Color.Red;
                         dgv_split_log.Rows[i].DefaultCellStyle.ForeColor = Color.Black;
-                        speech.SpeakAsync("수량 틀림");                        
+                        speech.SpeakAsync("수량 틀림");
                     }
                 }
             }
@@ -8877,7 +9115,7 @@ namespace Bank_Host
             if (is_in == false)
             {
                 speech.SpeakAsync("리스트에 없는 자재 입니다.");
-            }            
+            }
         }
 
         private void Write_split_data(int cnt, string msg)
@@ -8886,15 +9124,15 @@ namespace Bank_Host
             string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
             bool bdata = false;
             List<string> added_string = new List<string>();
-            List<string> Split_list = new List<string>();            
+            List<string> Split_list = new List<string>();
 
-            string[] temp = System.IO.File.ReadAllLines(strFileName);            
+            string[] temp = System.IO.File.ReadAllLines(strFileName);
 
-            for(int i = 0; i < temp.Length; i++)
+            for (int i = 0; i < temp.Length; i++)
             {
                 string[] arr = temp[i].Split('\t');
 
-                if(arr[1] == dgv_split_log.Rows[cnt].Cells[2].Value.ToString() &&                                     // CUST
+                if (arr[1] == dgv_split_log.Rows[cnt].Cells[2].Value.ToString() &&                                     // CUST
                     arr[3] == dgv_split_log.Rows[cnt].Cells[4].Value.ToString() &&  // DEV
                     arr[4] == dgv_split_log.Rows[cnt].Cells[5].Value.ToString() &&  // LOT
                     arr[5] == dgv_split_log.Rows[cnt].Cells[6].Value.ToString() &&  // DCC
@@ -8904,8 +9142,8 @@ namespace Bank_Host
                     bdata = true;
                     //temp[0] = "Line\tCust\tBinding#\tDevice#\tCust\tLot#\tDcc\tReturn Qty\tReturn Wafer\tReturn Date\tLoc\tStatus\tOper\tScantime";
 
-                    if(temp[i].Split('\t').Length == 10)
-                        temp[i] += string.Format("\t{0}\t{1}\t{2}",msg, BankHost_main.strOperator, dgv_split_log.Rows[cnt].Cells[13].Value.ToString());
+                    if (temp[i].Split('\t').Length == 10)
+                        temp[i] += string.Format("\t{0}\t{1}\t{2}", msg, BankHost_main.strOperator, dgv_split_log.Rows[cnt].Cells[13].Value.ToString());
                     else
                     {
                         string[] split_temp = temp[i].Split('\t');
@@ -9160,7 +9398,7 @@ namespace Bank_Host
                             if (j == 0)
                             {
                                 ModRange = (Range)worksheet.Cells[4 + row_cnt, 1 + j];
-                                ModRange.Value = (row_cnt+1).ToString();
+                                ModRange.Value = (row_cnt + 1).ToString();
                             }
                             else
                             {
@@ -9168,7 +9406,7 @@ namespace Bank_Host
                                 ModRange.Value = dgv_split_log[j, i].Value == null ? string.Empty : dgv_split_log[j, i].Value.ToString();
                             }
                             //타이틀, 추가설명, 헤드, 0->1 때문에 i에 4를 더함
-                            
+
 
                             //data 테두리
                             ModRange.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlThin, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
@@ -9191,7 +9429,7 @@ namespace Bank_Host
                     }
                 }
 
-                ModRange = (Range)worksheet.Cells[4 + row_cnt,  6];
+                ModRange = (Range)worksheet.Cells[4 + row_cnt, 6];
                 ModRange.Value = "Complete :";
                 ModRange.Borders[XlBordersIndex.xlEdgeLeft].Weight = XlBorderWeight.xlThin;
                 ModRange.Borders[XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThin;
@@ -9221,7 +9459,7 @@ namespace Bank_Host
 
                 //worksheet.PageSetup.PrintArea = string.Format("A1:n{0}",4+row_cnt);
                 worksheet.PageSetup.Orientation = XlPageOrientation.xlLandscape;
-                
+
 
 
                 MessageBox.Show("출력 완료.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -9240,7 +9478,7 @@ namespace Bank_Host
                 //    // workbook.SaveAs(Filename: pathFilename.Split('.')[0], FileFormat: "Pdf");
                 //}
                 //8. 파일 저장 (앞선 SaveFileDialog로 만들어진 pathFilename 경로로 파일 저장
-                
+
                 workbook.Close();
             }
         }
@@ -9272,7 +9510,7 @@ namespace Bank_Host
             int row_cnt = 1;
 
             foreach (DataGridViewRow row in dataGridView_label.Rows)
-            {                
+            {
                 tot_die += int.Parse(row.Cells[4].Value.ToString());
                 tot_wfr += int.Parse(row.Cells[5].Value.ToString());
 
@@ -9299,9 +9537,9 @@ namespace Bank_Host
         {
             string res = "";
 
-            for(int i = 0; i< 11; i++)
+            for (int i = 0; i < 11; i++)
             {
-                if(dgv_split_log.Rows[index].Cells[i].Value != null)
+                if (dgv_split_log.Rows[index].Cells[i].Value != null)
                 {
                     res += dgv_split_log.Rows[index].Cells[i].Value.ToString() + ",";
                 }
@@ -9311,7 +9549,7 @@ namespace Bank_Host
                 }
             }
 
-            res = res.Remove(res.Length-1, 1);
+            res = res.Remove(res.Length - 1, 1);
 
             return res;
         }
@@ -9342,17 +9580,18 @@ namespace Bank_Host
             review_form.Show();
         }
 
-        
+
 
         private void btn_search_Click(object sender, EventArgs e)
         {
             ClickTime();
+
             if (bDownloadComp == false)
             {
                 SetProgressba("조회를 시작 합니다.", 0);
 
                 Thread ExcelDownThread = new Thread(ScrapExcelDown);
-                ExcelDownThread.Start();                
+                ExcelDownThread.Start();
             }
 
             tb_scrapinput.Focus();
@@ -9510,17 +9749,17 @@ namespace Bank_Host
 
                 cbRequest.Items.Clear();
 
-                for(int i = 0; i< request.Tables[0].Rows.Count; i++)
+                for (int i = 0; i < request.Tables[0].Rows.Count; i++)
                 {
                     RequestID.Add(request.Tables[0].Rows[i][0].ToString());
                     cbRequest.Items.Add(request.Tables[0].Rows[i][0].ToString());
-                }                               
+                }
 
-                string SelRequest =  SelectRequest(RequestID, "Vaildation할 Request를 선택해 주세요");
+                string SelRequest = SelectRequest(RequestID, "Vaildation할 Request를 선택해 주세요");
 
-                if(SelRequest == "EMPTY")
+                if (SelRequest == "EMPTY")
                 {
-                    return; 
+                    return;
                 }
 
                 ReadScrapDBData(SelRequest);
@@ -9578,7 +9817,7 @@ namespace Bank_Host
                 }
             }
 
-            
+
 
             l1stComp.Text = n1stCnt.ToString();
             l2ndComp.Text = n2ndCnt.ToString();
@@ -9587,24 +9826,24 @@ namespace Bank_Host
             lDieCnt.Text = string.Format("{0}", nTotDie);
             lTOTWfr.Text = string.Format("Total Wfr : {0}", nTotWfr);
 
-            if(nTotLot != n1stCnt && n2ndCnt == 0)
+            if (nTotLot != n1stCnt && n2ndCnt == 0)
             {
                 ScrapMode = 1;
-                SetProgressba("1차 검수 완료 후 2차 검수 진행 가능 합니다.",0);
+                SetProgressba("1차 검수 완료 후 2차 검수 진행 가능 합니다.", 0);
 
-                using(Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Red))
+                using (Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Red))
                 {
                     board.ShowDialog();
                 }
             }
-            else if(nTotLot == n1stCnt)
+            else if (nTotLot == n1stCnt)
             {
                 ScrapMode = 2;
                 SetProgressba("2차 검수 진행 가능 합니다.", 0);
             }
 
-            ShowComment(dgv_scrap.Rows[0].Cells[1].Value.ToString());            
-            
+            ShowComment(dgv_scrap.Rows[0].Cells[1].Value.ToString());
+
             button16.Enabled = true;
         }
 
@@ -9629,7 +9868,7 @@ namespace Bank_Host
 
         string SelectedRequest = "";
 
-        private string SelectRequest(List<string> RequestID,string msg)
+        private string SelectRequest(List<string> RequestID, string msg)
         {
             Form_Request RequestSelecter = new Form_Request(RequestID, msg);
             RequestSelecter.PressOK_Event += RequestSelecter_PressOK_Event;
@@ -9679,7 +9918,7 @@ namespace Bank_Host
             catch (Exception ex)
             {
 
-            }   
+            }
             return dt;
         }
 
@@ -9691,7 +9930,7 @@ namespace Bank_Host
         string file_path = "";
         string file_name = "";
         string sScrapFileDIR = System.Windows.Forms.Application.StartupPath + "\\SCRAP";
-        bool bDownloadComp = false;
+        bool bDownloadComp = true;
 
 
         private void ScrapExcelDown()
@@ -9820,7 +10059,7 @@ namespace Bank_Host
 
                     SetProgressba("Excel File Down 중 입니다.", 8);
                     _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();  // Excel Down 누름                    
-                    
+
                     Thread.Sleep(1000);
 
                     System.IO.DirectoryInfo di = new DirectoryInfo(sDownloadPath);
@@ -9889,22 +10128,22 @@ namespace Bank_Host
 
 
                 Thread tExcelImport = new Thread(ExcelImport);
-                if(bDownloadComp== true || cb_download.Checked == true)
+                if (bDownloadComp == true || cb_download.Checked == true)
                     tExcelImport.Start();
 
-                
+
             }
             catch (Exception ex)
             {
-                if(ex.HResult == -2147024864)   // 파일 사용 중
+                if (ex.HResult == -2147024864)   // 파일 사용 중
                 {
 
                 }
-                else if(ex.HResult == -2146233088)  // eMes 응답 없음
+                else if (ex.HResult == -2146233088)  // eMes 응답 없음
                 {
 
                 }
-                
+
             }
         }
 
@@ -9969,13 +10208,22 @@ namespace Bank_Host
         private void SetProgressba(string msg, int val)
         {
             tb_ScrapSt.Text = msg;
-            progressBar1.Value = val;
+            progressBar1.Value = val > progressBar1.Maximum ? progressBar1.Maximum : val;
+        }
+
+        private void SetWaferReturnProgressba(string msg, int val)
+        {
+            l_WaferReturnST.Text = msg;
+            pb_WaferReturn.Value = val > pb_WaferReturn.Maximum ? pb_WaferReturn.Maximum : val;
         }
 
         private void Form_Sort_Load(object sender, EventArgs e)
         {
             CheckForIllegalCrossThreadCalls = false;
             cb_dup.Checked = Properties.Settings.Default.LabelCopy;
+
+            SetWaferReturnControl(false);
+
         }
 
         private void SpeakST(string MSG)
@@ -9993,7 +10241,7 @@ namespace Bank_Host
             {
                 string[] inputstr = tb_scrapinput.Text.Split(':');   // 0: Lot, 1: Empty, 2: DEV, 3: QTY, 4: WFR, 5: ??, 6: CUST
 
-                
+
 
                 if (tb_scrapinput.Text == "")
                 {
@@ -10006,7 +10254,7 @@ namespace Bank_Host
                 if (dgv_scrap.RowCount == 0)
                 {
                     SpeakST("검색을 먼저 진행해 주세요");
-                    
+
                     return;
                 }
 
@@ -10020,7 +10268,7 @@ namespace Bank_Host
                     }
                     else
                     {
-                        if(dtScrap.Tables[0].Rows[selectedindex][6].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")   
+                        if (dtScrap.Tables[0].Rows[selectedindex][6].ToString() == "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")
                         {//1st
                             dtScrap.Tables[0].Rows[selectedindex][6] = string.Format("{0}({1})", BankHost_main.strOperator, BankHost_main.strID);
                             c = Color.Yellow;
@@ -10030,9 +10278,9 @@ namespace Bank_Host
                             n1stCnt++;
                             ScrapDataUpdate(selectedindex);
                             dgv_scrap.Rows[selectedindex].Selected = true;
-                            dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;                            
+                            dgv_scrap.FirstDisplayedScrollingRowIndex = selectedindex;
                         }
-                        else if(dtScrap.Tables[0].Rows[selectedindex][6].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")
+                        else if (dtScrap.Tables[0].Rows[selectedindex][6].ToString() != "" && dtScrap.Tables[0].Rows[selectedindex][7].ToString() == "")
                         {//2nd
                             if (ScrapMode == 2)
                             {
@@ -10054,13 +10302,13 @@ namespace Bank_Host
                             }
                             else
                             {
-                                SetProgressba("1차 검수 완료 후 2차 검수 진행 할 수 있습니다.",0);
+                                SetProgressba("1차 검수 완료 후 2차 검수 진행 할 수 있습니다.", 0);
                                 SpeakST("1차 먼저 완료 해야 합니다.");
                             }
                         }
 
                         ScrapDataUpdate(selectedindex);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -10143,7 +10391,7 @@ namespace Bank_Host
             ShowRequest("Excel 출력할 Request를 선택해 주세요.");
             string res = ScrapDataVaildation();
 
-            if(res != "SUCCESS")
+            if (res != "SUCCESS")
             {
                 MessageBox.Show(string.Format("{0} 검수자 항목이 일치 하지 않습니다.\n확인 후 재 시도 하세요", res));
                 return;
@@ -10172,7 +10420,7 @@ namespace Bank_Host
             //{
             //    ScrapGrid.Columns.Add(dtScrap.Tables[0].Columns[i].ColumnName, dtScrap.Tables[0].Columns[i].Caption);
             //}
-            
+
             ScrapGrid.Rows.Clear();
             ScrapGrid.AllowUserToAddRows = false;
 
@@ -10192,14 +10440,14 @@ namespace Bank_Host
                     else
                         s2nd = (string)dtScrap.Tables[0].Rows[i][7];
 
-                   
+
 
                     string[] rows = new string[dgv_scrap.ColumnCount];
 
                     for (int j = 0; j < dgv_scrap.ColumnCount; j++)
                     {
                         rows[j] = dgv_scrap.Rows[i].Cells[j].Value.ToString();
-                    }                    
+                    }
 
                     ScrapGrid.Rows.Add(rows);
                 }
@@ -10212,7 +10460,7 @@ namespace Bank_Host
         {
             List<string> ltemp = new List<string>();
 
-            string CustCode =ScrapGrid.Rows[0].Cells[1].Value.ToString();
+            string CustCode = ScrapGrid.Rows[0].Cells[1].Value.ToString();
 
             System.Data.DataSet dt = SearchData(string.Format("SELECT [COMMENT] FROM [GR_Automation].[dbo].[TB_SCRAP_COMMENT] with(nolock) where [CUST]= '{0}'", CustCode));
 
@@ -10228,9 +10476,9 @@ namespace Bank_Host
                 return ltemp;
             }
 
-            for (int i = 0; i< dt.Tables[0].Rows.Count; i++)
+            for (int i = 0; i < dt.Tables[0].Rows.Count; i++)
             {
-                
+
                 ltemp.Add((string)dt.Tables[0].Rows[i][0]);
             }
 
@@ -10301,7 +10549,7 @@ namespace Bank_Host
                 int totdie = 0, totwfr = 0;
 
                 Excel.Range copyrow = worksheet1.Range["A5:I5"].EntireRow;
-                
+
 
                 //if (ScrapGrid.Rows.Count <= 10)
                 {
@@ -10330,7 +10578,7 @@ namespace Bank_Host
                         totdie += int.Parse((string)ScrapGrid.Rows[i].Cells[4].Value);
                         totwfr += int.Parse((string)ScrapGrid.Rows[i].Cells[5].Value);
 
-                        SetProgressba(string.Format("{0}번째 줄을 출력 중입니다.", i),i);
+                        SetProgressba(string.Format("{0}번째 줄을 출력 중입니다.", i), i);
                     }
 
                     ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 1, 2]).Value2 = String.Format("TOTAL LOT : {0}", ScrapGrid.Rows.Count);
@@ -10342,7 +10590,7 @@ namespace Bank_Host
 
                     ((Range)worksheet1.Cells[4 + ScrapGrid.Rows.Count + 5, 5]).Value2 = SelectedComment;
                 }
-                 
+
                 /*          
                 else        // 10개 단위로 자름
                 {
@@ -10480,7 +10728,7 @@ namespace Bank_Host
                 //[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[1st],[2nd],[3rd],[LOCATION],[CERITIFICATE]
                 //     0       1     2         3       4   5      6       7     8      9     10        11
 
-                if(RequestSelectNum != "DataBase")
+                if (RequestSelectNum != "DataBase")
                 {
                     List<string> custcode = new List<string>(), custname = new List<string>();
                     string weight = "", requestnum = RequestSelectNum;
@@ -10509,7 +10757,7 @@ namespace Bank_Host
 
                     receiptDB.ShowDialog();
                 }
-                
+
             }
         }
 
@@ -10518,9 +10766,9 @@ namespace Bank_Host
             List<string> res = new List<string>();
             string where = "";
 
-            for(int i = 0; i< Codes.Count;i++)
+            for (int i = 0; i < Codes.Count; i++)
             {
-                if(i != Codes.Count - 1)
+                if (i != Codes.Count - 1)
                 {
                     where += string.Format("[CUST_CODE]={0} or ", Codes[i]);
                 }
@@ -10533,9 +10781,9 @@ namespace Bank_Host
             string sql = string.Format("select [CUST_CODE], [CUST_NAME] from TB_SCRAP_CUST with(NOLOCK) where {0}", where);
             DataSet ds = SearchData(sql);
 
-            foreach(DataRow  row in ds.Tables[0].Rows)
+            foreach (DataRow row in ds.Tables[0].Rows)
             {
-                if(res.Contains(row[1].ToString().Split('_')[0]) == false)  
+                if (res.Contains(row[1].ToString().Split('_')[0]) == false)
                     res.Add(row[1].ToString().Split('_')[0]);
             }
 
@@ -10583,7 +10831,7 @@ namespace Bank_Host
             using (Form_ScrapComment comment = new Form_ScrapComment())
             {
                 comment.ShowDialog();
-            }             
+            }
         }
 
         private void button15_Click_1(object sender, EventArgs e)
@@ -10605,7 +10853,7 @@ namespace Bank_Host
             //BankHost_main.strOperator = "";
             //BankHost_main.strID = "";
 
-            
+
 
         }
 
@@ -10613,7 +10861,7 @@ namespace Bank_Host
         {
             ClickTime();
             if (DialogResult.Yes == MessageBox.Show("Request를 변경 하시겠습니까?", "Request 변경", MessageBoxButtons.YesNo, MessageBoxIcon.Information)) ;
-                ReadScrapDBData(cbRequest.Text);
+            ReadScrapDBData(cbRequest.Text);
         }
 
         private void button17_Click(object sender, EventArgs e)
@@ -10621,7 +10869,7 @@ namespace Bank_Host
             ClickTime();
             ShowRequest("출력할 Request를 선택해 주세요");
 
-            string CustNum = "";            
+            string CustNum = "";
 
             if (RequestSelectNum != "")
             {
@@ -10642,7 +10890,7 @@ namespace Bank_Host
                 string custname = taskResut.Result;
 
                 Frm_Print.Fnc_Print_MSG_1Line_Max(string.Format("Requset# : {0};{1}({2}) SCRAP", RequestSelectNum, custname, CustNum));
-            }            
+            }
         }
 
         bool bTimeOutSt = false;
@@ -10655,9 +10903,9 @@ namespace Bank_Host
 
         private void bgw_timeout_DoWork(object sender, DoWorkEventArgs e)
         {
-            while(true)
+            while (true)
             {
-                if((DateTime.Now - LastClickTime).TotalMinutes >= Properties.Settings.Default.TimeOutMin || bTimeOutSt == true)
+                if ((DateTime.Now - LastClickTime).TotalMinutes >= Properties.Settings.Default.TimeOutMin || bTimeOutSt == true)
                 {
                     bTimeOutSt = false;
 
@@ -10701,7 +10949,7 @@ namespace Bank_Host
             tb_split.Text = e.KeyCode.ToString();
             tb_split.Select(textBox1.TextLength, 0);
             tb_split.Focus();
-            
+
             if (GetIME() == true)
             {
                 ChangeIME(tb_split);
@@ -10728,7 +10976,7 @@ namespace Bank_Host
             {
                 button_sel.Enabled = false;
                 button_sel.Text = "GR 리스트 다운로드";
-                
+
                 if (!BankHost_main.bHost_connect)
                     return;
 
@@ -10754,7 +11002,7 @@ namespace Bank_Host
 
                     int nCount = Fnc_Get_Worklist_2(taskResut.Result);
 
-                    if(nCount > 0)
+                    if (nCount > 0)
                         Fnc_Information_Init();
                 }
                 catch (Exception ex)
@@ -10776,7 +11024,7 @@ namespace Bank_Host
                 string strGetJobName = BankHost_main.Host.Host_Get_JobName(BankHost_main.strEqid);
 
 
-                if(strGetJobName == "")
+                if (strGetJobName == "")
                 {
                     MessageBox.Show("진행 중인 파일이 없습니다!");
                     return;
@@ -10784,7 +11032,7 @@ namespace Bank_Host
 
                 ///작업자 사번 입력 
                 Form_Input Frm_Input = new Form_Input();
-                
+
                 //Frm_Input.Fnc_Init(nSel);
                 Fnc_Information_Init2();
                 //Frm_Input.ShowDialog();
@@ -10818,7 +11066,7 @@ namespace Bank_Host
                     comboBox_Name.SelectedIndex = 0;
                 }
             }
-            else if(nSel == 2)
+            else if (nSel == 2)
             {
                 button_sel.Enabled = false;
                 button_sel.Text = "Validation Webservice";
@@ -10875,7 +11123,7 @@ namespace Bank_Host
 
                         strSelBillno[0] = strInputBill;
 
-                        if(strSelCust == "940")
+                        if (strSelCust == "940")
                         {
                             Fnc_Set_Workfile_NoDevice(strSelBillno); //HY210315
                         }
@@ -10896,10 +11144,10 @@ namespace Bank_Host
                     Frm_Process.Form_Hide();
                 }
             }
-            else if(nSel == 3)
+            else if (nSel == 3)
             {
-                 button_sel.Enabled = true;
-                 button_sel.Text = "Validation 파일 선택";
+                button_sel.Enabled = true;
+                button_sel.Text = "Validation 파일 선택";
 
                 Fnc_Information_Init2();
 
@@ -10935,13 +11183,13 @@ namespace Bank_Host
                     comboBox_Name.SelectedIndex = 0;
                 }
             }
-            else if(nSel == 4)
+            else if (nSel == 4)
             {
                 BankHost_main.nScanMode = 1;
                 BankHost_main.bGunRingMode_Run = true;
                 label_list.Clear();
                 BankHost_main.nProcess = 4001;
-                
+
                 tabControl_Sort.SelectedIndex = 5;
                 bselected_mode_index = true;
                 textBox1.Focus();
@@ -10955,12 +11203,12 @@ namespace Bank_Host
                 lprinted_lots.Text = "0";
                 ldie.Text = "0";
                 lwfr.Text = "0";
-                if(GetIME() == true)
+                if (GetIME() == true)
                 {
                     ChangeIME(textBox1);
                 }
             }
-            else if(nSel == 5)
+            else if (nSel == 5)
             {
                 dgv_loc.Rows.Clear();
 
@@ -11014,10 +11262,10 @@ namespace Bank_Host
                     Frm_Process.Form_Hide();
                 }
             }
-            else if(nSel == 6)
+            else if (nSel == 6)
             {
                 dgv_split_log.Rows.Clear();
-                
+
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
@@ -11052,7 +11300,7 @@ namespace Bank_Host
                     }
                     btn_CommentEdit.Text = "  Comment\nEdit";
 
-                    
+
                     tb_split.Focus();
                 }
                 catch (Exception ex)
@@ -11066,14 +11314,14 @@ namespace Bank_Host
                     Frm_Process.Form_Hide();
                 }
             }
-            else if(nSel == 7)
+            else if (nSel == 7)
             {
                 BankHost_main.strOperator = "";
                 dgv_split_log.Rows.Clear();
 
                 Form_Input Frm_Input = new Form_Input();
                 Frm_Input.Fnc_Init(nSel);
-                Frm_Input.ShowDialog();                
+                Frm_Input.ShowDialog();
 
                 if (BankHost_main.strOperator != "")
                 {
@@ -11088,7 +11336,39 @@ namespace Bank_Host
                     LastClickTime = DateTime.Now;
                     bgw_timeout.RunWorkerAsync();
                 }
+            }
+            else if (nSel == 8)
+            {
+                BankHost_main.strOperator = "";
+                Form_Input Frm_Input = new Form_Input();
 
+                Frm_Input.Fnc_Init(7);
+                Frm_Input.ShowDialog();
+
+                tb_ReturnWafer.Text = Properties.Settings.Default.WaferReturnCode;
+
+                if (BankHost_main.strOperator != "")
+                {
+                    bmode9 = true;
+                    tabControl_Sort.SelectedIndex = 10;
+
+                    if (GetIME() == true)
+                    {
+                        ChangeIME(tb_WaferReturnScan);
+                    }
+
+                    tb_Year.Text = DateTime.Now.Year.ToString();
+                    tb_WaferReturnScan.Focus();
+
+                    toolTip1.SetToolTip(btn_WaferReturnExcel, string.Format("{0}\n경로 변경 : 마우스 오른쪽 클릭", Properties.Settings.Default.WaferReturnExcelOutPath));
+
+                    SetWaferReturnControl(true);
+
+                    LastClickTime = DateTime.Now;
+
+                    if (bgw_timeout.IsBusy == false)
+                        bgw_timeout.RunWorkerAsync();
+                }
             }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
@@ -11097,7 +11377,7 @@ namespace Bank_Host
             {
                 BankHost_main.bHost_connect = false;
                 MessageBox.Show("DB 업데이트 실패!");
-            }            
+            }
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -11133,7 +11413,7 @@ namespace Bank_Host
                 comboBox_Name.Enabled = false;
             }
 
-            BankHost_main.strOperator = label_opinfo.Text = val.Split(';')[2];                        
+            BankHost_main.strOperator = label_opinfo.Text = val.Split(';')[2];
             BankHost_main.strOperator = label_opinfo.Text;
         }
 
@@ -11145,7 +11425,7 @@ namespace Bank_Host
 
         private void tb_next_KeyDown(object sender, KeyEventArgs e)
         {
-           
+
         }
 
         private void tb_next_KeyPress(object sender, KeyPressEventArgs e)
@@ -11253,9 +11533,9 @@ namespace Bank_Host
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                
+
             }
-            
+
         }
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
@@ -11280,11 +11560,11 @@ namespace Bank_Host
                 tot_wfr = 0;
                 tot_lots = location_list.Count - 1;
 
-                for (int i = 1; i < location_list.Count -1; i++)
+                for (int i = 1; i < location_list.Count - 1; i++)
                 {
                     dgv_loc.Rows.Add(location_list[i][0], location_list[i][1], location_list[i][9], "", "", location_list[i][3], location_list[i][4], location_list[i][5], location_list[i][6], location_list[i][7], location_list[i][8]);
-                    
-                    if(dgv_loc.Rows[i-1].Cells[2].Value.ToString() == "")
+
+                    if (dgv_loc.Rows[i - 1].Cells[2].Value.ToString() == "")
                     {
                         dgv_loc.Rows[i - 1].DefaultCellStyle.BackColor = Color.Yellow;
                         dgv_loc.Rows[i - 1].DefaultCellStyle.ForeColor = Color.Red;
@@ -11308,7 +11588,7 @@ namespace Bank_Host
             {
 
                 throw;
-            }            
+            }
         }
 
         private void Refresh_split_lot_data()
@@ -11382,8 +11662,8 @@ namespace Bank_Host
             dgv_split_log.Columns.Add("Status", "Status");
             dgv_split_log.Columns.Add("Oper", "Oper");
             dgv_split_log.Columns.Add("Scantime", "Scantime");
-            
-            dgv_split_log.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;            
+
+            dgv_split_log.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgv_split_log.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgv_split_log.Columns[2].SortMode = DataGridViewColumnSortMode.NotSortable;
             dgv_split_log.Columns[3].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -11405,12 +11685,12 @@ namespace Bank_Host
             {
                 string[] row = new string[14];
                 row[0] = (i + 1).ToString();
-                for (int j  = 0; j < dataGridView_worklist.Rows[i].Cells.Count; j++)
+                for (int j = 0; j < dataGridView_worklist.Rows[i].Cells.Count; j++)
                 {
                     if (dataGridView_worklist.Rows[i].Cells[j].Value != null)
-                        row[j+1] = dataGridView_worklist.Rows[i].Cells[j].Value.ToString();
+                        row[j + 1] = dataGridView_worklist.Rows[i].Cells[j].Value.ToString();
                     else
-                        row[j+1] = "";
+                        row[j + 1] = "";
                 }
 
                 dgv_split_log.Rows.Add(row);
@@ -11444,7 +11724,7 @@ namespace Bank_Host
 
             dataGridView_worklist.Columns.Clear();
             dataGridView_worklist.Rows.Clear();
-                        
+
             dataGridView_worklist.Columns.Add("Line", "Line");
             dataGridView_worklist.Columns.Add("Cust", "Cust");
             dataGridView_worklist.Columns.Add("Biunding", "Biunding#");
@@ -11483,7 +11763,7 @@ namespace Bank_Host
             }
             else
             {
-                for(int i = 0; i < temp.Length; i++)
+                for (int i = 0; i < temp.Length; i++)
                 {
                     if (temp[i].Split('\t').Length > 10)
                     {
@@ -11538,6 +11818,961 @@ namespace Bank_Host
 
                 throw;
             }
+        }
+
+        private void btn_WaferReturnFind_Click(object sender, EventArgs e)
+        {
+            ClickTime();
+
+            if (bDownloadComp == true)
+            {
+                SetProgressba("조회를 시작 합니다.", 0);
+
+                Thread ExcelDownThread = new Thread(WaferReturnExcelDown);
+                ExcelDownThread.Start();
+            }
+
+            tb_WaferReturnScan.Focus();
+        }
+
+        //private ChromeDriverService _driverService = null;
+        //private ChromeOptions _options = null;
+        //private ChromeDriver _driver = null;
+        //string sUserPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        string sWaferReturnFileDIR = System.Windows.Forms.Application.StartupPath + "\\WaferReturn";
+        //string sScrapFileDIR = System.Windows.Forms.Application.StartupPath + "\\SCRAP";
+        bool bWaferReturnDownloadComp = false;
+
+        private void WaferReturnExcelDown()
+        {
+            string id = BankHost_main.strMESID;
+            string pw = BankHost_main.strMESPW;
+            string badge = BankHost_main.strID;
+            sDownloadPath = Path.Combine(System.Environment.CurrentDirectory, "WaferReturn\\Excel\\");
+
+            try
+            {
+                if (cb_WaferReturnExcel.Checked == false)
+                {
+                    if (System.IO.Directory.Exists(sDownloadPath) == false)
+                    {
+                        SetWaferReturnProgressba("Directory 생성 중 입니다.", 9);
+                        System.IO.Directory.CreateDirectory(sDownloadPath);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            System.IO.DirectoryInfo di1 = new System.IO.DirectoryInfo(sDownloadPath);
+
+                            FileInfo[] fi1 = di1.GetFiles();
+
+                            for (int i = 0; i < fi1.Length; i++)
+                            {
+                                fi1[i].Delete();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+
+                    bDownloadComp = false;
+
+                    _driverService = ChromeDriverService.CreateDefaultService();
+                    _driverService.HideCommandPromptWindow = true;
+
+                    _options = new ChromeOptions();
+                    _options.AddArgument("disable-gpu");
+
+                    if (cb_WaferReturnView.Checked == false)
+                    {
+                        _options.AddArgument("headless");
+                    }
+
+                    _options.AddUserProfilePreference("download.default_directory", sDownloadPath);
+                    _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+
+                    /* test server
+                    _driver = new ChromeDriver(_driverService, _options);
+                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/");  // 웹 사이트에 접속합니다. 
+                    _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                    progressBar1.Maximum = 15;
+                    progressBar1.Value = 1;
+
+                    SetProgressba("eMes에 접속 중입니다.", 1);
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys("abc4");    // ID 입력          
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys("abc4");   // PW 입력            
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys("362808");   // 사번 입력         
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                    SetProgressba("Login 확인 중", 2);
+
+                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                    SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
+
+
+                    while (_driver.Url != "http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp")
+                    {
+                        _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                        Thread.Sleep(500);
+                    }
+                    */
+
+                    _driver = new ChromeDriver(_driverService, _options);
+                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+                    _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+                    pb_WaferReturn.Maximum = 15;
+                    pb_WaferReturn.Value = 1;
+
+                    SetWaferReturnProgressba("eMes에 접속 중입니다.", 1);
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
+                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                    SetWaferReturnProgressba("Login 확인 중", 2);
+
+                    System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[1]/td/table/tbody/tr/td[1]/img"));
+
+                    if (temp.Count != 0)
+                    {
+                        if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                        {
+                            MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
+                            return;
+                        }
+                        else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                        {
+                            MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
+                            return;
+                        }
+                        else
+                        {
+                            MessageBox.Show("알수 없는 에러가 발생하였습니다.");
+                            return;
+                        }
+                    }
+
+                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/ttsReturnFind.do");   // Scrap request 항목으로 이동
+                    SetWaferReturnProgressba("Wafer Return 메뉴로 이동 중입니다.", 3);
+
+
+                    while (_driver.Url != "http://aak1ws01/eMES/diebank/ttsReturnFind.do")
+                    {
+                        _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/ttsReturnFind.do");   // Scrap request 항목으로 이동
+                        Thread.Sleep(500);
+                    }
+
+                    SetWaferReturnProgressba("년도 설정", 4);
+                    _driver.FindElementByXPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input").Clear();
+                    _driver.FindElementByXPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input").SendKeys(tb_Year.Text);
+
+                    SetWaferReturnProgressba("데이터 조회 중입니다.", 7);
+                    _driver.FindElementByXPath("/html/body/form[1]/table/tbody/tr[3]/td/div/table/tbody/tr/td/p/span/b/font/input").Click();    //Find 버튼 누름
+                    //_driver.FindElementByName("find").Click();
+
+
+                    temp = _driver.FindElements(By.Name("selected"));
+
+                    if (temp.Count == 0)
+                    {
+                        SetWaferReturnProgressba("조회된 데이터가 없습니다.", 100);
+                        return;
+                    }
+                    else
+                    {
+                        temp = _driver.FindElements(By.PartialLinkText("K4"));
+
+                        WaferReturnInfo = new List<stWaferReturnInfo>();
+
+                        for (int i = 0; i < temp.Count; i++)
+                        {
+                            WaferReturnInfo.Add(new stWaferReturnInfo());
+                        }
+
+                        WaferReturnDataSort(_driver.FindElementByXPath("/html/body/form[2]/table"));
+                    }
+
+                    SetWaferReturnProgressba("Directory 확인중 입니다.", 8);
+
+
+
+                    _driver.FindElement(By.Name("checkAll")).Click();
+
+                    SetWaferReturnProgressba("Excel File Down 중 입니다.", 10);
+                    _driver.FindElement(By.Name("excelDisplay")).Click();       //Excel Down Click
+
+                    Thread.Sleep(1000);
+
+                    System.IO.DirectoryInfo di = new DirectoryInfo(sDownloadPath);
+
+                    FileInfo[] fi = di.GetFiles("*.*.crdownload");
+
+                    DateTime dCrdownloadChecktime = DateTime.Now;
+
+                    while (fi.Length != 0)
+                    {
+                        fi = di.GetFiles("*.*.crdownload");
+                        Console.WriteLine((DateTime.Now - dCrdownloadChecktime).TotalSeconds);
+
+                        if ((DateTime.Now - dCrdownloadChecktime).TotalSeconds >= 120)
+                            SetWaferReturnProgressba("Download 시간을 초과 했습니다.", progressBar1.Maximum);
+                        Thread.Sleep(100);
+                    }
+
+                    _driver.Close();
+                    //Marshal.ReleaseComObject(_driver);
+
+
+                    SetWaferReturnProgressba("Excel File Down 완료", 9);
+
+                    fi = di.GetFiles("WaferReturnList*.xls");
+
+                    DateTime lastdate = new DateTime();
+
+                    for (int i = 0; i < fi.Length; i++)
+                    {
+                        if (fi[i].CreationTime > lastdate)
+                        {
+                            file_path = fi[i].DirectoryName;
+                            file_name = fi[i].Name;
+                            lastdate = fi[i].CreationTime;
+
+                            SetWaferReturnProgressba(String.Format("최신파일 검사중입니다 {0}/{1}", i, fi.Length), 10);
+                        }
+                    }
+                    WriteWaferReturnData();
+                    //ReadScrapData();
+
+                    bDownloadComp = true;
+
+                    //SetWaferReturnProgressba("Excel File 복사 완료하였습니다.", 15);
+
+                    //button19_Click(btn_WaferReturnFind, new EventArgs());
+                }
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                if (ex.HResult == -2147024864)   // 파일 사용 중
+                {
+
+                }
+                else if (ex.HResult == -2146233088)  // eMes 응답 없음
+                {
+
+                }
+                else if (ex.Message.Contains("The chromedriver.exe file does not exist in the current directory") == true)
+                {
+                    SetWaferReturnProgressba("Chromedriver 파일을 찾을 수 없습니다.", 0);
+                }
+
+            }
+        }
+
+        private void WriteWaferReturnData()
+        {
+            if (cb_WaferReturnExcel.Checked == false)
+            {
+                SetProgressba("Excel Data를 Memory에 복사 중 입니다.", 1);
+                Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+                Workbook workbook = application.Workbooks.Open(Filename: sDownloadPath + "\\" + file_name);
+                Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+                application.Visible = checkBox1.Checked;
+                SetProgressba("Excel Data를 Memory에 복사 완료 하였습니다.", 2);
+
+
+                Excel.Range range = worksheet1.UsedRange;
+                double dd = 0.0;
+                List<string> data = new List<string>();
+                string excelrow = "";
+
+
+
+                int HeaderRow = -1;
+                int returnNumCnt = -1;
+                int seqCnt = -1;
+                int rowOffset = 4;
+
+                stWaferReturnExcelInfo excelInfo = new stWaferReturnExcelInfo();
+                string[] temp1 = new string[11];
+
+                object[,] excelData = new object[range.Rows.Count, range.Columns.Count];
+
+                excelData = (object[,])range.Value2;
+                pb_WaferReturn.Maximum = range.Rows.Count;
+                SetWaferReturnProgressba("", 0);
+
+                for (int i = 1; i <= range.Rows.Count - 2; ++i)
+                {
+                    excelrow = "";
+
+                    if (excelData[i, 1].ToString() == "WAFER RETURN LIST")
+                    {
+                        HeaderRow = i;
+                        ++returnNumCnt;
+                        seqCnt = -1;
+                        rowOffset = 5;
+
+                        if (WaferReturnInfo.Count < returnNumCnt + 1)
+                        {
+                            stWaferReturnInfo test = new stWaferReturnInfo();
+
+                            //test.ExcelInfo = new List<stWaferReturnExcelInfo>();
+                            WaferReturnInfo.Add(new stWaferReturnInfo());
+                            WaferReturnInfo[WaferReturnInfo.Count - 1] = test;
+                        }
+
+                        while (excelData[HeaderRow + rowOffset, 1] != null)
+                        {
+                            temp1[0] = excelData[HeaderRow + rowOffset, 1] == null ? "" : excelData[HeaderRow + rowOffset, 1].ToString();
+                            temp1[1] = excelData[HeaderRow + rowOffset, 2] == null ? "" : excelData[HeaderRow + rowOffset, 2].ToString();
+                            temp1[2] = excelData[HeaderRow + rowOffset, 3] == null ? "" : excelData[HeaderRow + rowOffset, 3].ToString();
+                            temp1[3] = excelData[HeaderRow + rowOffset, 4] == null ? "" : excelData[HeaderRow + rowOffset, 4].ToString();
+                            temp1[4] = excelData[HeaderRow + rowOffset, 5] == null ? "" : excelData[HeaderRow + rowOffset, 5].ToString();
+                            temp1[5] = excelData[HeaderRow + rowOffset, 6] == null ? "" : excelData[HeaderRow + rowOffset, 6].ToString();
+                            temp1[6] = excelData[HeaderRow + rowOffset, 7] == null ? "" : excelData[HeaderRow + rowOffset, 7].ToString();
+                            temp1[7] = excelData[HeaderRow + rowOffset, 8] == null ? "" : excelData[HeaderRow + rowOffset, 8].ToString();
+                            temp1[8] = excelData[HeaderRow + rowOffset, 9] == null ? "" : excelData[HeaderRow + rowOffset, 9].ToString();
+                            temp1[9] = excelData[HeaderRow + rowOffset, 10] == null ? "" : excelData[HeaderRow + rowOffset, 10].ToString();
+                            temp1[10] = excelData[HeaderRow + rowOffset, 11] == null ? "" : excelData[HeaderRow + rowOffset, 11].ToString();
+
+                            excelInfo.Setdata(temp1[0],
+                                temp1[1],
+                                temp1[2],
+                                temp1[3],
+                                temp1[4],
+                                temp1[5],
+                                int.Parse(temp1[6] == null ? "0" : temp1[6]),
+                                int.Parse(temp1[7] == null ? "0" : temp1[7]),
+                                temp1[8],
+                                temp1[9],
+                                temp1[10]
+                                );
+
+                            WaferReturnInfo[returnNumCnt].AddExcelInfo(excelInfo);
+
+                            ++seqCnt;
+                            ++rowOffset;
+
+                            SetWaferReturnProgressba(string.Format("{0},{1},{2},{3}", temp1[3], temp1[4], temp1[6], temp1[7]), HeaderRow + rowOffset);
+
+                            if (HeaderRow + rowOffset > range.Rows.Count)
+                            {
+                                break;
+                            }
+                        }
+                        i = HeaderRow + rowOffset;
+                    }
+
+
+                }
+
+                SetWaferReturnProgressba("Excel Read Complete", range.Rows.Count);
+
+                /*메모리 할당 해제*/
+                Marshal.ReleaseComObject(range);
+                Marshal.ReleaseComObject(worksheet1);
+                workbook.Close();
+                Marshal.ReleaseComObject(workbook);
+                application.Quit();
+                Marshal.ReleaseComObject(application);
+
+                WaferReturnData2DB();
+            }
+        }
+
+        private void WaferReturnData2DB()
+        {
+            string query = "";
+            int max = 0;
+            int cnt = 0;
+
+            try
+            {
+                for (int i = 0; i < WaferReturnInfo.Count; i++)
+                {
+                    if (WaferReturnInfo[i].ExcelInfo != null)
+                        max += WaferReturnInfo[i].ExcelInfo.Count;
+                }
+
+
+                pb_WaferReturn.Maximum = max;
+
+                for (int i = 0; i < WaferReturnInfo.Count; i++)
+                {
+                    for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
+                    {
+                        SetWaferReturnProgressba(string.Format("Add Database : {0}", WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
+
+                        query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
+                            tb_Year.Text + "-" + WaferReturnInfo[i].WebInfo.ReturnNum,
+                            WaferReturnInfo[i].ExcelInfo[j].Seq,
+                            WaferReturnInfo[i].ExcelInfo[j].PDL,
+                            WaferReturnInfo[i].ExcelInfo[j].DeviceName,
+                            WaferReturnInfo[i].ExcelInfo[j].LotNum,
+                            WaferReturnInfo[i].ExcelInfo[j].Dcc,
+                            WaferReturnInfo[i].ExcelInfo[j].DsQty,
+                            WaferReturnInfo[i].ExcelInfo[j].ReturnQty,
+                            WaferReturnInfo[i].ExcelInfo[j].Remark,
+                            WaferReturnInfo[i].ExcelInfo[j].Loc,
+                            WaferReturnInfo[i].ExcelInfo[j].SL,
+                            "",
+                            "",
+                            WaferReturnInfo[i].WebInfo.InputDate,
+                            WaferReturnInfo[i].WebInfo.RequestDate,
+                            WaferReturnInfo[i].WebInfo.UserID,
+                            WaferReturnInfo[i].WebInfo.BoxQty,
+                            WaferReturnInfo[i].WebInfo.Remark,
+                            "",
+                            "",
+                            WaferReturnInfo[i].WebInfo.CustCode,
+                            "",
+                            ""
+                            );
+
+                        run_sql_command(query);
+                    }
+
+
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        private void WaferReturnDataSort(IWebElement webElement)
+        {
+            string[] tableText = webElement.Text.Replace("\r", "").Split('\n');
+
+            for (int i = 0; i < WaferReturnInfo.Count; i++)
+            {
+                stWaferReturnInfo returnInfo = new stWaferReturnInfo();
+
+
+
+                //string cust, string st, string returncode, string indate, string redate, string id, int qty, string remark
+                stWaferReturnWebInfo webInfo = new stWaferReturnWebInfo();
+                webInfo.CustCode = tableText[11 + (i * 6)].Trim();
+                webInfo.Status = tableText[12 + (i * 6)].Trim();
+                webInfo.ReturnNum = tableText[13 + (i * 6)].Trim();
+                webInfo.InputDate = tableText[14 + (i * 6)].Trim();
+                webInfo.RequestDate = tableText[15 + (i * 6)].Trim();
+                webInfo.UserID = tableText[16 + (i * 6)].Trim();
+                webInfo.BoxQty = -1;
+                webInfo.Remark = "";
+
+                returnInfo.WebInfo = webInfo;
+                returnInfo.ExcelInfo = new List<stWaferReturnExcelInfo>();
+
+                WaferReturnInfo[i] = returnInfo;
+            }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            dgv_ReturnWafer.DataSource = null;
+
+            string temp = string.Format("select [SEQ],[DEVICE_NAME],[LOT],[DCC],[RETURN_QTY],[LOC],[SL],[REMARK],[SCAN_TIME_1st],[SCAN_USER_NAME_1st],[SCAN_TIME_2nd],[SCAN_USER_NAME_2nd],[AMKOR_ID],[CUST_CODE] from TB_RETURN_WAFER with(nolock) where [RETURN_NO]='{0}-{1}{2}' order by cast([SEQ] as int)", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION);
+            dgv_ReturnWafer.DataSource = SearchData(temp).Tables[0];
+
+            for(int i = 0; i< dgv_ReturnWafer.RowCount; i++)
+            {
+                if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[10].Value.ToString() == "")
+                    dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                else if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[10].Value.ToString() != "")
+                    dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+            }
+
+            tb_WaferReturnScan.Focus();
+        }
+
+        private void tb_WaferReturnScan_KeyDown(object sender, KeyEventArgs e)
+        {
+           
+
+            if (Convert.ToInt32(e.KeyCode) == 13)
+            {
+                ClickTime();
+
+                {
+                    WaferReturn_label_Print_Process(tb_WaferReturnScan.Text.ToUpper(), 1);
+                    tb_WaferReturnScan.Text = "";
+                }
+            }
+        }
+
+        int WaferReturnSelectedRow = -1;
+
+        private void dgv_ReturnWafer_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            WaferReturnSelectedRow = e.RowIndex;
+            if (e.Button == MouseButtons.Right)
+            {
+                WaferReturnSelectedRow = e.RowIndex;
+
+                WaferReturnMenu.Items.Clear();
+
+                WaferReturnMenu.Items.Add("출력");
+                WaferReturnMenu.Items[0].Click += WaferReturnLabelPrint;
+
+                WaferReturnMenu.PointToScreen(new System.Drawing.Point(e.X, e.Y));
+
+
+                WaferReturnMenu.Show(Control.MousePosition);
+
+            }
+        }
+
+        private void WaferReturnLabelPrint(object sender, EventArgs e)
+        {
+            stAmkor_Label temp = new stAmkor_Label();
+
+
+            try
+            {
+                //   0         1         2     3      4          5     6     7        8             9
+                // [SEQ],[DEVICE_NAME],[LOT],[DCC],[RETURN_QTY],[LOC],[SL],[REMARK],[SCAN_TIME],[SACN_USER_NAME]
+
+                if (dgv_ReturnWafer.Rows[WaferReturnSelectedRow].DefaultCellStyle.BackColor == Color.Blue)
+                {
+                    temp.Lot = dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[2].Value.ToString();
+                    temp.DCC = dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[3].Value.ToString();
+                    temp.Device = dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[1].Value.ToString();
+                    temp.DQTY = dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[4].Value.ToString();
+                    temp.CUST = dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[11].Value.ToString();
+                    temp.AMKOR_ID = dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[10].Value.ToString();
+                    temp.Wafer_ID = "";//dgv_ReturnWafer.Rows[WaferReturnSelectedRow].Cells[8].Value.ToString();
+                    temp.WQTY = "1";
+
+                    string inputData = "";
+                    int cnt = -1;
+                    InputBox("순번입력", "번호", ref inputData);
+
+                    if (int.TryParse(inputData, out cnt) == true)
+                    {
+                        if (cnt <= int.Parse(l_WaferReturnCount.Text) || l_WaferReturnCount.Text =="0")
+                        {
+                            Frm_Print.Fnc_Print(temp, cnt, dgv_ReturnWafer.RowCount);
+                            speech.SpeakAsync("라벨 출력");
+                        }
+                        else
+                        {
+                            speech.SpeakAsync("스캔된 갯수보다 큰 값을 입력 할 수 없습니다.");
+                        }
+                    }
+                    else
+                    {
+                        speech.SpeakAsync("숫자만 입력 가능 합니다.");
+                    }
+                }
+                else
+                {
+                    speech.SpeakAsync("스캔 되지 않은 라트 입니다.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+
+        }
+
+        private void btn_WaferReturnExcel_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void WaferReturnExcelOut()
+        {
+            pb_WaferReturn.Value = 0;
+            pb_WaferReturn.Maximum = 10;
+            SetWaferReturnProgressba("Excel 생성 중...", 1);
+
+            Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+            Workbook workbook = application.Workbooks.Add();// Filename: string.Format("{0}\\{1}", System.Environment.CurrentDirectory, @"\WaferReturn\WaferReturnOutTemp.xlsx"));
+            
+            Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+            object misValue = System.Reflection.Missing.Value;
+
+            application.Visible = false;
+
+
+            worksheet1.Name = "WaferRetrunList";
+
+
+            SetWaferReturnProgressba("Data Loading...", 2);
+
+            string temp = string.Format("select [RETURN_NO],[SEQ],[DEVICE_NAME],[LOT],[DCC],[DS_QTY],[RETURN_QTY],[REMARK],[LOC],[SL],[SCAN_TIME_1st],[SCAN_USER_NAME_1st],[SCAN_TIME_2nd],[SCAN_USER_NAME_2nd],[AMKOR_ID],[CUST_CODE] from TB_RETURN_WAFER with(nolock) where [RETURN_NO]='{0}-{1}{2}' order by cast([SEQ] as int)", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION);
+
+            System.Data.DataTable MtlList = SearchData(temp).Tables[0];//(System.Data.DataTable)dgv_ReturnWafer.DataSource;
+
+            if (dgv_ReturnWafer.DataSource != null)
+            {
+                string[,] item = new string[MtlList.Rows.Count, MtlList.Columns.Count -2];
+                string[] columns = new string[MtlList.Columns.Count];
+                string cust = "";
+                string returnnum = "";
+                string totlot = "";
+
+                //System.Collections.ArrayList list = new System.Collections.ArrayList(System.Drawing.Printing.PrinterSettings.InstalledPrinters);
+                //string defaultPrintName = "";
+                //string PrintName = "";
+
+                //System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();
+
+
+                //defaultPrintName = pd.PrinterSettings.PrinterName;
+
+
+                //for (int i = 0; i < list.Count; i++)
+                //{
+                //    if (list[i].ToString().Contains("KONICA") == true)
+                //    {
+                //        PrintName = list[i].ToString();
+                //    }
+                //}
+
+                ////SetDefaultPrinter(PrintName == "" ? defaultPrintName : PrintName);
+                //application.ActivePrinter = (PrintName == "" ? defaultPrintName : PrintName);
+
+                SetWaferReturnProgressba("엑셀 양식 작성 중...", 3);
+
+                Range rd = worksheet1.Range[worksheet1.Cells[1, 1], worksheet1.Cells[1, 14]];
+                rd.Merge();
+                rd.Value2 = "WAFER RETURN LIST";
+                rd.Font.Bold = true;
+                rd.Font.Size = 12.0;
+
+
+                worksheet1.get_Range("A1").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+                rd = worksheet1.Range[worksheet1.Cells[3, 4], worksheet1.Cells[4, 12]];
+                rd.Font.Color = Color.Red;
+                rd.Font.Size = 20.0;
+                rd.Merge();
+                rd.HorizontalAlignment = HorizontalAlignment.Center;
+                rd.Value2 = "★고객 요청 사항 확인★";
+                worksheet1.get_Range("D3").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+                if (MtlList.Rows.Count > 0)
+                {
+                    cust = string.Format("Customer : {0}", MtlList.Rows[0][MtlList.Columns.Count - 1].ToString());
+                    returnnum = string.Format("Return# : {0}-{1}{2}", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION);
+                    totlot = string.Format("Total Lot : {0}", MtlList.Rows.Count);
+
+                    for (int c = 0; c < MtlList.Columns.Count; c++)
+                    {
+                        //컬럼 위치값을 가져오기
+                        columns[c] = ExcelColumnIndexToName(c);
+                    }
+
+                    for (int rowNo = 0; rowNo < MtlList.Rows.Count; rowNo++)
+                    {
+                        for (int colNo = 0; colNo < MtlList.Columns.Count - 2; colNo++)
+                        {
+
+                            item[rowNo, colNo] = MtlList.Rows[rowNo][colNo].ToString();
+                        }
+                    }
+                }
+
+                //해당위치에 컬럼명을 담기
+                //worksheet1.get_Range("A1", columns[MtlList.Columns.Count - 1] + "1").Value2 = headers;
+                //해당위치부터 데이터정보를 담기
+                worksheet1.get_Range("A3").Value = cust;
+                worksheet1.get_Range("A4").Value = returnnum;
+                worksheet1.get_Range("B4").Value = totlot;
+                worksheet1.get_Range("A5").Value2 = "Return No";
+                worksheet1.get_Range("B5").Value2 = "Seq";
+                worksheet1.get_Range("C5").Value2 = "Device Name";
+                worksheet1.get_Range("D5").Value2 = "Lot Number";
+                worksheet1.get_Range("E5").Value2 = "Dcc";
+                worksheet1.get_Range("F5").Value2 = "D/S Qty";
+                worksheet1.get_Range("G5").Value2 = "Return-Q";
+                worksheet1.get_Range("H5").Value2 = "Remark";
+                worksheet1.get_Range("I5").Value2 = "Loc";
+                worksheet1.get_Range("J5").Value2 = "SL";
+                worksheet1.get_Range("K5").Value2 = "Scan Time1";
+                worksheet1.get_Range("L5").Value2 = "Scan User1";
+                worksheet1.get_Range("M5").Value2 = "Scan Time2";
+                worksheet1.get_Range("N5").Value2 = "Scan User2";
+
+                rd = worksheet1.Range["A5", "N5"];
+                //rd.BorderAround2(XlLineStyle.xlDash);
+                //rd.Borders[XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlContinuous;
+                //rd.Borders[XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlContinuous;
+                
+                rd.HorizontalAlignment =  Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                rd.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThick;
+                rd.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlThick;
+
+                SetWaferReturnProgressba("엑셀 양식 작성 완료...", 4);
+
+                SetWaferReturnProgressba("Data 입력 중...", 5);
+                worksheet1.get_Range("A6", columns[MtlList.Columns.Count - 3] + (MtlList.Rows.Count + 5).ToString()).Value = item;
+                worksheet1.get_Range("A6", columns[MtlList.Columns.Count - 3] + (MtlList.Rows.Count + 5).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                worksheet1.Cells.NumberFormat = @"@";
+                worksheet1.Columns.AutoFit();
+
+                SetWaferReturnProgressba("Sheet Page Setup...", 6);
+                worksheet1.PageSetup.PrintArea = string.Format("A1:{0}", columns[MtlList.Columns.Count - 3] + (MtlList.Rows.Count + 5).ToString());
+                worksheet1.PageSetup.Zoom = false;
+                worksheet1.PageSetup.FitToPagesWide = 1;        // Zoom이 False일 때만 적용 됨
+
+
+                string filePath = "";
+
+                SetWaferReturnProgressba("파일 저장 중...", 7);
+
+                if (Properties.Settings.Default.WaferReturnExcelOutPath != "")
+                {
+                    filePath = string.Format("{0}\\WaferReturnOut_{1}.xlsx", Properties.Settings.Default.WaferReturnExcelOutPath, DateTime.Now.ToString("yyyyMMddhhmmss"));
+                    workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                }
+                else
+                {
+                    filePath = string.Format("{0}\\WaferReturnOut_{1}.xlsx", System.Environment.CurrentDirectory + "\\WaferReturn", DateTime.Now.ToString("yyyyMMddhhmmss"));
+                    workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                }
+
+                
+
+                speech.SpeakAsync("엑셀 저장이 완료 되었습니다.");
+                SetWaferReturnProgressba("파일 저장 완료", 8);
+
+                
+
+                
+
+
+                workbook.Close();
+                application.Quit();
+
+                releaseObject(application);
+                releaseObject(worksheet1);
+                releaseObject(workbook);
+
+                SetWaferReturnProgressba("Excel 종료", 9);
+
+                if (DialogResult.Yes == MessageBox.Show("파일을 여시겠습니까?", "file open?", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    ProcessStartInfo info = new ProcessStartInfo("excel.exe", filePath);
+                    Process.Start(info);
+                }
+
+
+                SetWaferReturnProgressba("Excel 실행 완료", 10);
+                
+            }
+            else
+            {
+                MessageBox.Show("데이터가 없습니다.");
+            }
+        }
+
+        private string ExcelColumnIndexToName(int Index)
+        {
+            string range = "";
+            if (Index < 0) return range;
+            for (int i = 1; Index + i > 0; i = 0)
+            {
+                range = ((char)(65 + Index % 26)).ToString() + range;
+                Index /= 26;
+            }
+            if (range.Length > 1) range = ((char)((int)range[0] - 1)).ToString() + range.Substring(1);
+            return range;
+        }
+
+        private static void releaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception e)
+            {
+                obj = null;
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+
+        private void btn_WaferReturnExcel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                FolderBrowserDialog fd = new FolderBrowserDialog();
+
+                fd.ShowNewFolderButton = true;
+
+                if (Properties.Settings.Default.WaferReturnExcelOutPath == "")
+                    fd.SelectedPath = Environment.SpecialFolder.Desktop.ToString();
+                else
+                    fd.SelectedPath = Properties.Settings.Default.WaferReturnExcelOutPath;
+
+                if (DialogResult.OK == fd.ShowDialog())
+                {
+                    Properties.Settings.Default.WaferReturnExcelOutPath = fd.SelectedPath;
+                    Properties.Settings.Default.Save();
+
+                    toolTip1.SetToolTip(btn_WaferReturnExcel, string.Format("{0}\n경로 변경 : 마우스 오른쪽 클릭", Properties.Settings.Default.WaferReturnExcelOutPath));
+                }
+            }        
+            else
+            {
+                if (DialogResult.Yes == MessageBox.Show("Excel 저장 하시겠습니까?", "Excel 출력", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    WaferReturnExcelOut();
+                }
+            }
+        }
+
+        private void tb_ReturnWafer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Return)
+            {
+                Properties.Settings.Default.WaferReturnCode = tb_ReturnWafer.Text;
+                Properties.Settings.Default.Save();
+
+                button19_Click(sender, e);
+            }
+        }
+
+        private void btn_WaferReturnReset_Click(object sender, EventArgs e)
+        {
+            if(DialogResult.Yes == MessageBox.Show(string.Format("{0}-{1}{2}을 초기화 하시겠습니까?", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION),"초기화", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                for(int i = 0; i < dgv_ReturnWafer.RowCount; i++)
+                {
+                    string q = string.Format("update TB_RETURN_WAFER set [SCAN_TIME_1st]='',[SCAN_USER_NAME_1st]='', [SCAN_TIME_2nd] ='', [SCAN_USER_NAME_2nd]='' where [RETURN_NO]='{0}'", string.Format("{0}-{1}{2}", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION));
+
+                    run_sql_command(q);
+                }
+
+                button19_Click(sender, e);
+            }
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("종료 하시겠습니까?", "Wafer Raturn Mode 종료", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                tb_Year.Text = "";
+                tb_ReturnWafer.Text = "";
+                dgv_ReturnWafer.DataSource = 0;
+
+                SetWaferReturnControl(false);
+
+                tabControl_Sort.SelectedIndex = 0;
+            }
+        }
+
+        private void SetWaferReturnControl(bool b)
+        {
+            searched_row = 0;
+            input = "";
+            l_WaferReturnCount.Text = "0";
+
+            tb_WaferReturnScan.Enabled = b;
+            tb_ReturnWafer.Enabled = b;
+            tb_Year.Enabled = b;
+
+            btn_WaferReturnFind.Enabled = b;
+            btn_WaferReturnReadDB.Enabled = b;
+            btn_WaferReturnReset.Enabled = b;
+            btn_WaferReturnExcel.Enabled = b;
+
+            tb_WaferReturnScan.ImeMode = ImeMode.Alpha;
+
+
+        }
+
+        private void btn_Find_Click(object sender, EventArgs e)
+        {
+            int Realindex = -1;
+
+            input = Microsoft.VisualBasic.Interaction.InputBox("무엇을 검색하시겠습니까?", "Search", "", -1, -1);
+
+            if (input == "")
+                return;
+
+            searched_row = 0;
+
+            for (int n = 0; n < dgv_ReturnWafer.RowCount; n++)
+            {
+                if (dgv_ReturnWafer.Rows[n].Cells["LOT"].Value.ToString().IndexOf(input) != -1)
+                {
+                    dgv_ReturnWafer.Rows[n].Selected = true;
+                    dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = n;
+                    dgv_ReturnWafer.CurrentCell = dgv_ReturnWafer.Rows[n].Cells[0];
+                    searched_row = n;
+                    break;
+                }
+
+
+                if (dgv_ReturnWafer.Rows[n].Cells[3].Value.ToString().Contains(input) == true)
+                {
+                    dgv_ReturnWafer.Rows[n].Selected = true;
+                    dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = n;
+                    dgv_ReturnWafer.CurrentCell = dgv_ReturnWafer.Rows[n].Cells[0];
+                    searched_row = n;
+                    break;
+                }
+
+                if (n == dgv_ReturnWafer.RowCount - 1)
+                    MessageBox.Show("지정된 문자열을 찾을 수 없습니다.");
+            }
+        }
+
+        private void btn_WaferReturnFindNext_Click(object sender, EventArgs e)
+        {
+            for (int n = 0; n < dgv_ReturnWafer.RowCount; n++)
+            {
+                if (dgv_ReturnWafer.Rows[n].Cells["LOT"].Value.ToString().Contains(input) == true)
+                {
+                    if (searched_row < n)
+                    {
+                        dgv_ReturnWafer.Rows[n].Selected = true;
+                        dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = n;
+                        dgv_ReturnWafer.CurrentCell = dgv_ReturnWafer.Rows[n].Cells[0];
+                        searched_row = n;
+                        break;
+                    }
+                }
+
+                if (n == dgv_ReturnWafer.RowCount - 1)
+                {
+                    searched_row = -1;                        ;
+                    MessageBox.Show("지정된 문자열을 찾을 수 없습니다.");
+
+                }
+            }
+        }
+
+        private void btn_WaferReturnExcel_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tb_WaferReturnScan_MouseDown(object sender, MouseEventArgs e)
+        {
+            tb_WaferReturnScan.ImeMode = ImeMode.Alpha;
         }
 
         private void Split_data_sorting()
@@ -11714,7 +12949,7 @@ namespace Bank_Host
         }
 
         bool bselected_mode_index = false;
-        bool bmode6 = false, bmode7 = false, bmode8 = false;
+        bool bmode6 = false, bmode7 = false, bmode8 = false, bmode9 = false;
 
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -12101,21 +13336,23 @@ namespace Bank_Host
         {
             string loc = Properties.Settings.Default.LOCATION;
 
-            if(loc == "K4")
-            {
-                comboBox_mode.Items.Clear();
+            comboBox_mode.Items.Clear();
+
+            if (loc == "K4")
+            {                
                 comboBox_mode.Items.Add("모드1: Auto GR");
                 comboBox_mode.Items.Add("모드2: Auto GR(이전 작업 불러오기)");
                 comboBox_mode.Items.Add("모드3: Validation(Webservice)");
                 comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
-                comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
+                comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer");
                 comboBox_mode.Items.Add("모드6: Location History");
                 comboBox_mode.Items.Add("모드7: Split Log");
                 comboBox_mode.Items.Add("모드8: Scrap");
+                comboBox_mode.Items.Add("모드9: Wafer Return");
             }
             else if(loc == "K5")
             {
-                comboBox_mode.Items.Clear();
+                
                 comboBox_mode.Items.Add("모드1: Auto GR");
                 comboBox_mode.Items.Add("모드2: Auto GR(이전 작업 불러오기)");
                 comboBox_mode.Items.Add("모드3: Validation(Webservice)");
@@ -12123,8 +13360,7 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
             }
             else if(loc == "K3")
-            {
-                comboBox_mode.Items.Clear();
+            {                
                 comboBox_mode.Items.Add("모드1: Auto GR");
                 comboBox_mode.Items.Add("모드2: Auto GR(이전 작업 불러오기)");
                 comboBox_mode.Items.Add("모드3: Validation(Webservice)");
@@ -12307,6 +13543,7 @@ namespace Bank_Host
             form.MinimizeBox = false;
             form.AcceptButton = buttonOk;
             form.CancelButton = buttonCancel;
+            form.TopMost = true;
 
             form.Text = title;
             //picture.Image = Properties.Resources.Clogo;
@@ -12352,8 +13589,12 @@ namespace Bank_Host
         }
 
 
+        
+
     }
 
+
+    
     
 
 

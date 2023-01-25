@@ -358,6 +358,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BankHost_main.en.resx">
+      <DependentUpon>BankHost_main.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BankHost_main.resx">
       <DependentUpon>BankHost_main.cs</DependentUpon>
       <SubType>Designer</SubType>

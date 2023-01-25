@@ -856,7 +856,7 @@ namespace Bank_Host
                                 Thread.Sleep(1);
                             }
 
-                            if (Form_Sort.nResult == -1) //Lot NG
+                                if (Form_Sort.nResult == -1) //Lot NG
                             {
                                 bGunRingMode_Run = false;
                                 return;
