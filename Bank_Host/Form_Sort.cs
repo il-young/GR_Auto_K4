@@ -5532,7 +5532,7 @@ namespace Bank_Host
                                     }
                                     else if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Yellow)        // 2차 검수
                                     {
-                                        if (dgv_ReturnWafer.Rows[i].Cells["SCAN_USER_NAME_1st"].Value.ToString() == BankHost_main.strID)
+                                        if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() == BankHost_main.strMESID)
                                         {
                                             speech.SpeakAsync("검수자 중복");
                                         }
@@ -5549,7 +5549,7 @@ namespace Bank_Host
 
                                             string q = string.Format("update [TB_RETURN_WAFER] set [SCAN_TIME_2nd]='{0}',[SCAN_USER_NAME_2nd]='{1}', [AMKOR_ID]='{6}' where [DEVICE_NAME]='{2}' and [LOT]='{3}' and [DCC]='{4}' and [RETURN_QTY]={5}",
                                                 DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
-                                                BankHost_main.strID,
+                                                BankHost_main.strMESID,
                                                 amkorLabel.Device,
                                                 amkorLabel.Lot,
                                                 amkorLabel.DCC,
@@ -5579,7 +5579,7 @@ namespace Bank_Host
 
                                         string q = string.Format("update [TB_RETURN_WAFER] set [SCAN_TIME_1st]='{0}',[SCAN_USER_NAME_1st]='{1}', [AMKOR_ID]='{6}' where [DEVICE_NAME]='{2}' and [LOT]='{3}' and [DCC]='{4}' and [RETURN_QTY]={5}",
                                             DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
-                                            BankHost_main.strID,
+                                            BankHost_main.strMESID,
                                             amkorLabel.Device,
                                             amkorLabel.Lot,
                                             amkorLabel.DCC,
@@ -12206,43 +12206,51 @@ namespace Bank_Host
 
                 for (int i = 0; i < WaferReturnInfo.Count; i++)
                 {
-                    for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
+                    string q = string.Format("select [RETURN_NO] from [TB_RETURN_WAFER] with(nolock) where [RETURN_NO]= '{0}-{1}'", tb_Year.Text, WaferReturnInfo[i].WebInfo.ReturnNum);
+                    if (SearchData(q).Tables.Count == 0)
                     {
-                        SetWaferReturnProgressba(string.Format("Add Database : {0}", WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
 
-                        query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
-                            tb_Year.Text + "-" + WaferReturnInfo[i].WebInfo.ReturnNum,
-                            WaferReturnInfo[i].ExcelInfo[j].Seq,
-                            WaferReturnInfo[i].ExcelInfo[j].PDL,
-                            WaferReturnInfo[i].ExcelInfo[j].DeviceName,
-                            WaferReturnInfo[i].ExcelInfo[j].LotNum,
-                            WaferReturnInfo[i].ExcelInfo[j].Dcc,
-                            WaferReturnInfo[i].ExcelInfo[j].DsQty,
-                            WaferReturnInfo[i].ExcelInfo[j].ReturnQty,
-                            WaferReturnInfo[i].ExcelInfo[j].Remark,
-                            WaferReturnInfo[i].ExcelInfo[j].Loc,
-                            WaferReturnInfo[i].ExcelInfo[j].SL,
-                            "",
-                            "",
-                            WaferReturnInfo[i].WebInfo.InputDate,
-                            WaferReturnInfo[i].WebInfo.RequestDate,
-                            WaferReturnInfo[i].WebInfo.UserID,
-                            WaferReturnInfo[i].WebInfo.BoxQty,
-                            WaferReturnInfo[i].WebInfo.Remark,
-                            "",
-                            "",
-                            WaferReturnInfo[i].WebInfo.CustCode,
-                            "",
-                            ""
-                            );
+                        for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
+                        {
+                            SetWaferReturnProgressba(string.Format("Add Database : {0}", WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
 
-                        run_sql_command(query);
+                            query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
+                                tb_Year.Text + "-" + WaferReturnInfo[i].WebInfo.ReturnNum,
+                                WaferReturnInfo[i].ExcelInfo[j].Seq,
+                                WaferReturnInfo[i].ExcelInfo[j].PDL,
+                                WaferReturnInfo[i].ExcelInfo[j].DeviceName,
+                                WaferReturnInfo[i].ExcelInfo[j].LotNum,
+                                WaferReturnInfo[i].ExcelInfo[j].Dcc,
+                                WaferReturnInfo[i].ExcelInfo[j].DsQty,
+                                WaferReturnInfo[i].ExcelInfo[j].ReturnQty,
+                                WaferReturnInfo[i].ExcelInfo[j].Remark,
+                                WaferReturnInfo[i].ExcelInfo[j].Loc,
+                                WaferReturnInfo[i].ExcelInfo[j].SL,
+                                "",
+                                "",
+                                WaferReturnInfo[i].WebInfo.InputDate,
+                                WaferReturnInfo[i].WebInfo.RequestDate,
+                                WaferReturnInfo[i].WebInfo.UserID,
+                                WaferReturnInfo[i].WebInfo.BoxQty,
+                                WaferReturnInfo[i].WebInfo.Remark,
+                                "",
+                                "",
+                                WaferReturnInfo[i].WebInfo.CustCode,
+                                "",
+                                ""
+                                );
+
+                            run_sql_command(query);
+                        }
                     }
-
-
-
-
+                    else
+                    {
+                        cnt += WaferReturnInfo[i].ExcelInfo.Count;
+                        SetWaferReturnProgressba(string.Format("{0} is Exist", WaferReturnInfo[i].WebInfo.ReturnNum), cnt);
+                    }
                 }
+
+                
             }
             catch (Exception ex)
             {
@@ -12288,11 +12296,13 @@ namespace Bank_Host
 
             for(int i = 0; i< dgv_ReturnWafer.RowCount; i++)
             {
-                if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[10].Value.ToString() == "")
+                if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[11].Value.ToString() == "")
                     dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
-                else if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[10].Value.ToString() != "")
-                    dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                else if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[11].Value.ToString() != "")
+                    dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
             }
+
+            bWaferReturnNumChange = false;
 
             tb_WaferReturnScan.Focus();
         }
@@ -12658,11 +12668,25 @@ namespace Bank_Host
         {
             if(DialogResult.Yes == MessageBox.Show(string.Format("{0}-{1}{2}을 초기화 하시겠습니까?", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION),"초기화", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
             {
-                for(int i = 0; i < dgv_ReturnWafer.RowCount; i++)
+                if (bWaferReturnNumChange == false)
                 {
-                    string q = string.Format("update TB_RETURN_WAFER set [SCAN_TIME_1st]='',[SCAN_USER_NAME_1st]='', [SCAN_TIME_2nd] ='', [SCAN_USER_NAME_2nd]='' where [RETURN_NO]='{0}'", string.Format("{0}-{1}{2}", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION));
+                    if (dgv_ReturnWafer.RowCount != 0)
+                    {
+                        for (int i = 0; i < dgv_ReturnWafer.RowCount; i++)
+                        {
+                            string q = string.Format("update TB_RETURN_WAFER set [SCAN_TIME_1st]='',[SCAN_USER_NAME_1st]='', [SCAN_TIME_2nd] ='', [SCAN_USER_NAME_2nd]='' where [RETURN_NO]='{0}'", string.Format("{0}-{1}{2}", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION));
 
-                    run_sql_command(q);
+                            run_sql_command(q);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("조회된 데이터가 없습니다.", "데이터 없음!!!");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Return# 이 변경 되었습니다.\n다시 조회 후 초기화 하세요", "재 조회 후 초기화");
                 }
 
                 button19_Click(sender, e);
@@ -12698,7 +12722,10 @@ namespace Bank_Host
             btn_WaferReturnReset.Enabled = b;
             btn_WaferReturnExcel.Enabled = b;
 
+
+            bDownloadComp = true;
             tb_WaferReturnScan.ImeMode = ImeMode.Alpha;
+
 
 
         }
@@ -12773,6 +12800,13 @@ namespace Bank_Host
         private void tb_WaferReturnScan_MouseDown(object sender, MouseEventArgs e)
         {
             tb_WaferReturnScan.ImeMode = ImeMode.Alpha;
+        }
+
+        bool bWaferReturnNumChange = false;
+
+        private void tb_ReturnWafer_TextChanged(object sender, EventArgs e)
+        {
+            bWaferReturnNumChange = true;
         }
 
         private void Split_data_sorting()
