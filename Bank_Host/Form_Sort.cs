@@ -12207,7 +12207,9 @@ namespace Bank_Host
                 for (int i = 0; i < WaferReturnInfo.Count; i++)
                 {
                     string q = string.Format("select [RETURN_NO] from [TB_RETURN_WAFER] with(nolock) where [RETURN_NO]= '{0}-{1}'", tb_Year.Text, WaferReturnInfo[i].WebInfo.ReturnNum);
-                    if (SearchData(q).Tables.Count == 0)
+                     DataSet ds =  SearchData(q);
+
+                    if (ds.Tables[0].Rows.Count == 0)
                     {
 
                         for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
