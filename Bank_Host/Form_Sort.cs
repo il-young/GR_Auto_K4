@@ -3553,6 +3553,7 @@ namespace Bank_Host
             if (bGRrun)
                 return;
 
+            nLabelcount = 0;
             int n = tabControl_Sort.SelectedIndex;
             BankHost_main.nSortTabNo = n;
             AmkorLabelCnt = 1;
@@ -5458,7 +5459,14 @@ namespace Bank_Host
                 if (pass == false)
                 {
                     if (cb_WaferReturnPrint.Checked == false)
-                        Frm_Print.Fnc_Print(temp, int.Parse(l_WaferReturnCount.Text), dgv_ReturnWafer.RowCount);
+                        Frm_Print.Fnc_Print(temp, int.Parse(l_WaferReturnCount.Text.Split('/')[0]), dgv_ReturnWafer.RowCount);
+                }
+                else
+                {
+                    speech.SpeakAsync("잘 못된 라트 입니다.");
+
+                    Form_Board _Board = new Form_Board("Validation fail", Color.Red);
+                    _Board.ShowDialog();
                 }
             }
             else if (str_temp.Length == 8)
@@ -5479,7 +5487,14 @@ namespace Bank_Host
                 if (pass == false)
                 {
                     if (cb_WaferReturnPrint.Checked == false)
-                        Frm_Print.Fnc_Print(temp, int.Parse(l_WaferReturnCount.Text), dgv_ReturnWafer.RowCount);
+                        Frm_Print.Fnc_Print(temp, int.Parse(l_WaferReturnCount.Text.Split('/')[0]), dgv_ReturnWafer.RowCount);
+                }
+                else
+                {
+                    speech.SpeakAsync("잘 못된 라트 입니다.");
+
+                    Form_Board _Board = new Form_Board("Validation fail", Color.Red);
+                    _Board.ShowDialog();
                 }
             }
 
@@ -5558,9 +5573,9 @@ namespace Bank_Host
                                                 );
                                             run_sql_command(q);
 
-                                            int a = int.Parse(l_WaferReturnCount.Text);
+                                            int a = int.Parse(l_WaferReturnCount.Text.Split('/')[0]);
 
-                                            l_WaferReturnCount.Text = string.Format("{0}", ++a);
+                                            l_WaferReturnCount.Text = string.Format("{0} / {1}", ++a, dgv_ReturnWafer.RowCount);
 
                                             speech.SpeakAsync(string.Format("{0} 완료", dgv_ReturnWafer.Rows[i].Cells[0].Value));
                                         }
@@ -5588,9 +5603,9 @@ namespace Bank_Host
                                             );
                                         run_sql_command(q);
 
-                                        int a = int.Parse(l_WaferReturnCount.Text);
+                                        int a = int.Parse(l_WaferReturnCount.Text.Split('/')[0]);
 
-                                        l_WaferReturnCount.Text = string.Format("{0}", ++a);
+                                        l_WaferReturnCount.Text = string.Format("{0} / {1}", ++a, dgv_ReturnWafer.RowCount);
 
                                         speech.SpeakAsync(string.Format("{0} 완료", dgv_ReturnWafer.Rows[i].Cells[0].Value));
                                     }
@@ -12373,7 +12388,7 @@ namespace Bank_Host
 
                     if (int.TryParse(inputData, out cnt) == true)
                     {
-                        if (cnt <= int.Parse(l_WaferReturnCount.Text) || l_WaferReturnCount.Text =="0")
+                        if (cnt <= int.Parse(l_WaferReturnCount.Text.Split('/')[0]) || l_WaferReturnCount.Text.Split('/')[0].Trim() == "0")
                         {
                             Frm_Print.Fnc_Print(temp, cnt, dgv_ReturnWafer.RowCount);
                             speech.SpeakAsync("라벨 출력");
