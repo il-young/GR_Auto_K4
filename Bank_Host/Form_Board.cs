@@ -15,6 +15,7 @@ namespace Bank_Host
         string m = "";
         string btext = "";
         Color MSGColor;
+        Color BackColor;
 
         public Form_Board(string msg)
         {
@@ -23,10 +24,11 @@ namespace Bank_Host
             InitializeComponent();
         }
 
-        public Form_Board(string msg, Color c)
+        public Form_Board(string msg, Color c, Color bc)
         {
             m = msg;
             MSGColor = c;
+            BackColor = bc;
 
             InitializeComponent();
         }
@@ -49,6 +51,9 @@ namespace Bank_Host
 
             if (MSGColor != null)
                 textBox1.ForeColor = MSGColor;
+
+            if (BackColor != null)
+                textBox1.BackColor = BackColor;
         }
 
         private void button1_Click(object sender, EventArgs e)
