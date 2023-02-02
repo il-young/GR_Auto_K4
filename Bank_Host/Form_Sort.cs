@@ -5463,10 +5463,7 @@ namespace Bank_Host
                 }
                 else
                 {
-                    speech.SpeakAsync("잘 못된 라트 입니다.");
-
-                    Form_Board _Board = new Form_Board("Validation fail", Color.Red);
-                    _Board.ShowDialog();
+                    
                 }
             }
             else if (str_temp.Length == 8)
@@ -5491,10 +5488,7 @@ namespace Bank_Host
                 }
                 else
                 {
-                    speech.SpeakAsync("잘 못된 라트 입니다.");
-
-                    Form_Board _Board = new Form_Board("Validation fail", Color.Red);
-                    _Board.ShowDialog();
+                    
                 }
             }
 
@@ -5522,6 +5516,8 @@ namespace Bank_Host
         bool check_WaferReturnDuplicate(stAmkor_Label amkorLabel)
         {
             bool res = true;
+            bool duplicate = false;
+            bool isFail = false;
 
             for (int i = 0; i < dgv_ReturnWafer.RowCount; i++)
             {
@@ -5542,6 +5538,9 @@ namespace Bank_Host
                                     if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Blue)
                                     {
                                         res = true;
+                                        duplicate = true;
+                                        isFail = true;
+
                                         speech.SpeakAsync("중복");
                                         break;
                                     }
@@ -5578,6 +5577,11 @@ namespace Bank_Host
                                             l_WaferReturnCount.Text = string.Format("{0} / {1}", ++a, dgv_ReturnWafer.RowCount);
 
                                             speech.SpeakAsync(string.Format("{0} 완료", dgv_ReturnWafer.Rows[i].Cells[0].Value));
+
+                                            if (a == dgv_ReturnWafer.RowCount)
+                                            {
+                                                speech.SpeakAsync(string.Format("{0} 라트 이차 검수 완료 되었습니다.", dgv_ReturnWafer.RowCount));
+                                            }
                                         }
                                         break;
                                     }
@@ -5608,11 +5612,47 @@ namespace Bank_Host
                                         l_WaferReturnCount.Text = string.Format("{0} / {1}", ++a, dgv_ReturnWafer.RowCount);
 
                                         speech.SpeakAsync(string.Format("{0} 완료", dgv_ReturnWafer.Rows[i].Cells[0].Value));
+
+                                        if(a == dgv_ReturnWafer.RowCount)
+                                        {
+                                            speech.SpeakAsync(string.Format("{0} 라트 1차 검수 완료 되었습니다.", dgv_ReturnWafer.RowCount));
+                                        }
                                     }
                                 }
+                                else
+                                {
+                                    isFail = true;
+                                }
+                            }
+                            else
+                            {
+                                isFail = true;
                             }
                         }
+                        else
+                        {
+                            isFail = true;
+                        }
                     }
+                    else
+                    {
+                        isFail = true;
+                    }
+                }
+                else
+                {
+                    isFail = true;
+                }
+            }
+
+            if(isFail == true)
+            {
+                speech.SpeakAsync("잘 못된 라트 입니다.");
+
+                if(duplicate == true)
+                { 
+                    Form_Board _Board = new Form_Board("Validation fail", Color.Black, Color.Red);
+                    _Board.ShowDialog();
                 }
             }
 
@@ -9846,7 +9886,7 @@ namespace Bank_Host
                 ScrapMode = 1;
                 SetProgressba("1차 검수 완료 후 2차 검수 진행 가능 합니다.", 0);
 
-                using (Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Red))
+                using (Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Black,Color.Red))
                 {
                     board.ShowDialog();
                 }
@@ -9867,14 +9907,14 @@ namespace Bank_Host
             DataSet ds = SearchData(string.Format("select COMMENT from TB_SCRAP_COMMENT with(nolock) where [CUST]='{0}'", code));
             if (ds.Tables[0].Rows.Count > 0)
             {
-                using (Form_Board board = new Form_Board(string.Format("고객 정보 : \r\n{0}", ds.Tables[0].Rows[0][0].ToString()), Color.Orange))
+                using (Form_Board board = new Form_Board(string.Format("고객 정보 : \r\n{0}", ds.Tables[0].Rows[0][0].ToString()), Color.Orange, Color.LightGray))
                 {
                     board.ShowDialog();
                 }
             }
             else
             {
-                using (Form_Board board = new Form_Board(string.Format("고객 정보 : \r\nComment를 등록 하세요"), Color.Orange))
+                using (Form_Board board = new Form_Board(string.Format("고객 정보 : \r\nComment를 등록 하세요"), Color.Orange, Color.LightGray))
                 {
                     board.ShowDialog();
                 }
@@ -10328,7 +10368,7 @@ namespace Bank_Host
                 else
                 {
                     SpeakST("스크랩 자재가 아닙니다.");
-                    Form_Board warring = new Form_Board("스크랩 자재가 아닙니다.", Color.Red);
+                    Form_Board warring = new Form_Board("스크랩 자재가 아닙니다.", Color.Black, Color.Red);
                     warring.ShowDialog();
                 }
 
@@ -12043,7 +12083,7 @@ namespace Bank_Host
 
                     SetWaferReturnProgressba("Excel File Down 완료", 9);
 
-                    fi = di.GetFiles("WaferReturnList*.xls");
+                    fi = di.GetFiles("WaferReturnList.xls");
 
                     DateTime lastdate = new DateTime();
 
@@ -12705,6 +12745,8 @@ namespace Bank_Host
                 {
                     MessageBox.Show("Return# 이 변경 되었습니다.\n다시 조회 후 초기화 하세요", "재 조회 후 초기화");
                 }
+
+                l_WaferReturnCount.Text = string.Format("{0} / {1}", 0, dgv_ReturnWafer.RowCount);
 
                 button19_Click(sender, e);
             }
