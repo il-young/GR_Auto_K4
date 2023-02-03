@@ -3552,6 +3552,10 @@ namespace Bank_Host
 
         private void tabControl_Sort_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+            Properties.Settings.Default.LabelCopy = false;
+            Properties.Settings.Default.Save();
+
             if (bGRrun)
                 return;
 
@@ -3559,6 +3563,8 @@ namespace Bank_Host
             int n = tabControl_Sort.SelectedIndex;
             BankHost_main.nSortTabNo = n;
             AmkorLabelCnt = 1;
+
+
 
             if (bselected_mode_index == true)
             {
