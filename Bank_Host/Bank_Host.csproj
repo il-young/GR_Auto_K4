@@ -249,6 +249,12 @@
     <Compile Include="Form_email_review.Designer.cs">
       <DependentUpon>Form_email_review.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_InfoBoard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_InfoBoard.Designer.cs">
+      <DependentUpon>Form_InfoBoard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Input.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -379,6 +385,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_email_review.resx">
       <DependentUpon>Form_email_review.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_InfoBoard.resx">
+      <DependentUpon>Form_InfoBoard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Input.resx">
       <DependentUpon>Form_Input.cs</DependentUpon>
