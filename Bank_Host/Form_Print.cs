@@ -901,8 +901,8 @@ namespace Bank_Host
                 dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
             }
 
-            if(ttl != 0)
-                dados += string.Format("^FO {0},{1}^A0N,80 ^FD{2}/{3}", 760 - ((ttl.ToString().Length + cnt.ToString().Length)*35), 125, cnt, ttl);
+            if(ttl > 1)
+                dados += string.Format("^FO {0},{1}^A0N,80 ^FD{2}/{3}", 760 - ((ttl.ToString().Length + cnt.ToString().Length)*35), 140, cnt, ttl);
 
             dados = dados + P_SC_END;
 
@@ -1020,14 +1020,14 @@ namespace Bank_Host
 
             if (BankHost_main.strMultiLot == "YES")
             {
-                if(nttl != 1)
+                if(nttl > 1)
                 {
                     dados += string.Format("^FO600,130^A0,90,90^FD{0}/{1}", nIndex, nttl);
                 }                
             }
 
-            if (nttl != 0)
-                dados += string.Format("^FO {0},{1}^A0N,80 ^FD{2}/{3}", 760 - ((nttl.ToString().Length + nIndex.ToString().Length) * 35), 125, nIndex, nttl);
+            if (nttl > 1)
+                dados += string.Format("^FO {0},{1}^A0N,80 ^FD{2}/{3}", 760 - ((nttl.ToString().Length + nIndex.ToString().Length) * 35), 140, nIndex, nttl);
 
             dados = dados + P_SC_END;
 

@@ -12090,8 +12090,10 @@ namespace Bank_Host
 
 
                     SetWaferReturnProgressba("Excel File Down 완료", 9);
+                    Thread.Sleep(1000);
 
-                    fi = di.GetFiles("WaferReturnList.xls");
+
+                    fi = di.GetFiles();
 
                     DateTime lastdate = new DateTime();
 
@@ -12255,6 +12257,9 @@ namespace Bank_Host
             string query = "";
             int max = 0;
             int cnt = 0;
+            int passCnt = 0;
+            int insertCnt = 0;
+
 
             try
             {
@@ -12269,17 +12274,24 @@ namespace Bank_Host
 
                 for (int i = 0; i < WaferReturnInfo.Count; i++)
                 {
-                    string q = string.Format("select [RETURN_NO] from [TB_RETURN_WAFER] with(nolock) where [RETURN_NO]= '{0}-{1}'", tb_Year.Text, WaferReturnInfo[i].WebInfo.ReturnNum);
-                     DataSet ds =  SearchData(q);
+                   
 
-                    if (ds.Tables[0].Rows.Count == 0)
+                    //if (ds.Tables[0].Rows.Count == 0)
                     {
 
                         for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
                         {
-                            SetWaferReturnProgressba(string.Format("Add Database : {0}", WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
+                            string q = string.Format("select [RETURN_NO] from [TB_RETURN_WAFER] with(nolock) where [RETURN_NO]= '{0}-{1}' and [SEQ]='{2}' and [LOT]='{3}'", tb_Year.Text, WaferReturnInfo[i].WebInfo.ReturnNum, WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum);
+                            DataSet ds = SearchData(q);
 
-                            query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
+                            Thread.Sleep(10);
+
+                            
+                            if (ds.Tables[0].Rows.Count == 0)
+                            {
+                                ++insertCnt;
+
+                                query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
                                 tb_Year.Text + "-" + WaferReturnInfo[i].WebInfo.ReturnNum,
                                 WaferReturnInfo[i].ExcelInfo[j].Seq,
                                 WaferReturnInfo[i].ExcelInfo[j].PDL,
@@ -12305,17 +12317,26 @@ namespace Bank_Host
                                 ""
                                 );
 
-                            run_sql_command(query);
+                                run_sql_command(query);
+                                SetWaferReturnProgressba(string.Format("Add : {0}, {1}", WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
+                            }
+                            else
+                            {
+                                ++passCnt;
+                                SetWaferReturnProgressba(string.Format("Pass:{0},{1}", WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
+                            }
+
+                            Thread.Sleep(10);
                         }
                     }
-                    else
-                    {
-                        cnt += WaferReturnInfo[i].ExcelInfo.Count;
-                        SetWaferReturnProgressba(string.Format("{0} is Exist", WaferReturnInfo[i].WebInfo.ReturnNum), cnt);
-                    }
+                    //else
+                    //{
+                    //    cnt += WaferReturnInfo[i].ExcelInfo.Count;
+                    //    SetWaferReturnProgressba(string.Format("{0} is Exist", WaferReturnInfo[i].WebInfo.ReturnNum), cnt);
+                    //}
                 }
 
-                
+                SetWaferReturnProgressba(string.Format("Insert:{0},Pass:{1}", insertCnt, passCnt), pb_WaferReturn.Maximum);
             }
             catch (Exception ex)
             {
@@ -12534,13 +12555,15 @@ namespace Bank_Host
 
                 worksheet1.get_Range("A1").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
-                rd = worksheet1.Range[worksheet1.Cells[3, 4], worksheet1.Cells[4, 12]];
+                rd = worksheet1.Range[worksheet1.Cells[3, 3], worksheet1.Cells[4, 11]];
                 rd.Font.Color = Color.Red;
                 rd.Font.Size = 20.0;
                 rd.Merge();
                 rd.HorizontalAlignment = HorizontalAlignment.Center;
                 rd.Value2 = "★고객 요청 사항 확인★";
                 worksheet1.get_Range("D3").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+
 
                 if (MtlList.Rows.Count > 0)
                 {
@@ -12567,6 +12590,9 @@ namespace Bank_Host
                 //해당위치에 컬럼명을 담기
                 //worksheet1.get_Range("A1", columns[MtlList.Columns.Count - 1] + "1").Value2 = headers;
                 //해당위치부터 데이터정보를 담기
+
+                
+
                 worksheet1.get_Range("A3").Value = cust;
                 worksheet1.get_Range("A4").Value = returnnum;
                 worksheet1.get_Range("B4").Value = totlot;
@@ -12601,6 +12627,8 @@ namespace Bank_Host
                 worksheet1.get_Range("A6", columns[MtlList.Columns.Count - 3] + (MtlList.Rows.Count + 5).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
                 worksheet1.Cells.NumberFormat = @"@";
                 worksheet1.Columns.AutoFit();
+
+                worksheet1.get_Range("L3").Value = "MBB / DESICCANT / HUMDITY CARD 확인 요망";
 
                 SetWaferReturnProgressba("Sheet Page Setup...", 6);
                 worksheet1.PageSetup.PrintArea = string.Format("A1:{0}", columns[MtlList.Columns.Count - 3] + (MtlList.Rows.Count + 5).ToString());
@@ -12857,11 +12885,6 @@ namespace Bank_Host
 
                 }
             }
-        }
-
-        private void btn_WaferReturnExcel_Click_1(object sender, EventArgs e)
-        {
-
         }
 
         private void tb_WaferReturnScan_MouseDown(object sender, MouseEventArgs e)
