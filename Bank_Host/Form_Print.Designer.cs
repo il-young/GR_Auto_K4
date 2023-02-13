@@ -30,6 +30,22 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tb_2ndPrinterIP = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.SecondPrintOffsetY = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.SecondPrintOffsetX = new System.Windows.Forms.NumericUpDown();
+            this.btn_CustNameDel = new System.Windows.Forms.Button();
+            this.btn_CustNameAdd = new System.Windows.Forms.Button();
+            this.tb_CustName = new System.Windows.Forms.TextBox();
+            this.lb_CustName = new System.Windows.Forms.ListBox();
+            this.btn_2ndPrinterSave = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.OffsetY = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.OffsetX = new System.Windows.Forms.NumericUpDown();
             this.pictureBox_bcr = new System.Windows.Forms.PictureBox();
             this.textBox_dcc = new System.Windows.Forms.TextBox();
             this.textBox_coo = new System.Windows.Forms.TextBox();
@@ -62,19 +78,20 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox_receivedata = new System.Windows.Forms.TextBox();
             this.label_state = new System.Windows.Forms.Label();
-            this.OffsetX = new System.Windows.Forms.NumericUpDown();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.OffsetY = new System.Windows.Forms.NumericUpDown();
+            this.cb_GreenLabelPrint = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OffsetY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGreen;
+            this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.OffsetY);
             this.panel1.Controls.Add(this.label12);
@@ -109,11 +126,193 @@
             this.panel1.Size = new System.Drawing.Size(1200, 433);
             this.panel1.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cb_GreenLabelPrint);
+            this.groupBox1.Controls.Add(this.tb_2ndPrinterIP);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Controls.Add(this.SecondPrintOffsetY);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.SecondPrintOffsetX);
+            this.groupBox1.Controls.Add(this.btn_CustNameDel);
+            this.groupBox1.Controls.Add(this.btn_CustNameAdd);
+            this.groupBox1.Controls.Add(this.tb_CustName);
+            this.groupBox1.Controls.Add(this.lb_CustName);
+            this.groupBox1.Controls.Add(this.btn_2ndPrinterSave);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.groupBox1.Location = new System.Drawing.Point(866, 20);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(331, 410);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "2nd Printer";
+            // 
+            // tb_2ndPrinterIP
+            // 
+            this.tb_2ndPrinterIP.Location = new System.Drawing.Point(80, 38);
+            this.tb_2ndPrinterIP.Name = "tb_2ndPrinterIP";
+            this.tb_2ndPrinterIP.Size = new System.Drawing.Size(245, 39);
+            this.tb_2ndPrinterIP.TabIndex = 17;
+            // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label15.Location = new System.Drawing.Point(6, 355);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(141, 50);
+            this.label15.TabIndex = 16;
+            this.label15.Text = "Offset Y :";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // SecondPrintOffsetY
+            // 
+            this.SecondPrintOffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SecondPrintOffsetY.Location = new System.Drawing.Point(153, 360);
+            this.SecondPrintOffsetY.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.SecondPrintOffsetY.Name = "SecondPrintOffsetY";
+            this.SecondPrintOffsetY.Size = new System.Drawing.Size(172, 43);
+            this.SecondPrintOffsetY.TabIndex = 15;
+            this.SecondPrintOffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label16
+            // 
+            this.label16.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label16.Location = new System.Drawing.Point(6, 306);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(141, 50);
+            this.label16.TabIndex = 14;
+            this.label16.Text = "Offset X :";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // SecondPrintOffsetX
+            // 
+            this.SecondPrintOffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SecondPrintOffsetX.Location = new System.Drawing.Point(153, 311);
+            this.SecondPrintOffsetX.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.SecondPrintOffsetX.Name = "SecondPrintOffsetX";
+            this.SecondPrintOffsetX.Size = new System.Drawing.Size(172, 43);
+            this.SecondPrintOffsetX.TabIndex = 13;
+            this.SecondPrintOffsetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // btn_CustNameDel
+            // 
+            this.btn_CustNameDel.Location = new System.Drawing.Point(87, 270);
+            this.btn_CustNameDel.Name = "btn_CustNameDel";
+            this.btn_CustNameDel.Size = new System.Drawing.Size(68, 35);
+            this.btn_CustNameDel.TabIndex = 6;
+            this.btn_CustNameDel.Text = "Del";
+            this.btn_CustNameDel.UseVisualStyleBackColor = true;
+            this.btn_CustNameDel.Click += new System.EventHandler(this.btn_CustNameDel_Click);
+            // 
+            // btn_CustNameAdd
+            // 
+            this.btn_CustNameAdd.Location = new System.Drawing.Point(6, 270);
+            this.btn_CustNameAdd.Name = "btn_CustNameAdd";
+            this.btn_CustNameAdd.Size = new System.Drawing.Size(75, 35);
+            this.btn_CustNameAdd.TabIndex = 5;
+            this.btn_CustNameAdd.Text = "Add";
+            this.btn_CustNameAdd.UseVisualStyleBackColor = true;
+            this.btn_CustNameAdd.Click += new System.EventHandler(this.btn_CustNameAdd_Click);
+            // 
+            // tb_CustName
+            // 
+            this.tb_CustName.Location = new System.Drawing.Point(6, 230);
+            this.tb_CustName.Name = "tb_CustName";
+            this.tb_CustName.Size = new System.Drawing.Size(319, 39);
+            this.tb_CustName.TabIndex = 4;
+            // 
+            // lb_CustName
+            // 
+            this.lb_CustName.FormattingEnabled = true;
+            this.lb_CustName.ItemHeight = 27;
+            this.lb_CustName.Location = new System.Drawing.Point(6, 85);
+            this.lb_CustName.Name = "lb_CustName";
+            this.lb_CustName.Size = new System.Drawing.Size(319, 139);
+            this.lb_CustName.TabIndex = 3;
+            // 
+            // btn_2ndPrinterSave
+            // 
+            this.btn_2ndPrinterSave.Location = new System.Drawing.Point(228, 270);
+            this.btn_2ndPrinterSave.Name = "btn_2ndPrinterSave";
+            this.btn_2ndPrinterSave.Size = new System.Drawing.Size(97, 35);
+            this.btn_2ndPrinterSave.TabIndex = 2;
+            this.btn_2ndPrinterSave.Text = "SAVE";
+            this.btn_2ndPrinterSave.UseVisualStyleBackColor = true;
+            this.btn_2ndPrinterSave.Click += new System.EventHandler(this.btn_2ndPrinterSave_Click);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 43);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(68, 27);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "IP : ";
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label13.Location = new System.Drawing.Point(492, 266);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(160, 50);
+            this.label13.TabIndex = 12;
+            this.label13.Text = "Offset Y :";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // OffsetY
+            // 
+            this.OffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.OffsetY.Location = new System.Drawing.Point(658, 271);
+            this.OffsetY.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.OffsetY.Name = "OffsetY";
+            this.OffsetY.Size = new System.Drawing.Size(172, 43);
+            this.OffsetY.TabIndex = 11;
+            this.OffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OffsetY.ValueChanged += new System.EventHandler(this.OffsetY_ValueChanged);
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label12.Location = new System.Drawing.Point(492, 217);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(160, 50);
+            this.label12.TabIndex = 10;
+            this.label12.Text = "Offset X :";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // OffsetX
+            // 
+            this.OffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.OffsetX.Location = new System.Drawing.Point(658, 222);
+            this.OffsetX.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.OffsetX.Name = "OffsetX";
+            this.OffsetX.Size = new System.Drawing.Size(172, 43);
+            this.OffsetX.TabIndex = 9;
+            this.OffsetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OffsetX.ValueChanged += new System.EventHandler(this.OffsetX_ValueChanged);
+            // 
             // pictureBox_bcr
             // 
-            this.pictureBox_bcr.Location = new System.Drawing.Point(953, 273);
+            this.pictureBox_bcr.Location = new System.Drawing.Point(526, 320);
             this.pictureBox_bcr.Name = "pictureBox_bcr";
-            this.pictureBox_bcr.Size = new System.Drawing.Size(180, 132);
+            this.pictureBox_bcr.Size = new System.Drawing.Size(159, 110);
             this.pictureBox_bcr.TabIndex = 2;
             this.pictureBox_bcr.TabStop = false;
             // 
@@ -178,7 +377,7 @@
             this.textBox_device.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.textBox_device.Location = new System.Drawing.Point(184, 173);
             this.textBox_device.Name = "textBox_device";
-            this.textBox_device.Size = new System.Drawing.Size(418, 43);
+            this.textBox_device.Size = new System.Drawing.Size(303, 43);
             this.textBox_device.TabIndex = 4;
             this.textBox_device.Text = "4HD8-BASE-TR1C";
             this.textBox_device.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_device_KeyPress);
@@ -198,9 +397,9 @@
             // 
             this.textBox_amkorid.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_amkorid.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_amkorid.Location = new System.Drawing.Point(809, 174);
+            this.textBox_amkorid.Location = new System.Drawing.Point(658, 171);
             this.textBox_amkorid.Name = "textBox_amkorid";
-            this.textBox_amkorid.Size = new System.Drawing.Size(373, 43);
+            this.textBox_amkorid.Size = new System.Drawing.Size(185, 43);
             this.textBox_amkorid.TabIndex = 8;
             this.textBox_amkorid.Text = "123456";
             this.textBox_amkorid.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_amkorid_KeyPress);
@@ -209,9 +408,9 @@
             // 
             this.textBox_billno.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_billno.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_billno.Location = new System.Drawing.Point(809, 123);
+            this.textBox_billno.Location = new System.Drawing.Point(658, 120);
             this.textBox_billno.Name = "textBox_billno";
-            this.textBox_billno.Size = new System.Drawing.Size(373, 43);
+            this.textBox_billno.Size = new System.Drawing.Size(185, 43);
             this.textBox_billno.TabIndex = 8;
             this.textBox_billno.Text = "6996266804";
             this.textBox_billno.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_billno_KeyPress);
@@ -220,7 +419,7 @@
             // 
             this.textBox_wfrqty.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_wfrqty.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_wfrqty.Location = new System.Drawing.Point(809, 73);
+            this.textBox_wfrqty.Location = new System.Drawing.Point(658, 70);
             this.textBox_wfrqty.Name = "textBox_wfrqty";
             this.textBox_wfrqty.Size = new System.Drawing.Size(161, 43);
             this.textBox_wfrqty.TabIndex = 7;
@@ -231,7 +430,7 @@
             // 
             this.textBox_dieqty.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_dieqty.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_dieqty.Location = new System.Drawing.Point(809, 23);
+            this.textBox_dieqty.Location = new System.Drawing.Point(658, 20);
             this.textBox_dieqty.Name = "textBox_dieqty";
             this.textBox_dieqty.Size = new System.Drawing.Size(161, 43);
             this.textBox_dieqty.TabIndex = 6;
@@ -292,7 +491,7 @@
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label5.Location = new System.Drawing.Point(643, 167);
+            this.label5.Location = new System.Drawing.Point(492, 164);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(160, 50);
             this.label5.TabIndex = 0;
@@ -312,7 +511,7 @@
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label8.Location = new System.Drawing.Point(643, 116);
+            this.label8.Location = new System.Drawing.Point(492, 113);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(160, 50);
             this.label8.TabIndex = 0;
@@ -322,7 +521,7 @@
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label7.Location = new System.Drawing.Point(643, 66);
+            this.label7.Location = new System.Drawing.Point(492, 63);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(160, 50);
             this.label7.TabIndex = 0;
@@ -342,7 +541,7 @@
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label6.Location = new System.Drawing.Point(643, 16);
+            this.label6.Location = new System.Drawing.Point(492, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(160, 50);
             this.label6.TabIndex = 0;
@@ -438,55 +637,16 @@
             this.label_state.Text = "-";
             this.label_state.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // OffsetX
+            // cb_GreenLabelPrint
             // 
-            this.OffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.OffsetX.Location = new System.Drawing.Point(718, 229);
-            this.OffsetX.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.OffsetX.Name = "OffsetX";
-            this.OffsetX.Size = new System.Drawing.Size(172, 43);
-            this.OffsetX.TabIndex = 9;
-            this.OffsetX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OffsetX.ValueChanged += new System.EventHandler(this.OffsetX_ValueChanged);
-            // 
-            // label12
-            // 
-            this.label12.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label12.Location = new System.Drawing.Point(542, 224);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(160, 50);
-            this.label12.TabIndex = 10;
-            this.label12.Text = "Offset X :";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label13
-            // 
-            this.label13.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label13.Location = new System.Drawing.Point(542, 287);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(160, 50);
-            this.label13.TabIndex = 12;
-            this.label13.Text = "Offset Y :";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // OffsetY
-            // 
-            this.OffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.OffsetY.Location = new System.Drawing.Point(718, 292);
-            this.OffsetY.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            -2147483648});
-            this.OffsetY.Name = "OffsetY";
-            this.OffsetY.Size = new System.Drawing.Size(172, 43);
-            this.OffsetY.TabIndex = 11;
-            this.OffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.OffsetY.ValueChanged += new System.EventHandler(this.OffsetY_ValueChanged);
+            this.cb_GreenLabelPrint.AutoSize = true;
+            this.cb_GreenLabelPrint.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold);
+            this.cb_GreenLabelPrint.Location = new System.Drawing.Point(167, 6);
+            this.cb_GreenLabelPrint.Name = "cb_GreenLabelPrint";
+            this.cb_GreenLabelPrint.Size = new System.Drawing.Size(168, 20);
+            this.cb_GreenLabelPrint.TabIndex = 18;
+            this.cb_GreenLabelPrint.Text = "Green Label Print";
+            this.cb_GreenLabelPrint.UseVisualStyleBackColor = true;
             // 
             // Form_Print
             // 
@@ -513,9 +673,13 @@
             this.Load += new System.EventHandler(this.Form_Print_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SecondPrintOffsetX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OffsetY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OffsetX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bcr)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -560,5 +724,18 @@
         private System.Windows.Forms.NumericUpDown OffsetY;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.NumericUpDown OffsetX;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btn_2ndPrinterSave;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button btn_CustNameDel;
+        private System.Windows.Forms.Button btn_CustNameAdd;
+        private System.Windows.Forms.TextBox tb_CustName;
+        private System.Windows.Forms.ListBox lb_CustName;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown SecondPrintOffsetY;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown SecondPrintOffsetX;
+        private System.Windows.Forms.TextBox tb_2ndPrinterIP;
+        private System.Windows.Forms.CheckBox cb_GreenLabelPrint;
     }
 }

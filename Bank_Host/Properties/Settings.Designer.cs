@@ -130,5 +130,148 @@ namespace Bank_Host.Properties {
                 this["PrintOffsetY"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=10.135.200.35;Initial Catalog=GR_Automation;Persist Security Info=Tru" +
+            "e;User ID=amm")]
+        public string GR_AutomationConnectionString {
+            get {
+                return ((string)(this["GR_AutomationConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SCRAP_DEFAULT_PATH {
+            get {
+                return ((string)(this["SCRAP_DEFAULT_PATH"]));
+            }
+            set {
+                this["SCRAP_DEFAULT_PATH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SCRAP_EXCEL_EXPORT_PATH {
+            get {
+                return ((string)(this["SCRAP_EXCEL_EXPORT_PATH"]));
+            }
+            set {
+                this["SCRAP_EXCEL_EXPORT_PATH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int TimeOutMin {
+            get {
+                return ((int)(this["TimeOutMin"]));
+            }
+            set {
+                this["TimeOutMin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string SecondPrinterIP {
+            get {
+                return ((string)(this["SecondPrinterIP"]));
+            }
+            set {
+                this["SecondPrinterIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SecondPrinterCustName {
+            get {
+                return ((string)(this["SecondPrinterCustName"]));
+            }
+            set {
+                this["SecondPrinterCustName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SecondPrinterOffsetX {
+            get {
+                return ((int)(this["SecondPrinterOffsetX"]));
+            }
+            set {
+                this["SecondPrinterOffsetX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SecondPrinterOffsetY {
+            get {
+                return ((int)(this["SecondPrinterOffsetY"]));
+            }
+            set {
+                this["SecondPrinterOffsetY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GreenLabelPrint {
+            get {
+                return ((bool)(this["GreenLabelPrint"]));
+            }
+            set {
+                this["GreenLabelPrint"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LabelCopy {
+            get {
+                return ((bool)(this["LabelCopy"]));
+            }
+            set {
+                this["LabelCopy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WaferReturnExcelOutPath {
+            get {
+                return ((string)(this["WaferReturnExcelOutPath"]));
+            }
+            set {
+                this["WaferReturnExcelOutPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WaferReturnCode {
+            get {
+                return ((string)(this["WaferReturnCode"]));
+            }
+            set {
+                this["WaferReturnCode"] = value;
+            }
+        }
     }
 }

@@ -1,4 +1,0 @@
-20211111,14:27:42,socketManager_OnConnectStatus: Connecting
-20211111,14:27:45,socketManager_OnConnectStatus: Connecting
-20211111,14:27:45,Keyence: 192.168.100.2: 9004
-20211111,14:27:45,SocketManager OK!

@@ -12,6 +12,9 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Speech.Synthesis;
 using Host;
+//using MICube.SmartDriver.Base.TCP;
+using System.Net;
+using System.IO;
 
 namespace Bank_Host
 {
@@ -23,6 +26,7 @@ namespace Bank_Host
         public static Host.Host Host = new Host.Host();
         public static bool bHost_connect = false;
 
+        public static int LabelAddVal = 15;// 라벨 추가로 출력할 웨이퍼 갯수
         ///Mode 추가 
         public static int nScanMode = 0; //2021.04.07 추가  0: Vision, 1: Gun, 2: 개별 입력, 3: Multi scan
         public static string strScanData = ""; //mode1,3 GunRing scan data
@@ -51,7 +55,9 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = ""; 
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "";
+
+        public string ForcePrintName = "QUALCOMM STD Multi-2D";
 
         Thread Thread_Progress = null;
 
@@ -61,14 +67,14 @@ namespace Bank_Host
         public static bool IsGRrun = false, IsAutoFocus = false;
 
         public static string strLogfilePath = "", strFilPath = "";
-        public static string strAdminID = "", strAdminPW = "", strOperator = "";
+        public static string strAdminID = "", strAdminPW = "", strOperator = "", strID = "", strGrade = "", strMESID = "", strMESPW = "";
         public static bool bAdminLogin = false, bVisionConnect = false;
         public static int nStartup = 0, nProcess = 0, nGRprocess = 0, nSortTabNo = 0;
 
         /// <summary>
         /// Amkor 바코드 출력
         /// </summary>
-        public static string strLotNo = "", strDeviceNo = "", strDieQty = "", strWfrQrt = "", strAmkorID = "", strCust = "";
+        public static string strLotNo = "", strDeviceNo = "", strDieQty = "", strWfrQrt = "", strAmkorID = "", strCust = "", strCustName = "";
 
         Form_Sort Frm_Sort = new Form_Sort();
         Form_Set Frm_Set = new Form_Set();
@@ -78,6 +84,87 @@ namespace Bank_Host
         Form_MultiBcrIn2 Frm_MultiBcrIn2 = new Form_MultiBcrIn2();
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
+
+        public static void Print2ndLabel(string msg)
+        {
+           
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Zebra.Sdk.Comm.Connection PrinterConnection = new Zebra.Sdk.Comm.TcpConnection("10.131.34.75", Zebra.Sdk.Comm.TcpConnection.DEFAULT_ZPL_TCP_PORT);
+
+            //PrinterConnection.Open();
+            //PrinterConnection.Write(zpl);
+            //PrinterConnection.Close();
+
+            string msg = "";// Frm_Sort.MakeTOTLabelTemplete110X170();//"^XA^FO20,30^GB770,103,4^FS^FO20,129^GB770,103,4^FS^FO20,228^GB770,103,4^FS^FO20,327^GB770,103,4^FS^FO20,426^GB770,103,4^FS^FO20,525^GB770,103,4^FS^FO20,624^GB770,103,4^FS^FO20,723^GB770,103,4^FS^FO20,822^GB770,103,4^FS^FO20,921^GB770,103,4^FS^FO20,1020^GB770,103,4^FS^FO20,1119^GB770,103,4^FS^FO20,1218^GB770,103,4^FS^FO403,30^GB4,1093,4^FS^FO403,1222^GB4,99,4^FS^FO300,30^GB4,990,4^FS^FO670,30^GB4,990,4^FS^FO573,1222^GB4,99,4^FS^FO190,30^GB4,1325,4^FS^FO573,30^GB4,1093,4^FS^FO30,70^AO,30,15^FDLOT#/DCC^FS^FO200,60^AO,30,15^FDDie^FS^FO200,90^AO,30,15^FDQ'TY^FS^FO310,60^AO,30,15^FDQR^FS^FO310,90^AO,30,15^FDCODE^FS^FO410,70^AO,30,15^FDLOT#/DCC^FS^FO590,60^AO,30,15^FDDie^FS^FO590,90^AO,30,15^FDQ'TY^FS^FO680,60^AO,30,15^FDQR^FS^FO680,90^AO,30,15^FDCODE^FS^FO30,1070^AO,30,15^FDCUST^FS^FO200,1070^AO,30,15^FD^FS^FO30,1170^AO,30,15^FDDEVICE^FS^FO300,1170^AO,30,15^FDPK1274-A1-TJT^FS^FO30,1240^AO,30,15^FDRCV-^FS^FO30,1270^AO,30,15^FDDATE^FS^FO200,1250^AO,30,15^FD2022-10-24^FS^FO410,1050^AO,30,15^FDWAFER^FS^FO410,1080^AO,30,15^FDQ'TY^FS^FO413,1250^AO,30,15^FDBILL^FS^FO583,1250^AO,30,15^FDTEST^FS^FO200,1070^AO,30,15^FD379^FS^FO590,1070^AO,30,15^FD25^FS^FO30,155^AO,20,15^FDE32863.1^FS^FO30,185^AO,20,15^FD/02^FS^FO200,170^AO,30,15^FD15185^FS^FO330,140BQN,2,2^FDE32863.1,02,15185^FS^FO30,255^AO,20,15^FDE32863.2^FS^FO30,285^AO,20,15^FD/01^FS^FO200,270^AO,30,15^FD15452^FS^FO330,240BQN,2,2^FDE32863.2,01,15452^FS^FO30,355^AO,20,15^FDE32863.3^FS^FO30,385^AO,20,15^FD/01^FS^FO200,370^AO,30,15^FD14879^FS^FO330,340BQN,2,2^FDE32863.3,01,14879^FS^FO30,455^AO,20,15^FDE32863.4^FS^FO30,485^AO,20,15^FD/01^FS^FO200,470^AO,30,15^FD15053^FS^FO330,440BQN,2,2^FDE32863.4,01,15053^FS^FO30,555^AO,20,15^FDE32863.5^FS^FO30,585^AO,20,15^FD/01^FS^FO200,570^AO,30,15^FD14975^FS^FO330,540BQN,2,2^FDE32863.5,01,14975^FS^FO30,655^AO,20,15^FDE32863.6^FS^FO30,685^AO,20,15^FD/01^FS^FO200,670^AO,30,15^FD14428^FS^FO330,640BQN,2,2^FDE32863.6,01,14428^FS^FO30,755^AO,20,15^FDE32863.7^FS^FO30,785^AO,20,15^FD/01^FS^FO200,770^AO,30,15^FD14918^FS^FO330,740BQN,2,2^FDE32863.7,01,14918^FS^FO30,855^AO,20,15^FDE32863.8^FS^FO30,885^AO,20,15^FD/01^FS^FO200,870^AO,30,15^FD14869^FS^FO330,840BQN,2,2^FDE32863.8,01,14869^FS^FO30,955^AO,20,15^FDE32863.9^FS^FO30,985^AO,20,15^FD/01^FS^FO200,970^AO,30,15^FD14918^FS^FO330,940BQN,2,2^FDE32863.9,01,14918^FS^FO410,155^AO,20,15^FDE32863.10^FS^FO410,185^AO,20,15^FD/01^FS^FO580,170^AO,30,15^FD15229^FS^FO690,140BQN,2,2^FDE32863.10,01,15229^FS^FO410,255^AO,20,15^FDE32863.11^FS^FO410,285^AO,20,15^FD/01^FS^FO580,270^AO,30,15^FD15296^FS^FO690,240BQN,2,2^FDE32863.11,01,15296^FS^FO410,355^AO,20,15^FDE32863.12^FS^FO410,385^AO,20,15^FD/01^FS^FO580,370^AO,30,15^FD15313^FS^FO690,340BQN,2,2^FDE32863.12,01,15313^FS^FO410,455^AO,20,15^FDE32863.13^FS^FO410,485^AO,20,15^FD/01^FS^FO580,470^AO,30,15^FD14862^FS^FO690,440BQN,2,2^FDE32863.13,01,14862^FS^FO410,555^AO,20,15^FDE32863.14^FS^FO410,585^AO,20,15^FD/01^FS^FO580,570^AO,30,15^FD14380^FS^FO690,540BQN,2,2^FDE32863.14,01,14380^FS^FO410,655^AO,20,15^FDE32863.15^FS^FO410,685^AO,20,15^FD/01^FS^FO580,670^AO,30,15^FD15465^FS^FO690,640BQN,2,2^FDE32863.15,01,15465^FS^FO410,755^AO,20,15^FDE32863.16^FS^FO410,785^AO,20,15^FD/01^FS^FO580,770^AO,30,15^FD15421^FS^FO690,740BQN,2,2^FDE32863.16,01,15421^FS^FO410,855^AO,20,15^FDE32863.17^FS^FO410,885^AO,20,15^FD/01^FS^FO580,870^AO,30,15^FD14966^FS^FO690,840BQN,2,2^FDE32863.17,01,14966^FS^FO410,955^AO,20,15^FDE32863.18^FS^FO410,985^AO,20,15^FD/01^FS^FO580,970^AO,30,15^FD14800^FS^FO690,940BQN,2,2^FDE32863.18,01,14800^FS^XZ^XA^FO413,1250^AO,30,15^FDBILL^FS^FO583,1250^AO,30,15^FDTEST^FS^FO200,1070^AO,30,15^FD379^FS^FO590,1070^AO,30,15^FD25^FS^XA^FO20,30^GB770,103,4^FS^FO20,129^GB770,103,4^FS^FO20,228^GB770,103,4^FS^FO20,327^GB770,103,4^FS^FO20,426^GB770,103,4^FS^FO20,525^GB770,103,4^FS^FO20,624^GB770,103,4^FS^FO20,723^GB770,103,4^FS^FO20,822^GB770,103,4^FS^FO20,921^GB770,103,4^FS^FO20,1020^GB770,103,4^FS^FO20,1119^GB770,103,4^FS^FO20,1218^GB770,103,4^FS^FO403,30^GB4,1093,4^FS^FO403,1222^GB4,99,4^FS^FO300,30^GB4,990,4^FS^FO670,30^GB4,990,4^FS^FO573,1222^GB4,99,4^FS^FO190,30^GB4,1325,4^FS^FO573,30^GB4,1093,4^FS^FO30,70^AO,30,15^FDLOT#/DCC^FS^FO200,60^AO,30,15^FDDie^FS^FO200,90^AO,30,15^FDQ'TY^FS^FO310,60^AO,30,15^FDQR^FS^FO310,90^AO,30,15^FDCODE^FS^FO410,70^AO,30,15^FDLOT#/DCC^FS^FO590,60^AO,30,15^FDDie^FS^FO590,90^AO,30,15^FDQ'TY^FS^FO680,60^AO,30,15^FDQR^FS^FO680,90^AO,30,15^FDCODE^FS^FO30,1070^AO,30,15^FDCUST^FS^FO200,1070^AO,30,15^FD^FS^FO30,1170^AO,30,15^FDDEVICE^FS^FO300,1170^AO,30,15^FDPK1274-A1-TJT^FS^FO30,1240^AO,30,15^FDRCV-^FS^FO30,1270^AO,30,15^FDDATE^FS^FO200,1250^AO,30,15^FD2022-10-24^FS^FO410,1050^AO,30,15^FDWAFER^FS^FO410,1080^AO,30,15^FDQ'TY^FS^FO30,155^AO,20,15^FDE32863.19^FS^FO30,185^AO,20,15^FD/01^FS^FO200,170^AO,30,15^FD14714^FS^FO330,140^BQN,2,2^FDE32863.19,01,14714^FS^FO30,255^AO,20,15^FDE32863.20^FS^FO30,285^AO,20,15^FD/01^FS^FO200,270^AO,30,15^FD15506^FS^FO330,240^BQN,2,2^FDE32863.20,01,15506^FS^FO30,355^AO,20,15^FDE32863.21^FS^FO30,385^AO,20,15^FD/01^FS^FO200,370^AO,30,15^FD15062^FS^FO330,340^BQN,2,2^FDE32863.21,01,15062^FS^FO30,455^AO,20,15^FDE32863.22^FS^FO30,485^AO,20,15^FD/01^FS^FO200,470^AO,30,15^FD15020^FS^FO330,440^BQN,2,2^FDE32863.22,01,15020^FS^FO30,555^AO,20,15^FDE32863.23^FS^FO30,585^AO,20,15^FD/01^FS^FO200,570^AO,30,15^FD15195^FS^FO330,540^BQN,2,2^FDE32863.23,01,15195^FS^FO30,655^AO,20,15^FDE32863.24^FS^FO30,685^AO,20,15^FD/01^FS^FO200,670^AO,30,15^FD15785^FS^FO330,640^BQN,2,2^FDE32863.24,01,15785^FS^FO30,755^AO,20,15^FDE32863.25^FS^FO30,785^AO,20,15^FD/01^FS^FO200,770^AO,30,15^FD15196^FS^FO330,740^BQN,2,2^FDE32863.25,01,15196^FS^XZ";
+            
+            msg += "^XZ";
+            byte[] zpl = Encoding.UTF8.GetBytes(msg);
+
+            System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient();
+
+            //IPAddress ip = IPAddress.Parse(Properties.Settings.Default.SecondPrinterIP);
+
+            socket.Connect("10.131.34.75", 9100);
+            StreamWriter writer = new StreamWriter(socket.GetStream());
+
+            writer.Write(msg);
+            writer.Flush();
+
+            writer.Close();
+            //socket.Close();
+
+            
+
+
+            /*"^XA" +
+
+            // 가로 줄 그리기
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 129 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 228 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 327 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 426 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 525 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 624 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 723 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 822 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 921 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1020 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1119 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB770,103,4^FS", 20 + Properties.Settings.Default.SecondPrinterOffsetX, 1218 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+            // 세로줄 그리기
+            string.Format("^FO{0},{1}^GB4,1093,4^FS", 403 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB4,99,4^FS", 403 + Properties.Settings.Default.SecondPrinterOffsetX, 1222 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB4,990,4^FS", 300 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB4,990,4^FS", 670 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB4,99,4^FS", 573 + Properties.Settings.Default.SecondPrinterOffsetX, 1222 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB4,1325,4^FS", 190 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1}^GB4,1093,4^FS", 573 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+            //Header
+            string.Format("^FO{0},{1} ^ AO,30,15^FDLOT#/DCC^FS", Properties.Settings.Default.SecondPrinterOffsetX + 30, 70 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDDie ^ FS",   Properties.Settings.Default.SecondPrinterOffsetX + 200,60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDQ'TY^FS",    Properties.Settings.Default.SecondPrinterOffsetX + 200,90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDQR ^ FS",    Properties.Settings.Default.SecondPrinterOffsetX + 310,60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDCODE ^ FS",  Properties.Settings.Default.SecondPrinterOffsetX + 310,90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDLOT#/DCC^FS",Properties.Settings.Default.SecondPrinterOffsetX + 410,70 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDDie ^ FS",   Properties.Settings.Default.SecondPrinterOffsetX + 590,60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDQ'TY^FS",    Properties.Settings.Default.SecondPrinterOffsetX + 590,90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDQR ^ FS",    Properties.Settings.Default.SecondPrinterOffsetX + 680,60 + Properties.Settings.Default.SecondPrinterOffsetY) +
+            string.Format("^FO{0},{1} ^ AO,30,15^FDCODE ^ FS", Properties.Settings.Default.SecondPrinterOffsetX  + 680, 90 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+        //QR 출력
+        //string.Format("^FO{0},{1}^BQN,2,3^FDQA,DT-T194-BIN2-D-AF,PSG529.S1P,189^FS", 310 + Properties.Settings.Default.SecondPrinterOffsetX, 30 + Properties.Settings.Default.SecondPrinterOffsetY) +
+
+        "^XZ";
+        Console.WriteLine(msg);*/
+
+            //PrinterConnection.Write(Encoding.UTF8.GetBytes(msg));
+        }
 
         public BankHost_main()
         {
@@ -410,9 +497,15 @@ namespace Bank_Host
                     if (strWork_Shot1Lot == "YES")
                         Form_Sort.nLabelcount = 0;
 
+                    if (ForcePrintName.Contains(BankHost_main.strCustName))
+                        Read_Bcr.unprinted_device = false;
+
                     if (!Read_Bcr.unprinted_device)
                     {
+
+                        
                         Frm_Sort.Fnc_Print_Start(Amkor, nWork_BcrType, true, Form_Sort.nLabelcount, Form_Sort.nLabelttl);
+                        
 
                         if (nInputMode == 1)
                         {
@@ -474,6 +567,9 @@ namespace Bank_Host
 
                     if (strWork_Shot1Lot == "YES")
                         Form_Sort.nLabelcount = 0;
+
+                    if (ForcePrintName.Contains(BankHost_main.strCustName))
+                        Read_Bcr.unprinted_device = false;
 
                     if (!Read_Bcr.unprinted_device)
                     {
@@ -672,12 +768,21 @@ namespace Bank_Host
             if (strWork_Shot1Lot == "YES")
                 Form_Sort.nLabelcount = 0;
 
+            if (ForcePrintName.Contains(BankHost_main.strCustName))
+                Read_Bcr.unprinted_device = false;
+
             if (!Read_Bcr.unprinted_device)
             {
                 //Form_Sort.nLabelcount = 1;
                 //Form_Sort.nLabelttl = Form_Sort.nValWfrttl;
-                
+
+               
                 Frm_Sort.Fnc_Print_Start(Amkor, nWork_BcrType, true, Form_Sort.nLabelcount, Form_Sort.nLabelttl);
+
+                if(Frm_Sort.SecondPrinterMode == true)
+                {
+
+                }
 
                 if (nInputMode == 1)
                 {
@@ -695,6 +800,8 @@ namespace Bank_Host
             Frm_Sort.Fnc_BcrInfo("");
             bGunRingMode_Run = false;
         }
+
+
         public void Process_GunRing()
         {
             try
@@ -749,7 +856,7 @@ namespace Bank_Host
                                 Thread.Sleep(1);
                             }
 
-                            if (Form_Sort.nResult == -1) //Lot NG
+                                if (Form_Sort.nResult == -1) //Lot NG
                             {
                                 bGunRingMode_Run = false;
                                 return;
@@ -923,7 +1030,11 @@ namespace Bank_Host
 
         public void Fnc_Init()
         {
-            Version = Application.ProductVersion;
+            if (System.IO.File.Exists(Application.StartupPath + "\\FileUpdateinfo.ini") == true)
+                Version =  System.IO.File.ReadAllText(Application.StartupPath + "\\FileUpdateinfo.ini");
+            
+
+            //Version = strtemp;// Application.ProductVersion;
             Text = "S/W Version:" + Version;
 
             Frm_Sort.MdiParent = this;
@@ -1373,6 +1484,8 @@ namespace Bank_Host
             strWork_WfrQtyPos = Info.strWfrPos;
             strWork_MtlType = Info.strMtlType;
             strLot2Wfr = Info.strLot2Wfr;
+            strMultiLot = Info.strMultiLot;
+            strTTLWFR = Info.strTTLWFR;
         }        
     }
 }
@@ -1396,4 +1509,5 @@ public class WorkInfo
     public string strWfrPos = "";
     public string strMtlType = "";
     public string strLot2Wfr = "";
+    public string strTTLWFR = "";
 }

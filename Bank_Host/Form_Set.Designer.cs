@@ -115,6 +115,10 @@
             this.textBox_bcr15 = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.textBox_bcr16 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tb_TimeOutMin = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_List)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_custType)).BeginInit();
@@ -129,9 +133,9 @@
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(3, 4);
+            this.label4.Location = new System.Drawing.Point(3, 2);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(438, 43);
+            this.label4.Size = new System.Drawing.Size(332, 43);
             this.label4.TabIndex = 9;
             this.label4.Text = "사용자 등록";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -286,9 +290,9 @@
             // button_add
             // 
             this.button_add.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_add.Location = new System.Drawing.Point(443, 3);
+            this.button_add.Location = new System.Drawing.Point(462, 2);
             this.button_add.Name = "button_add";
-            this.button_add.Size = new System.Drawing.Size(136, 45);
+            this.button_add.Size = new System.Drawing.Size(117, 45);
             this.button_add.TabIndex = 3;
             this.button_add.Text = "등록";
             this.button_add.UseVisualStyleBackColor = true;
@@ -358,7 +362,7 @@
             this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label8.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(594, 279);
+            this.label8.Location = new System.Drawing.Point(594, 294);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(292, 45);
             this.label8.TabIndex = 16;
@@ -371,7 +375,7 @@
             this.label9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label9.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(594, 327);
+            this.label9.Location = new System.Drawing.Point(594, 342);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(132, 33);
             this.label9.TabIndex = 13;
@@ -381,7 +385,7 @@
             // textBox_custno
             // 
             this.textBox_custno.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_custno.Location = new System.Drawing.Point(727, 327);
+            this.textBox_custno.Location = new System.Drawing.Point(727, 342);
             this.textBox_custno.Name = "textBox_custno";
             this.textBox_custno.Size = new System.Drawing.Size(296, 33);
             this.textBox_custno.TabIndex = 1;
@@ -393,7 +397,7 @@
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label10.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(594, 361);
+            this.label10.Location = new System.Drawing.Point(594, 376);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(132, 33);
             this.label10.TabIndex = 13;
@@ -403,7 +407,7 @@
             // button_savetype
             // 
             this.button_savetype.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_savetype.Location = new System.Drawing.Point(887, 279);
+            this.button_savetype.Location = new System.Drawing.Point(887, 294);
             this.button_savetype.Name = "button_savetype";
             this.button_savetype.Size = new System.Drawing.Size(136, 45);
             this.button_savetype.TabIndex = 21;
@@ -420,7 +424,7 @@
             "TYPE - 2",
             "TYPE - 3",
             "TYPE - 4"});
-            this.comboBox_custType.Location = new System.Drawing.Point(727, 361);
+            this.comboBox_custType.Location = new System.Drawing.Point(727, 376);
             this.comboBox_custType.Name = "comboBox_custType";
             this.comboBox_custType.Size = new System.Drawing.Size(296, 33);
             this.comboBox_custType.TabIndex = 18;
@@ -456,7 +460,7 @@
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_custType.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dataGridView_custType.Location = new System.Drawing.Point(594, 398);
+            this.dataGridView_custType.Location = new System.Drawing.Point(594, 411);
             this.dataGridView_custType.MultiSelect = false;
             this.dataGridView_custType.Name = "dataGridView_custType";
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -472,7 +476,7 @@
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dataGridView_custType.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridView_custType.RowTemplate.Height = 23;
-            this.dataGridView_custType.Size = new System.Drawing.Size(429, 255);
+            this.dataGridView_custType.Size = new System.Drawing.Size(429, 242);
             this.dataGridView_custType.TabIndex = 20;
             this.dataGridView_custType.TabStop = false;
             // 
@@ -1025,11 +1029,60 @@
             this.textBox_bcr16.TabIndex = 20;
             this.textBox_bcr16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button1.Location = new System.Drawing.Point(339, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(117, 45);
+            this.button1.TabIndex = 24;
+            this.button1.Text = "MES 변경";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // tb_TimeOutMin
+            // 
+            this.tb_TimeOutMin.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_TimeOutMin.Location = new System.Drawing.Point(726, 260);
+            this.tb_TimeOutMin.Name = "tb_TimeOutMin";
+            this.tb_TimeOutMin.Size = new System.Drawing.Size(103, 33);
+            this.tb_TimeOutMin.TabIndex = 25;
+            this.tb_TimeOutMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tb_TimeOutMin.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_TimeOutMin_KeyDown);
+            // 
+            // label32
+            // 
+            this.label32.BackColor = System.Drawing.Color.Maroon;
+            this.label32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label32.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label32.ForeColor = System.Drawing.Color.White;
+            this.label32.Location = new System.Drawing.Point(593, 260);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(132, 33);
+            this.label32.TabIndex = 26;
+            this.label32.Text = "Time Out(Min)";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button2.Location = new System.Drawing.Point(835, 260);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(188, 33);
+            this.button2.TabIndex = 27;
+            this.button2.Text = "고객 코드 가져오기";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form_Set
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1609, 930);
             this.ControlBox = false;
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.tb_TimeOutMin);
+            this.Controls.Add(this.label32);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.button_savebcr);
             this.Controls.Add(this.button_savetype);
             this.Controls.Add(this.button_allsave);
@@ -1101,6 +1154,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Load += new System.EventHandler(this.Form_Set_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_List)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_custType)).EndInit();
@@ -1185,5 +1239,9 @@
         private System.Windows.Forms.TextBox textBox_bcr15;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.TextBox textBox_bcr16;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox tb_TimeOutMin;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Button button2;
     }
 }

@@ -29,51 +29,51 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Sort));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle56 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle57 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle58 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle59 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle60 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle61 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle62 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle37 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle38 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle39 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle40 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle41 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle42 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle78 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Sort));
             this.tabControl_Sort = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button_option = new System.Windows.Forms.Button();
@@ -107,9 +107,7 @@
             this.dataGridView_workbill = new System.Windows.Forms.DataGridView();
             this.dataGridView_workinfo = new System.Windows.Forms.DataGridView();
             this.button_workend2 = new System.Windows.Forms.Button();
-            this.button_download = new System.Windows.Forms.Button();
             this.textBox_search = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -123,7 +121,10 @@
             this.label_filename = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView_sort = new System.Windows.Forms.DataGridView();
+            this.button_download = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.cb_GreenLabel = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button_Autofocus = new System.Windows.Forms.Button();
@@ -200,12 +201,18 @@
             this.dataGridView_label = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LOT = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Device = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Die_Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.WFT_QTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AMKOR_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CUST_CODE = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Wafer_lot = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CMS_AmkorLabel = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.label55 = new System.Windows.Forms.Label();
+            this.tb_next = new System.Windows.Forms.TextBox();
+            this.cb_dup = new System.Windows.Forms.CheckBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button10 = new System.Windows.Forms.Button();
             this.label40 = new System.Windows.Forms.Label();
             this.lwfr = new System.Windows.Forms.Label();
@@ -274,9 +281,6 @@
             this.tb_split_tot_lot = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.DGVQualcommReturn = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -298,6 +302,64 @@
             this.button13 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button14 = new System.Windows.Forms.Button();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.button17 = new System.Windows.Forms.Button();
+            this.btn_ExcelOut = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.btn_CommentEdit = new System.Windows.Forms.Button();
+            this.dgv_scrap = new System.Windows.Forms.DataGridView();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.lDieCnt = new System.Windows.Forms.Label();
+            this.cbRequest = new System.Windows.Forms.ComboBox();
+            this.button15 = new System.Windows.Forms.Button();
+            this.cb_download = new System.Windows.Forms.CheckBox();
+            this.lTOTWfr = new System.Windows.Forms.Label();
+            this.lTOTDie = new System.Windows.Forms.Label();
+            this.l2ndComp = new System.Windows.Forms.Label();
+            this.l1stComp = new System.Windows.Forms.Label();
+            this.lTOTLot = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tb_scrapinput = new System.Windows.Forms.TextBox();
+            this.tb_ScrapSt = new System.Windows.Forms.TextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.edt = new System.Windows.Forms.DateTimePicker();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btn_search = new System.Windows.Forms.Button();
+            this.sdt = new System.Windows.Forms.DateTimePicker();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.dgv_ReturnWafer = new System.Windows.Forms.DataGridView();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btn_WaferReturnFindNext = new System.Windows.Forms.Button();
+            this.btn_Find = new System.Windows.Forms.Button();
+            this.btn_WaferReturnReset = new System.Windows.Forms.Button();
+            this.btn_WaferReturnExcel = new System.Windows.Forms.Button();
+            this.label58 = new System.Windows.Forms.Label();
+            this.l_WaferReturnCount = new System.Windows.Forms.Label();
+            this.cb_WaferReturnPrint = new System.Windows.Forms.CheckBox();
+            this.btn_WaferReturnReadDB = new System.Windows.Forms.Button();
+            this.tb_ReturnWafer = new System.Windows.Forms.TextBox();
+            this.btn_WaferReturnFind = new System.Windows.Forms.Button();
+            this.tb_Year = new System.Windows.Forms.MaskedTextBox();
+            this.pb_WaferReturn = new System.Windows.Forms.ProgressBar();
+            this.l_WaferReturnST = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
+            this.label56 = new System.Windows.Forms.Label();
+            this.tb_WaferReturnScan = new System.Windows.Forms.TextBox();
+            this.cb_WaferReturnExcel = new System.Windows.Forms.CheckBox();
+            this.cb_WaferReturnView = new System.Windows.Forms.CheckBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.bgw_timeout = new System.ComponentModel.BackgroundWorker();
+            this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -306,8 +368,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_shipment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workbill)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workinfo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_sort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Lot)).BeginInit();
@@ -323,6 +385,7 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_label)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPage7.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_loc)).BeginInit();
@@ -339,6 +402,21 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVQualcommReturn)).BeginInit();
+            this.tabPage10.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).BeginInit();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.tabPage11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ReturnWafer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl_Sort
@@ -352,6 +430,8 @@
             this.tabControl_Sort.Controls.Add(this.tabPage7);
             this.tabControl_Sort.Controls.Add(this.tabPage8);
             this.tabControl_Sort.Controls.Add(this.tabPage9);
+            this.tabControl_Sort.Controls.Add(this.tabPage10);
+            this.tabControl_Sort.Controls.Add(this.tabPage11);
             this.tabControl_Sort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl_Sort.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tabControl_Sort.ImageList = this.imageList1;
@@ -432,48 +512,48 @@
             this.dataGridView_worklist.AllowUserToDeleteRows = false;
             this.dataGridView_worklist.AllowUserToResizeColumns = false;
             this.dataGridView_worklist.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
-            this.dataGridView_worklist.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle45.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataGridView_worklist.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle45;
             this.dataGridView_worklist.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_worklist.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
             this.dataGridView_worklist.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dataGridView_worklist.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_worklist.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle46.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle46.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle46.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle46.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle46.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_worklist.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle46;
             this.dataGridView_worklist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_worklist.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_worklist.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle47.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle47.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle47.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle47.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle47.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle47.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_worklist.DefaultCellStyle = dataGridViewCellStyle47;
             this.dataGridView_worklist.Location = new System.Drawing.Point(6, 219);
             this.dataGridView_worklist.MultiSelect = false;
             this.dataGridView_worklist.Name = "dataGridView_worklist";
             this.dataGridView_worklist.ReadOnly = true;
             this.dataGridView_worklist.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_worklist.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle48.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle48.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle48.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle48.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle48.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle48.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_worklist.RowHeadersDefaultCellStyle = dataGridViewCellStyle48;
             this.dataGridView_worklist.RowHeadersVisible = false;
             this.dataGridView_worklist.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_worklist.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_worklist.RowsDefaultCellStyle = dataGridViewCellStyle49;
             this.dataGridView_worklist.RowTemplate.Height = 30;
             this.dataGridView_worklist.ShowCellErrors = false;
             this.dataGridView_worklist.ShowCellToolTips = false;
@@ -714,9 +794,7 @@
             this.tabPage2.Controls.Add(this.dataGridView_workbill);
             this.tabPage2.Controls.Add(this.dataGridView_workinfo);
             this.tabPage2.Controls.Add(this.button_workend2);
-            this.tabPage2.Controls.Add(this.button_download);
             this.tabPage2.Controls.Add(this.textBox_search);
-            this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.label3);
@@ -730,6 +808,8 @@
             this.tabPage2.Controls.Add(this.label_filename);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.dataGridView_sort);
+            this.tabPage2.Controls.Add(this.button_download);
+            this.tabPage2.Controls.Add(this.pictureBox1);
             this.tabPage2.ImageIndex = 1;
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
@@ -785,45 +865,45 @@
             this.dataGridView_shipment.AllowUserToDeleteRows = false;
             this.dataGridView_shipment.AllowUserToResizeColumns = false;
             this.dataGridView_shipment.AllowUserToResizeRows = false;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.LavenderBlush;
-            this.dataGridView_shipment.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.LavenderBlush;
+            this.dataGridView_shipment.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_shipment.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_shipment.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView_shipment.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_shipment.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_shipment.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_shipment.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_shipment.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_shipment.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView_shipment.Location = new System.Drawing.Point(3, 261);
             this.dataGridView_shipment.MultiSelect = false;
             this.dataGridView_shipment.Name = "dataGridView_shipment";
             this.dataGridView_shipment.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_shipment.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_shipment.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView_shipment.RowHeadersVisible = false;
             this.dataGridView_shipment.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_shipment.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_shipment.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView_shipment.RowTemplate.Height = 30;
             this.dataGridView_shipment.Size = new System.Drawing.Size(189, 245);
             this.dataGridView_shipment.TabIndex = 7;
@@ -835,45 +915,45 @@
             this.dataGridView_workbill.AllowUserToDeleteRows = false;
             this.dataGridView_workbill.AllowUserToResizeColumns = false;
             this.dataGridView_workbill.AllowUserToResizeRows = false;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.LavenderBlush;
-            this.dataGridView_workbill.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle50.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle50.BackColor = System.Drawing.Color.LavenderBlush;
+            this.dataGridView_workbill.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle50;
             this.dataGridView_workbill.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_workbill.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView_workbill.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_workbill.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle51.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle51.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle51.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle51.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle51.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle51.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_workbill.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle51;
             this.dataGridView_workbill.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_workbill.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle52.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle52.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle52.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle52.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle52.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_workbill.DefaultCellStyle = dataGridViewCellStyle52;
             this.dataGridView_workbill.Location = new System.Drawing.Point(3, 48);
             this.dataGridView_workbill.MultiSelect = false;
             this.dataGridView_workbill.Name = "dataGridView_workbill";
             this.dataGridView_workbill.ReadOnly = true;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_workbill.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle53.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle53.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle53.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle53.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle53.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle53.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_workbill.RowHeadersDefaultCellStyle = dataGridViewCellStyle53;
             this.dataGridView_workbill.RowHeadersVisible = false;
             this.dataGridView_workbill.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_workbill.RowsDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_workbill.RowsDefaultCellStyle = dataGridViewCellStyle54;
             this.dataGridView_workbill.RowTemplate.Height = 30;
             this.dataGridView_workbill.Size = new System.Drawing.Size(189, 207);
             this.dataGridView_workbill.TabIndex = 7;
@@ -885,47 +965,47 @@
             this.dataGridView_workinfo.AllowUserToDeleteRows = false;
             this.dataGridView_workinfo.AllowUserToResizeColumns = false;
             this.dataGridView_workinfo.AllowUserToResizeRows = false;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.AliceBlue;
-            this.dataGridView_workinfo.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle55.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataGridView_workinfo.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle55;
             this.dataGridView_workinfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_workinfo.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView_workinfo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dataGridView_workinfo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_workinfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle56.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle56.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle56.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle56.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle56.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle56.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle56.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_workinfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle56;
             this.dataGridView_workinfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_workinfo.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle57.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle57.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle57.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle57.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle57.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle57.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle57.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_workinfo.DefaultCellStyle = dataGridViewCellStyle57;
             this.dataGridView_workinfo.Location = new System.Drawing.Point(198, 48);
             this.dataGridView_workinfo.MultiSelect = false;
             this.dataGridView_workinfo.Name = "dataGridView_workinfo";
             this.dataGridView_workinfo.ReadOnly = true;
             this.dataGridView_workinfo.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_workinfo.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle58.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle58.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle58.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle58.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle58.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle58.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle58.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_workinfo.RowHeadersDefaultCellStyle = dataGridViewCellStyle58;
             this.dataGridView_workinfo.RowHeadersVisible = false;
             this.dataGridView_workinfo.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_workinfo.RowsDefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle59.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_workinfo.RowsDefaultCellStyle = dataGridViewCellStyle59;
             this.dataGridView_workinfo.RowTemplate.Height = 30;
             this.dataGridView_workinfo.ShowCellErrors = false;
             this.dataGridView_workinfo.ShowCellToolTips = false;
@@ -945,23 +1025,6 @@
             this.button_workend2.UseVisualStyleBackColor = true;
             this.button_workend2.Click += new System.EventHandler(this.button_workend2_Click);
             // 
-            // button_download
-            // 
-            this.button_download.FlatAppearance.BorderSize = 0;
-            this.button_download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_download.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button_download.Image = ((System.Drawing.Image)(resources.GetObject("button_download.Image")));
-            this.button_download.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button_download.Location = new System.Drawing.Point(1067, 6);
-            this.button_download.Name = "button_download";
-            this.button_download.Size = new System.Drawing.Size(119, 100);
-            this.button_download.TabIndex = 4;
-            this.button_download.Text = "다운로드";
-            this.button_download.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button_download.UseVisualStyleBackColor = true;
-            this.button_download.Visible = false;
-            this.button_download.Click += new System.EventHandler(this.button_download_Click);
-            // 
             // textBox_search
             // 
             this.textBox_search.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -971,17 +1034,6 @@
             this.textBox_search.TabIndex = 3;
             this.textBox_search.Visible = false;
             this.textBox_search.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_search_KeyPress);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(1134, 244);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 34);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
             // 
             // label4
             // 
@@ -1134,47 +1186,47 @@
             this.dataGridView_sort.AllowUserToDeleteRows = false;
             this.dataGridView_sort.AllowUserToResizeColumns = false;
             this.dataGridView_sort.AllowUserToResizeRows = false;
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle21.BackColor = System.Drawing.Color.AliceBlue;
-            this.dataGridView_sort.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle60.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle60.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataGridView_sort.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle60;
             this.dataGridView_sort.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_sort.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView_sort.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dataGridView_sort.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_sort.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle61.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle61.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle61.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle61.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle61.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle61.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle61.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_sort.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle61;
             this.dataGridView_sort.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_sort.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle62.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle62.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle62.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle62.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle62.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle62.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle62.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_sort.DefaultCellStyle = dataGridViewCellStyle62;
             this.dataGridView_sort.Location = new System.Drawing.Point(8, 669);
             this.dataGridView_sort.MultiSelect = false;
             this.dataGridView_sort.Name = "dataGridView_sort";
             this.dataGridView_sort.ReadOnly = true;
             this.dataGridView_sort.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_sort.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle63.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle63.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle63.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle63.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle63.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle63.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle63.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_sort.RowHeadersDefaultCellStyle = dataGridViewCellStyle63;
             this.dataGridView_sort.RowHeadersVisible = false;
             this.dataGridView_sort.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_sort.RowsDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_sort.RowsDefaultCellStyle = dataGridViewCellStyle64;
             this.dataGridView_sort.RowTemplate.Height = 28;
             this.dataGridView_sort.ShowCellErrors = false;
             this.dataGridView_sort.ShowCellToolTips = false;
@@ -1184,8 +1236,37 @@
             this.dataGridView_sort.TabIndex = 0;
             this.dataGridView_sort.Visible = false;
             // 
+            // button_download
+            // 
+            this.button_download.FlatAppearance.BorderSize = 0;
+            this.button_download.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_download.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button_download.Image = ((System.Drawing.Image)(resources.GetObject("button_download.Image")));
+            this.button_download.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button_download.Location = new System.Drawing.Point(1067, 6);
+            this.button_download.Name = "button_download";
+            this.button_download.Size = new System.Drawing.Size(119, 100);
+            this.button_download.TabIndex = 4;
+            this.button_download.Text = "다운로드";
+            this.button_download.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button_download.UseVisualStyleBackColor = true;
+            this.button_download.Visible = false;
+            this.button_download.Click += new System.EventHandler(this.button_download_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(1134, 244);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(36, 34);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
+            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cb_GreenLabel);
             this.tabPage3.Controls.Add(this.button3);
             this.tabPage3.Controls.Add(this.button2);
             this.tabPage3.Controls.Add(this.button_Autofocus);
@@ -1232,6 +1313,17 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "SCAN 정보";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // cb_GreenLabel
+            // 
+            this.cb_GreenLabel.AutoSize = true;
+            this.cb_GreenLabel.Location = new System.Drawing.Point(874, 613);
+            this.cb_GreenLabel.Name = "cb_GreenLabel";
+            this.cb_GreenLabel.Size = new System.Drawing.Size(105, 24);
+            this.cb_GreenLabel.TabIndex = 13;
+            this.cb_GreenLabel.Text = "GreenLabel";
+            this.cb_GreenLabel.UseVisualStyleBackColor = true;
+            this.cb_GreenLabel.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // button3
             // 
@@ -1354,37 +1446,37 @@
             this.dataGridView_Device.AllowUserToDeleteRows = false;
             this.dataGridView_Device.AllowUserToResizeColumns = false;
             this.dataGridView_Device.AllowUserToResizeRows = false;
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle26.BackColor = System.Drawing.Color.LavenderBlush;
-            this.dataGridView_Device.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle65.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle65.BackColor = System.Drawing.Color.LavenderBlush;
+            this.dataGridView_Device.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle65;
             this.dataGridView_Device.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_Device.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView_Device.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Device.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle66.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle66.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle66.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle66.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle66.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle66.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle66.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Device.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle66;
             this.dataGridView_Device.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Device.Location = new System.Drawing.Point(3, 3);
             this.dataGridView_Device.MultiSelect = false;
             this.dataGridView_Device.Name = "dataGridView_Device";
             this.dataGridView_Device.ReadOnly = true;
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Device.RowHeadersDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle67.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle67.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle67.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle67.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle67.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle67.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Device.RowHeadersDefaultCellStyle = dataGridViewCellStyle67;
             this.dataGridView_Device.RowHeadersVisible = false;
             this.dataGridView_Device.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_Device.RowsDefaultCellStyle = dataGridViewCellStyle29;
+            dataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_Device.RowsDefaultCellStyle = dataGridViewCellStyle68;
             this.dataGridView_Device.RowTemplate.Height = 30;
             this.dataGridView_Device.Size = new System.Drawing.Size(220, 204);
             this.dataGridView_Device.TabIndex = 5;
@@ -1421,7 +1513,7 @@
             this.textBox_Readdata.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.textBox_Readdata.Location = new System.Drawing.Point(3, 609);
             this.textBox_Readdata.Name = "textBox_Readdata";
-            this.textBox_Readdata.Size = new System.Drawing.Size(1028, 33);
+            this.textBox_Readdata.Size = new System.Drawing.Size(865, 33);
             this.textBox_Readdata.TabIndex = 3;
             this.textBox_Readdata.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Readdata_KeyPress);
             // 
@@ -1767,48 +1859,48 @@
             this.dataGridView_Lot.AllowUserToDeleteRows = false;
             this.dataGridView_Lot.AllowUserToResizeColumns = false;
             this.dataGridView_Lot.AllowUserToResizeRows = false;
-            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle30.BackColor = System.Drawing.Color.AliceBlue;
-            this.dataGridView_Lot.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle69.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle69.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataGridView_Lot.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle69;
             this.dataGridView_Lot.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_Lot.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView_Lot.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dataGridView_Lot.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle31.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Lot.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle70.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle70.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle70.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle70.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle70.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle70.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle70.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Lot.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle70;
             this.dataGridView_Lot.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Lot.ContextMenuStrip = this.contextMenuStrip1;
-            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle32.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_Lot.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle71.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle71.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle71.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle71.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle71.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle71.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle71.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Lot.DefaultCellStyle = dataGridViewCellStyle71;
             this.dataGridView_Lot.Location = new System.Drawing.Point(3, 209);
             this.dataGridView_Lot.MultiSelect = false;
             this.dataGridView_Lot.Name = "dataGridView_Lot";
             this.dataGridView_Lot.ReadOnly = true;
             this.dataGridView_Lot.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle33.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Lot.RowHeadersDefaultCellStyle = dataGridViewCellStyle33;
+            dataGridViewCellStyle72.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle72.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle72.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle72.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle72.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle72.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle72.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Lot.RowHeadersDefaultCellStyle = dataGridViewCellStyle72;
             this.dataGridView_Lot.RowHeadersVisible = false;
             this.dataGridView_Lot.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_Lot.RowsDefaultCellStyle = dataGridViewCellStyle34;
+            dataGridViewCellStyle73.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_Lot.RowsDefaultCellStyle = dataGridViewCellStyle73;
             this.dataGridView_Lot.RowTemplate.Height = 30;
             this.dataGridView_Lot.ShowCellErrors = false;
             this.dataGridView_Lot.ShowCellToolTips = false;
@@ -2068,45 +2160,45 @@
             this.dataGridView_hist.AllowUserToDeleteRows = false;
             this.dataGridView_hist.AllowUserToResizeColumns = false;
             this.dataGridView_hist.AllowUserToResizeRows = false;
-            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle35.BackColor = System.Drawing.Color.LavenderBlush;
-            this.dataGridView_hist.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle30.BackColor = System.Drawing.Color.LavenderBlush;
+            this.dataGridView_hist.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle30;
             this.dataGridView_hist.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_hist.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView_hist.BackgroundColor = System.Drawing.Color.AliceBlue;
             this.dataGridView_hist.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle36.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_hist.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle36;
+            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle31.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_hist.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle31;
             this.dataGridView_hist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle37.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle37.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle37.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle37.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle37.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_hist.DefaultCellStyle = dataGridViewCellStyle37;
+            dataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle32.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_hist.DefaultCellStyle = dataGridViewCellStyle32;
             this.dataGridView_hist.Location = new System.Drawing.Point(8, 147);
             this.dataGridView_hist.Name = "dataGridView_hist";
             this.dataGridView_hist.ReadOnly = true;
-            dataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle38.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle38.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle38.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle38.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle38.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle38.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_hist.RowHeadersDefaultCellStyle = dataGridViewCellStyle38;
+            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle33.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_hist.RowHeadersDefaultCellStyle = dataGridViewCellStyle33;
             this.dataGridView_hist.RowHeadersVisible = false;
             this.dataGridView_hist.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_hist.RowsDefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_hist.RowsDefaultCellStyle = dataGridViewCellStyle34;
             this.dataGridView_hist.RowTemplate.Height = 23;
             this.dataGridView_hist.Size = new System.Drawing.Size(1012, 483);
             this.dataGridView_hist.TabIndex = 8;
@@ -2193,46 +2285,46 @@
             this.dataGridView_unprintedinfo.AllowUserToDeleteRows = false;
             this.dataGridView_unprintedinfo.AllowUserToResizeColumns = false;
             this.dataGridView_unprintedinfo.AllowUserToResizeRows = false;
-            dataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle40.BackColor = System.Drawing.Color.LavenderBlush;
-            this.dataGridView_unprintedinfo.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle40;
+            dataGridViewCellStyle74.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle74.BackColor = System.Drawing.Color.LavenderBlush;
+            this.dataGridView_unprintedinfo.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle74;
             this.dataGridView_unprintedinfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView_unprintedinfo.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView_unprintedinfo.BackgroundColor = System.Drawing.Color.AliceBlue;
             this.dataGridView_unprintedinfo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle41.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle41.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle41.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle41.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle41.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_unprintedinfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle41;
+            dataGridViewCellStyle75.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle75.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle75.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle75.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle75.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle75.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle75.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_unprintedinfo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle75;
             this.dataGridView_unprintedinfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_unprintedinfo.ContextMenuStrip = this.contextMenuStrip2;
-            dataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle42.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle42.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle42.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle42.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle42.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_unprintedinfo.DefaultCellStyle = dataGridViewCellStyle42;
+            dataGridViewCellStyle76.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle76.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle76.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle76.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle76.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle76.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle76.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_unprintedinfo.DefaultCellStyle = dataGridViewCellStyle76;
             this.dataGridView_unprintedinfo.Location = new System.Drawing.Point(11, 90);
             this.dataGridView_unprintedinfo.Name = "dataGridView_unprintedinfo";
             this.dataGridView_unprintedinfo.ReadOnly = true;
-            dataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle43.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle43.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle43.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle43.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle43.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_unprintedinfo.RowHeadersDefaultCellStyle = dataGridViewCellStyle43;
+            dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle77.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle77.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle77.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle77.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle77.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle77.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_unprintedinfo.RowHeadersDefaultCellStyle = dataGridViewCellStyle77;
             this.dataGridView_unprintedinfo.RowHeadersVisible = false;
             this.dataGridView_unprintedinfo.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle44.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView_unprintedinfo.RowsDefaultCellStyle = dataGridViewCellStyle44;
+            dataGridViewCellStyle78.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView_unprintedinfo.RowsDefaultCellStyle = dataGridViewCellStyle78;
             this.dataGridView_unprintedinfo.RowTemplate.Height = 23;
             this.dataGridView_unprintedinfo.Size = new System.Drawing.Size(542, 539);
             this.dataGridView_unprintedinfo.TabIndex = 9;
@@ -2342,8 +2434,12 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.dataGridView_label);
             // 
+            // splitContainer1.Panel2
             // 
-            // 
+            this.splitContainer1.Panel2.Controls.Add(this.label55);
+            this.splitContainer1.Panel2.Controls.Add(this.tb_next);
+            this.splitContainer1.Panel2.Controls.Add(this.cb_dup);
+            this.splitContainer1.Panel2.Controls.Add(this.numericUpDown1);
             this.splitContainer1.Panel2.Controls.Add(this.button10);
             this.splitContainer1.Panel2.Controls.Add(this.label40);
             this.splitContainer1.Panel2.Controls.Add(this.lwfr);
@@ -2368,12 +2464,14 @@
             this.dataGridView_label.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.LOT,
+            this.Column2,
             this.Device,
             this.Die_Qty,
             this.WFT_QTY,
             this.AMKOR_ID,
             this.CUST_CODE,
             this.Wafer_lot});
+            this.dataGridView_label.ContextMenuStrip = this.CMS_AmkorLabel;
             this.dataGridView_label.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_label.Location = new System.Drawing.Point(0, 0);
             this.dataGridView_label.MultiSelect = false;
@@ -2383,9 +2481,10 @@
             this.dataGridView_label.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView_label.Size = new System.Drawing.Size(1322, 1022);
             this.dataGridView_label.TabIndex = 1;
-            this.dataGridView_label.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView_label.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_label_CellMouseClick);
             this.dataGridView_label.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView_label_RowsRemoved);
             this.dataGridView_label.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView_label_KeyPress);
+            this.dataGridView_label.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_label_MouseClick);
             // 
             // Column1
             // 
@@ -2399,6 +2498,12 @@
             this.LOT.Name = "LOT";
             this.LOT.ReadOnly = true;
             this.LOT.Width = 150;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "DCC";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             // 
             // Device
             // 
@@ -2436,13 +2541,63 @@
             this.Wafer_lot.Name = "Wafer_lot";
             this.Wafer_lot.ReadOnly = true;
             // 
+            // CMS_AmkorLabel
+            // 
+            this.CMS_AmkorLabel.Name = "CMS_AmkorLabel";
+            this.CMS_AmkorLabel.Size = new System.Drawing.Size(61, 4);
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
+            this.label55.Location = new System.Drawing.Point(5, 328);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(75, 32);
+            this.label55.TabIndex = 27;
+            this.label55.Text = "Next:";
+            // 
+            // tb_next
+            // 
+            this.tb_next.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.tb_next.Location = new System.Drawing.Point(9, 363);
+            this.tb_next.Name = "tb_next";
+            this.tb_next.Size = new System.Drawing.Size(73, 32);
+            this.tb_next.TabIndex = 26;
+            this.tb_next.TextChanged += new System.EventHandler(this.tb_next_TextChanged);
+            this.tb_next.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_next_KeyDown);
+            this.tb_next.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tb_next_KeyPress);
+            // 
+            // cb_dup
+            // 
+            this.cb_dup.AutoSize = true;
+            this.cb_dup.Location = new System.Drawing.Point(8, 457);
+            this.cb_dup.Name = "cb_dup";
+            this.cb_dup.Size = new System.Drawing.Size(63, 24);
+            this.cb_dup.TabIndex = 25;
+            this.cb_dup.Text = "Copy";
+            this.cb_dup.UseVisualStyleBackColor = true;
+            this.cb_dup.CheckedChanged += new System.EventHandler(this.cb_dup_CheckedChanged);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold);
+            this.numericUpDown1.Location = new System.Drawing.Point(8, 401);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(125, 50);
+            this.numericUpDown1.TabIndex = 22;
+            // 
             // button10
             // 
             this.button10.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.button10.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button10.Location = new System.Drawing.Point(0, 852);
+            this.button10.Location = new System.Drawing.Point(0, 872);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(210, 58);
+            this.button10.Size = new System.Drawing.Size(210, 50);
             this.button10.TabIndex = 21;
             this.button10.Text = "초기화";
             this.button10.UseVisualStyleBackColor = true;
@@ -2451,60 +2606,60 @@
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label40.Location = new System.Drawing.Point(12, 393);
+            this.label40.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
+            this.label40.Location = new System.Drawing.Point(5, 285);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(112, 45);
+            this.label40.Size = new System.Drawing.Size(83, 32);
             this.label40.TabIndex = 20;
             this.label40.Text = "Wafer";
             // 
             // lwfr
             // 
-            this.lwfr.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lwfr.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
             this.lwfr.ForeColor = System.Drawing.Color.Blue;
-            this.lwfr.Location = new System.Drawing.Point(3, 343);
+            this.lwfr.Location = new System.Drawing.Point(3, 249);
             this.lwfr.Name = "lwfr";
-            this.lwfr.Size = new System.Drawing.Size(202, 50);
+            this.lwfr.Size = new System.Drawing.Size(202, 36);
             this.lwfr.TabIndex = 19;
             this.lwfr.Text = "0000";
             // 
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label38.Location = new System.Drawing.Point(12, 279);
+            this.label38.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
+            this.label38.Location = new System.Drawing.Point(5, 217);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(71, 45);
+            this.label38.Size = new System.Drawing.Size(53, 32);
             this.label38.TabIndex = 18;
             this.label38.Text = "Die";
             // 
             // ldie
             // 
-            this.ldie.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ldie.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
             this.ldie.ForeColor = System.Drawing.Color.Blue;
-            this.ldie.Location = new System.Drawing.Point(3, 229);
+            this.ldie.Location = new System.Drawing.Point(2, 183);
             this.ldie.Name = "ldie";
-            this.ldie.Size = new System.Drawing.Size(202, 50);
+            this.ldie.Size = new System.Drawing.Size(202, 34);
             this.ldie.TabIndex = 17;
             this.ldie.Text = "0000";
             // 
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label39.Location = new System.Drawing.Point(12, 173);
+            this.label39.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
+            this.label39.Location = new System.Drawing.Point(3, 151);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(68, 45);
+            this.label39.Size = new System.Drawing.Size(51, 32);
             this.label39.TabIndex = 16;
             this.label39.Text = "Lot";
             // 
             // lprinted_lots
             // 
-            this.lprinted_lots.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lprinted_lots.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold);
             this.lprinted_lots.ForeColor = System.Drawing.Color.Blue;
-            this.lprinted_lots.Location = new System.Drawing.Point(3, 123);
+            this.lprinted_lots.Location = new System.Drawing.Point(3, 112);
             this.lprinted_lots.Name = "lprinted_lots";
-            this.lprinted_lots.Size = new System.Drawing.Size(202, 50);
+            this.lprinted_lots.Size = new System.Drawing.Size(98, 39);
             this.lprinted_lots.TabIndex = 15;
             this.lprinted_lots.Text = "0000";
             // 
@@ -2526,9 +2681,9 @@
             // 
             this.button5.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.button5.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button5.Location = new System.Drawing.Point(0, 910);
+            this.button5.Location = new System.Drawing.Point(0, 922);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(210, 58);
+            this.button5.Size = new System.Drawing.Size(210, 46);
             this.button5.TabIndex = 13;
             this.button5.Text = "종  료";
             this.button5.UseVisualStyleBackColor = true;
@@ -2542,6 +2697,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(210, 35);
             this.textBox1.TabIndex = 12;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // button4
@@ -2859,6 +3015,7 @@
             this.dgv_split_log.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_split_log.Size = new System.Drawing.Size(1020, 478);
             this.dgv_split_log.TabIndex = 19;
+            this.dgv_split_log.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_split_log_CellContentClick);
             this.dgv_split_log.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_split_log_KeyDown);
             // 
             // dataGridViewTextBoxColumn8
@@ -3170,24 +3327,6 @@
             this.tabPage9.Text = "Qualcomm Return";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "fileopen_48.bmp");
-            this.imageList1.Images.SetKeyName(1, "Sort_48.bmp");
-            this.imageList1.Images.SetKeyName(2, "ringscan_48.bmp");
-            this.imageList1.Images.SetKeyName(3, "History_40.png");
-            this.imageList1.Images.SetKeyName(4, "print.png");
-            this.imageList1.Images.SetKeyName(5, "pngwing.com.png");
-            this.imageList1.Images.SetKeyName(6, "return.png");
-            this.imageList1.Images.SetKeyName(7, "email_setting.png");
-            this.imageList1.Images.SetKeyName(8, "Qualcomm.png");
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3372,6 +3511,7 @@
             this.button12.TabIndex = 14;
             this.button12.Text = "   출력";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button13
             // 
@@ -3408,6 +3548,676 @@
             this.button14.Size = new System.Drawing.Size(210, 54);
             this.button14.TabIndex = 11;
             this.button14.UseVisualStyleBackColor = false;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.panel5);
+            this.tabPage10.ImageIndex = 9;
+            this.tabPage10.Location = new System.Drawing.Point(4, 29);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(1542, 1028);
+            this.tabPage10.TabIndex = 9;
+            this.tabPage10.Text = "Scrap";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.panel10);
+            this.panel5.Controls.Add(this.dgv_scrap);
+            this.panel5.Controls.Add(this.panel9);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 3);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1536, 1022);
+            this.panel5.TabIndex = 0;
+            // 
+            // panel10
+            // 
+            this.panel10.Controls.Add(this.button17);
+            this.panel10.Controls.Add(this.btn_ExcelOut);
+            this.panel10.Controls.Add(this.button16);
+            this.panel10.Controls.Add(this.btn_CommentEdit);
+            this.panel10.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel10.Location = new System.Drawing.Point(0, 952);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(1330, 70);
+            this.panel10.TabIndex = 3;
+            // 
+            // button17
+            // 
+            this.button17.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button17.Font = new System.Drawing.Font("맑은 고딕", 17F, System.Drawing.FontStyle.Bold);
+            this.button17.Location = new System.Drawing.Point(412, 0);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(94, 70);
+            this.button17.TabIndex = 26;
+            this.button17.Text = "라벨 출력";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // btn_ExcelOut
+            // 
+            this.btn_ExcelOut.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btn_ExcelOut.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_ExcelOut.Image = ((System.Drawing.Image)(resources.GetObject("btn_ExcelOut.Image")));
+            this.btn_ExcelOut.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_ExcelOut.Location = new System.Drawing.Point(1148, 0);
+            this.btn_ExcelOut.Name = "btn_ExcelOut";
+            this.btn_ExcelOut.Size = new System.Drawing.Size(182, 70);
+            this.btn_ExcelOut.TabIndex = 15;
+            this.btn_ExcelOut.Text = "     출력";
+            this.btn_ExcelOut.UseVisualStyleBackColor = true;
+            this.btn_ExcelOut.Click += new System.EventHandler(this.button15_Click);
+            this.btn_ExcelOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseDown);
+            this.btn_ExcelOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_ExcelOut_MouseUp);
+            // 
+            // button16
+            // 
+            this.button16.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button16.BackgroundImage")));
+            this.button16.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button16.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button16.ImageKey = "(없음)";
+            this.button16.Location = new System.Drawing.Point(206, 0);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(206, 70);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "입 고 증";
+            this.button16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // btn_CommentEdit
+            // 
+            this.btn_CommentEdit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_CommentEdit.BackgroundImage")));
+            this.btn_CommentEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_CommentEdit.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btn_CommentEdit.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
+            this.btn_CommentEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_CommentEdit.ImageKey = "(없음)";
+            this.btn_CommentEdit.Location = new System.Drawing.Point(0, 0);
+            this.btn_CommentEdit.Name = "btn_CommentEdit";
+            this.btn_CommentEdit.Size = new System.Drawing.Size(206, 70);
+            this.btn_CommentEdit.TabIndex = 25;
+            this.btn_CommentEdit.Text = "  CommentEdit";
+            this.btn_CommentEdit.UseVisualStyleBackColor = true;
+            this.btn_CommentEdit.Click += new System.EventHandler(this.btn_CommentEdit_Click);
+            // 
+            // dgv_scrap
+            // 
+            this.dgv_scrap.AllowUserToAddRows = false;
+            this.dgv_scrap.AllowUserToDeleteRows = false;
+            this.dgv_scrap.AllowUserToResizeRows = false;
+            this.dgv_scrap.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_scrap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_scrap.Location = new System.Drawing.Point(0, 0);
+            this.dgv_scrap.Name = "dgv_scrap";
+            this.dgv_scrap.ReadOnly = true;
+            this.dgv_scrap.RowTemplate.Height = 23;
+            this.dgv_scrap.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_scrap.Size = new System.Drawing.Size(1330, 1022);
+            this.dgv_scrap.TabIndex = 2;
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.lDieCnt);
+            this.panel9.Controls.Add(this.cbRequest);
+            this.panel9.Controls.Add(this.button15);
+            this.panel9.Controls.Add(this.cb_download);
+            this.panel9.Controls.Add(this.lTOTWfr);
+            this.panel9.Controls.Add(this.lTOTDie);
+            this.panel9.Controls.Add(this.l2ndComp);
+            this.panel9.Controls.Add(this.l1stComp);
+            this.panel9.Controls.Add(this.lTOTLot);
+            this.panel9.Controls.Add(this.label54);
+            this.panel9.Controls.Add(this.label53);
+            this.panel9.Controls.Add(this.pictureBox5);
+            this.panel9.Controls.Add(this.pictureBox3);
+            this.panel9.Controls.Add(this.checkBox1);
+            this.panel9.Controls.Add(this.tb_scrapinput);
+            this.panel9.Controls.Add(this.tb_ScrapSt);
+            this.panel9.Controls.Add(this.progressBar1);
+            this.panel9.Controls.Add(this.edt);
+            this.panel9.Controls.Add(this.pictureBox2);
+            this.panel9.Controls.Add(this.btn_search);
+            this.panel9.Controls.Add(this.sdt);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel9.Location = new System.Drawing.Point(1330, 0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(206, 1022);
+            this.panel9.TabIndex = 1;
+            // 
+            // lDieCnt
+            // 
+            this.lDieCnt.AutoSize = true;
+            this.lDieCnt.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lDieCnt.Location = new System.Drawing.Point(13, 519);
+            this.lDieCnt.Name = "lDieCnt";
+            this.lDieCnt.Size = new System.Drawing.Size(0, 32);
+            this.lDieCnt.TabIndex = 38;
+            // 
+            // cbRequest
+            // 
+            this.cbRequest.FormattingEnabled = true;
+            this.cbRequest.Location = new System.Drawing.Point(6, 364);
+            this.cbRequest.Name = "cbRequest";
+            this.cbRequest.Size = new System.Drawing.Size(121, 28);
+            this.cbRequest.TabIndex = 37;
+            this.cbRequest.SelectedIndexChanged += new System.EventHandler(this.cbRequest_SelectedIndexChanged);
+            // 
+            // button15
+            // 
+            this.button15.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button15.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button15.Location = new System.Drawing.Point(0, 952);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(206, 70);
+            this.button15.TabIndex = 36;
+            this.button15.Text = "종  료";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click_1);
+            // 
+            // cb_download
+            // 
+            this.cb_download.AutoSize = true;
+            this.cb_download.Location = new System.Drawing.Point(6, 6);
+            this.cb_download.Name = "cb_download";
+            this.cb_download.Size = new System.Drawing.Size(158, 24);
+            this.cb_download.TabIndex = 35;
+            this.cb_download.Text = "파일 다운 건너뛰기";
+            this.cb_download.UseVisualStyleBackColor = true;
+            this.cb_download.CheckStateChanged += new System.EventHandler(this.cb_download_CheckStateChanged);
+            // 
+            // lTOTWfr
+            // 
+            this.lTOTWfr.AutoSize = true;
+            this.lTOTWfr.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lTOTWfr.Location = new System.Drawing.Point(7, 455);
+            this.lTOTWfr.Name = "lTOTWfr";
+            this.lTOTWfr.Size = new System.Drawing.Size(137, 32);
+            this.lTOTWfr.TabIndex = 34;
+            this.lTOTWfr.Text = "Total Wfr :";
+            // 
+            // lTOTDie
+            // 
+            this.lTOTDie.AutoSize = true;
+            this.lTOTDie.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lTOTDie.Location = new System.Drawing.Point(7, 487);
+            this.lTOTDie.Name = "lTOTDie";
+            this.lTOTDie.Size = new System.Drawing.Size(133, 32);
+            this.lTOTDie.TabIndex = 32;
+            this.lTOTDie.Text = "Total Die :";
+            // 
+            // l2ndComp
+            // 
+            this.l2ndComp.BackColor = System.Drawing.Color.Green;
+            this.l2ndComp.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.l2ndComp.Location = new System.Drawing.Point(9, 333);
+            this.l2ndComp.Name = "l2ndComp";
+            this.l2ndComp.Size = new System.Drawing.Size(37, 21);
+            this.l2ndComp.TabIndex = 28;
+            this.l2ndComp.Text = "000";
+            this.l2ndComp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // l1stComp
+            // 
+            this.l1stComp.BackColor = System.Drawing.Color.Yellow;
+            this.l1stComp.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold);
+            this.l1stComp.Location = new System.Drawing.Point(9, 294);
+            this.l1stComp.Name = "l1stComp";
+            this.l1stComp.Size = new System.Drawing.Size(37, 21);
+            this.l1stComp.TabIndex = 27;
+            this.l1stComp.Text = "000";
+            this.l1stComp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lTOTLot
+            // 
+            this.lTOTLot.AutoSize = true;
+            this.lTOTLot.Font = new System.Drawing.Font("맑은 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lTOTLot.Location = new System.Drawing.Point(7, 423);
+            this.lTOTLot.Name = "lTOTLot";
+            this.lTOTLot.Size = new System.Drawing.Size(139, 32);
+            this.lTOTLot.TabIndex = 26;
+            this.lTOTLot.Text = "Total Lot : ";
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label54.Location = new System.Drawing.Point(54, 330);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(144, 25);
+            this.label54.TabIndex = 22;
+            this.label54.Text = ": 2차 검수 완료";
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label53.Location = new System.Drawing.Point(54, 291);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(144, 25);
+            this.label53.TabIndex = 21;
+            this.label53.Text = ": 1차 검수 완료";
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.BackColor = System.Drawing.Color.Green;
+            this.pictureBox5.Location = new System.Drawing.Point(5, 326);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox5.TabIndex = 20;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Yellow;
+            this.pictureBox3.Location = new System.Drawing.Point(5, 288);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(43, 32);
+            this.pictureBox3.TabIndex = 18;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 36);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(128, 24);
+            this.checkBox1.TabIndex = 17;
+            this.checkBox1.Text = "진행 사항 확인";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // tb_scrapinput
+            // 
+            this.tb_scrapinput.Location = new System.Drawing.Point(6, 250);
+            this.tb_scrapinput.Name = "tb_scrapinput";
+            this.tb_scrapinput.Size = new System.Drawing.Size(192, 27);
+            this.tb_scrapinput.TabIndex = 16;
+            this.tb_scrapinput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_input_KeyDown);
+            // 
+            // tb_ScrapSt
+            // 
+            this.tb_ScrapSt.Font = new System.Drawing.Font("맑은 고딕", 8F);
+            this.tb_ScrapSt.Location = new System.Drawing.Point(6, 148);
+            this.tb_ScrapSt.Name = "tb_ScrapSt";
+            this.tb_ScrapSt.ReadOnly = true;
+            this.tb_ScrapSt.Size = new System.Drawing.Size(192, 22);
+            this.tb_ScrapSt.TabIndex = 6;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(6, 176);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(192, 23);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 5;
+            // 
+            // edt
+            // 
+            this.edt.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.edt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.edt.Location = new System.Drawing.Point(35, 107);
+            this.edt.Name = "edt";
+            this.edt.Size = new System.Drawing.Size(163, 35);
+            this.edt.TabIndex = 4;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(6, 107);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(23, 35);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            // 
+            // btn_search
+            // 
+            this.btn_search.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_search.Location = new System.Drawing.Point(6, 205);
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(192, 39);
+            this.btn_search.TabIndex = 2;
+            this.btn_search.Text = "조  회";
+            this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            // 
+            // sdt
+            // 
+            this.sdt.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.sdt.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.sdt.Location = new System.Drawing.Point(6, 66);
+            this.sdt.Name = "sdt";
+            this.sdt.Size = new System.Drawing.Size(163, 35);
+            this.sdt.TabIndex = 0;
+            // 
+            // tabPage11
+            // 
+            this.tabPage11.Controls.Add(this.splitContainer3);
+            this.tabPage11.ImageIndex = 11;
+            this.tabPage11.Location = new System.Drawing.Point(4, 29);
+            this.tabPage11.Name = "tabPage11";
+            this.tabPage11.Size = new System.Drawing.Size(1542, 1028);
+            this.tabPage11.TabIndex = 10;
+            this.tabPage11.Text = "Wafer Return";
+            this.tabPage11.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.dgv_ReturnWafer);
+            this.splitContainer3.Panel1.Controls.Add(this.dataGridView1);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnFindNext);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Find);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnReset);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnExcel);
+            this.splitContainer3.Panel2.Controls.Add(this.label58);
+            this.splitContainer3.Panel2.Controls.Add(this.l_WaferReturnCount);
+            this.splitContainer3.Panel2.Controls.Add(this.cb_WaferReturnPrint);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnReadDB);
+            this.splitContainer3.Panel2.Controls.Add(this.tb_ReturnWafer);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnFind);
+            this.splitContainer3.Panel2.Controls.Add(this.tb_Year);
+            this.splitContainer3.Panel2.Controls.Add(this.pb_WaferReturn);
+            this.splitContainer3.Panel2.Controls.Add(this.l_WaferReturnST);
+            this.splitContainer3.Panel2.Controls.Add(this.button18);
+            this.splitContainer3.Panel2.Controls.Add(this.label56);
+            this.splitContainer3.Panel2.Controls.Add(this.tb_WaferReturnScan);
+            this.splitContainer3.Panel2.Controls.Add(this.cb_WaferReturnExcel);
+            this.splitContainer3.Panel2.Controls.Add(this.cb_WaferReturnView);
+            this.splitContainer3.Size = new System.Drawing.Size(1542, 1028);
+            this.splitContainer3.SplitterDistance = 1322;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // dgv_ReturnWafer
+            // 
+            this.dgv_ReturnWafer.AllowUserToAddRows = false;
+            this.dgv_ReturnWafer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ReturnWafer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_ReturnWafer.Location = new System.Drawing.Point(0, 0);
+            this.dgv_ReturnWafer.Name = "dgv_ReturnWafer";
+            this.dgv_ReturnWafer.ReadOnly = true;
+            this.dgv_ReturnWafer.RowTemplate.Height = 23;
+            this.dgv_ReturnWafer.Size = new System.Drawing.Size(1322, 1028);
+            this.dgv_ReturnWafer.TabIndex = 1;
+            this.dgv_ReturnWafer.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_ReturnWafer_CellMouseClick);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(1322, 1028);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // btn_WaferReturnFindNext
+            // 
+            this.btn_WaferReturnFindNext.BackColor = System.Drawing.Color.Transparent;
+            this.btn_WaferReturnFindNext.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btn_WaferReturnFindNext.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_WaferReturnFindNext.Image = ((System.Drawing.Image)(resources.GetObject("btn_WaferReturnFindNext.Image")));
+            this.btn_WaferReturnFindNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_WaferReturnFindNext.Location = new System.Drawing.Point(111, 267);
+            this.btn_WaferReturnFindNext.Name = "btn_WaferReturnFindNext";
+            this.btn_WaferReturnFindNext.Size = new System.Drawing.Size(111, 448);
+            this.btn_WaferReturnFindNext.TabIndex = 57;
+            this.btn_WaferReturnFindNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_WaferReturnFindNext.UseVisualStyleBackColor = false;
+            this.btn_WaferReturnFindNext.Click += new System.EventHandler(this.btn_WaferReturnFindNext_Click);
+            // 
+            // btn_Find
+            // 
+            this.btn_Find.BackColor = System.Drawing.Color.Transparent;
+            this.btn_Find.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btn_Find.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_Find.Image = ((System.Drawing.Image)(resources.GetObject("btn_Find.Image")));
+            this.btn_Find.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Find.Location = new System.Drawing.Point(0, 267);
+            this.btn_Find.Name = "btn_Find";
+            this.btn_Find.Size = new System.Drawing.Size(111, 448);
+            this.btn_Find.TabIndex = 56;
+            this.btn_Find.Text = "찾기";
+            this.btn_Find.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_Find.UseVisualStyleBackColor = false;
+            this.btn_Find.Click += new System.EventHandler(this.btn_Find_Click);
+            // 
+            // btn_WaferReturnReset
+            // 
+            this.btn_WaferReturnReset.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_WaferReturnReset.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_WaferReturnReset.Location = new System.Drawing.Point(0, 715);
+            this.btn_WaferReturnReset.Name = "btn_WaferReturnReset";
+            this.btn_WaferReturnReset.Size = new System.Drawing.Size(216, 42);
+            this.btn_WaferReturnReset.TabIndex = 55;
+            this.btn_WaferReturnReset.Text = "초기화";
+            this.btn_WaferReturnReset.UseVisualStyleBackColor = true;
+            this.btn_WaferReturnReset.Click += new System.EventHandler(this.btn_WaferReturnReset_Click);
+            // 
+            // btn_WaferReturnExcel
+            // 
+            this.btn_WaferReturnExcel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_WaferReturnExcel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_WaferReturnExcel.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_WaferReturnExcel.Image = ((System.Drawing.Image)(resources.GetObject("btn_WaferReturnExcel.Image")));
+            this.btn_WaferReturnExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_WaferReturnExcel.Location = new System.Drawing.Point(0, 757);
+            this.btn_WaferReturnExcel.Name = "btn_WaferReturnExcel";
+            this.btn_WaferReturnExcel.Size = new System.Drawing.Size(216, 54);
+            this.btn_WaferReturnExcel.TabIndex = 54;
+            this.btn_WaferReturnExcel.Text = "Excel";
+            this.btn_WaferReturnExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_WaferReturnExcel.UseVisualStyleBackColor = true;
+            this.btn_WaferReturnExcel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_WaferReturnExcel_MouseUp);
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label58.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label58.Location = new System.Drawing.Point(0, 811);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(128, 25);
+            this.label58.TabIndex = 53;
+            this.label58.Text = "Scan Count :";
+            // 
+            // l_WaferReturnCount
+            // 
+            this.l_WaferReturnCount.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.l_WaferReturnCount.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.l_WaferReturnCount.Location = new System.Drawing.Point(0, 836);
+            this.l_WaferReturnCount.Name = "l_WaferReturnCount";
+            this.l_WaferReturnCount.Size = new System.Drawing.Size(216, 42);
+            this.l_WaferReturnCount.TabIndex = 52;
+            this.l_WaferReturnCount.Text = "0";
+            this.l_WaferReturnCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cb_WaferReturnPrint
+            // 
+            this.cb_WaferReturnPrint.AutoSize = true;
+            this.cb_WaferReturnPrint.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cb_WaferReturnPrint.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cb_WaferReturnPrint.Location = new System.Drawing.Point(0, 878);
+            this.cb_WaferReturnPrint.Name = "cb_WaferReturnPrint";
+            this.cb_WaferReturnPrint.Size = new System.Drawing.Size(216, 29);
+            this.cb_WaferReturnPrint.TabIndex = 51;
+            this.cb_WaferReturnPrint.Text = "라벨 출력 X";
+            this.cb_WaferReturnPrint.UseVisualStyleBackColor = true;
+            // 
+            // btn_WaferReturnReadDB
+            // 
+            this.btn_WaferReturnReadDB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btn_WaferReturnReadDB.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_WaferReturnReadDB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_WaferReturnReadDB.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_WaferReturnReadDB.Location = new System.Drawing.Point(0, 215);
+            this.btn_WaferReturnReadDB.Name = "btn_WaferReturnReadDB";
+            this.btn_WaferReturnReadDB.Size = new System.Drawing.Size(216, 52);
+            this.btn_WaferReturnReadDB.TabIndex = 50;
+            this.btn_WaferReturnReadDB.Text = "Read DB";
+            this.btn_WaferReturnReadDB.UseVisualStyleBackColor = false;
+            this.btn_WaferReturnReadDB.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // tb_ReturnWafer
+            // 
+            this.tb_ReturnWafer.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_ReturnWafer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tb_ReturnWafer.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_ReturnWafer.Location = new System.Drawing.Point(0, 180);
+            this.tb_ReturnWafer.Name = "tb_ReturnWafer";
+            this.tb_ReturnWafer.Size = new System.Drawing.Size(216, 35);
+            this.tb_ReturnWafer.TabIndex = 49;
+            this.tb_ReturnWafer.Text = "70021";
+            this.tb_ReturnWafer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tb_ReturnWafer.TextChanged += new System.EventHandler(this.tb_ReturnWafer_TextChanged);
+            this.tb_ReturnWafer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ReturnWafer_KeyDown);
+            // 
+            // btn_WaferReturnFind
+            // 
+            this.btn_WaferReturnFind.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btn_WaferReturnFind.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_WaferReturnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_WaferReturnFind.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_WaferReturnFind.Location = new System.Drawing.Point(0, 128);
+            this.btn_WaferReturnFind.Name = "btn_WaferReturnFind";
+            this.btn_WaferReturnFind.Size = new System.Drawing.Size(216, 52);
+            this.btn_WaferReturnFind.TabIndex = 48;
+            this.btn_WaferReturnFind.Text = "Excel Down";
+            this.btn_WaferReturnFind.UseVisualStyleBackColor = false;
+            this.btn_WaferReturnFind.Click += new System.EventHandler(this.btn_WaferReturnFind_Click);
+            // 
+            // tb_Year
+            // 
+            this.tb_Year.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tb_Year.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_Year.Location = new System.Drawing.Point(0, 95);
+            this.tb_Year.Mask = "9999";
+            this.tb_Year.Name = "tb_Year";
+            this.tb_Year.Size = new System.Drawing.Size(216, 33);
+            this.tb_Year.TabIndex = 47;
+            this.tb_Year.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tb_Year.ValidatingType = typeof(int);
+            // 
+            // pb_WaferReturn
+            // 
+            this.pb_WaferReturn.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pb_WaferReturn.Location = new System.Drawing.Point(0, 907);
+            this.pb_WaferReturn.Name = "pb_WaferReturn";
+            this.pb_WaferReturn.Size = new System.Drawing.Size(216, 23);
+            this.pb_WaferReturn.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pb_WaferReturn.TabIndex = 46;
+            // 
+            // l_WaferReturnST
+            // 
+            this.l_WaferReturnST.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.l_WaferReturnST.Font = new System.Drawing.Font("맑은 고딕", 10F);
+            this.l_WaferReturnST.Location = new System.Drawing.Point(0, 930);
+            this.l_WaferReturnST.Name = "l_WaferReturnST";
+            this.l_WaferReturnST.Size = new System.Drawing.Size(216, 28);
+            this.l_WaferReturnST.TabIndex = 45;
+            // 
+            // button18
+            // 
+            this.button18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.button18.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button18.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button18.Location = new System.Drawing.Point(0, 958);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(216, 70);
+            this.button18.TabIndex = 44;
+            this.button18.Text = "종  료";
+            this.button18.UseVisualStyleBackColor = false;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label56.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label56.Location = new System.Drawing.Point(0, 70);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(63, 25);
+            this.label56.TabIndex = 41;
+            this.label56.Text = "Year :";
+            // 
+            // tb_WaferReturnScan
+            // 
+            this.tb_WaferReturnScan.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tb_WaferReturnScan.Font = new System.Drawing.Font("맑은 고딕", 8F);
+            this.tb_WaferReturnScan.ImeMode = System.Windows.Forms.ImeMode.Alpha;
+            this.tb_WaferReturnScan.Location = new System.Drawing.Point(0, 48);
+            this.tb_WaferReturnScan.Name = "tb_WaferReturnScan";
+            this.tb_WaferReturnScan.Size = new System.Drawing.Size(216, 22);
+            this.tb_WaferReturnScan.TabIndex = 39;
+            this.tb_WaferReturnScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_WaferReturnScan_KeyDown);
+            this.tb_WaferReturnScan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_WaferReturnScan_MouseDown);
+            // 
+            // cb_WaferReturnExcel
+            // 
+            this.cb_WaferReturnExcel.AutoSize = true;
+            this.cb_WaferReturnExcel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cb_WaferReturnExcel.Location = new System.Drawing.Point(0, 24);
+            this.cb_WaferReturnExcel.Name = "cb_WaferReturnExcel";
+            this.cb_WaferReturnExcel.Size = new System.Drawing.Size(216, 24);
+            this.cb_WaferReturnExcel.TabIndex = 38;
+            this.cb_WaferReturnExcel.Text = "파일 다운 건너뛰기";
+            this.cb_WaferReturnExcel.UseVisualStyleBackColor = true;
+            // 
+            // cb_WaferReturnView
+            // 
+            this.cb_WaferReturnView.AutoSize = true;
+            this.cb_WaferReturnView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cb_WaferReturnView.Location = new System.Drawing.Point(0, 0);
+            this.cb_WaferReturnView.Name = "cb_WaferReturnView";
+            this.cb_WaferReturnView.Size = new System.Drawing.Size(216, 24);
+            this.cb_WaferReturnView.TabIndex = 37;
+            this.cb_WaferReturnView.Text = "진행 사항 확인";
+            this.cb_WaferReturnView.UseVisualStyleBackColor = true;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "fileopen_48.bmp");
+            this.imageList1.Images.SetKeyName(1, "Sort_48.bmp");
+            this.imageList1.Images.SetKeyName(2, "ringscan_48.bmp");
+            this.imageList1.Images.SetKeyName(3, "History_40.png");
+            this.imageList1.Images.SetKeyName(4, "print.png");
+            this.imageList1.Images.SetKeyName(5, "pngwing.com.png");
+            this.imageList1.Images.SetKeyName(6, "return.png");
+            this.imageList1.Images.SetKeyName(7, "email_setting.png");
+            this.imageList1.Images.SetKeyName(8, "Qualcomm.png");
+            this.imageList1.Images.SetKeyName(9, "trashcan.png");
+            this.imageList1.Images.SetKeyName(10, "Doc.png");
+            this.imageList1.Images.SetKeyName(11, "wafer.png");
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // bgw_timeout
+            // 
+            this.bgw_timeout.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_timeout_DoWork);
+            // 
+            // WaferReturnMenu
+            // 
+            this.WaferReturnMenu.Name = "CMS_AmkorLabel";
+            this.WaferReturnMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // Form_Sort
             // 
@@ -3417,6 +4227,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.tabControl_Sort);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form_Sort";
@@ -3424,6 +4235,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form_Sort";
+            this.Load += new System.EventHandler(this.Form_Sort_Load);
             this.tabControl_Sort.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).EndInit();
@@ -3433,8 +4245,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_shipment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workbill)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_workinfo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_sort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).EndInit();
@@ -3454,6 +4266,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_label)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPage7.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_loc)).EndInit();
@@ -3474,6 +4287,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVQualcommReturn)).EndInit();
+            this.tabPage10.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_scrap)).EndInit();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.tabPage11.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ReturnWafer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -3668,14 +4498,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LOT;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Device;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Die_Qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WFT_QTY;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AMKOR_ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CUST_CODE;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Wafer_lot;
         private System.Windows.Forms.TextBox tb_com_wfr;
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.TextBox tb_com_die;
@@ -3704,5 +4526,75 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.DataGridView dgv_scrap;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.DateTimePicker edt;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button btn_search;
+        private System.Windows.Forms.DateTimePicker sdt;
+        private System.Windows.Forms.TextBox tb_ScrapSt;
+        private System.Windows.Forms.TextBox tb_scrapinput;
+        private System.Windows.Forms.Button btn_ExcelOut;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button btn_CommentEdit;
+        private System.Windows.Forms.Label l2ndComp;
+        private System.Windows.Forms.Label l1stComp;
+        private System.Windows.Forms.Label lTOTLot;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Label lTOTWfr;
+        private System.Windows.Forms.Label lTOTDie;
+        private System.Windows.Forms.CheckBox cb_download;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.ComboBox cbRequest;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LOT;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Device;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Die_Qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WFT_QTY;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AMKOR_ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CUST_CODE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Wafer_lot;
+        private System.Windows.Forms.Label lDieCnt;
+        private System.ComponentModel.BackgroundWorker bgw_timeout;
+        private System.Windows.Forms.CheckBox cb_GreenLabel;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.CheckBox cb_dup;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.TextBox tb_next;
+        private System.Windows.Forms.ContextMenuStrip CMS_AmkorLabel;
+        private System.Windows.Forms.TabPage tabPage11;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.TextBox tb_WaferReturnScan;
+        private System.Windows.Forms.CheckBox cb_WaferReturnExcel;
+        private System.Windows.Forms.CheckBox cb_WaferReturnView;
+        private System.Windows.Forms.ProgressBar pb_WaferReturn;
+        private System.Windows.Forms.Label l_WaferReturnST;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button btn_WaferReturnFind;
+        private System.Windows.Forms.MaskedTextBox tb_Year;
+        private System.Windows.Forms.Button btn_WaferReturnReadDB;
+        private System.Windows.Forms.TextBox tb_ReturnWafer;
+        private System.Windows.Forms.DataGridView dgv_ReturnWafer;
+        private System.Windows.Forms.CheckBox cb_WaferReturnPrint;
+        private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Label l_WaferReturnCount;
+        private System.Windows.Forms.ContextMenuStrip WaferReturnMenu;
+        private System.Windows.Forms.Button btn_WaferReturnExcel;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button btn_WaferReturnReset;
+        private System.Windows.Forms.Button btn_Find;
+        private System.Windows.Forms.Button btn_WaferReturnFindNext;
     }
 }

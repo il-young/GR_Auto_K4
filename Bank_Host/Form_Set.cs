@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using System.Data.SqlClient;
 
 namespace Bank_Host
 {
@@ -136,6 +139,9 @@ namespace Bank_Host
 
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
+
+            Properties.Settings.Default.TimeOutMin = int.Parse(tb_TimeOutMin.Text);
+            Properties.Settings.Default.Save();
 
             BankHost_main.nStartup = nIndex;
         }
@@ -310,6 +316,115 @@ namespace Bank_Host
             textBox_bcr14.Text = dataGridView_bcrconfig.Rows[rowIndex].Cells[13].Value.ToString();
             textBox_bcr15.Text = dataGridView_bcrconfig.Rows[rowIndex].Cells[14].Value.ToString();
             textBox_bcr16.Text = dataGridView_bcrconfig.Rows[rowIndex].Cells[15].Value.ToString();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form_MesPWChange mespw = new Form_MesPWChange();
+            mespw.ShowDialog();
+        }
+
+        private void Form_Set_Load(object sender, EventArgs e)
+        {
+            tb_TimeOutMin.Text = Properties.Settings.Default.TimeOutMin.ToString();          
+        }
+
+        private void tb_TimeOutMin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == System.Windows.Forms.Keys.Enter)
+            {
+                Properties.Settings.Default.TimeOutMin = int.Parse(tb_TimeOutMin.Text);
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private ChromeDriverService _driverService = null;
+        private ChromeOptions _options = null;
+        private ChromeDriver _driver = null;
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _driverService = ChromeDriverService.CreateDefaultService();
+            _driverService.HideCommandPromptWindow = true;
+
+            _options = new ChromeOptions();
+            _options.AddArgument("disable-gpu");
+
+            _options.AddArgument("headless");                
+            _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+
+            _driver = new ChromeDriver(_driverService, _options);
+            _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(BankHost_main.strMESID);    // ID 입력          
+            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(BankHost_main.strMESPW);   // PW 입력            
+            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(BankHost_main.strID);   // 사번 입력         
+            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+
+            System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font"));
+
+            if (temp.Count != 0)
+            {
+                if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                {
+                    MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
+                    return;
+                }
+                else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                {
+                    MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("알수 없는 에러가 발생하였습니다.");
+                    return;
+                }
+            }
+
+            _driver.Navigate().GoToUrl("http://aak1ws01/eMES/commons/custlist_popup.jsp");   // Scrap request 항목으로 이동
+
+            System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> cust_combo = _driver.FindElements(By.Name("selCustList"));
+
+            string[] cust = cust_combo[0].Text.Replace('\r', ' ').Split('\n');
+            string q = "";
+
+            run_sql_command("delete from TB_SCRAP_CUST");
+
+            foreach(string name in cust)
+            {
+                q = string.Format("insert into TB_SCRAP_CUST values({0}, '{1}')", name.Split(':')[0].Trim(), name.Split(':')[1].Trim());
+                run_sql_command(q);
+            }
+
+            MessageBox.Show("고객코드 가져오기가 완료 되었습니다.");
+        }
+
+        public void run_sql_command(string sql)
+        {
+            try
+            {
+                using (SqlConnection ssconn = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                {
+                    ssconn.Open();
+                    using (SqlCommand scom = new SqlCommand(sql, ssconn))
+                    {
+                        scom.CommandType = System.Data.CommandType.Text;
+                        scom.CommandText = sql;
+                        scom.ExecuteReader();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
         }
     }
 }

@@ -31,6 +31,12 @@ namespace Bank_Host
                 if (nMode == 0 || nMode == 2 || nMode == 99)
                     return;
 
+                if(nMode == 7)
+                {
+                    button_complete_Click(sender, e);
+                    return;
+                }
+
                 string strsid = textBox_sid.Text;
 
                 var dt = BankHost_main.SQL_GetUserDB(strsid);
@@ -100,6 +106,20 @@ namespace Bank_Host
 
                 comboBox_cust.Enabled = false;
                 dataGridView_bill.Enabled = true;
+                textBox_bill.Enabled = false;
+            }
+            else if(nIndex == 7)
+            {
+                label3.Enabled = false;
+                label4.Enabled = false;
+                label5.Enabled = false;
+
+                BankHost_main.strOperator = "";
+                BankHost_main.strID = "";
+                BankHost_main.strGrade = "";
+
+                comboBox_cust.Enabled = false;
+                dataGridView_bill.Enabled = false;
                 textBox_bill.Enabled = false;
             }
             else 
@@ -173,9 +193,9 @@ namespace Bank_Host
             dataGridView_bill.Columns.Insert(4, checkBoxColumn);
 
             dataGridView_bill.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-            dataGridView_bill.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView_bill.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView_bill.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
+            dataGridView_bill.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView_bill.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView_bill.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         public void Fnc_datagrid_add(string strCust, string strBill, string strLotcount, string strStatus)
@@ -343,7 +363,7 @@ namespace Bank_Host
 
         private void button_complete_Click(object sender, EventArgs e)
         {
-            if(textBox_sid.Text == "" && nMode == 0)
+            if(textBox_sid.Text == "" && (nMode == 0 || nMode == 7))
             {
                 MessageBox.Show("사번을 입력 해 주십시오");
                 textBox_sid.Focus();
@@ -450,9 +470,12 @@ namespace Bank_Host
             else
             {
                 string strname = dt.Rows[0]["NAME"].ToString(); strname = strname.Trim();
-                string strgrade = dt.Rows[0]["GRADE"].ToString(); strname = strname.Trim();
+                string strgrade = dt.Rows[0]["GRADE"].ToString(); strgrade = strgrade.Trim();
+                string strid = dt.Rows[0]["ID"].ToString(); strid = strid.Trim();
+                string strMESID = dt.Rows[0]["MES_ID"].ToString(); strMESID = strMESID.Trim();
+                string strMESPW = dt.Rows[0]["MES_PASSWORD"].ToString(); strMESPW = strMESPW.Trim();
 
-                if(nMode == 0 || nMode == 1)
+                if(nMode == 0 || nMode == 1 ||nMode == 7)
                 {
                     if (strgrade != "A")
                     {
@@ -466,7 +489,11 @@ namespace Bank_Host
                 }
 
                 BankHost_main.strOperator = strname;
-
+                BankHost_main.strID = strid;
+                BankHost_main.strGrade = strgrade;
+                BankHost_main.strMESID = strMESID;
+                BankHost_main.strMESPW = strMESPW;
+                
                 bok = true;
 
                 Fnc_Exit();
@@ -482,6 +509,11 @@ namespace Bank_Host
         {
             if(e.KeyChar == 13)
                 button_complete_Click(sender, e);
+        }
+
+        private void textBox_sid_MouseDown(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
