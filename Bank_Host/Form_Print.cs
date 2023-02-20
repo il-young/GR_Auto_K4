@@ -189,11 +189,20 @@ namespace Bank_Host
         }
         public void Fnc_WriteFile(string strFileName, string strLine)
         {
-            using (System.IO.StreamWriter file =
-           new System.IO.StreamWriter(strFileName, true))
+            try
             {
-                file.WriteLine(strLine);
+                using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(strFileName, true))
+                {
+                    file.WriteLine(strLine);
+                }
             }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+            
         }
 
 
@@ -1121,6 +1130,25 @@ namespace Bank_Host
             return dados;
         }
 
+        public bool SendStringToPrinter(string szString)
+        {
+            IntPtr pBytes;
+            Int32 dwCount;
+
+            // How many characters are in the string?
+            // Fix from Nicholas Piasecki:
+            // dwCount = szString.Length;
+            dwCount = (szString.Length + 1) * Marshal.SystemMaxDBCSCharSize;
+
+            // Assume that the printer is expecting ANSI text, and then convert
+            // the string to ANSI text.
+            pBytes = Marshal.StringToCoTaskMemAnsi(szString);
+            // Send the converted ANSI string to the printer.
+            bool bJudge = SendBytesToPrinter(strPrinterName, pBytes, dwCount);
+            Marshal.FreeCoTaskMem(pBytes);
+            return bJudge;
+        }
+
 
         public bool SendStringToPrinter(string szPrinterName, string szString)
         {
@@ -1140,6 +1168,7 @@ namespace Bank_Host
             Marshal.FreeCoTaskMem(pBytes);
             return bJudge;
         }
+
 
         //For USB Print 추가되는 부분
         public bool SendBytesToPrinter(string szPrinterName, IntPtr pBytes, Int32 dwCount)

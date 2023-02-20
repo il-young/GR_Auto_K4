@@ -85,9 +85,12 @@ namespace Bank_Host
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
-        public static void Print2ndLabel(string msg)
+
+        private void button1_Click_1(object sender, EventArgs e)
         {
-           
+            frm_LoactionLabel lPrint = new frm_LoactionLabel();
+
+            lPrint.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -43,8 +43,6 @@ namespace Bank_Host
         public const int IME_CMODE_ALPHANUMERIC = 0x0000;
         private const int WM_IME_CONTROL = 643;
 
-        [DllImport("winspool.drv", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern bool SetDefaultPrinter(string Name);
 
         Form_InfoBoard InfoBoard = new Form_InfoBoard();
 

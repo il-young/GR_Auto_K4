@@ -357,6 +357,12 @@
     <Compile Include="Form_Splitlog_Input.Designer.cs">
       <DependentUpon>Form_Splitlog_Input.cs</DependentUpon>
     </Compile>
+    <Compile Include="frm_LoactionLabel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_LoactionLabel.Designer.cs">
+      <DependentUpon>frm_LoactionLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="GR_AutomationDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -441,6 +447,9 @@
     <EmbeddedResource Include="Form_Splitlog_Input.resx">
       <DependentUpon>Form_Splitlog_Input.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frm_LoactionLabel.resx">
+      <DependentUpon>frm_LoactionLabel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -480,6 +489,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="host.ico" />
+    <None Include="Resources\close-icon-13602.png" />
     <None Include="Properties\Receipt %28사용자 지정%29 %281%29.jpg" />
     <None Include="Properties\Doc %28사용자 지정%29.png" />
     <None Include="Properties\setting.png" />
