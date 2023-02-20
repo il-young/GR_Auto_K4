@@ -273,5 +273,29 @@ namespace Bank_Host.Properties {
                 this["WaferReturnCode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FontSize1 {
+            get {
+                return ((int)(this["FontSize1"]));
+            }
+            set {
+                this["FontSize1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int FontSize2 {
+            get {
+                return ((int)(this["FontSize2"]));
+            }
+            set {
+                this["FontSize2"] = value;
+            }
+        }
     }
 }

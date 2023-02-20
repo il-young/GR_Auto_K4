@@ -63,6 +63,16 @@ namespace Bank_Host.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap close_icon_13602 {
+            get {
+                object obj = ResourceManager.GetObject("close_icon_13602", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Doc__사용자_지정_ {
             get {
                 object obj = ResourceManager.GetObject("Doc__사용자_지정_", resourceCulture);
