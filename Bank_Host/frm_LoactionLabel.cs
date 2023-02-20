@@ -38,6 +38,9 @@ namespace Bank_Host
 
         private static IntPtr hhook = IntPtr.Zero;
 
+        int fontsize = 0;
+        int fontsize2 = 0;
+
         Form_Print Frm_Print;
 
         //private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
@@ -79,7 +82,7 @@ namespace Bank_Host
 
             if (rb_Single.Checked == true)
             {
-                Frm_Print.SendStringToPrinter(ZPLCODE);
+                Frm_Print.Socket_MessageSend(ZPLCODE);
             }
             else if(rb_Copy.Checked == true)
             {
@@ -94,7 +97,7 @@ namespace Bank_Host
                     {
                         for(int i = 0; i < n; i++)
                         {
-                            Frm_Print.SendStringToPrinter(ZPLCODE);
+                            Frm_Print.Socket_MessageSend(ZPLCODE);
                             System.Threading.Thread.Sleep(500);
                         }
                     }
@@ -116,7 +119,7 @@ namespace Bank_Host
                         {
                             ZPLCODE = makePDFZPL(string.Format("{0}{1}{2}", tb_1.Text, label2.Text, num++));
 
-                            Frm_Print.SendStringToPrinter(ZPLCODE);
+                            Frm_Print.Socket_MessageSend(ZPLCODE);
                             System.Threading.Thread.Sleep(500);
                         }
                     }
@@ -129,9 +132,9 @@ namespace Bank_Host
         private string makePDFZPL(string code)
         {
             string ZPL = "^XA";
-            ZPL += string.Format("^CF0,190,{0}", ((400 / code.Length) * 2) /10 *10);
+            ZPL += string.Format("^CF0,{1},{0}", ((400 / code.Length) * 2) /10 *10, fontsize);
             ZPL += string.Format("^FO30,30^FD{0}^FS", code);
-            ZPL += "^BY5,3,150";
+            ZPL += string.Format("^BY5,3,{0}", fontsize);
             ZPL += string.Format("^FO430,30^B7^FD{0}^FS",code);
             ZPL += "^XZ";
 
@@ -147,6 +150,28 @@ namespace Bank_Host
         private void frm_LoactionLabel_Load(object sender, EventArgs e)
         {
             Frm_Print = new Form_Print();
+
+            tb_1.ImeMode = ImeMode.Alpha;
+            tb_2.ImeMode = ImeMode.Alpha;
+            tb_scan.ImeMode = ImeMode.Alpha;
+
+            tb_Text1.ImeMode = ImeMode.Alpha;
+            tb_Text2.ImeMode = ImeMode.Alpha;
+
+
+            fontsize = Properties.Settings.Default.FontSize1;
+            numericUpDown1.Value = fontsize;      
+
+            fontsize2 = Properties.Settings.Default.FontSize2;
+            numericUpDown2.Value = fontsize2;
+
+            //if(fontsize == 0 )
+            //{
+            //    fontsize = 190;
+            //    Properties.Settings.Default.FontSize1 = fontsize;
+            //    Properties.Settings.Default.Save();
+            //}
+             
             //SetHook();
         }
 
@@ -209,6 +234,10 @@ namespace Bank_Host
                 tb_scan.Enabled = true;
                 tb_1.Enabled = false;
                 tb_2.Enabled = false;
+
+                rb_Single.Checked = true;
+
+                tb_scan.Focus();
             }
         }
 
@@ -234,7 +263,7 @@ namespace Bank_Host
             {
                 string ZPLCODE = makePDFZPL(string.Format("{0}", tb_scan.Text));
 
-                Frm_Print.SendStringToPrinter(ZPLCODE);
+                Frm_Print.Socket_MessageSend(ZPLCODE);
 
                 tb_scan.Invoke((MethodInvoker)delegate
                 {
@@ -249,6 +278,7 @@ namespace Bank_Host
             if(rb_2.Checked == true)
             {
                 tb_Text2.Enabled = true;
+                tb_Text1.Focus();
             }
         }
 
@@ -257,6 +287,7 @@ namespace Bank_Host
             if(rb_1.Checked == true)
             {
                 tb_Text2.Enabled = false;
+                tb_Text1.Focus();
             }
         }
 
@@ -287,13 +318,13 @@ namespace Bank_Host
                 zpl = MakeText2();
             }
 
-            Frm_Print.SendStringToPrinter(zpl);
+            Frm_Print.Socket_MessageSend(zpl);
         }
 
         public string MakeText1()
         {
             string zpl = "^XA";
-            zpl += string.Format("^CF0,190,{0}", (800 / tb_Text1.Text.Length)*2  );
+            zpl += string.Format("^CF0,{1},{1}", (800 / tb_Text1.Text.Length)*2, fontsize2);
             zpl += string.Format("^FO30,30^FD{0}^FS", tb_Text1.Text);
             zpl += "^XZ";
 
@@ -303,7 +334,7 @@ namespace Bank_Host
         public string MakeText2()
         {
             string zpl = "^XA";
-            zpl += string.Format("^CF0,80,{0}", tb_Text1.Text.Length > tb_Text2.Text.Length ? (800 / tb_Text1.Text.Length) * 2 : (800 / tb_Text2.Text.Length) * 2);
+            zpl += string.Format("^CF0,80,{0}", fontsize2);// tb_Text1.Text.Length > tb_Text2.Text.Length ? (800 / tb_Text1.Text.Length) * 2 : (800 / tb_Text2.Text.Length) * 2);
             zpl += string.Format("^FO30,20^FD{0}^FS", tb_Text1.Text);
             zpl += string.Format("^FO30,120^FD{0}^FS", tb_Text2.Text);
             zpl += "^XZ";
@@ -317,6 +348,53 @@ namespace Bank_Host
             {
                 btn_PrintText_Click(sender, e);                
             }
+        }
+
+        private void tb_Text1_MouseClick(object sender, MouseEventArgs e)
+        {
+            tb_Text1.ImeMode = ImeMode.Alpha;
+        }
+
+        private void tb_Text2_MouseDown(object sender, MouseEventArgs e)
+        {
+            tb_Text2.ImeMode = ImeMode.Alpha;
+        }
+
+        private void tb_Text1_MouseDown(object sender, MouseEventArgs e)
+        {
+            tb_Text1.ImeMode = ImeMode.Alpha;
+        }
+
+        private void tb_scan_MouseDown(object sender, MouseEventArgs e)
+        {
+            tb_scan.ImeMode = ImeMode.Alpha;
+        }
+
+        private void tb_1_MouseDown(object sender, MouseEventArgs e)
+        {
+            tb_1.ImeMode = ImeMode.Alpha;
+        }
+
+        private void tb_2_MouseDown(object sender, MouseEventArgs e)
+        {
+            tb_2.ImeMode = ImeMode.Alpha;
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            fontsize = (int)numericUpDown1.Value;
+            Properties.Settings.Default.FontSize1 = fontsize;
+            Properties.Settings.Default.Save();
+
+            
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            fontsize2 = (int)numericUpDown2.Value;
+
+            Properties.Settings.Default.FontSize2 = fontsize2;
+            Properties.Settings.Default.Save();
         }
     }
 }

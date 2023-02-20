@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.tb_scan = new System.Windows.Forms.TextBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.btn_Print = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.rb_Single = new System.Windows.Forms.RadioButton();
@@ -50,16 +52,22 @@
             this.btn_PrintText = new System.Windows.Forms.Button();
             this.tb_Text1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tb_scan);
+            this.groupBox1.Controls.Add(this.numericUpDown1);
             this.groupBox1.Controls.Add(this.btn_Print);
             this.groupBox1.Controls.Add(this.groupBox4);
             this.groupBox1.Controls.Add(this.label2);
@@ -75,6 +83,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Location";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(28, 319);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(116, 21);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Font Size :";
+            // 
             // tb_scan
             // 
             this.tb_scan.Enabled = false;
@@ -85,6 +102,30 @@
             this.tb_scan.Size = new System.Drawing.Size(347, 22);
             this.tb_scan.TabIndex = 6;
             this.tb_scan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_scan_KeyDown);
+            this.tb_scan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_scan_MouseDown);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Location = new System.Drawing.Point(157, 317);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            190,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 32);
+            this.numericUpDown1.TabIndex = 9;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // btn_Print
             // 
@@ -159,6 +200,7 @@
             this.tb_2.Size = new System.Drawing.Size(100, 32);
             this.tb_2.TabIndex = 3;
             this.tb_2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_2_KeyDown);
+            this.tb_2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_2_MouseDown);
             // 
             // tb_1
             // 
@@ -168,6 +210,7 @@
             this.tb_1.Size = new System.Drawing.Size(100, 32);
             this.tb_1.TabIndex = 2;
             this.tb_1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_1_KeyDown);
+            this.tb_1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_1_MouseDown);
             // 
             // groupBox3
             // 
@@ -215,6 +258,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.numericUpDown2);
             this.groupBox2.Controls.Add(this.groupBox5);
             this.groupBox2.Controls.Add(this.tb_Text2);
             this.groupBox2.Controls.Add(this.btn_PrintText);
@@ -271,6 +316,7 @@
             this.tb_Text2.Size = new System.Drawing.Size(351, 32);
             this.tb_Text2.TabIndex = 7;
             this.tb_Text2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_Text2_KeyDown);
+            this.tb_Text2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_Text2_MouseDown);
             // 
             // btn_PrintText
             // 
@@ -290,7 +336,9 @@
             this.tb_Text1.Name = "tb_Text1";
             this.tb_Text1.Size = new System.Drawing.Size(351, 32);
             this.tb_Text1.TabIndex = 0;
+            this.tb_Text1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tb_Text1_MouseClick);
             this.tb_Text1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_Text1_KeyDown);
+            this.tb_Text1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_Text1_MouseDown);
             // 
             // button1
             // 
@@ -303,6 +351,38 @@
             this.button1.TabIndex = 2;
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(54, 317);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(116, 21);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Font Size :";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Location = new System.Drawing.Point(183, 315);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            190,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 32);
+            this.numericUpDown2.TabIndex = 11;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // frm_LoactionLabel
             // 
@@ -320,6 +400,7 @@
             this.Load += new System.EventHandler(this.frm_LoactionLabel_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -328,6 +409,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -356,5 +438,9 @@
         private System.Windows.Forms.TextBox tb_Text2;
         private System.Windows.Forms.Button btn_PrintText;
         private System.Windows.Forms.TextBox tb_Text1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }
