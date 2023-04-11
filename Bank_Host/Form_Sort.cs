@@ -23,6 +23,8 @@ using System.Collections.ObjectModel;
 
 using Zebra.Sdk.Comm;
 using Microsoft.Win32;
+using Application = System.Windows.Forms.Application;
+using System.Net;
 
 namespace Bank_Host
 {
@@ -221,6 +223,7 @@ namespace Bank_Host
 
         public struct stWaferReturnExcelInfo
         {
+            public int cust;
             public string ReturnNum;
             public string Seq;
             public string PDL;
@@ -233,8 +236,9 @@ namespace Bank_Host
             public string Loc;
             public string SL;
 
-            public void Setdata(string returnNum, string seq, string pdl, string deviceName, string lotNum, string dcc, int dsQty, int returnQty, string remark, string loc, string sl)
+            public void Setdata(string returnNum, string seq, string pdl, string deviceName, string lotNum, string dcc, int dsQty, int returnQty, string remark, string loc, string sl, string custcode)
             {
+
                 ReturnNum = returnNum;
                 Seq = seq;
                 PDL = pdl;
@@ -246,6 +250,7 @@ namespace Bank_Host
                 Remark = remark;
                 Loc = loc;
                 SL = sl;
+                cust = int.Parse(custcode);
             }
         }
 
@@ -260,6 +265,10 @@ namespace Bank_Host
                 ExcelInfo = new List<stWaferReturnExcelInfo>();
             }
 
+            public void ExcelInfoInit()
+            {
+                ExcelInfo = new List<stWaferReturnExcelInfo>();
+            }
 
 
             public void AddExcelInfo(stWaferReturnExcelInfo info)
@@ -269,6 +278,8 @@ namespace Bank_Host
 
                 ExcelInfo.Add(info);
             }
+
+            
         }
 
         public List<stWaferReturnInfo> WaferReturnInfo = new List<stWaferReturnInfo>();
@@ -445,7 +456,7 @@ namespace Bank_Host
                 AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
                 AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
                 AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
-                AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim(); 
+                AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim();
 
                 if (strCust == AWork.strCust)
                 {
@@ -5471,7 +5482,7 @@ namespace Bank_Host
                 }
                 else
                 {
-                    
+
                 }
             }
             else if (str_temp.Length == 8)
@@ -5496,7 +5507,7 @@ namespace Bank_Host
                 }
                 else
                 {
-                    
+
                 }
             }
 
@@ -5537,7 +5548,7 @@ namespace Bank_Host
                     //FH513P005 - 03.01::FH513 - 2501 - P - C250W - 4KN4: 8422:1::699
                     if (dgv_ReturnWafer.Rows[i].Cells[2].Value.ToString() == amkorLabel.Lot)
                     {
-                        if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString() == "" ? "0" : dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString()) == (int.Parse(amkorLabel.DCC == "" ?  "0" : amkorLabel.DCC)))
+                        if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString() == "" ? "0" : dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString()) == (int.Parse(amkorLabel.DCC == "" ? "0" : amkorLabel.DCC)))
                         {
                             if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[4].Value.ToString()) == int.Parse(amkorLabel.DQTY))
                             {
@@ -5551,7 +5562,7 @@ namespace Bank_Host
 
 
                                         speech.SpeakAsync("중복");
-                                        
+
                                     }
                                     else if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Yellow)        // 2차 검수
                                     {
@@ -5589,7 +5600,7 @@ namespace Bank_Host
 
                                             speech.SpeakAsync(string.Format("{0}", dgv_ReturnWafer.Rows[i].Cells[0].Value));
 
-                                            InfoBoard.Set(dgv_ReturnWafer.Rows[i].Cells[0].Value.ToString(), Color.Yellow , Color.Blue);
+                                            InfoBoard.Set(dgv_ReturnWafer.Rows[i].Cells[0].Value.ToString(), Color.Yellow, Color.Blue);
                                             InfoBoard.Show();
 
                                             tb_WaferReturnScan.Focus();
@@ -5650,12 +5661,12 @@ namespace Bank_Host
                 }
             }
 
-            if(isFail == true)
+            if (isFail == true)
             {
                 speech.SpeakAsync("잘 못된 라트 입니다.");
 
-                if(duplicate == true)
-                { 
+                if (duplicate == true)
+                {
                     Form_Board _Board = new Form_Board("Validation fail", Color.Black, Color.Red);
                     _Board.ShowDialog();
                 }
@@ -9891,7 +9902,7 @@ namespace Bank_Host
                 ScrapMode = 1;
                 SetProgressba("1차 검수 완료 후 2차 검수 진행 가능 합니다.", 0);
 
-                using (Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Black,Color.Red))
+                using (Form_Board board = new Form_Board("1차 검수 완료 후 2차 검수 진행 가능 합니다.", Color.Black, Color.Red))
                 {
                     board.ShowDialog();
                 }
@@ -10053,10 +10064,10 @@ namespace Bank_Host
                     progressBar1.Value = 1;
 
                     SetProgressba("eMes에 접속 중입니다.", 1);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input")).SendKeys(id);    // ID 입력          
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input")).SendKeys(pw);   // PW 입력            
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input")).SendKeys(badge);   // 사번 입력         
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input")).Click();   // Main 로그인 버튼            
                     SetProgressba("Login 확인 중", 2);
 
 
@@ -10067,12 +10078,12 @@ namespace Bank_Host
 
                     if (temp.Count != 0)
                     {
-                        if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                        if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "Invalid Username or Password !!!")
                         {
                             MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
                             return;
                         }
-                        else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                        else if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "User ID can't be used.")
                         {
                             MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
                             return;
@@ -10111,14 +10122,14 @@ namespace Bank_Host
 
                     SetProgressba("데이터 조회 중입니다.", 7);
                     //_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[2]/p/a/img").Click();    //Find 버튼 누름
-                    _driver.FindElementByName("find").Click();
+                    _driver.FindElement(By.Name("find")).Click();
 
 
                     ReadOnlyCollection<IWebElement> links = _driver.FindElements(By.TagName("a"));
 
 
                     SetProgressba("Excel File Down 중 입니다.", 8);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img").Click();  // Excel Down 누름                    
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/div/table/tbody/tr/td[4]/a/img")).Click();  // Excel Down 누름                    
 
                     Thread.Sleep(1000);
 
@@ -11896,6 +11907,94 @@ namespace Bank_Host
             tb_WaferReturnScan.Focus();
         }
 
+        void ChromeDriverUpdater()
+        {
+            string chromeversion_txt_path = "./chromedriver_version.txt";
+
+            if (!System.IO.File.Exists(chromeversion_txt_path))
+            {
+                using (StreamWriter sw = new StreamWriter(System.IO.File.Open(chromeversion_txt_path, FileMode.Create), Encoding.UTF8))
+                {
+                }
+            }
+
+            System.Net.WebClient webClient = new WebClient();
+            string install_version = System.IO.File.ReadAllText(chromeversion_txt_path);
+            string chromedriver_version = webClient.DownloadString("https://chromedriver.storage.googleapis.com/LATEST_RELEASE");
+            if (install_version != chromedriver_version)
+            {
+                DialogResult msgresult = MessageBox.Show("크롬 드라이버가 최신버전이 아닙니다.\n최신으로 업데이트 하시겠습니까?", "크롬 드라이버 업데이트", MessageBoxButtons.YesNo);
+                if (msgresult == DialogResult.Yes)
+                {
+                    try
+                    {
+                        Console.WriteLine("크롬 드라이버를 다운로드 중 입니다.");
+                        Console.WriteLine("잠시만 기다려 주세요.");
+                        webClient.DownloadFile($"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_win32.zip", Application.StartupPath + @"\chromedriver_win32.zip");
+
+                        ExtractZipfile(Application.StartupPath + @"\chromedriver_win32.zip", Application.StartupPath);
+                        System.IO.File.Delete(Application.StartupPath + @"\chromedriver_win32.zip");
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        Console.WriteLine("크롬 드라이버 업데이트 완료!");
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        System.IO.File.WriteAllText(chromeversion_txt_path, chromedriver_version);
+                        MessageBox.Show("크롬 드라이버 업데이트가 완료되었습니다.");
+                    }
+                    catch
+                    {
+                        MessageBox.Show("크롬 드라이버 업데이트 중 오류가 발생했습니다.\n수동으로 업데이트 해주세요." + Environment.NewLine +
+                                        "----수동 업데이트 방법----" + Environment.NewLine +
+                                        "1. https://chromedriver.chromium.org/downloads 접속" + Environment.NewLine +
+                                        "2. 파란색 큰 글씨로 된 ChromeDriver xx.x.xxxx.xx 형식 글씨 클릭" + Environment.NewLine +
+                                        "3. chromedriver_win32.zip 다운로드 및 xx.x.xxxx.xx 로 된 버전내용 Ctrl+C(복사)" + Environment.NewLine +
+                                        "4. 압축파일은 압축해제 후 프로그램 실행경로에 덮어쓰기" + Environment.NewLine +
+                                        "   복사한 버전내용은 프로그램 실행경로에 chromedriver_version.txt 안에 붙여넣고 저장" + Environment.NewLine +
+                                        "5. 프로그램 재 실행");
+                        Application.Exit();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("크롬 드라이버를 업데이트하지 않으면 프로그램을 이용할 수 없습니다.");
+                    Application.Exit();
+                }
+            }
+        }
+
+        void ExtractZipfile(string sourceFilePath, string targetPath)
+        {
+            try
+            {
+                foreach (Process process in Process.GetProcessesByName("chromedriver"))
+                {
+                    process.Kill();
+                }
+
+                File.Delete(targetPath + @"\chromedriver.exe");
+                System.IO.Compression.ZipFile.ExtractToDirectory(sourceFilePath, targetPath);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            //Encoding ibm437 = Encoding.GetEncoding("IBM437");
+            //Encoding euckr = Encoding.GetEncoding("euc-kr");
+            //using (ZipFile zip = new ZipFile(sourceFilePath))
+            //{
+            //    foreach (ZipEntry entry in zip.Entries)
+            //    {
+            //        byte[] ibm437_byte = ibm437.GetBytes(entry.FileName);
+            //        string euckr_fileName = euckr.GetString(ibm437_byte);
+            //        entry.FileName = euckr_fileName;
+            //        entry.Extract(targetPath, ExtractExistingFileAction.OverwriteSilently);
+            //    }
+            //}
+        }
+
         //private ChromeDriverService _driverService = null;
         //private ChromeOptions _options = null;
         //private ChromeDriver _driver = null;
@@ -11911,9 +12010,13 @@ namespace Bank_Host
             string badge = BankHost_main.strID;
             sDownloadPath = Path.Combine(System.Environment.CurrentDirectory, "WaferReturn\\Excel\\");
 
+
+
             try
             {
-                if (cb_WaferReturnExcel.Checked == false)
+                ChromeDriverUpdater();
+
+                //if (cb_WaferReturnExcel.Checked == false)
                 {
                     if (System.IO.Directory.Exists(sDownloadPath) == false)
                     {
@@ -11942,18 +12045,17 @@ namespace Bank_Host
                     bDownloadComp = false;
 
                     _driverService = ChromeDriverService.CreateDefaultService();
+
                     _driverService.HideCommandPromptWindow = true;
 
                     _options = new ChromeOptions();
-                    _options.AddArgument("disable-gpu");
 
-                    if (cb_WaferReturnView.Checked == false)
-                    {
-                        _options.AddArgument("headless");
-                    }
 
+
+                    _options.AddArgument("--disable-gpu");
                     _options.AddUserProfilePreference("download.default_directory", sDownloadPath);
                     _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+                    _options.AddUserProfilePreference("safebrowsing.enabled", false);
 
                     /* test server
                     _driver = new ChromeDriver(_driverService, _options);
@@ -11981,6 +12083,7 @@ namespace Bank_Host
                     }
                     */
 
+
                     _driver = new ChromeDriver(_driverService, _options);
                     _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
                     _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
@@ -11989,22 +12092,22 @@ namespace Bank_Host
                     pb_WaferReturn.Value = 1;
 
                     SetWaferReturnProgressba("eMes에 접속 중입니다.", 1);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(id);    // ID 입력          
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(pw);   // PW 입력            
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(badge);   // 사번 입력         
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input")).SendKeys(id);    // ID 입력          
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input")).SendKeys(pw);   // PW 입력            
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input")).SendKeys(badge);   // 사번 입력         
+                    _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input")).Click();   // Main 로그인 버튼            
                     SetWaferReturnProgressba("Login 확인 중", 2);
 
                     System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[1]/td/table/tbody/tr/td[1]/img"));
 
                     if (temp.Count != 0)
                     {
-                        if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                        if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "Invalid Username or Password !!!")
                         {
                             MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
                             return;
                         }
-                        else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                        else if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "User ID can't be used.")
                         {
                             MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
                             return;
@@ -12027,11 +12130,11 @@ namespace Bank_Host
                     }
 
                     SetWaferReturnProgressba("년도 설정", 4);
-                    _driver.FindElementByXPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input").Clear();
-                    _driver.FindElementByXPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input").SendKeys(tb_Year.Text);
+                    _driver.FindElement(By.XPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input")).Clear();
+                    _driver.FindElement(By.XPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input")).SendKeys(tb_Year.Text);
 
                     SetWaferReturnProgressba("데이터 조회 중입니다.", 7);
-                    _driver.FindElementByXPath("/html/body/form[1]/table/tbody/tr[3]/td/div/table/tbody/tr/td/p/span/b/font/input").Click();    //Find 버튼 누름
+                    _driver.FindElement(By.XPath("/html/body/form[1]/table/tbody/tr[3]/td/div/table/tbody/tr/td/p/span/b/font/input")).Click();    //Find 버튼 누름
                     //_driver.FindElementByName("find").Click();
 
 
@@ -12053,7 +12156,7 @@ namespace Bank_Host
                             WaferReturnInfo.Add(new stWaferReturnInfo());
                         }
 
-                        WaferReturnDataSort(_driver.FindElementByXPath("/html/body/form[2]/table"));
+                        WaferReturnDataSort(_driver.FindElement(By.XPath("/html/body/form[2]/table")));
                     }
 
                     SetWaferReturnProgressba("Directory 확인중 입니다.", 8);
@@ -12083,12 +12186,15 @@ namespace Bank_Host
                         Thread.Sleep(100);
                     }
 
-                    _driver.Close();
-                    //Marshal.ReleaseComObject(_driver);
+
+                    while (!File.Exists(sDownloadPath + @"\WaferReturnList.xls"))
+                    {
+                        Thread.Sleep(1000); // Wait for 1 second
+                    }
 
 
                     SetWaferReturnProgressba("Excel File Down 완료", 9);
-                    Thread.Sleep(1000);
+                    _driver.Close();
 
 
                     fi = di.GetFiles();
@@ -12140,7 +12246,7 @@ namespace Bank_Host
 
         private void WriteWaferReturnData()
         {
-            if (cb_WaferReturnExcel.Checked == false)
+            //if (cb_WaferReturnExcel.Checked == false)
             {
                 SetProgressba("Excel Data를 Memory에 복사 중 입니다.", 1);
                 Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
@@ -12176,8 +12282,9 @@ namespace Bank_Host
                     excelrow = "";
 
                     if (excelData[i, 1].ToString() == "WAFER RETURN LIST")
-                    {
+                    {                        
                         HeaderRow = i;
+                        string cust = excelData[HeaderRow + 2, 1].ToString().Split(':')[1];
                         ++returnNumCnt;
                         seqCnt = -1;
                         rowOffset = 5;
@@ -12185,7 +12292,7 @@ namespace Bank_Host
                         if (WaferReturnInfo.Count < returnNumCnt + 1)
                         {
                             stWaferReturnInfo test = new stWaferReturnInfo();
-
+                            test.ExcelInfo = new List<stWaferReturnExcelInfo>();
                             //test.ExcelInfo = new List<stWaferReturnExcelInfo>();
                             WaferReturnInfo.Add(new stWaferReturnInfo());
                             WaferReturnInfo[WaferReturnInfo.Count - 1] = test;
@@ -12215,10 +12322,14 @@ namespace Bank_Host
                                 int.Parse(temp1[7] == null ? "0" : temp1[7]),
                                 temp1[8],
                                 temp1[9],
-                                temp1[10]
+                                temp1[10],
+                                cust
                                 );
 
-                            WaferReturnInfo[returnNumCnt].AddExcelInfo(excelInfo);
+                            if (WaferReturnInfo[returnNumCnt].ExcelInfo == null)
+                                WaferReturnInfo[returnNumCnt].ExcelInfoInit();
+
+                            WaferReturnInfo[returnNumCnt].ExcelInfo.Add(excelInfo);
 
                             ++seqCnt;
                             ++rowOffset;
@@ -12272,59 +12383,69 @@ namespace Bank_Host
 
                 for (int i = 0; i < WaferReturnInfo.Count; i++)
                 {
-                   
+
 
                     //if (ds.Tables[0].Rows.Count == 0)
                     {
-
-                        for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
+                        if(WaferReturnInfo[i].ExcelInfo != null)
                         {
-                            string q = string.Format("select [RETURN_NO] from [TB_RETURN_WAFER] with(nolock) where [RETURN_NO]= '{0}-{1}' and [SEQ]='{2}' and [LOT]='{3}'", tb_Year.Text, WaferReturnInfo[i].WebInfo.ReturnNum, WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum);
-                            DataSet ds = SearchData(q);
 
-                            Thread.Sleep(10);
-
-                            
-                            if (ds.Tables[0].Rows.Count == 0)
+                            for (int j = 0; j < WaferReturnInfo[i].ExcelInfo.Count; j++)
                             {
-                                ++insertCnt;
+                                string q = string.Format("select [RETURN_NO] from [TB_RETURN_WAFER] with(nolock) where [RETURN_NO]= '{0}-{1}' and [SEQ]='{2}' and [LOT]='{3}'", tb_Year.Text, WaferReturnInfo[i].WebInfo.ReturnNum == null ? WaferReturnInfo[i].ExcelInfo[j].ReturnNum.Split('-')[1] : WaferReturnInfo[i].WebInfo.ReturnNum, WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum);
+                                DataSet ds = SearchData(q);
 
-                                query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
-                                tb_Year.Text + "-" + WaferReturnInfo[i].WebInfo.ReturnNum,
-                                WaferReturnInfo[i].ExcelInfo[j].Seq,
-                                WaferReturnInfo[i].ExcelInfo[j].PDL,
-                                WaferReturnInfo[i].ExcelInfo[j].DeviceName,
-                                WaferReturnInfo[i].ExcelInfo[j].LotNum,
-                                WaferReturnInfo[i].ExcelInfo[j].Dcc,
-                                WaferReturnInfo[i].ExcelInfo[j].DsQty,
-                                WaferReturnInfo[i].ExcelInfo[j].ReturnQty,
-                                WaferReturnInfo[i].ExcelInfo[j].Remark,
-                                WaferReturnInfo[i].ExcelInfo[j].Loc,
-                                WaferReturnInfo[i].ExcelInfo[j].SL,
-                                "",
-                                "",
-                                WaferReturnInfo[i].WebInfo.InputDate,
-                                WaferReturnInfo[i].WebInfo.RequestDate,
-                                WaferReturnInfo[i].WebInfo.UserID,
-                                WaferReturnInfo[i].WebInfo.BoxQty,
-                                WaferReturnInfo[i].WebInfo.Remark,
-                                "",
-                                "",
-                                WaferReturnInfo[i].WebInfo.CustCode,
-                                "",
-                                ""
-                                );
+                                Thread.Sleep(10);
 
-                                run_sql_command(query);
-                                SetWaferReturnProgressba(string.Format("Add : {0}, {1}", WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
-                            }
-                            else
-                            {
-                                ++passCnt;
-                                SetWaferReturnProgressba(string.Format("Pass:{0},{1}", WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
-                            }
 
-                            Thread.Sleep(10);
+                                if (ds.Tables[0].Rows.Count == 0)
+                                {
+                                    ++insertCnt;
+
+
+
+                                    string re = WaferReturnInfo[i].ExcelInfo[j].ReturnNum;//tb_Year.Text + "-" + WaferReturnInfo[i].WebInfo.ReturnNum == null ? WaferReturnInfo[i].ExcelInfo[j].ReturnNum.Split('-')[1] : WaferReturnInfo[i].WebInfo.ReturnNum;
+                                    query = String.Format("Insert INTO TB_RETURN_WAFER values('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', {16}, '{17}', '{18}', '{19}', {20}, '{21}', '{22}')",
+                                    re,
+                                    WaferReturnInfo[i].ExcelInfo[j].Seq,
+                                    WaferReturnInfo[i].ExcelInfo[j].PDL,
+                                    WaferReturnInfo[i].ExcelInfo[j].DeviceName,
+                                    WaferReturnInfo[i].ExcelInfo[j].LotNum,
+                                    WaferReturnInfo[i].ExcelInfo[j].Dcc,
+                                    WaferReturnInfo[i].ExcelInfo[j].DsQty,
+                                    WaferReturnInfo[i].ExcelInfo[j].ReturnQty,
+                                    WaferReturnInfo[i].ExcelInfo[j].Remark,
+                                    WaferReturnInfo[i].ExcelInfo[j].Loc,
+                                    WaferReturnInfo[i].ExcelInfo[j].SL,
+                                    "",
+                                    "",
+                                    WaferReturnInfo[i].WebInfo.InputDate == null ? "" : WaferReturnInfo[i].WebInfo.InputDate,
+                                    WaferReturnInfo[i].WebInfo.RequestDate == null ? "" : WaferReturnInfo[i].WebInfo.RequestDate,
+                                    WaferReturnInfo[i].WebInfo.UserID == null ?"": WaferReturnInfo[i].WebInfo.UserID,
+                                    WaferReturnInfo[i].WebInfo.BoxQty  ,
+                                    WaferReturnInfo[i].WebInfo.Remark == null ? "" : WaferReturnInfo[i].WebInfo.Remark,
+                                    "",
+                                    "",
+                                    WaferReturnInfo[i].WebInfo.CustCode == null ? WaferReturnInfo[i].ExcelInfo[j].cust.ToString() : WaferReturnInfo[i].WebInfo.CustCode,
+                                    "",
+                                    ""
+                                    );
+
+                                    run_sql_command(query);
+                                    SetWaferReturnProgressba(string.Format("Add : {0}, {1}", WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
+                                }
+                                else
+                                {
+                                    ++passCnt;
+                                    SetWaferReturnProgressba(string.Format("Pass:{0},{1}", WaferReturnInfo[i].ExcelInfo[j].Seq, WaferReturnInfo[i].ExcelInfo[j].LotNum), ++cnt);
+                                }
+
+                                Thread.Sleep(10);
+                            }                           
+                        }
+                        else
+                        {
+
                         }
                     }
                     //else
@@ -12351,8 +12472,6 @@ namespace Bank_Host
             {
                 stWaferReturnInfo returnInfo = new stWaferReturnInfo();
 
-
-
                 //string cust, string st, string returncode, string indate, string redate, string id, int qty, string remark
                 stWaferReturnWebInfo webInfo = new stWaferReturnWebInfo();
                 webInfo.CustCode = tableText[11 + (i * 6)].Trim();
@@ -12378,7 +12497,7 @@ namespace Bank_Host
             string temp = string.Format("select [SEQ],[DEVICE_NAME],[LOT],[DCC],[RETURN_QTY],[LOC],[SL],[REMARK],[SCAN_TIME_1st],[SCAN_USER_NAME_1st],[SCAN_TIME_2nd],[SCAN_USER_NAME_2nd],[AMKOR_ID],[CUST_CODE] from TB_RETURN_WAFER with(nolock) where [RETURN_NO]='{0}-{1}{2}' order by cast([SEQ] as int)", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION);
             dgv_ReturnWafer.DataSource = SearchData(temp).Tables[0];
 
-            for(int i = 0; i< dgv_ReturnWafer.RowCount; i++)
+            for (int i = 0; i < dgv_ReturnWafer.RowCount; i++)
             {
                 if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() != "" && dgv_ReturnWafer.Rows[i].Cells[11].Value.ToString() == "")
                     dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
@@ -12452,7 +12571,7 @@ namespace Bank_Host
                     string inputData = "";
                     int cnt = -1;
                     InputBox("순번입력", "번호", ref inputData);
-                      
+
                     if (int.TryParse(inputData, out cnt) == true)
                     {
                         //if (cnt <= int.Parse(l_WaferReturnCount.Text.Split('/')[0]) || l_WaferReturnCount.Text.Split('/')[0].Trim() == "0")
@@ -12497,7 +12616,7 @@ namespace Bank_Host
 
             Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
             Workbook workbook = application.Workbooks.Add();// Filename: string.Format("{0}\\{1}", System.Environment.CurrentDirectory, @"\WaferReturn\WaferReturnOutTemp.xlsx"));
-            
+
             Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
             object misValue = System.Reflection.Missing.Value;
 
@@ -12515,7 +12634,7 @@ namespace Bank_Host
 
             if (dgv_ReturnWafer.DataSource != null)
             {
-                string[,] item = new string[MtlList.Rows.Count, MtlList.Columns.Count -2];
+                string[,] item = new string[MtlList.Rows.Count, MtlList.Columns.Count - 2];
                 string[] columns = new string[MtlList.Columns.Count];
                 string cust = "";
                 string returnnum = "";
@@ -12589,7 +12708,7 @@ namespace Bank_Host
                 //worksheet1.get_Range("A1", columns[MtlList.Columns.Count - 1] + "1").Value2 = headers;
                 //해당위치부터 데이터정보를 담기
 
-                
+
 
                 worksheet1.get_Range("A3").Value = cust;
                 worksheet1.get_Range("A4").Value = returnnum;
@@ -12613,8 +12732,8 @@ namespace Bank_Host
                 //rd.BorderAround2(XlLineStyle.xlDash);
                 //rd.Borders[XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlContinuous;
                 //rd.Borders[XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlContinuous;
-                
-                rd.HorizontalAlignment =  Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+                rd.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
                 rd.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThick;
                 rd.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlThick;
 
@@ -12649,14 +12768,14 @@ namespace Bank_Host
                     workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
                 }
 
-                
+
 
                 speech.SpeakAsync("엑셀 저장이 완료 되었습니다.");
                 SetWaferReturnProgressba("파일 저장 완료", 8);
 
-                
 
-                
+
+
 
 
                 workbook.Close();
@@ -12676,7 +12795,7 @@ namespace Bank_Host
 
 
                 SetWaferReturnProgressba("Excel 실행 완료", 10);
-                
+
             }
             else
             {
@@ -12734,12 +12853,29 @@ namespace Bank_Host
 
                     toolTip1.SetToolTip(btn_WaferReturnExcel, string.Format("{0}\n경로 변경 : 마우스 오른쪽 클릭", Properties.Settings.Default.WaferReturnExcelOutPath));
                 }
-            }        
+            }
             else
             {
-                if (DialogResult.Yes == MessageBox.Show("Excel 저장 하시겠습니까?", "Excel 출력", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                if (dgv_ReturnWafer.Rows.Count != 0)
                 {
-                    WaferReturnExcelOut();
+                    if (DialogResult.Yes == MessageBox.Show("Excel 저장 하시겠습니까?", "Excel 출력", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        WaferReturnExcelOut();
+                    }
+                }
+                else
+                {
+                    if(DialogResult.Yes ==MessageBox.Show("Excel Load 하시겠습니까?", "Excel Load", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    openFileDialog1.InitialDirectory = Application.StartupPath;
+                    //openFileDialog1.Filter = "Excel|*.xls";
+
+                    if (DialogResult.OK == openFileDialog1.ShowDialog())
+                    {
+                        sDownloadPath = System.IO.Path.GetDirectoryName(openFileDialog1.FileName);
+                        file_name = System.IO.Path.GetFileName(openFileDialog1.FileName);
+                        Thread th = new Thread(WriteWaferReturnData);
+                        th.Start();
+                    }
                 }
             }
         }
@@ -12757,7 +12893,7 @@ namespace Bank_Host
 
         private void btn_WaferReturnReset_Click(object sender, EventArgs e)
         {
-            if(DialogResult.Yes == MessageBox.Show(string.Format("{0}-{1}{2}을 초기화 하시겠습니까?", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION),"초기화", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            if (DialogResult.Yes == MessageBox.Show(string.Format("{0}-{1}{2}을 초기화 하시겠습니까?", tb_Year.Text, tb_ReturnWafer.Text, Properties.Settings.Default.LOCATION), "초기화", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
             {
                 if (bWaferReturnNumChange == false)
                 {
@@ -12878,7 +13014,7 @@ namespace Bank_Host
 
                 if (n == dgv_ReturnWafer.RowCount - 1)
                 {
-                    searched_row = -1;                        ;
+                    searched_row = -1; ;
                     MessageBox.Show("지정된 문자열을 찾을 수 없습니다.");
 
                 }
@@ -12896,6 +13032,200 @@ namespace Bank_Host
         {
             bWaferReturnNumChange = true;
         }
+
+        string ReturnWaferNum = "";
+
+        private void btn_Accept_Click(object sender, EventArgs e)
+        {
+            ReturnWaferNum = $"{tb_ReturnWafer.Text}{ Properties.Settings.Default.LOCATION}";
+
+            if (DialogResult.Yes == MessageBox.Show($"{tb_Year.Text}-{tb_ReturnWafer.Text}{Properties.Settings.Default.LOCATION}을 Accept 하시겠습니까?", "Accept", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                Thread AcceptThread = new Thread(Accpetthread);
+                AcceptThread.Start();
+            }
+        }
+
+        private void Accpetthread()
+        {
+            ChromeDriverUpdater();
+
+            string id = BankHost_main.strMESID;
+            string pw = BankHost_main.strMESPW;
+            string badge = BankHost_main.strID;
+            sDownloadPath = Path.Combine(System.Environment.CurrentDirectory, "WaferReturn\\Excel\\");
+
+
+
+            try
+            {
+                ChromeDriverUpdater();
+
+                
+                if (System.IO.Directory.Exists(sDownloadPath) == false)
+                {
+                    SetWaferReturnProgressba("Directory 생성 중 입니다.", 9);
+                    System.IO.Directory.CreateDirectory(sDownloadPath);
+                }
+                else
+                {
+                    try
+                    {
+                        System.IO.DirectoryInfo di1 = new System.IO.DirectoryInfo(sDownloadPath);
+
+                        FileInfo[] fi1 = di1.GetFiles();
+
+                        for (int i = 0; i < fi1.Length; i++)
+                        {
+                            fi1[i].Delete();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+
+                bDownloadComp = false;
+
+                _driverService = ChromeDriverService.CreateDefaultService();
+
+                _driverService.HideCommandPromptWindow = true;
+
+                _options = new ChromeOptions();
+
+
+
+                _options.AddArgument("--disable-gpu");
+                _options.AddUserProfilePreference("download.default_directory", sDownloadPath);
+                _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
+                _options.AddUserProfilePreference("safebrowsing.enabled", false);
+
+                /* test server
+                _driver = new ChromeDriver(_driverService, _options);
+                _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/");  // 웹 사이트에 접속합니다. 
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                progressBar1.Maximum = 15;
+                progressBar1.Value = 1;
+
+                SetProgressba("eMes에 접속 중입니다.", 1);
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys("abc4");    // ID 입력          
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys("abc4");   // PW 입력            
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys("362808");   // 사번 입력         
+                _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+                SetProgressba("Login 확인 중", 2);
+
+                _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
+
+
+                while (_driver.Url != "http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp")
+                {
+                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
+                    Thread.Sleep(500);
+                }
+                */
+
+
+                _driver = new ChromeDriver(_driverService, _options);
+                _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
+                pb_WaferReturn.Maximum = 15;
+                pb_WaferReturn.Value = 1;
+
+                SetWaferReturnProgressba("eMes에 접속 중입니다.", 1);
+                _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input")).SendKeys(id);    // ID 입력          
+                _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input")).SendKeys(pw);   // PW 입력            
+                _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input")).SendKeys(badge);   // 사번 입력         
+                _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input")).Click();   // Main 로그인 버튼            
+                SetWaferReturnProgressba("Login 확인 중", 2);
+
+                System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[1]/td/table/tbody/tr/td[1]/img"));
+
+                if (temp.Count != 0)
+                {
+                    if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "Invalid Username or Password !!!")
+                    {
+                        MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
+                        return;
+                    }
+                    else if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "User ID can't be used.")
+                    {
+                        MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("알수 없는 에러가 발생하였습니다.");
+                        return;
+                    }
+                }
+
+                _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/ttsReturnFind.do");   // Scrap request 항목으로 이동
+                SetWaferReturnProgressba("Wafer Return 메뉴로 이동 중입니다.", 3);
+
+
+                while (_driver.Url != "http://aak1ws01/eMES/diebank/ttsReturnFind.do")
+                {
+                    _driver.Navigate().GoToUrl("http://aak1ws01/eMES/diebank/ttsReturnFind.do");   // Scrap request 항목으로 이동
+                    Thread.Sleep(500);
+                }
+
+                SetWaferReturnProgressba("년도 설정", 4);
+                _driver.FindElement(By.XPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input")).Clear();
+                _driver.FindElement(By.XPath("/html/body/form[1]/table/tbody/tr[2]/td/table/tbody/tr[4]/td[2]/input")).SendKeys(tb_Year.Text);
+
+                SetWaferReturnProgressba("데이터 조회 중입니다.", 7);
+                _driver.FindElement(By.XPath("/html/body/form[1]/table/tbody/tr[3]/td/div/table/tbody/tr/td/p/span/b/font/input")).Click();    //Find 버튼 누름
+
+
+                temp = _driver.FindElements(By.Name("selected"));
+
+                if (temp.Count == 0)
+                {
+                    SetWaferReturnProgressba("조회된 데이터가 없습니다.", 100);
+                    return;
+                }
+                else
+                {
+                    temp = _driver.FindElements(By.PartialLinkText("K4"));
+
+                    WaferReturnInfo = new List<stWaferReturnInfo>();
+
+                    for (int i = 0; i < temp.Count; i++)
+                    {
+                        WaferReturnInfo.Add(new stWaferReturnInfo());
+                    }
+
+                    WaferReturnDataSort(_driver.FindElement(By.XPath("/html/body/form[2]/table")));
+                    
+                }
+                IReadOnlyList<IWebElement> cbs = _driver.FindElements(By.Name("selected"));
+
+                for(int i = 0; i < WaferReturnInfo.Count; i++)
+                {
+                    if (WaferReturnInfo[i].WebInfo.ReturnNum == ReturnWaferNum)
+                    {
+                        cbs[i].Click();
+                        break;
+                    }
+                }
+
+                _driver.FindElement(By.XPath("/html/body/form[2]/table/tbody/tr[2]/td/div/table/tbody/tr/td[4]/p/span/b/font/span/b/input")).Click();
+
+                _driver.SwitchTo().Window(_driver.WindowHandles.Last());
+
+                _driver.FindElement(By.Name("checkbox1")).Click();
+                _driver.FindElement(By.Name("submitAct")).Click();
+            }
+            catch(Exception ex)
+            {
+                //< input type = "checkbox" name = "selected" value = "2023:70234K4:0" >
+            }
+        }
+    
 
         private void Split_data_sorting()
         {

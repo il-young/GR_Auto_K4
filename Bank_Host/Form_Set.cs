@@ -358,21 +358,21 @@ namespace Bank_Host
             _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
-            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys(BankHost_main.strMESID);    // ID 입력          
-            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys(BankHost_main.strMESPW);   // PW 입력            
-            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys(BankHost_main.strID);   // 사번 입력         
-            _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
+            _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input")).SendKeys(BankHost_main.strMESID);    // ID 입력          
+            _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input")).SendKeys(BankHost_main.strMESPW);   // PW 입력            
+            _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input")).SendKeys(BankHost_main.strID);   // 사번 입력         
+            _driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input")).Click();   // Main 로그인 버튼            
 
             System.Collections.ObjectModel.ReadOnlyCollection<OpenQA.Selenium.IWebElement> temp = _driver.FindElements(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font"));
 
             if (temp.Count != 0)
             {
-                if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "Invalid Username or Password !!!")
+                if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "Invalid Username or Password !!!")
                 {
                     MessageBox.Show("ID or 비밀번호 or 사번이 틀립니다.\n ID, 비밀번호, 사번을 확인해 주세요");
                     return;
                 }
-                else if (_driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font").Text == "User ID can't be used.")
+                else if (_driver.FindElement(By.XPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/center/font")).Text == "User ID can't be used.")
                 {
                     MessageBox.Show("해당 ID로 접속 할 수 없습니다.\n ID 및 Network 상태를 점검해 주세요");
                     return;

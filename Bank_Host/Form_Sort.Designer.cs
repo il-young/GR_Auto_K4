@@ -338,6 +338,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btn_WaferReturnFindNext = new System.Windows.Forms.Button();
             this.btn_Find = new System.Windows.Forms.Button();
+            this.btn_Accept = new System.Windows.Forms.Button();
             this.btn_WaferReturnReset = new System.Windows.Forms.Button();
             this.btn_WaferReturnExcel = new System.Windows.Forms.Button();
             this.label58 = new System.Windows.Forms.Label();
@@ -352,14 +353,13 @@
             this.button18 = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
             this.tb_WaferReturnScan = new System.Windows.Forms.TextBox();
-            this.cb_WaferReturnExcel = new System.Windows.Forms.CheckBox();
-            this.cb_WaferReturnView = new System.Windows.Forms.CheckBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.bgw_timeout = new System.ComponentModel.BackgroundWorker();
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -3589,7 +3589,7 @@
             // 
             this.button17.Dock = System.Windows.Forms.DockStyle.Left;
             this.button17.Font = new System.Drawing.Font("맑은 고딕", 17F, System.Drawing.FontStyle.Bold);
-            this.button17.Location = new System.Drawing.Point(412, 0);
+            this.button17.Location = new System.Drawing.Point(206, 0);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(94, 70);
             this.button17.TabIndex = 26;
@@ -3621,7 +3621,7 @@
             this.button16.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.button16.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button16.ImageKey = "(없음)";
-            this.button16.Location = new System.Drawing.Point(206, 0);
+            this.button16.Location = new System.Drawing.Point(0, 0);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(206, 70);
             this.button16.TabIndex = 24;
@@ -3634,7 +3634,6 @@
             // 
             this.btn_CommentEdit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_CommentEdit.BackgroundImage")));
             this.btn_CommentEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btn_CommentEdit.Dock = System.Windows.Forms.DockStyle.Left;
             this.btn_CommentEdit.Font = new System.Drawing.Font("맑은 고딕", 16F, System.Drawing.FontStyle.Bold);
             this.btn_CommentEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_CommentEdit.ImageKey = "(없음)";
@@ -3922,6 +3921,7 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnFindNext);
             this.splitContainer3.Panel2.Controls.Add(this.btn_Find);
+            this.splitContainer3.Panel2.Controls.Add(this.btn_Accept);
             this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnReset);
             this.splitContainer3.Panel2.Controls.Add(this.btn_WaferReturnExcel);
             this.splitContainer3.Panel2.Controls.Add(this.label58);
@@ -3936,8 +3936,6 @@
             this.splitContainer3.Panel2.Controls.Add(this.button18);
             this.splitContainer3.Panel2.Controls.Add(this.label56);
             this.splitContainer3.Panel2.Controls.Add(this.tb_WaferReturnScan);
-            this.splitContainer3.Panel2.Controls.Add(this.cb_WaferReturnExcel);
-            this.splitContainer3.Panel2.Controls.Add(this.cb_WaferReturnView);
             this.splitContainer3.Size = new System.Drawing.Size(1542, 1028);
             this.splitContainer3.SplitterDistance = 1322;
             this.splitContainer3.TabIndex = 0;
@@ -3968,17 +3966,16 @@
             // btn_WaferReturnFindNext
             // 
             this.btn_WaferReturnFindNext.BackColor = System.Drawing.Color.Transparent;
-            this.btn_WaferReturnFindNext.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btn_WaferReturnFindNext.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btn_WaferReturnFindNext.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_WaferReturnFindNext.Image = ((System.Drawing.Image)(resources.GetObject("btn_WaferReturnFindNext.Image")));
             this.btn_WaferReturnFindNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_WaferReturnFindNext.Location = new System.Drawing.Point(111, 267);
+            this.btn_WaferReturnFindNext.Location = new System.Drawing.Point(100, 219);
             this.btn_WaferReturnFindNext.Name = "btn_WaferReturnFindNext";
-            this.btn_WaferReturnFindNext.Size = new System.Drawing.Size(111, 448);
-            this.btn_WaferReturnFindNext.TabIndex = 57;
+            this.btn_WaferReturnFindNext.Size = new System.Drawing.Size(116, 454);
+            this.btn_WaferReturnFindNext.TabIndex = 60;
             this.btn_WaferReturnFindNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_WaferReturnFindNext.UseVisualStyleBackColor = false;
-            this.btn_WaferReturnFindNext.Click += new System.EventHandler(this.btn_WaferReturnFindNext_Click);
             // 
             // btn_Find
             // 
@@ -3987,17 +3984,31 @@
             this.btn_Find.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_Find.Image = ((System.Drawing.Image)(resources.GetObject("btn_Find.Image")));
             this.btn_Find.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Find.Location = new System.Drawing.Point(0, 267);
+            this.btn_Find.Location = new System.Drawing.Point(0, 219);
             this.btn_Find.Name = "btn_Find";
-            this.btn_Find.Size = new System.Drawing.Size(111, 448);
-            this.btn_Find.TabIndex = 56;
+            this.btn_Find.Size = new System.Drawing.Size(100, 454);
+            this.btn_Find.TabIndex = 59;
             this.btn_Find.Text = "찾기";
             this.btn_Find.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_Find.UseVisualStyleBackColor = false;
-            this.btn_Find.Click += new System.EventHandler(this.btn_Find_Click);
+            // 
+            // btn_Accept
+            // 
+            this.btn_Accept.BackColor = System.Drawing.Color.Blue;
+            this.btn_Accept.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btn_Accept.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_Accept.ForeColor = System.Drawing.Color.White;
+            this.btn_Accept.Location = new System.Drawing.Point(0, 673);
+            this.btn_Accept.Name = "btn_Accept";
+            this.btn_Accept.Size = new System.Drawing.Size(216, 42);
+            this.btn_Accept.TabIndex = 58;
+            this.btn_Accept.Text = "Accept";
+            this.btn_Accept.UseVisualStyleBackColor = false;
+            this.btn_Accept.Click += new System.EventHandler(this.btn_Accept_Click);
             // 
             // btn_WaferReturnReset
             // 
+            this.btn_WaferReturnReset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btn_WaferReturnReset.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btn_WaferReturnReset.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_WaferReturnReset.Location = new System.Drawing.Point(0, 715);
@@ -4005,7 +4016,7 @@
             this.btn_WaferReturnReset.Size = new System.Drawing.Size(216, 42);
             this.btn_WaferReturnReset.TabIndex = 55;
             this.btn_WaferReturnReset.Text = "초기화";
-            this.btn_WaferReturnReset.UseVisualStyleBackColor = true;
+            this.btn_WaferReturnReset.UseVisualStyleBackColor = false;
             this.btn_WaferReturnReset.Click += new System.EventHandler(this.btn_WaferReturnReset_Click);
             // 
             // btn_WaferReturnExcel
@@ -4064,7 +4075,7 @@
             this.btn_WaferReturnReadDB.Dock = System.Windows.Forms.DockStyle.Top;
             this.btn_WaferReturnReadDB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_WaferReturnReadDB.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_WaferReturnReadDB.Location = new System.Drawing.Point(0, 215);
+            this.btn_WaferReturnReadDB.Location = new System.Drawing.Point(0, 167);
             this.btn_WaferReturnReadDB.Name = "btn_WaferReturnReadDB";
             this.btn_WaferReturnReadDB.Size = new System.Drawing.Size(216, 52);
             this.btn_WaferReturnReadDB.TabIndex = 50;
@@ -4077,7 +4088,7 @@
             this.tb_ReturnWafer.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.tb_ReturnWafer.Dock = System.Windows.Forms.DockStyle.Top;
             this.tb_ReturnWafer.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_ReturnWafer.Location = new System.Drawing.Point(0, 180);
+            this.tb_ReturnWafer.Location = new System.Drawing.Point(0, 132);
             this.tb_ReturnWafer.Name = "tb_ReturnWafer";
             this.tb_ReturnWafer.Size = new System.Drawing.Size(216, 35);
             this.tb_ReturnWafer.TabIndex = 49;
@@ -4092,7 +4103,7 @@
             this.btn_WaferReturnFind.Dock = System.Windows.Forms.DockStyle.Top;
             this.btn_WaferReturnFind.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_WaferReturnFind.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_WaferReturnFind.Location = new System.Drawing.Point(0, 128);
+            this.btn_WaferReturnFind.Location = new System.Drawing.Point(0, 80);
             this.btn_WaferReturnFind.Name = "btn_WaferReturnFind";
             this.btn_WaferReturnFind.Size = new System.Drawing.Size(216, 52);
             this.btn_WaferReturnFind.TabIndex = 48;
@@ -4104,7 +4115,7 @@
             // 
             this.tb_Year.Dock = System.Windows.Forms.DockStyle.Top;
             this.tb_Year.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.tb_Year.Location = new System.Drawing.Point(0, 95);
+            this.tb_Year.Location = new System.Drawing.Point(0, 47);
             this.tb_Year.Mask = "9999";
             this.tb_Year.Name = "tb_Year";
             this.tb_Year.Size = new System.Drawing.Size(216, 33);
@@ -4149,7 +4160,7 @@
             this.label56.AutoSize = true;
             this.label56.Dock = System.Windows.Forms.DockStyle.Top;
             this.label56.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label56.Location = new System.Drawing.Point(0, 70);
+            this.label56.Location = new System.Drawing.Point(0, 22);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(63, 25);
             this.label56.TabIndex = 41;
@@ -4160,34 +4171,12 @@
             this.tb_WaferReturnScan.Dock = System.Windows.Forms.DockStyle.Top;
             this.tb_WaferReturnScan.Font = new System.Drawing.Font("맑은 고딕", 8F);
             this.tb_WaferReturnScan.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.tb_WaferReturnScan.Location = new System.Drawing.Point(0, 48);
+            this.tb_WaferReturnScan.Location = new System.Drawing.Point(0, 0);
             this.tb_WaferReturnScan.Name = "tb_WaferReturnScan";
             this.tb_WaferReturnScan.Size = new System.Drawing.Size(216, 22);
             this.tb_WaferReturnScan.TabIndex = 39;
             this.tb_WaferReturnScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_WaferReturnScan_KeyDown);
             this.tb_WaferReturnScan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_WaferReturnScan_MouseDown);
-            // 
-            // cb_WaferReturnExcel
-            // 
-            this.cb_WaferReturnExcel.AutoSize = true;
-            this.cb_WaferReturnExcel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cb_WaferReturnExcel.Location = new System.Drawing.Point(0, 24);
-            this.cb_WaferReturnExcel.Name = "cb_WaferReturnExcel";
-            this.cb_WaferReturnExcel.Size = new System.Drawing.Size(216, 24);
-            this.cb_WaferReturnExcel.TabIndex = 38;
-            this.cb_WaferReturnExcel.Text = "파일 다운 건너뛰기";
-            this.cb_WaferReturnExcel.UseVisualStyleBackColor = true;
-            // 
-            // cb_WaferReturnView
-            // 
-            this.cb_WaferReturnView.AutoSize = true;
-            this.cb_WaferReturnView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cb_WaferReturnView.Location = new System.Drawing.Point(0, 0);
-            this.cb_WaferReturnView.Name = "cb_WaferReturnView";
-            this.cb_WaferReturnView.Size = new System.Drawing.Size(216, 24);
-            this.cb_WaferReturnView.TabIndex = 37;
-            this.cb_WaferReturnView.Text = "진행 사항 확인";
-            this.cb_WaferReturnView.UseVisualStyleBackColor = true;
             // 
             // imageList1
             // 
@@ -4218,6 +4207,10 @@
             // 
             this.WaferReturnMenu.Name = "CMS_AmkorLabel";
             this.WaferReturnMenu.Size = new System.Drawing.Size(61, 4);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form_Sort
             // 
@@ -4577,8 +4570,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.TextBox tb_WaferReturnScan;
-        private System.Windows.Forms.CheckBox cb_WaferReturnExcel;
-        private System.Windows.Forms.CheckBox cb_WaferReturnView;
         private System.Windows.Forms.ProgressBar pb_WaferReturn;
         private System.Windows.Forms.Label l_WaferReturnST;
         private System.Windows.Forms.Button button18;
@@ -4594,7 +4585,9 @@
         private System.Windows.Forms.Button btn_WaferReturnExcel;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btn_WaferReturnReset;
-        private System.Windows.Forms.Button btn_Find;
         private System.Windows.Forms.Button btn_WaferReturnFindNext;
+        private System.Windows.Forms.Button btn_Find;
+        private System.Windows.Forms.Button btn_Accept;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

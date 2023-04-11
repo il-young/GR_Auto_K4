@@ -284,8 +284,8 @@ namespace Bank_Host
 
                         Read_Bcr = null;
 
-                        string strbank = string.Format("LON,0{0}", strWork_Bank);
-                        //string strbank = string.Format("LON");
+                        //string strbank = string.Format("LON,0{0}", strWork_Bank);
+                        string strbank = string.Format("LON");
                         Frm_Scanner.Socket_MessageSend(strbank);
                         Thread.Sleep(350);
                         /*
