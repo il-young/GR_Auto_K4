@@ -93,6 +93,11 @@ namespace Bank_Host
             lPrint.ShowDialog();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            speech.SpeakAsync("56");
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             //Zebra.Sdk.Comm.Connection PrinterConnection = new Zebra.Sdk.Comm.TcpConnection("10.131.34.75", Zebra.Sdk.Comm.TcpConnection.DEFAULT_ZPL_TCP_PORT);
@@ -284,8 +289,8 @@ namespace Bank_Host
 
                         Read_Bcr = null;
 
-                        //string strbank = string.Format("LON,0{0}", strWork_Bank);
-                        string strbank = string.Format("LON");
+                        string strbank = string.Format("LON,0{0}", strWork_Bank);
+                        //string strbank = string.Format("LON");
                         Frm_Scanner.Socket_MessageSend(strbank);
                         Thread.Sleep(350);
                         /*

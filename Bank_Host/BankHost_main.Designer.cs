@@ -172,7 +172,7 @@
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
-            this.label3.BackColor = System.Drawing.SystemColors.Control;
+            this.label3.BackColor = System.Drawing.Color.White;
             this.label3.ForeColor = System.Drawing.Color.Red;
             this.label3.Name = "label3";
             this.label3.Click += new System.EventHandler(this.label3_Click);

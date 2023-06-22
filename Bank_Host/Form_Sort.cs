@@ -523,7 +523,7 @@ namespace Bank_Host
             bool bJudge = false;
 
 
-            if (BankHost_main.strMultiLot == "YES")
+            if (BankHost_main.strMultiLot == "YES" && BankHost_main.strCustName != "CHIPBOND_MULTI")
             {
                 for (int i = 0; i <= (int.Parse(amkorBcrInfo.strWfrQty) / BankHost_main.LabelAddVal); i++)
                 {
@@ -11909,10 +11909,10 @@ namespace Bank_Host
 
         void ChromeDriverUpdater()
         {
-            string chromeversion_txt_path = "./chromedriver_version.txt";
+            string chromeversion_txt_path = $"{Application.StartupPath}\\chromedriver_version.txt";
 
             if (!System.IO.File.Exists(chromeversion_txt_path))
-            {
+            {   
                 using (StreamWriter sw = new StreamWriter(System.IO.File.Open(chromeversion_txt_path, FileMode.Create), Encoding.UTF8))
                 {
                 }

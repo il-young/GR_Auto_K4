@@ -14,6 +14,9 @@ using System.Configuration;
 using System.Threading;
 using MICube.SmartDriver.Base.TCP;
 using TCPConfig = MICube.SmartDriver.Base.TCP.Config;
+using System.Speech.Synthesis;
+
+
 
 namespace Bank_Host
 {
@@ -34,7 +37,7 @@ namespace Bank_Host
         public static bool bPrintState = false;
         public static string strPrinterName = "", strPrintComType = "";
         public static bool bPrintUse = true;
-
+        SpeechSynthesizer speech = new SpeechSynthesizer();
         public Form_Print()
         {
             InitializeComponent();
@@ -584,6 +587,10 @@ namespace Bank_Host
                     if(Properties.Settings.Default.GreenLabelPrint == true)
                     {
                         Socket_MessageSend(strPrint);
+                    }
+                    else
+                    {
+                        speech.SpeakAsync("라벨 출력이 금지 되어 있습니다.             프린트 설정을 확인 하세요");                        
                     }
                 }
                 /*
