@@ -55,7 +55,7 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "";
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "", strWork_WSNPos = "";
 
         public string ForcePrintName = "QUALCOMM STD Multi-2D";
 
@@ -342,6 +342,7 @@ namespace Bank_Host
                             {
                                 Form_Sort.strValDevice = Read_Bcr.Device;
                                 Form_Sort.strValLot = Read_Bcr.Lot;
+                                Form_Sort.strWSN = Read_Bcr.WSN;
                                 Form_Sort.nValDiettl = Int32.Parse(Read_Bcr.DieTTL);
                                 Form_Sort.nValDieQty = Int32.Parse(Read_Bcr.DieQty);
                                 Form_Sort.nValWfrttl = Int32.Parse(Read_Bcr.WfrTTL);
@@ -412,6 +413,7 @@ namespace Bank_Host
                         Bcr_result[2] = ""; //
                         Bcr_result[3] = Form_Sort.strValLot;
                         Bcr_result[4] = Form_Sort.strValDevice;
+                        Bcr_result[5] = Form_Sort.strWSN;
 
                         IsRun = false;
                         nProcess = 1000;
@@ -439,6 +441,7 @@ namespace Bank_Host
                         Bcr_result[2] = Form_Sort.nValWfrQty.ToString();
                         Bcr_result[3] = Form_Sort.strValLot;
                         Bcr_result[4] = Form_Sort.strValDevice;
+                        Bcr_result[5] = Form_Sort.strWSN;
 
                         IsRun = false;
                         nProcess = 3001;
@@ -1494,6 +1497,7 @@ namespace Bank_Host
             strLot2Wfr = Info.strLot2Wfr;
             strMultiLot = Info.strMultiLot;
             strTTLWFR = Info.strTTLWFR;
+            strWork_WSNPos = Info.strWSN;
         }        
     }
 }
@@ -1518,4 +1522,6 @@ public class WorkInfo
     public string strMtlType = "";
     public string strLot2Wfr = "";
     public string strTTLWFR = "";
+    public string strWSN = "";
+    public string strExcelOut = "";
 }
