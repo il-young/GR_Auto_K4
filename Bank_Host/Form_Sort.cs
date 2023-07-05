@@ -3019,7 +3019,14 @@ namespace Bank_Host
             st.strop = strSplit_data[14];
             st.strGRstatus = "COMPLETE"; //상태 업데이트
             st.Default_WQty = strSplit_data[16];
+
+            if(BankHost_main.strCustName.Contains("WSN") == true && strSplit_data.Length >= 19)
+            {
+                st.WSN = strSplit_data[18];
+            }
+
             st.strop = BankHost_main.strOperator;
+
 
             if (strSplit_data.Length > 17)
                 st.shipment = strSplit_data[17];
@@ -6352,7 +6359,7 @@ namespace Bank_Host
                     if (BankHost_main.strWork_Model != "QUALCOMM_SPI")
                     {
 
-                        if (BankHost_main.strWork_Model.Contains("WSN") == true)
+                        if (BankHost_main.strWork_Model.Contains("WSN") == true && strSplit_DevicePos[0] != null )
                         {
                             for(int n = 0; n< strSplit_Bcr.Length; n++)
                             {
@@ -6386,7 +6393,7 @@ namespace Bank_Host
                                     }
                                 }
 
-                                //if(nWSNPos == -1)
+                                if(strSplit_WSNPos[0] != null)
                                 {
                                     string res = BarcodeRule2Str(strSplit_WSNPos, strSplit_Bcr[n].Trim());
 
@@ -6397,7 +6404,7 @@ namespace Bank_Host
                                 }
                             }
 
-                            if (bcr.Device == "" || bcr.Lot == "" || bcr.DieQty == "" || bcr.WSN == "")
+                            if (bcr.Device == "" || bcr.Lot == "" || bcr.DieQty == "" || strSplit_WSNPos[0] == null ? false : bcr.WSN == "")
                                 return null;
                         }
                         else
@@ -9058,7 +9065,10 @@ namespace Bank_Host
                 BankHost_main.strWork_Shot1Lot = "NO";
             }
 
-
+            if (BankHost_main.strWork_Model == "INARI")
+            {
+                BankHost_main.strWork_Shot1Lot = "NO";
+            }
 
             string str = "";
 

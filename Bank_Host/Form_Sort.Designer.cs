@@ -360,7 +360,6 @@
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button19 = new System.Windows.Forms.Button();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -1267,7 +1266,6 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.button19);
             this.tabPage3.Controls.Add(this.cb_GreenLabel);
             this.tabPage3.Controls.Add(this.button3);
             this.tabPage3.Controls.Add(this.button2);
@@ -1786,9 +1784,9 @@
             this.label_msg.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label_msg.Font = new System.Drawing.Font("맑은 고딕", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label_msg.ForeColor = System.Drawing.Color.DarkBlue;
-            this.label_msg.Location = new System.Drawing.Point(770, 2);
+            this.label_msg.Location = new System.Drawing.Point(631, 2);
             this.label_msg.Name = "label_msg";
-            this.label_msg.Size = new System.Drawing.Size(261, 88);
+            this.label_msg.Size = new System.Drawing.Size(400, 88);
             this.label_msg.TabIndex = 2;
             this.label_msg.Text = "-";
             this.label_msg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -4214,18 +4212,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button19
-            // 
-            this.button19.Font = new System.Drawing.Font("맑은 고딕", 24F);
-            this.button19.Image = ((System.Drawing.Image)(resources.GetObject("button19.Image")));
-            this.button19.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button19.Location = new System.Drawing.Point(631, 3);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(133, 87);
-            this.button19.TabIndex = 15;
-            this.button19.Text = "   출력";
-            this.button19.UseVisualStyleBackColor = true;
-            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -4603,6 +4589,5 @@
         private System.Windows.Forms.Button btn_Find;
         private System.Windows.Forms.Button btn_Accept;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button button19;
     }
 }
