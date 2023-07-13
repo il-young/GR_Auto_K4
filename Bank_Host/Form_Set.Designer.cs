@@ -119,6 +119,7 @@
             this.tb_TimeOutMin = new System.Windows.Forms.TextBox();
             this.label32 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.btn_WSN = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_List)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_custType)).BeginInit();
@@ -476,7 +477,7 @@
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.dataGridView_custType.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridView_custType.RowTemplate.Height = 23;
-            this.dataGridView_custType.Size = new System.Drawing.Size(429, 242);
+            this.dataGridView_custType.Size = new System.Drawing.Size(429, 191);
             this.dataGridView_custType.TabIndex = 20;
             this.dataGridView_custType.TabStop = false;
             // 
@@ -1074,11 +1075,23 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // btn_WSN
+            // 
+            this.btn_WSN.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_WSN.Location = new System.Drawing.Point(594, 608);
+            this.btn_WSN.Name = "btn_WSN";
+            this.btn_WSN.Size = new System.Drawing.Size(136, 45);
+            this.btn_WSN.TabIndex = 28;
+            this.btn_WSN.Text = "Qorvo WSN";
+            this.btn_WSN.UseVisualStyleBackColor = true;
+            this.btn_WSN.Click += new System.EventHandler(this.btn_WSN_Click);
+            // 
             // Form_Set
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1609, 930);
             this.ControlBox = false;
+            this.Controls.Add(this.btn_WSN);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.tb_TimeOutMin);
             this.Controls.Add(this.label32);
@@ -1243,5 +1256,6 @@
         private System.Windows.Forms.TextBox tb_TimeOutMin;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btn_WSN;
     }
 }

@@ -76,5 +76,20 @@
     <Setting Name="FontSize2" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="ReturnQualcomm" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="QualcommPrinterIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.0.100</Value>
+    </Setting>
+    <Setting Name="QualcommMSL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="Qualcomm2nd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(e2)</Value>
+    </Setting>
+    <Setting Name="QorvoWSN" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

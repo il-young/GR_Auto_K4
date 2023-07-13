@@ -15,8 +15,7 @@ using System.Threading;
 using MICube.SmartDriver.Base.TCP;
 using TCPConfig = MICube.SmartDriver.Base.TCP.Config;
 using System.Speech.Synthesis;
-
-
+using System.Data.SqlClient;
 
 namespace Bank_Host
 {
@@ -24,6 +23,10 @@ namespace Bank_Host
     {
         public TCP SocketManager = null;
         public TCP.EnumConnectStatus SocketState = TCP.EnumConnectStatus.None;
+
+        public TCP QualcommSocketManager = null;
+        public TCP.EnumConnectStatus QualcommSocketState = TCP.EnumConnectStatus.None;
+
         public string strLogfilePath = "";
         public string strReceivedata = "", strSocketStatus = "";
 
@@ -88,6 +91,40 @@ namespace Bank_Host
             textBox_cust.Focus();
         }
 
+        public void QualcommSocket_Init()
+        {
+            try
+            {
+                if (QualcommSocketManager != null)
+                    return;
+
+                
+
+                QualcommSocketManager = new TCP();
+
+                QualcommSocketManager.Config.ConnectMode = (TCPConfig.EnumConnectMode)Enum.Parse(typeof(TCPConfig.EnumConnectMode), ConfigurationManager.AppSettings["ConnectType2"], true);
+                QualcommSocketManager.Config.IpAddress = Properties.Settings.Default.QualcommPrinterIP;
+                QualcommSocketManager.Config.Port = int.Parse(ConfigurationManager.AppSettings["Port2"]);
+                QualcommSocketManager.Config.EquipmentId = ConfigurationManager.AppSettings["EquipmentId2"];
+                QualcommSocketManager.Config.ReconnectTimer = int.Parse(ConfigurationManager.AppSettings["RetryTime2"]);
+                
+                QualcommSocketManager.OnConnectStatus += new TCP.OnConnectStatusEvent(socketManager_OnConnectStatus);
+                QualcommSocketManager.OnReceivedStringMessage += new TCP.OnReceivedStringMessageEvent(socketManager_OnReceivedStringMessage);
+                
+                QualcommSocketManager.Open();
+
+                string strMsg = string.Format("Keyence: {0}: {1}", SocketManager.Config.IpAddress, SocketManager.Config.Port);
+                Fnc_SaveLog(strMsg);
+                Fnc_SaveLog("QualcommSocketManager OK!");
+
+                timer1.Start();
+            }
+            catch (Exception ex)
+            {
+                Fnc_SaveLog(ex.ToString());
+            }
+        }
+
         public void Socket_Init()
         {
             try
@@ -137,6 +174,11 @@ namespace Bank_Host
         public void Socket_MessageSend(string strData)
         {
             SocketManager.SendMessage(STX + strData + ETX);
+        }
+
+        public void QualcomSocket_MessageSend(string strData)
+        {
+           QualcommSocketManager.SendMessage(STX + strData + ETX);
         }
 
         public void socketManager_OnConnectStatus(TCP.EnumConnectStatus connectStatus)
@@ -925,6 +967,177 @@ namespace Bank_Host
             return dados;
         }
 
+        public string MakeQualcommLabel(string code)
+        {
+            // 0                    1               2            3              4       5     6     
+            //1JUN144356508KDM05NFM,PCD90-10670-12C,1THM9545U011,30T15/16/17/18,10D2231,Q7844,14D30-JULY-2023
+            //1JUN144356508ABM616XX,1PQLN-2830-0-39BBD-S,1TTESTA431605001,9D2302,Q5000,30P<0x09>Data Matrix	판독
+ 
+            string[] temp = code.Split(',');
+            string res = "^XA";
+
+            string LPN = "", MCN ="", lot = "", WaferID = "", DC = "", qty = "", Exp = "", ItemID = "";
+            bool isFG = false;
+
+            for(int i = 0; i < temp.Length; i++)
+            {
+                if(temp[i].Substring(0,2) == "9D")
+                {
+                    isFG = true;
+                    break;
+                }
+            }
+
+
+            if (isFG == true)
+            {
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    if (temp[i].Substring(0, 2) == "1J")
+                        LPN = temp[i].Substring(2, temp[i].Length - 2);
+                    else if (temp[i].Substring(0, 2) == "1T")
+                        lot = temp[i].Substring(2, temp[i].Length - 2);
+                    else if (temp[i].Substring(0, 2) == "1P")
+                        ItemID = temp[i].Substring(2, temp[i].Length - 2);
+                    else if (temp[i].Substring(0, 2) == "9D")
+                        DC = temp[i].Substring(2, temp[i].Length - 2);
+                    else if (temp[i].Substring(0, 1) == "Q")
+                        qty = temp[i].Substring(1, temp[i].Length - 1);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    if (temp[i].Substring(0, 2) == "1J")
+                        LPN = temp[i].Substring(2, temp[i].Length - 2);
+                    else if (temp[i].Substring(0, 2) == "1T")
+                        lot = temp[i].Substring(2, temp[i].Length - 2);
+                    else if (temp[i].Substring(0, 3) == "30T")
+                        WaferID = temp[i].Substring(3, temp[i].Length - 3);
+                    else if (temp[i].Substring(0, 3) == "10D")
+                        DC = temp[i].Substring(3, temp[i].Length - 3);
+                    else if (temp[i].Substring(0, 3) == "14D")
+                        Exp = temp[i].Substring(3, temp[i].Length - 3);
+                    else if (temp[i].Substring(0, 1) == "Q")
+                        qty = temp[i].Substring(1, temp[i].Length - 1);
+                    else if(temp[i].Substring(0,1) == "P")
+                        MCN = temp[i].Substring(1, temp[i].Length - 1);
+                }
+            }
+            
+
+
+            
+
+            
+
+            res += $"^FO{15 + Properties.Settings.Default.PrintOffsetX},{30 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0B,30,30";
+            res += $"^FDQualcomm";
+            res += $"^FS";
+
+
+            if (isFG == true)
+            {
+                res += $"^FO{50 + Properties.Settings.Default.PrintOffsetX},{30 + Properties.Settings.Default.PrintOffsetY}";
+                res += "^BXN,5,200";
+                res += $"^FD{code}";
+                res += "^FS";
+
+                res += $"^FO{250 + Properties.Settings.Default.PrintOffsetX},{20 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD(1J)LPN: {LPN}";
+                res += $"^FS";
+                
+                res += $"^FO{250 + Properties.Settings.Default.PrintOffsetX},{90 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0,25,25";
+                res += $"^FD(1T)Lot Code: {lot}";
+                res += $"^FS";
+                
+                res += $"^FO{250 + Properties.Settings.Default.PrintOffsetX},{160 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0,25,25";
+                res += $"^FD(1P) Item ID: {ItemID}";
+                res += $"^FS";
+                
+                res += $"^FO{950 + Properties.Settings.Default.PrintOffsetX},{20 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,20,20";
+                res += $"^FD(Q)Quantity: {qty}";
+                res += $"^FS";
+                
+                res += $"^FO{950 + Properties.Settings.Default.PrintOffsetX},{70 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,20,20";
+                res += $"^FD(9D) D/C: {DC}";
+                res += $"^FS";
+                
+                res += $"^FO{950 + Properties.Settings.Default.PrintOffsetX},{115 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,20,20";
+                res += $"^FDMSL: {Properties.Settings.Default.QualcommMSL}";
+                res += $"^FS";
+                
+                res += $"^FO{1050 + Properties.Settings.Default.PrintOffsetX},{115 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,20,20";
+                res += $"^FD2nd LI: {Properties.Settings.Default.Qualcomm2nd}";
+                res += $"^FS";
+                
+                res += $"^FO{950 + Properties.Settings.Default.PrintOffsetX},{160 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,20,20";
+                res += $"^FD1118";
+                res += $"^FS";
+            }
+            else
+            {
+                res += $"^FO{50 + Properties.Settings.Default.PrintOffsetX},{30 + Properties.Settings.Default.PrintOffsetY}";
+                res += "^BXN,4.5,200";
+                res += $"^FD{code}";
+                res += "^FS";
+
+                res += $"^FO{250 + Properties.Settings.Default.PrintOffsetX},{20 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD(1J)LPN: {LPN}";
+                res += $"^FS";
+
+                res += $"^FO{650 + Properties.Settings.Default.PrintOffsetX},{20 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD(30T)Wafer ID(s): {WaferID}";
+                res += $"^FS";
+
+                res += $"^FO{1000 + Properties.Settings.Default.PrintOffsetX},{20 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD(10D)D/C: {DC}";
+                res += $"^FS";
+
+                res += $"^FO{250 + Properties.Settings.Default.PrintOffsetX},{90 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD(P)MCN: {MCN}";
+                res += $"^FS";
+
+                res += $"^FO{650 + Properties.Settings.Default.PrintOffsetX},{90 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD(Q)Quantity: {qty}";
+                res += $"^FS";
+
+                res += $"^FO{850 + Properties.Settings.Default.PrintOffsetX},{90 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FDDry Pack Exp: {Exp}";
+                res += $"^FS";
+
+                res += $"^FO{250 + Properties.Settings.Default.PrintOffsetX},{160 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0,25,25";
+                res += $"^FD(1T)Lot Code: {lot}";
+                res += $"^FS";
+
+                res += $"^FO{1050 + Properties.Settings.Default.PrintOffsetX},{160 + Properties.Settings.Default.PrintOffsetY}";
+                res += $"^A0N,25,25";
+                res += $"^FD1118";
+                res += $"^FS";
+            }
+
+            res = res + "^XZ";
+
+            return res;
+        }
+
 
         public string Fnc_Get_PrintFormat(int nType, string strBcrinfo, AmkorBcrInfo AmkorBarcode, int nIndex, int nttl)
         {
@@ -990,6 +1203,11 @@ namespace Bank_Host
             string strData4 = string.Format("RCV-DATE : {0}     BILL# : {1}", AmkorBarcode.strRcvdate, AmkorBarcode.strBillNo);
             strLine4 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData4);
 
+            string strWSN = "";
+
+            if (Checkdev(AmkorBarcode.strDevice) == true)
+                strWSN = $"^FO{Properties.Settings.Default.PrintOffsetX + 250},{Properties.Settings.Default.PrintOffsetY + 165}^A0N,20^FDWSN: {AmkorBarcode.strWSN}^FS";
+
             string P_SC_END = "^XZ\r\n";
 
             string dados = "";
@@ -1005,7 +1223,7 @@ namespace Bank_Host
                 string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
                 strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
-                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5;
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + AmkorBarcode.strWSN == "" ? "" : strWSN + strLine5;
             }
             else if (nType == 3)
             {
@@ -1017,10 +1235,15 @@ namespace Bank_Host
                 string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
                 strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
-                string strData6 = BankHost_main.strCust.Contains("WSN") == true ? $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo} WSN : {AmkorBarcode.strWSN}" : $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
+                string strData6 = "";
+                if (Checkdev(AmkorBarcode.strDevice) == true)
+                    strData6 = BankHost_main.strCust.Contains("WSN") == true ? $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo} WSN : {AmkorBarcode.strWSN}" : $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
+                else
+                    strData6 = $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
+
                 strLine6 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 185 + Properties.Settings.Default.PrintOffsetY, strData6);
 
-                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5 + strLine6;
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + (AmkorBarcode.strWSN == "" ? "" : strWSN) + strLine5 + strLine6;
             }
             else if (nType == 4)
             {
@@ -1049,6 +1272,49 @@ namespace Bank_Host
 
             return dados;
         }
+
+        private System.Data.DataSet SearchData(string sql)
+        {
+            System.Data.DataSet dt = new System.Data.DataSet();
+
+            try
+            {
+                using (SqlConnection c = new SqlConnection("server = 10.135.200.35; uid = amm; pwd = amm@123; database = GR_Automation"))
+                {
+                    c.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, c))
+                    {
+                        using (SqlDataAdapter adt = new SqlDataAdapter(cmd))
+                        {
+                            adt.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dt;
+        }
+
+        public bool Checkdev(string dev)
+        {
+            bool res = false;
+            DataSet ds = SearchData("select Source_Device from TB_QORVO_WSN_DEVICE with(nolock)");
+
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                if (row["Source_Device"].ToString() == dev)
+                {
+                    return true;
+                }
+            }
+
+            return res;
+        }
+
 
         public string Fnc_Get_PrintFormat_JAR(int nType, string strBcrinfo, AmkorBcrInfo AmkorBarcode, int nIndex, int nttl)
         {
@@ -1420,6 +1686,8 @@ namespace Bank_Host
 
             cb_GreenLabelPrint.Checked = Properties.Settings.Default.GreenLabelPrint;
 
+            tb_QualcommPrinter.Text = Properties.Settings.Default.QualcommPrinterIP;
+
             if(Properties.Settings.Default.SecondPrinterCustName != "")
             {
                 string[] temp = Properties.Settings.Default.SecondPrinterCustName.Split(';');
@@ -1487,6 +1755,23 @@ namespace Bank_Host
             Properties.Settings.Default.SecondPrinterOffsetY = (int)SecondPrintOffsetY.Value;
 
             Properties.Settings.Default.Save();
+        }
+
+        private void tb_QualcommPrinter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == Keys.Enter)
+            {
+                Properties.Settings.Default.QualcommPrinterIP = tb_QualcommPrinter.Text;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void SecondPrintOffsetX_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == Keys.Enter)
+            {
+                
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)

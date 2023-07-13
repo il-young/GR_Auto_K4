@@ -54,7 +54,7 @@ namespace Bank_Host
 
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
-            strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", 
+            strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", strWork_WSN ="",
             strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "", strWork_WSNPos = "";
 
         public string ForcePrintName = "QUALCOMM STD Multi-2D";
@@ -76,7 +76,7 @@ namespace Bank_Host
         /// </summary>
         public static string strLotNo = "", strDeviceNo = "", strDieQty = "", strWfrQrt = "", strAmkorID = "", strCust = "", strCustName = "";
 
-        Form_Sort Frm_Sort = new Form_Sort();
+        public Form_Sort Frm_Sort = new Form_Sort();
         Form_Set Frm_Set = new Form_Set();
         Form_Keynece Frm_Scanner = new Form_Keynece();
         Form_Progress Frm_Process = new Form_Progress();
@@ -289,7 +289,7 @@ namespace Bank_Host
 
                         Read_Bcr = null;
 
-                        string strbank = string.Format("LON,0{0}", strWork_Bank);
+                        string strbank = string.Format("LON,{0}", strWork_Bank.Length == 1 ? $"0{strWork_Bank}" : strWork_Bank);
                         //string strbank = string.Format("LON");
                         Frm_Scanner.Socket_MessageSend(strbank);
                         Thread.Sleep(350);

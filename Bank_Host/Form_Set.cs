@@ -426,5 +426,13 @@ namespace Bank_Host
 
             }
         }
+
+        private void btn_WSN_Click(object sender, EventArgs e)
+        {
+            using (Form_addWSNDev wSNDev = new Form_addWSNDev())
+            {
+                wSNDev.ShowDialog();
+            }
+        }
     }
 }

@@ -228,6 +228,12 @@
     <Compile Include="Form1_Split_email.Designer.cs">
       <DependentUpon>Form1_Split_email.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_addWSNDev.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_addWSNDev.Designer.cs">
+      <DependentUpon>Form_addWSNDev.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Board.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -384,6 +390,9 @@
     <EmbeddedResource Include="Form1_Split_email.resx">
       <DependentUpon>Form1_Split_email.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_addWSNDev.resx">
+      <DependentUpon>Form_addWSNDev.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Board.resx">
       <DependentUpon>Form_Board.cs</DependentUpon>
     </EmbeddedResource>
@@ -493,6 +502,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="host.ico" />
+    <None Include="Resources\Excel %2850%29.png" />
+    <None Include="Resources\Excel.png" />
     <None Include="Resources\close-icon-13602.png" />
     <None Include="Properties\Receipt %28사용자 지정%29 %281%29.jpg" />
     <None Include="Properties\Doc %28사용자 지정%29.png" />

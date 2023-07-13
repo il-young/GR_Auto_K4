@@ -297,5 +297,65 @@ namespace Bank_Host.Properties {
                 this["FontSize2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ReturnQualcomm {
+            get {
+                return ((bool)(this["ReturnQualcomm"]));
+            }
+            set {
+                this["ReturnQualcomm"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.100")]
+        public string QualcommPrinterIP {
+            get {
+                return ((string)(this["QualcommPrinterIP"]));
+            }
+            set {
+                this["QualcommPrinterIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string QualcommMSL {
+            get {
+                return ((string)(this["QualcommMSL"]));
+            }
+            set {
+                this["QualcommMSL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("(e2)")]
+        public string Qualcomm2nd {
+            get {
+                return ((string)(this["Qualcomm2nd"]));
+            }
+            set {
+                this["Qualcomm2nd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string QorvoWSN {
+            get {
+                return ((string)(this["QorvoWSN"]));
+            }
+            set {
+                this["QorvoWSN"] = value;
+            }
+        }
     }
 }
