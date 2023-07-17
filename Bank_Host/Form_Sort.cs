@@ -6419,8 +6419,19 @@ namespace Bank_Host
 
                                     if (res != "EMPTY")
                                     {
-                                        BankHost_main.strWork_WSN = res;
-                                        bcr.WSN = res;
+                                        if (bcr.WSN == "")
+                                        {
+                                            BankHost_main.strWork_WSN = res;
+                                            bcr.WSN = res;
+                                        }
+                                        else
+                                        {
+                                            speech.Speak("WSN 중복");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        
                                     }
                                 }
                             }
@@ -6611,14 +6622,18 @@ namespace Bank_Host
             }
             else
             {
-                if (BankHost_main.strWork_Lotinfo == "")
+                if (BankHost_main.strCustName.Contains("WSN") == true && bcr.WSN == "")
+                {
+                    bcr.result = "WSN ERROR";
+                }
+                else if (BankHost_main.strWork_Lotinfo == "")
                 {
                     bcr.result = "OK";
                 }
                 else if (BankHost_main.strWork_Lotinfo != bcr.Lot)
                 {
                     bcr.result = "MISSMATCH";
-                }
+                }                
                 else
                 {
                     bcr.result = "OK";
@@ -13410,7 +13425,7 @@ namespace Bank_Host
 
                 ws.Cells[1, 1] = "MotherLot#";
                 ws.Cells[1, 2] = "MotherDcc";
-                ws.Cells[1, 3] = "MOO-";
+                ws.Cells[1, 3] = "MOO";
 
 
                 for (int i = 1; i <= ExcelList.Count; i++)
