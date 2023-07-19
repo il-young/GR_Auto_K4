@@ -1223,7 +1223,10 @@ namespace Bank_Host
                 string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
                 strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
-                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + AmkorBarcode.strWSN == "" ? "" : strWSN + strLine5;
+                if(AmkorBarcode.strWSN == "")
+                    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
+                else
+                    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strWSN + strLine5;
             }
             else if (nType == 3)
             {
