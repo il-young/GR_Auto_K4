@@ -6622,7 +6622,7 @@ namespace Bank_Host
             }
             else
             {
-                if (BankHost_main.strCustName.Contains("WSN") == true && bcr.WSN == "")
+                if (Checkdev(BankHost_main.strDeviceNo) == true && bcr.WSN == "")
                 {
                     bcr.result = "WSN ERROR";
                 }
