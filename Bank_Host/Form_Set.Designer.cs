@@ -120,6 +120,7 @@
             this.label32 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.btn_WSN = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_List)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_custType)).BeginInit();
@@ -1086,11 +1087,23 @@
             this.btn_WSN.UseVisualStyleBackColor = true;
             this.btn_WSN.Click += new System.EventHandler(this.btn_WSN_Click);
             // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.button3.Location = new System.Drawing.Point(887, 608);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(136, 45);
+            this.button3.TabIndex = 29;
+            this.button3.Text = "Reader Setting";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form_Set
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1609, 930);
             this.ControlBox = false;
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.btn_WSN);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.tb_TimeOutMin);
@@ -1257,5 +1270,6 @@
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_WSN;
+        private System.Windows.Forms.Button button3;
     }
 }

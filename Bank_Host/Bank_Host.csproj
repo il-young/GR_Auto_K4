@@ -96,6 +96,18 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="Cognex.DataMan.CogNamer.PC">
+      <HintPath>.\Cognex.DataMan.CogNamer.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.SDK.Discovery.PC">
+      <HintPath>.\Cognex.DataMan.SDK.Discovery.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.SDK.PC">
+      <HintPath>.\Cognex.DataMan.SDK.PC.dll</HintPath>
+    </Reference>
+    <Reference Include="Cognex.DataMan.SDK.Utils.PC">
+      <HintPath>.\Cognex.DataMan.SDK.Utils.PC.dll</HintPath>
+    </Reference>
     <Reference Include="Csv, Version=2.0.87.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Csv.2.0.87\lib\net40\Csv.dll</HintPath>
     </Reference>
@@ -240,6 +252,12 @@
     <Compile Include="Form_Board.Designer.cs">
       <DependentUpon>Form_Board.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Cognex.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Cognex.Designer.cs">
+      <DependentUpon>Form_Cognex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_CommentSelecter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -312,6 +330,12 @@
     <Compile Include="Form_Option.Designer.cs">
       <DependentUpon>Form_Option.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_ReaderSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_ReaderSetting.Designer.cs">
+      <DependentUpon>Form_ReaderSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Receipt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -366,6 +390,12 @@
     <Compile Include="Form_Splitlog_Input.Designer.cs">
       <DependentUpon>Form_Splitlog_Input.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReconnecting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReconnecting.designer.cs">
+      <DependentUpon>frmReconnecting.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_LoactionLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -376,6 +406,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GR_AutomationDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="GuiLogger.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -395,6 +432,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Board.resx">
       <DependentUpon>Form_Board.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Cognex.resx">
+      <DependentUpon>Form_Cognex.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_CommentSelecter.resx">
       <DependentUpon>Form_CommentSelecter.cs</DependentUpon>
@@ -432,6 +472,9 @@
     <EmbeddedResource Include="Form_Option.resx">
       <DependentUpon>Form_Option.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_ReaderSetting.resx">
+      <DependentUpon>Form_ReaderSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Receipt.resx">
       <DependentUpon>Form_Receipt.cs</DependentUpon>
     </EmbeddedResource>
@@ -460,8 +503,14 @@
     <EmbeddedResource Include="Form_Splitlog_Input.resx">
       <DependentUpon>Form_Splitlog_Input.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmReconnecting.resx">
+      <DependentUpon>frmReconnecting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm_LoactionLabel.resx">
       <DependentUpon>frm_LoactionLabel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

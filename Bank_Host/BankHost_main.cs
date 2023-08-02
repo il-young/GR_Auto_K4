@@ -15,11 +15,13 @@ using Host;
 //using MICube.SmartDriver.Base.TCP;
 using System.Net;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Bank_Host
 {
     public partial class BankHost_main : Form
-    {
+    {   
         public enum RetBcrResult { OK = 0, READ_FAIL = 1, LOT_MISSMATCH = 2, NO_CONNECT = 3 };
         public enum RetBcrState { NOT_WORKING = 0, START = 1, NG = 2,  COMPLETE = 3 };
 
@@ -32,6 +34,8 @@ namespace Bank_Host
         public static string strScanData = ""; //mode1,3 GunRing scan data
         public static bool bGunRingMode_Run = false;
         public static int nAmkorBcrType = 0; //2021. 06.07 추가
+
+        public static string ReaderData = "";
 
         //자재 타입 추가
         public static int nMaterial_type = 0; //0: Reel, 1: Fosb
@@ -82,6 +86,8 @@ namespace Bank_Host
         Form_Progress Frm_Process = new Form_Progress();
         Form_MutiBcrIn Frm_MultiBcrIn = new Form_MutiBcrIn();
         Form_MultiBcrIn2 Frm_MultiBcrIn2 = new Form_MultiBcrIn2();
+        public static MainForm mf = new MainForm();
+
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
@@ -91,6 +97,24 @@ namespace Bank_Host
             frm_LoactionLabel lPrint = new frm_LoactionLabel();
 
             lPrint.ShowDialog();
+        }
+
+        private void button2_Click_1Async(object sender, EventArgs e)
+        {
+            string str = "";
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://10.131.209.109:8080/eMES_Webservice/lot_info_list/get_request_list/combine,waiting_for_combine,K4,379,333376");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/HY"));
+
+                HttpResponseMessage response = client.GetAsync("").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var contents = response.Content.ReadAsStringAsync();
+                    str = contents.Result;
+                }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -223,29 +247,37 @@ namespace Bank_Host
         {
             while (IsExit == false)
             {
-                if (this != null)
+                try
                 {
-                    if(nMaterial_type == 0)
+                    if (this != null)
                     {
-                        if (nScanMode == 0)
+                        if (nMaterial_type == 0)
                         {
-                            Process_Vision();
+                            if (nScanMode == 0)
+                            {
+                                Process_Vision();
+                            }
+                            else if (nScanMode == 1 || nScanMode == 3)
+                            {
+                                Process_GunRing();
+                            }
                         }
-                        else if (nScanMode == 1 || nScanMode == 3)
+                        else
                         {
-                            Process_GunRing();
+                            if (nScanMode == 1)
+                            {
+                                Process_GunRing_Fosb();
+                            }
                         }
                     }
-                    else
-                    {
-                        if(nScanMode == 1)
-                        {
-                            Process_GunRing_Fosb();
-                        }
-                    }            
-                }
 
-                Thread.Sleep(500);
+                    Thread.Sleep(500);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                
             }
         }
 
@@ -288,32 +320,50 @@ namespace Bank_Host
                         IsRun = true;
 
                         Read_Bcr = null;
-
-                        string strbank = string.Format("LON,{0}", strWork_Bank.Length == 1 ? $"0{strWork_Bank}" : strWork_Bank);
-                        //string strbank = string.Format("LON");
-                        Frm_Scanner.Socket_MessageSend(strbank);
-                        Thread.Sleep(350);
-                        /*
-                        sw_TriggerTime.Start();
-
-                        while (Frm_Scanner.strReceivedata != "")
+                        if (Properties.Settings.Default.CameraType == "KEYENCE")
                         {
-                            Thread.Sleep(1);
-                            Application.DoEvents();
-                            if (sw_TriggerTime.ElapsedMilliseconds > 2000)
+                            string strbank = string.Format("LON,{0}", strWork_Bank.Length == 1 ? $"0{strWork_Bank}" : strWork_Bank);
+                            //string strbank = string.Format("LON");
+                            Frm_Scanner.Socket_MessageSend(strbank);
+                            Thread.Sleep(350);
+                            /*
+                            sw_TriggerTime.Start();
 
-                                break;
+                            while (Frm_Scanner.strReceivedata != "")
+                            {
+                                Thread.Sleep(1);
+                                Application.DoEvents();
+                                if (sw_TriggerTime.ElapsedMilliseconds > 2000)
+
+                                    break;
+                            }
+
+                            sw_TriggerTime.Stop();
+                            sw_TriggerTime.Reset();
+                            */
+                            Frm_Scanner.Socket_MessageSend("LOFF");
                         }
-
-                        sw_TriggerTime.Stop();
-                        sw_TriggerTime.Reset();
-                        */
-                        Frm_Scanner.Socket_MessageSend("LOFF");
+                        else if(Properties.Settings.Default.CameraType == "COGNEX")
+                        {
+                            ReaderData = "";
+                            mf.Trigger();
+                        }
                         Thread.Sleep(80);
 
                         try
                         {
-                            Read_Bcr = Frm_Sort.Fnc_Bcr_Parsing(Frm_Scanner.strReceivedata);
+                            DateTime recvTime = DateTime.Now;
+
+                            while(ReaderData == "")
+                            {
+                                Application.DoEvents();
+
+                                if ((DateTime.Now - recvTime).TotalSeconds > 1)
+                                    break;
+                            }
+
+                            Read_Bcr = Frm_Sort.Fnc_Bcr_Parsing(ReaderData);
+                            
                         }
                         catch
                         {
@@ -328,7 +378,7 @@ namespace Bank_Host
 
                         if (!IsRun)
                         {
-                            Frm_Sort.Fnc_BcrInfo("오류가 발견 되었습니다. 설정을 다시 확인 하세요!");
+                             Frm_Sort.Fnc_BcrInfo("오류가 발견 되었습니다. 설정을 다시 확인 하세요!");
                         }
                         else
                         {
@@ -757,6 +807,8 @@ namespace Bank_Host
                 label3.ForeColor = Color.Blue;
             }
 
+            
+
             Frm_Sort.init_mode_combobox();
         }
 
@@ -823,14 +875,51 @@ namespace Bank_Host
 
                     try
                     {
-                        Read_Bcr = Frm_Sort.Fnc_Bcr_Parsing(strScanData);
-                        if (Read_Bcr != null)
-                            strResult = Read_Bcr.result;
+                        if (BankHost_main.strCustName == "QUALCOM_SPLIT")
+                        {
+                            if (strScanData == "")
+                                return;
+
+                            if (strScanData.Split(',')[1].Substring(0, 2) == "1T")
+                            {
+                                strScanData = strScanData.Replace(strScanData.Split(',')[1], strScanData.Split(',')[1].Substring(2, strScanData.Split(',')[1].Length - 2));
+
+                                List<StorageData> Splitdata = Frm_Sort.GetSplitData(strScanData);
+
+                                if (Splitdata.Count != 0)
+                                {
+                                    //strResult = Read_Bcr.result;
+
+                                    PrintSplit(Splitdata);
+                                    strScanData = "";
+                                    bGunRingMode_Run = false;
+                                }
+                                else
+                                {
+                                    strMsg = string.Format("오류가 발견 되었습니다. 설정 또는 바코드 형식을 확인 하세요!");
+                                    ProcessGun_Error(strMsg);
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                strMsg = string.Format("오류가 발견 되었습니다. 설정 또는 바코드 형식을 확인 하세요!");
+                                ProcessGun_Error(strMsg);
+                                return;
+                            }
+                        }
                         else
                         {
-                            strMsg = string.Format("오류가 발견 되었습니다. 설정 또는 바코드 형식을 확인 하세요!");
-                            ProcessGun_Error(strMsg);
-                            return;
+
+                            Read_Bcr = Frm_Sort.Fnc_Bcr_Parsing(strScanData);
+                            if (Read_Bcr != null)
+                                strResult = Read_Bcr.result;
+                            else
+                            {
+                                strMsg = string.Format("오류가 발견 되었습니다. 설정 또는 바코드 형식을 확인 하세요!");
+                                ProcessGun_Error(strMsg);
+                                return;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -840,75 +929,82 @@ namespace Bank_Host
                         strMsg = string.Format("오류가 발견 되었습니다. 설정을 다시 확인 하세요!");
                         ProcessGun_Error(strMsg);
                         return;
-                    }                                        
+                    }
 
-                    strMsg = string.Format("[{0}],{1}", strResult, strScanData);
-                    Frm_Sort.Fnc_BcrInfo(strMsg);
-
-                    if (Read_Bcr != null)
+                    if (BankHost_main.strCustName == "QUALCOM_SPLIT")
                     {
-                        if (Read_Bcr.result == "OK")
+                        
+                    }
+                    else
+                    {
+                        strMsg = string.Format("[{0}],{1}", strResult, strScanData);
+                        Frm_Sort.Fnc_BcrInfo(strMsg);
+
+                        if (Read_Bcr != null)
                         {
-                            Form_Sort.strValDevice = Read_Bcr.Device;
-                            Form_Sort.strValLot = Read_Bcr.Lot;
-                            Form_Sort.nValDiettl = Read_Bcr.DieTTL == "" ? 0 : Int32.Parse(Read_Bcr.DieTTL);
-                            Form_Sort.nValDieQty = Read_Bcr.DieQty == "" ? 0 : Int32.Parse(Read_Bcr.DieQty);
-                            Form_Sort.nValWfrttl = Read_Bcr.WfrTTL == "" ? 0 : Int32.Parse(Read_Bcr.WfrTTL);
-                            Form_Sort.bupdate = true;
-                            Form_Sort.bunprinted_device = Read_Bcr.unprinted_device;
-
-                            Form_Sort.nProcess = 1000; //Update Start
-                            Form_Sort.bRun = true;
-                            Form_Sort.nResult = 1000;
-
-                            ////데이터 처리 대기
-                            while (Form_Sort.bRun)
+                            if (Read_Bcr.result == "OK")
                             {
-                                Thread.Sleep(1);
-                            }
+                                Form_Sort.strValDevice = Read_Bcr.Device;
+                                Form_Sort.strValLot = Read_Bcr.Lot;
+                                Form_Sort.nValDiettl = Read_Bcr.DieTTL == "" ? 0 : Int32.Parse(Read_Bcr.DieTTL);
+                                Form_Sort.nValDieQty = Read_Bcr.DieQty == "" ? 0 : Int32.Parse(Read_Bcr.DieQty);
+                                Form_Sort.nValWfrttl = Read_Bcr.WfrTTL == "" ? 0 : Int32.Parse(Read_Bcr.WfrTTL);
+                                Form_Sort.bupdate = true;
+                                Form_Sort.bunprinted_device = Read_Bcr.unprinted_device;
+
+                                Form_Sort.nProcess = 1000; //Update Start
+                                Form_Sort.bRun = true;
+                                Form_Sort.nResult = 1000;
+
+                                ////데이터 처리 대기
+                                while (Form_Sort.bRun)
+                                {
+                                    Thread.Sleep(1);
+                                }
 
                                 if (Form_Sort.nResult == -1) //Lot NG
-                            {
-                                bGunRingMode_Run = false;
-                                return;
-                            }
-                            else if (Form_Sort.nResult == 1 || Form_Sort.nResult == 2) //Lot complete
-                            {
-                                ProcessGun_LabelPrint();
-                                return;
-                            }                            
-                            else if (Form_Sort.nResult == -2) //
-                            {
-                                strMsg = string.Format("READ FAIL");
-                                ProcessGun_Error(strMsg);
-                                return;
-                            }
-                            else
-                            {
-                                Frm_Sort.Fnc_BcrInfo("");
-                                bGunRingMode_Run = false;
-                            }
-                        }
-                        else
-                        {
-                            if (Read_Bcr.result == "DUPLICATE")
-                            {
-                                Read_Bcr = null;
-
-                                strMsg = string.Format("중복 자재 입니다. 다른 자재를 스캔 하십시오.");
-                                ProcessGun_Error(strMsg);
-
-                                return;
+                                {
+                                    bGunRingMode_Run = false;
+                                    return;
+                                }
+                                else if (Form_Sort.nResult == 1 || Form_Sort.nResult == 2) //Lot complete
+                                {
+                                    ProcessGun_LabelPrint();
+                                    return;
+                                }
+                                else if (Form_Sort.nResult == -2) //
+                                {
+                                    strMsg = string.Format("READ FAIL");
+                                    ProcessGun_Error(strMsg);
+                                    return;
+                                }
+                                else
+                                {
+                                    Frm_Sort.Fnc_BcrInfo("");
+                                    bGunRingMode_Run = false;
+                                }
                             }
                             else
                             {
-                                Host.Host_Delete_BcrReadinfo(strEqid, Read_Bcr.Lot, 0);
-                                strMsg = string.Format("LOT MISSMATCH! LOT 정보를 확인 하십시오");
-                                ProcessGun_Error(strMsg);
-                                return;
+                                if (Read_Bcr.result == "DUPLICATE")
+                                {
+                                    Read_Bcr = null;
+
+                                    strMsg = string.Format("중복 자재 입니다. 다른 자재를 스캔 하십시오.");
+                                    ProcessGun_Error(strMsg);
+
+                                    return;
+                                }
+                                else
+                                {
+                                    Host.Host_Delete_BcrReadinfo(strEqid, Read_Bcr.Lot, 0);
+                                    strMsg = string.Format("LOT MISSMATCH! LOT 정보를 확인 하십시오");
+                                    ProcessGun_Error(strMsg);
+                                    return;
+                                }
                             }
                         }
-                    }                    
+                    }                  
                 }
                 
             }
@@ -919,6 +1015,58 @@ namespace Bank_Host
                 bGunRingMode_Run = false;
             }
         }
+
+        public void PrintSplit(List<StorageData> SplitData)
+        {
+            string PrintCode = "^XA" + "^FO10,10 ^GB850,1500,3 ^FS" + "^FO10,60 ^GB850,3,3 ^FS" + "^FO250,10 ^GB3,1500,3 ^FS" + "^FO600,10 ^GB3,1500,3 ^FS" + "^FO750,10 ^GB3,1500,3 ^FS" +
+                            "^FO10,170 ^GB1000,3,3 ^FS" + "^FO10,280 ^GB1000,3,3 ^FS" + "^FO10,390 ^GB1000,3,3 ^FS" + "^FO10,500 ^GB1000,3,3 ^FS" + "^FO10,610 ^GB1000,3,3 ^FS" +
+                            "^FO10,720 ^GB1000,3,3 ^FS" + "^FO10,830 ^GB1000,3,3 ^FS" + "^FO10,940 ^GB1000,3,3 ^FS" + "^FO10,1050 ^GB1000,3,3 ^FS" + "^FO10,1160 ^GB1000,3,3 ^FS" +
+                            "^FO10,1270 ^GB1000,3,3 ^FS" + "^FO10,1380 ^GB1000,3,3 ^FS" + "^FO10,1507 ^GB1000,3,3 ^FS" +
+
+                            "^FO80,25" + "^FDDevice" + "^CF0,30" + "^FS" +
+                            "^FO350,25" + "^FDLot / DCC" + "^CF0,30" + "^FS" +
+
+                            "^FO650,25" + "^FDDie Q'ty" + "^CF0,20" + "^FS" +
+
+                            "^FO760,25" + "^FDWafer Q'ty" + "^CF0,20" + "^FS" + 
+                            $"^FO880,25 ^FDTTL:{SplitData.Count} ^CF0,30 ^FS";
+
+            SplitData = SplitData.OrderBy(p => p.Lot).ToList();
+
+
+            for(int i = 0; i < SplitData.Count; i++)
+            {
+                PrintCode += $"^FO20,{(i== 0 ?  105 : 105 + i*110)} ^FD{SplitData[i].Device} ^CF0,25 ^FS";
+                PrintCode += $"^FO260,{(i== 0 ? 85 : 85 + i * 110)} ^FD{SplitData[i].Lot} ^CF0,25 ^FS";
+                PrintCode += $"^FO260,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Lot_Dcc} ^CF0,25 ^FS";
+
+                PrintCode += $"^FO645,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Rcv_Qty} ^CF0,25 ^FS";
+                PrintCode += $"^FO790,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Default_WQty} ^CF0,25 ^FS";
+
+                PrintCode += $"^FO880,{(i == 0 ? 70 : 70 + i * 110)} ^BX,3,200 ^FD{SplitData[i].Lot}:{SplitData[i].Lot_Dcc}:{SplitData[i].Device}:{Convert.ToString(SplitData[i].Rcv_Qty).PadLeft(10,'0')}:{Convert.ToString(SplitData[i].Default_WQty).PadLeft(5,'0')}:{SplitData[i].Amkorid}:{Convert.ToString(BankHost_main.strWork_Cust).PadLeft(5,'0')} ^FS";
+            }
+
+            PrintCode += $"^FO30,1530 ^FDLOT TYPE:{SplitData[0].Lot_type}\tRCV-DATE:{SplitData[0].Rcvddate}\tBill#:{SplitData[0].Bill} ^CF0,40,30 ^FS";
+
+            PrintCode += "^XZ";
+
+            byte[] zpl = Encoding.UTF8.GetBytes(PrintCode);
+
+            using (System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient())
+            {
+
+                //IPAddress ip = IPAddress.Parse(Properties.Settings.Default.SecondPrinterIP);
+
+                socket.Connect("10.131.34.21", 9100);
+                StreamWriter writer = new StreamWriter(socket.GetStream());
+
+                writer.Write(PrintCode);
+                writer.Flush();
+
+                writer.Close();
+            }
+        }
+
         public void Process_GunRing_Fosb()
         {
             try
@@ -1113,7 +1261,18 @@ namespace Bank_Host
             else
                 label_title.Text = "Host - Desktop";
 
-            Frm_Scanner.Fnc_Init(); ///Kyence 연결
+            if (Properties.Settings.Default.CameraType == "KEYENCE")
+            {
+                Frm_Scanner.Fnc_Init(); ///Kyence 연결
+                //mf.Dispose();
+            }
+            else if(Properties.Settings.Default.CameraType == "COGNEX")
+            {   
+                mf.Show();
+                mf.Hide();
+
+                //Frm_Scanner.Dispose();
+            }
 
             if (nStartup == 0)
             {

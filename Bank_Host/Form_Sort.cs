@@ -45,6 +45,7 @@ namespace Bank_Host
         public const int IME_CMODE_ALPHANUMERIC = 0x0000;
         private const int WM_IME_CONTROL = 643;
 
+        public string strBcrType = "";
 
         Form_InfoBoard InfoBoard = new Form_InfoBoard();
 
@@ -3583,6 +3584,7 @@ namespace Bank_Host
 
         private void tabControl_Sort_SelectedIndexChanged(object sender, EventArgs e)
         {
+            strBcrType = "";
 
             Properties.Settings.Default.LabelCopy = false;
             Properties.Settings.Default.Save();
@@ -4002,9 +4004,11 @@ namespace Bank_Host
             {
                 label_msg.Text = "Error";
 
-                strSpeak = string.Format("에러");
-                speech.SpeakAsync(strSpeak);
-
+                if (Properties.Settings.Default.CameraType != "COGNEX")
+                {
+                    strSpeak = string.Format("에러");
+                    speech.SpeakAsync(strSpeak);
+                }
                 return -1;
             }
 
@@ -5515,7 +5519,7 @@ namespace Bank_Host
 
                 }
             }
-            else if (str_temp.Length == 8)
+            else //if (str_temp.Length == 8)
             {
                 temp.Lot = str_temp[0].Trim();
                 temp.DCC = str_temp[1].Trim();
@@ -5524,7 +5528,7 @@ namespace Bank_Host
                 temp.WQTY = string.Format("{0:%D5}", str_temp[4].Trim());
                 temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5].Trim());
                 temp.CUST = string.Format("{0:D10}", str_temp[6].Trim());
-                temp.Wafer_ID = str_temp[7].Trim();
+                temp.Wafer_ID = temp.CUST == "379" ? "" : str_temp[7].Trim();
 
                 bool pass = false;
 
@@ -5705,18 +5709,126 @@ namespace Bank_Host
             return res;
         }
 
+        public List<StorageData> GetSplitData(string strLot)
+        {
+            List<StorageData> bcrinfos = new List<StorageData>();
+
+
+            foreach (DataGridViewRow row in dataGridView_Device.Rows)
+            {
+                string strDevice = row.Cells[1].Value.ToString();
+
+                string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
+                string strReadfile = "";
+
+                strReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
+
+                string[] info = Fnc_ReadFile(strReadfile);
+
+                
+
+                for(int i = 0; i < info.Length; i++)
+                {
+                    string[] strSplit_data = info[i].Split('\t');
+                    StorageData Binfo = new StorageData();
+
+                    if (strSplit_data[2].Substring(3, strSplit_data[2].Length - 3)== strLot.Split(',')[1].Substring(3, strLot.Split(',')[1].Length - 3))
+                    {
+                        //if (strSplit_data[13] == "Waiting")
+                        {
+                            Binfo.Device = strSplit_data[1];
+                            Binfo.Lot = strSplit_data[2];
+                            Binfo.Lot_Dcc = strSplit_data[3];
+                            Binfo.Rcv_Qty = strSplit_data[4];
+                            Binfo.Die_Qty = strSplit_data[5];
+                            Binfo.Rcv_WQty = strSplit_data[6];
+                            Binfo.Rcvddate = strSplit_data[7];
+                            Binfo.Lot_type = strSplit_data[8];
+                            Binfo.Bill = strSplit_data[9];
+                            Binfo.Amkorid = strSplit_data[10];
+                            Binfo.Wafer_lot = strSplit_data[11];
+                            Binfo.strCoo = strSplit_data[12];
+                            Binfo.state = strSplit_data[13] = "Complete";
+                            Binfo.strop = strSplit_data[14];
+                            Binfo.strGRstatus = strSplit_data[15];
+                            Binfo.Default_WQty = strSplit_data[16];
+
+                            bcrinfos.Add(Binfo);
+
+                            info[i] = string.Join("\t", strSplit_data);
+
+                            File.WriteAllLines(strReadfile, info);
+
+                            run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
+                        }
+                    }
+                }
+            }
+            return bcrinfos;
+        }
 
         public Bcrinfo Fnc_Bcr_Parsing(string strBcr)
         {
-            Bcrinfo info = new Bcrinfo();
+            strBcrType = strBcrType == "" ? BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model) : strBcrType;
 
-            if (Properties.Settings.Default.LOCATION == "K4")
+            Bcrinfo info = new Bcrinfo();
+            if (Properties.Settings.Default.CameraType == "KEYENCE" || BankHost_main.nScanMode == 1 || BankHost_main.nScanMode == 3)
             {
-                info = K4_Parsing(strBcr);
+                if (Properties.Settings.Default.LOCATION == "K4")
+                {
+                    info = K4_Parsing(strBcr);
+                }
+                else if (Properties.Settings.Default.LOCATION == "K5")
+                {
+                    info = K5_parsing(strBcr);
+                }
             }
-            else if (Properties.Settings.Default.LOCATION == "K5")
+            else if(Properties.Settings.Default.CameraType == "COGNEX")
             {
-                info = K5_parsing(strBcr);
+                
+
+                if (Properties.Settings.Default.LOCATION == "K4")
+                {
+                    string[] temp = strBcr.Split('\t');
+                    string code = "";
+
+                    if (temp[0] == "NG")
+                        return info;
+
+                    if(strBcrType.Contains("CODE") == true)
+                    {
+                        for (int i = 0; i < temp.Length; i++)
+                        {
+                            if(temp[i].Contains(BankHost_main.strWork_SPR) == false)
+                            {
+                                code += temp[i] + BankHost_main.strWork_SPR;
+                            }
+                        }
+
+                        while(code.LastIndexOf(BankHost_main.strWork_SPR) == code.Length)
+                        {
+                            code = code.Substring(0, code.Length - 1);
+                        }
+                    }
+                    else
+                    {
+                        for(int i = 0; i < temp.Length; i++)
+                        {
+                            if (temp[i].Contains(BankHost_main.strWork_SPR) == true)
+                            {
+                                code = temp[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    
+                    info = K4_Parsing(code);
+                }
+                else if (Properties.Settings.Default.LOCATION == "K5")
+                {
+                    //info = K5_parsing(strBcr);
+                }
             }
 
             return info;
@@ -5774,7 +5886,7 @@ namespace Bank_Host
             bool bmultibcr = false;
 
             //1D Scan 인지 확인
-            string strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
             string str1Dbcrcount = "0";
             bool b1Dbcr = false;
 
@@ -6188,6 +6300,24 @@ namespace Bank_Host
             return bcr;
         }
 
+        private int FindCodePos(string rule, string bcr)
+        {
+            int res = -1;
+
+            string[] temp = bcr.Split(',');
+
+            for(int i = 0; i <  temp.Length; i++)
+            {
+                if (temp[i].IndexOf(rule) == 0)
+                {
+                    res = i;
+                    break;
+                }
+            }
+
+            return res;
+        }
+
         private Bcrinfo K4_Parsing(string strBcr)
         {
             //nWorkBcrcount 확인 할 것, 고객별 바코드 형식도 확인이 필요할 듯!
@@ -6219,7 +6349,7 @@ namespace Bank_Host
                 strSplit_DevicePos = BankHost_main.strWork_DevicePos.Split(',');
 
                 if (Int32.TryParse(strSplit_DevicePos[0], out nDevicePos) == false)
-                    nDevicePos = -1;
+                    nDevicePos = FindCodePos(strSplit_DevicePos[0], strBcr);
             }
             else
                 nDevicePos = Int32.Parse(BankHost_main.strWork_DevicePos);
@@ -6229,7 +6359,7 @@ namespace Bank_Host
                 strSplit_LotPos = BankHost_main.strWork_LotidPos.Split(',');
 
                 if (Int32.TryParse(strSplit_LotPos[0], out nLotPos) == false)
-                    nLotPos = -1;
+                    nLotPos = FindCodePos(strSplit_LotPos[0], strBcr);
             }
             else
                 nLotPos = Int32.Parse(BankHost_main.strWork_LotidPos);
@@ -6239,7 +6369,7 @@ namespace Bank_Host
                 strSplit_QtyPos = BankHost_main.strWork_QtyPos.Split(',');
 
                 if (Int32.TryParse(strSplit_QtyPos[0], out nQtyPos) == false)
-                    nQtyPos = -1;
+                    nQtyPos = FindCodePos(strSplit_QtyPos[0], strBcr);
             }
             else
                 nQtyPos = Int32.Parse(BankHost_main.strWork_QtyPos);
@@ -6250,7 +6380,7 @@ namespace Bank_Host
                 strSplit_WSNPos = BankHost_main.strWork_WSNPos.Split(',');
 
                 if (Int32.TryParse(strSplit_WSNPos[0], out nWSNPos) == false)
-                    nWSNPos = -1;
+                    nWSNPos = FindCodePos(strSplit_WSNPos[0], strBcr);
             }
             else if(BankHost_main.strWork_WSNPos != "")
                 nWSNPos = Int32.Parse(BankHost_main.strWork_WSNPos);
@@ -6389,8 +6519,12 @@ namespace Bank_Host
 
                                     if (res != "EMPTY" )
                                     {
-                                        bcr.Device = res;
+                                        bcr.Device = res.Substring(strSplit_DevicePos[0].Length , strSplit_Bcr[n].Trim().Length - strSplit_DevicePos[0].Length);
                                     }
+                                }
+                                else
+                                {
+                                    bcr.Device = strSplit_Bcr[nDevicePos].Substring(strSplit_DevicePos[0].Length, strSplit_Bcr[nDevicePos].Length - strSplit_DevicePos[0].Length);
                                 }
 
                                 if(nLotPos == -1)
@@ -6399,8 +6533,12 @@ namespace Bank_Host
 
                                     if (res != "EMPTY")
                                     {
-                                        bcr.Lot = res;
+                                        bcr.Lot = res.Substring(strSplit_LotPos[0].Length, strSplit_Bcr[n].Trim().Length - strSplit_LotPos[0].Length);
                                     }
+                                }
+                                else
+                                {
+                                    bcr.Lot = strSplit_Bcr[nLotPos].Substring(strSplit_LotPos[0].Length, strSplit_Bcr[nLotPos].Length - strSplit_LotPos[0].Length);
                                 }
 
                                 if(nQtyPos == -1)
@@ -6409,8 +6547,12 @@ namespace Bank_Host
 
                                     if (res != "EMPTY")
                                     {
-                                        bcr.DieQty = res;
+                                        bcr.DieQty = res.Substring(strSplit_QtyPos[0].Length , strSplit_Bcr[n].Trim().Length - strSplit_QtyPos[0].Length);
                                     }
+                                }
+                                else
+                                {
+                                    bcr.DieQty = strSplit_Bcr[nQtyPos].Substring(strSplit_QtyPos[0].Length, strSplit_Bcr[nQtyPos].Length - strSplit_QtyPos[0].Length);
                                 }
 
                                 if(tc_WSN.Visible == true)
@@ -6435,7 +6577,7 @@ namespace Bank_Host
                                     }
                                 }
                             }
-                            if (Checkdev(BankHost_main.strDeviceNo) == true)
+                            if (Checkdev(bcr.Device) == true)
                             {
                                 if (bcr.Device == "" || bcr.Lot == "" || bcr.DieQty == "" || strSplit_WSNPos[0] == null ? false : bcr.WSN == "")
                                     return null;
@@ -6513,7 +6655,7 @@ namespace Bank_Host
                         {
                             int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
                             bcr.Device = bcr.Device.Substring(0, bcr.Device.Length - nDigit);
-                        }
+                        } 
                     }
 
                     bcr.Lot = strSplit_Bcr[nLotPos]; bcr.Lot = bcr.Lot.Trim();
@@ -6628,7 +6770,10 @@ namespace Bank_Host
                 }
                 else if (BankHost_main.strWork_Lotinfo == "")
                 {
-                    bcr.result = "OK";
+                    if ((Checkdev(bcr.Device) == true && bcr.WSN != ""))
+                        bcr.result = "OK";
+                    else if (Checkdev(bcr.Device) == false)
+                        bcr.result = "OK";
                 }
                 else if (BankHost_main.strWork_Lotinfo != bcr.Lot)
                 {
@@ -6636,7 +6781,10 @@ namespace Bank_Host
                 }                
                 else
                 {
-                    bcr.result = "OK";
+                    if ((Checkdev(bcr.Device) == true && bcr.WSN != ""))
+                        bcr.result = "OK";
+                    else if (Checkdev(bcr.Device) == false)
+                        bcr.result = "OK";
                 }
             }
 
@@ -6679,8 +6827,8 @@ namespace Bank_Host
             string r = rule[1];
             if (brc.Length > rule[0].Length)
             {
-                if (brc.Substring(0, rule[0].Length) != rule[0])
-                    return res;
+                if (brc.Substring(0, rule[0].Length) == rule[0])
+                    return brc;
             }
             else
             {
@@ -9771,7 +9919,7 @@ namespace Bank_Host
 
         private void dataGridView_label_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            int a = 0;
+            
         }
 
         /// <summary>
@@ -9947,7 +10095,7 @@ namespace Bank_Host
 
                             sqlstr = string.Format("Set IDENTITY_INSERT TB_SCRAP2 ON; Insert into TB_SCRAP2 " +
                                 "(No,[DATE],[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[LOCATION],[REQUEST_ON],[REQUEST_BY],[CERITIFICATE],[1ST],[2ND],[3RD]) " +
-                                "values({0},getdate(),{1}'','','') Set IDENTITY_INSERT TB_SCRAP2 OFF;", next_no++, datastr);
+                                "values({0},getdate(),'{1}','','') Set IDENTITY_INSERT TB_SCRAP2 OFF;", next_no++, datastr);
                             run_sql_command(sqlstr);
                         }
                     }
@@ -12439,7 +12587,7 @@ namespace Bank_Host
 
 
                 Excel.Range range = worksheet1.UsedRange;
-                double dd = 0.0;
+                
                 List<string> data = new List<string>();
                 string excelrow = "";
 
@@ -12500,8 +12648,8 @@ namespace Bank_Host
                                 temp1[3],
                                 temp1[4],
                                 temp1[5],
-                                int.Parse(temp1[6] == null ? "0" : temp1[6]),
-                                int.Parse(temp1[7] == null ? "0" : temp1[7]),
+                                int.Parse(temp1[6] ?? "0"),
+                                int.Parse(temp1[7] ?? "0"),
                                 temp1[8],
                                 temp1[9],
                                 temp1[10],
@@ -12525,8 +12673,6 @@ namespace Bank_Host
                         }
                         i = HeaderRow + rowOffset;
                     }
-
-
                 }
 
                 SetWaferReturnProgressba("Excel Read Complete", range.Rows.Count);
@@ -14272,6 +14418,7 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드7: Split Log");
                 comboBox_mode.Items.Add("모드8: Scrap");
                 comboBox_mode.Items.Add("모드9: Wafer Return");
+                comboBox_mode.Items.Add("");
             }
             else if(loc == "K5")
             {

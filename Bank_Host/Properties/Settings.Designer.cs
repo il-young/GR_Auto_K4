@@ -357,5 +357,65 @@ namespace Bank_Host.Properties {
                 this["QorvoWSN"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("KEYENCE")]
+        public string CameraType {
+            get {
+                return ((string)(this["CameraType"]));
+            }
+            set {
+                this["CameraType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.100.2;192.168.100.2")]
+        public string ReaderIP {
+            get {
+                return ((string)(this["ReaderIP"]));
+            }
+            set {
+                this["ReaderIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9004;23")]
+        public string ReaderPort {
+            get {
+                return ((string)(this["ReaderPort"]));
+            }
+            set {
+                this["ReaderPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FALSE;TRUE")]
+        public string ReaderWebpage {
+            get {
+                return ((string)(this["ReaderWebpage"]));
+            }
+            set {
+                this["ReaderWebpage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int CognexTriggerCnt {
+            get {
+                return ((int)(this["CognexTriggerCnt"]));
+            }
+            set {
+                this["CognexTriggerCnt"] = value;
+            }
+        }
     }
 }

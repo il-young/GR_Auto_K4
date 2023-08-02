@@ -434,5 +434,12 @@ namespace Bank_Host
                 wSNDev.ShowDialog();
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form_ReaderSetting setting = new Form_ReaderSetting();
+
+            setting.ShowDialog();
+        }
     }
 }

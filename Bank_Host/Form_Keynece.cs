@@ -99,7 +99,7 @@ namespace Bank_Host
             timer1.Stop();
         }
 
-        public void Socket_MessageSend(string strData)
+       public void Socket_MessageSend(string strData)
         {
             SocketManager.SendMessage(STX + strData + ETX);
         }
@@ -128,7 +128,7 @@ namespace Bank_Host
         {
             try
             {
-                strReceivedata = message;
+                BankHost_main.ReaderData = strReceivedata = message;
                 Fnc_SaveLog(message);
             }
             catch (Exception ex)

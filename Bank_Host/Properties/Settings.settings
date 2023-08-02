@@ -91,5 +91,20 @@
     <Setting Name="QorvoWSN" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CameraType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">KEYENCE</Value>
+    </Setting>
+    <Setting Name="ReaderIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.100.2;192.168.100.2</Value>
+    </Setting>
+    <Setting Name="ReaderPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9004;23</Value>
+    </Setting>
+    <Setting Name="ReaderWebpage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FALSE;TRUE</Value>
+    </Setting>
+    <Setting Name="CognexTriggerCnt" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
