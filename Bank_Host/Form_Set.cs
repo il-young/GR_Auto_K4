@@ -441,5 +441,12 @@ namespace Bank_Host
 
             setting.ShowDialog();
         }
+
+        private void btn_CustVisible_Click(object sender, EventArgs e)
+        {
+            Form_CustNameUse custNameUse = new Form_CustNameUse();
+
+            custNameUse.ShowDialog();
+        }
     }
 }

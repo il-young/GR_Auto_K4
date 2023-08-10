@@ -41,6 +41,7 @@
             this.label_2dbcr = new System.Windows.Forms.Label();
             this.textBox_2dbcr = new System.Windows.Forms.TextBox();
             this.textBox_wftqty = new System.Windows.Forms.TextBox();
+            this.cb_lot = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button_close
@@ -72,7 +73,7 @@
             this.textBox_lot.Font = new System.Drawing.Font("맑은 고딕", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.textBox_lot.Location = new System.Drawing.Point(147, 209);
             this.textBox_lot.Name = "textBox_lot";
-            this.textBox_lot.Size = new System.Drawing.Size(747, 46);
+            this.textBox_lot.Size = new System.Drawing.Size(629, 46);
             this.textBox_lot.TabIndex = 15;
             this.textBox_lot.TextChanged += new System.EventHandler(this.textBox_lot_TextChanged);
             this.textBox_lot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_lot_KeyPress);
@@ -170,13 +171,26 @@
             this.textBox_wftqty.TabIndex = 14;
             this.textBox_wftqty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_wftqty_KeyPress);
             // 
+            // cb_lot
+            // 
+            this.cb_lot.AutoSize = true;
+            this.cb_lot.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cb_lot.Location = new System.Drawing.Point(782, 224);
+            this.cb_lot.Name = "cb_lot";
+            this.cb_lot.Size = new System.Drawing.Size(115, 25);
+            this.cb_lot.TabIndex = 19;
+            this.cb_lot.Text = "구분자 삭제";
+            this.cb_lot.UseVisualStyleBackColor = true;
+            this.cb_lot.CheckedChanged += new System.EventHandler(this.cb_lot_CheckedChanged);
+            // 
             // Form_MultiBcrIn2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(899, 361);
+            this.ClientSize = new System.Drawing.Size(895, 357);
             this.ControlBox = false;
+            this.Controls.Add(this.cb_lot);
             this.Controls.Add(this.checkBox_devicefix);
             this.Controls.Add(this.button_close);
             this.Controls.Add(this.textBox_qty);
@@ -216,5 +230,6 @@
         private System.Windows.Forms.Label label_2dbcr;
         private System.Windows.Forms.TextBox textBox_2dbcr;
         private System.Windows.Forms.TextBox textBox_wftqty;
+        private System.Windows.Forms.CheckBox cb_lot;
     }
 }

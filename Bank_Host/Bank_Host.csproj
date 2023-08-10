@@ -264,6 +264,12 @@
     <Compile Include="Form_CommentSelecter.Designer.cs">
       <DependentUpon>Form_CommentSelecter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_CustNameUse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_CustNameUse.Designer.cs">
+      <DependentUpon>Form_CustNameUse.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Email.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -438,6 +444,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_CommentSelecter.resx">
       <DependentUpon>Form_CommentSelecter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_CustNameUse.resx">
+      <DependentUpon>Form_CustNameUse.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Email.resx">
       <DependentUpon>Form_Email.cs</DependentUpon>

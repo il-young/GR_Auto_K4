@@ -96,6 +96,26 @@ namespace Bank_Host
                 dataGridView_bill.Enabled = true;
                 textBox_bill.Enabled = false;
             }
+            else if(nIndex == 1)
+            {
+                label3.Enabled = true;
+                label4.Enabled = true;
+                label5.Enabled = true;
+
+                comboBox_cust.Enabled = false;
+                dataGridView_bill.Enabled = true;
+                textBox_bill.Enabled = false;
+            }
+            else if (nIndex == 3)
+            {
+                label3.Enabled = true;
+                label4.Enabled = true;
+                label5.Enabled = true;
+
+                comboBox_cust.Enabled = false;
+                dataGridView_bill.Enabled = true;
+                textBox_bill.Enabled = false;
+            }
             else if (nIndex == 99) //사번 입력
             {
                 //label1.Text = "사번을 입력 하여 주십시오.";
@@ -134,6 +154,7 @@ namespace Bank_Host
                 {
                     textBox_bill.Enabled = true;
                     label5.Enabled = true;
+
                 }
                 else if(nIndex == 5)
                 {

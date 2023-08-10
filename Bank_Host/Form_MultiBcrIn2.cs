@@ -12,6 +12,9 @@ namespace Bank_Host
 {
     public partial class Form_MultiBcrIn2 : Form
     {
+        public delegate void SetLotSPR(bool val);
+        public event SetLotSPR SetLotSPREvent;
+
         public bool bState = false;
         public static string strDeviceinfo = "";
         public string strBcrType = "", strDevicePos = "", strLotPos = "", strWfrQtyPos = "", strDieQtyPos = "";
@@ -171,6 +174,11 @@ namespace Bank_Host
         private void textBox_lot_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cb_lot_CheckedChanged(object sender, EventArgs e)
+        {
+            SetLotSPREvent(cb_lot.Checked);
         }
 
         public void Fnc_Show()

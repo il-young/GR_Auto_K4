@@ -128,7 +128,7 @@ namespace Bank_Host
 
         private void btn_Cognex_Click(object sender, EventArgs e)
         {
-            BankHost_main.mf.ShowDialog();
+            ((MainForm)BankHost_main.mf).ShowDialog();
         }
     }
 }

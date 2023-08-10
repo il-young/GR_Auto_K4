@@ -47,6 +47,8 @@ namespace Bank_Host
 
         public string strBcrType = "";
 
+        public bool LotSPR = false;
+
         Form_InfoBoard InfoBoard = new Form_InfoBoard();
 
         public enum SecondLabel
@@ -385,7 +387,7 @@ namespace Bank_Host
                 AWork.strWSN = dt_list.Rows[n]["WSN"].ToString(); AWork.strWSN = AWork.strWSN.Trim();
                 AWork.strExcelOut = dt_list.Rows[n]["EXCEL_OUT"].ToString(); AWork.strExcelOut = AWork.strExcelOut.Trim();
 
-                if (strCust != AWork.strCust)
+                if (strCust != AWork.strCust && dt_list.Rows[n]["USE"].ToString() == "True")
                 {
                     strCust = AWork.strCust;
 
@@ -403,6 +405,10 @@ namespace Bank_Host
                     {
                         comboBox_cust.Items.Add(strCust);
                     }
+                }
+                else
+                {
+
                 }
 
                 if (strName != AWork.strModelName)
@@ -5762,6 +5768,33 @@ namespace Bank_Host
                             run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
                         }
                     }
+                    else if(strSplit_data[2].Length == (strSplit_data[2].LastIndexOf(strLot.Split(',')[1]) + strLot.Split(',')[1].Length))
+                    {
+                        Binfo.Device = strSplit_data[1];
+                        Binfo.Lot = strSplit_data[2];
+                        Binfo.Lot_Dcc = strSplit_data[3];
+                        Binfo.Rcv_Qty = strSplit_data[4];
+                        Binfo.Die_Qty = strSplit_data[5];
+                        Binfo.Rcv_WQty = strSplit_data[6];
+                        Binfo.Rcvddate = strSplit_data[7];
+                        Binfo.Lot_type = strSplit_data[8];
+                        Binfo.Bill = strSplit_data[9];
+                        Binfo.Amkorid = strSplit_data[10];
+                        Binfo.Wafer_lot = strSplit_data[11];
+                        Binfo.strCoo = strSplit_data[12];
+                        Binfo.state = strSplit_data[13] = "Complete";
+                        Binfo.strop = strSplit_data[14];
+                        Binfo.strGRstatus = strSplit_data[15];
+                        Binfo.Default_WQty = strSplit_data[16];
+
+                        bcrinfos.Add(Binfo);
+
+                        info[i] = string.Join("\t", strSplit_data);
+
+                        File.WriteAllLines(strReadfile, info);
+
+                        run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
+                    }
                 }
             }
             return bcrinfos;
@@ -6457,7 +6490,7 @@ namespace Bank_Host
 
                     bcr.Lot = strSplit_Bcr2[nLotPos]; bcr.Lot = bcr.Lot.Trim();
 
-                    if (strSplit_LotPos[1] != null)
+                    if (strSplit_LotPos[1] != null && !LotSPR)
                     {
                         if (strSplit_LotPos[1].Substring(0, 1) == "L")
                         {
@@ -6469,6 +6502,10 @@ namespace Bank_Host
                             int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
                             bcr.Lot = bcr.Lot.Substring(0, bcr.Lot.Length - nDigit);
                         }
+                    }
+                    else if(strSplit_LotPos[1] != null && LotSPR)
+                    {
+                        bcr.Lot = bcr.Lot; 
                     }
 
                     bcr.DieQty = strSplit_Bcr2[nQtyPos]; bcr.DieQty = bcr.DieQty.Trim();
@@ -11429,7 +11466,7 @@ namespace Bank_Host
                 Form_Input Frm_Input = new Form_Input();
 
                 //Frm_Input.Fnc_Init(nSel);
-                Fnc_Information_Init2();
+                Fnc_Information_Init2(1);
                 //Frm_Input.ShowDialog();
 
                 if (BankHost_main.strOperator == "")
@@ -11544,7 +11581,7 @@ namespace Bank_Host
                 button_sel.Enabled = true;
                 button_sel.Text = "Validation 파일 선택";
 
-                Fnc_Information_Init2();
+                Fnc_Information_Init2(3);
 
                 if (BankHost_main.strOperator == "")
                     return;
@@ -14351,13 +14388,13 @@ namespace Bank_Host
             
         }
 
-        public void Fnc_Information_Init2()
+        public void Fnc_Information_Init2(int mode)
         {
             try
             {
                 Form_Input Frm_Input = new Form_Input();
 
-                Frm_Input.Fnc_Init(99);
+                Frm_Input.Fnc_Init(mode);
 
                 int nTotal = dataGridView_worklist.Rows.Count;
 
@@ -14534,6 +14571,11 @@ namespace Bank_Host
 
                 SendPrintData(LabelMSG);
             }
+        }
+
+        public void SetLotSPR(bool val)
+        {
+            LotSPR = val;
         }
 
         public string Make1LabelZPL(List<Form_Sort.st2ndSumLabelInfo> LabelInfo, string Cust)

@@ -18,10 +18,13 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
+
+
 namespace Bank_Host
 {
     public partial class BankHost_main : Form
-    {   
+    {
+
         public enum RetBcrResult { OK = 0, READ_FAIL = 1, LOT_MISSMATCH = 2, NO_CONNECT = 3 };
         public enum RetBcrState { NOT_WORKING = 0, START = 1, NG = 2,  COMPLETE = 3 };
 
@@ -42,6 +45,7 @@ namespace Bank_Host
 
         ///
 
+        
         //Work
         public static string strWork_Lotinfo = "";
         public static int nNGcount = 0;
@@ -86,7 +90,10 @@ namespace Bank_Host
         Form_Progress Frm_Process = new Form_Progress();
         Form_MutiBcrIn Frm_MultiBcrIn = new Form_MutiBcrIn();
         Form_MultiBcrIn2 Frm_MultiBcrIn2 = new Form_MultiBcrIn2();
-        public static MainForm mf = new MainForm();
+
+        bool LotSPR = false;
+
+        public static object mf = null;
 
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
@@ -105,7 +112,7 @@ namespace Bank_Host
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://10.131.209.109:8080/eMES_Webservice/lot_info_list/get_request_list/combine,waiting_for_combine,K4,379,333376");
+                client.BaseAddress = new Uri("http://10.101.14.130:8180/eMES_Webservice/lot_info_list/get_request_list/change,waiting_for_change,K4,2193,334027");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/HY"));
 
                 HttpResponseMessage response = client.GetAsync("").Result;
@@ -346,7 +353,7 @@ namespace Bank_Host
                         else if(Properties.Settings.Default.CameraType == "COGNEX")
                         {
                             ReaderData = "";
-                            mf.Trigger();
+                            ((MainForm)mf).Trigger();
                         }
                         Thread.Sleep(80);
 
@@ -793,6 +800,8 @@ namespace Bank_Host
         private void BankHost_main_Load(object sender, EventArgs e)
         {
             label3.Text = Properties.Settings.Default.LOCATION;
+            Frm_MultiBcrIn2.SetLotSPREvent += Frm_MultiBcrIn2_SetLotSPREvent;
+
 
             if (label3.Text == "K4")
             {
@@ -808,8 +817,18 @@ namespace Bank_Host
             }
 
             
+#if DEBUG
+            button2.Visible = true;
+#endif 
+
 
             Frm_Sort.init_mode_combobox();
+        }
+
+        private void Frm_MultiBcrIn2_SetLotSPREvent(bool val)
+        {
+            LotSPR = val;
+            Frm_Sort.SetLotSPR(val);
         }
 
         public void ProcessGun_Error(string strMsg)
@@ -901,6 +920,25 @@ namespace Bank_Host
                                     return;
                                 }
                             }
+                            else if(LotSPR == true)
+                            {
+                                List<StorageData> Splitdata = Frm_Sort.GetSplitData(strScanData);
+
+                                if (Splitdata.Count != 0)
+                                {
+                                    //strResult = Read_Bcr.result;
+
+                                    PrintSplit(Splitdata);
+                                    strScanData = "";
+                                    bGunRingMode_Run = false;
+                                }
+                                else
+                                {
+                                    strMsg = string.Format("오류가 발견 되었습니다. 설정 또는 바코드 형식을 확인 하세요!");
+                                    ProcessGun_Error(strMsg);
+                                    return;
+                                }
+                            }
                             else
                             {
                                 strMsg = string.Format("오류가 발견 되었습니다. 설정 또는 바코드 형식을 확인 하세요!");
@@ -912,6 +950,7 @@ namespace Bank_Host
                         {
 
                             Read_Bcr = Frm_Sort.Fnc_Bcr_Parsing(strScanData);
+
                             if (Read_Bcr != null)
                                 strResult = Read_Bcr.result;
                             else
@@ -1033,6 +1072,7 @@ namespace Bank_Host
 
             SplitData = SplitData.OrderBy(p => p.Lot).ToList();
 
+            string bcrdata = "";
 
             for(int i = 0; i < SplitData.Count; i++)
             {
@@ -1043,7 +1083,9 @@ namespace Bank_Host
                 PrintCode += $"^FO645,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Rcv_Qty} ^CF0,25 ^FS";
                 PrintCode += $"^FO790,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Default_WQty} ^CF0,25 ^FS";
 
-                PrintCode += $"^FO880,{(i == 0 ? 70 : 70 + i * 110)} ^BX,3,200 ^FD{SplitData[i].Lot}:{SplitData[i].Lot_Dcc}:{SplitData[i].Device}:{Convert.ToString(SplitData[i].Rcv_Qty).PadLeft(10,'0')}:{Convert.ToString(SplitData[i].Default_WQty).PadLeft(5,'0')}:{SplitData[i].Amkorid}:{Convert.ToString(BankHost_main.strWork_Cust).PadLeft(5,'0')} ^FS";
+                bcrdata = $"{SplitData[i].Lot}:{ SplitData[i].Lot_Dcc}:{ SplitData[i].Device}:{ Convert.ToString(SplitData[i].Rcv_Qty).PadLeft(10, '0')}:{ Convert.ToString(SplitData[i].Default_WQty).PadLeft(5, '0')}:{ SplitData[i].Amkorid}:{Convert.ToString(BankHost_main.strWork_Cust).PadLeft(5, '0')}";
+
+                PrintCode += $"^FO880,{(i == 0 ? 70 : 70 + i * 110)} ^BX,3,200 ^FD{bcrdata} ^FS";
             }
 
             PrintCode += $"^FO30,1530 ^FDLOT TYPE:{SplitData[0].Lot_type}\tRCV-DATE:{SplitData[0].Rcvddate}\tBill#:{SplitData[0].Bill} ^CF0,40,30 ^FS";
@@ -1267,9 +1309,11 @@ namespace Bank_Host
                 //mf.Dispose();
             }
             else if(Properties.Settings.Default.CameraType == "COGNEX")
-            {   
-                mf.Show();
-                mf.Hide();
+            {
+                mf = new MainForm();
+
+                ((MainForm)mf).Show();
+                ((MainForm)mf).Hide();
 
                 //Frm_Scanner.Dispose();
             }
