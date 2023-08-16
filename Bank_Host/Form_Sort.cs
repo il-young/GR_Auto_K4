@@ -411,7 +411,7 @@ namespace Bank_Host
 
                 }
 
-                if (strName != AWork.strModelName)
+                if (strName != AWork.strModelName && dt_list.Rows[n]["USE"].ToString() == "True")
                 {
                     strName = AWork.strModelName;
                     int ncount = comboBox_Name.Items.Count;
@@ -11586,12 +11586,14 @@ namespace Bank_Host
                 if (BankHost_main.strOperator == "")
                     return;
 
+                
+
                 label_opinfo.Text = BankHost_main.strOperator;
                 label_cust.Text = strSelCust;
 
-                string strGetJobName = strSelJobName;
+                string strGetJobName = BankHost_main.Host.Host_Get_JobName(BankHost_main.strEqid);
 
-                strGetJobName = strGetJobName + ".txt";
+                strGetJobName = strSelJobName + ".txt";
                 string strName = strGetJobName;
                 if (strName.Length > 0)
                 {

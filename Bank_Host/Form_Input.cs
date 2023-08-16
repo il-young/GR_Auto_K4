@@ -452,9 +452,37 @@ namespace Bank_Host
                     return;
                 }
             }
+            else if (nMode == 1)
+            {
+                int nCnt = dataGridView_bill.Rows.Count;
+                int nCheckcount = 0;
+                for (int n = 0; n < nCnt; n++)
+                {
+                    if (dataGridView_bill.Rows[n].Cells[4].Value != null)
+                    {
+                        string Value = dataGridView_bill.Rows[n].Cells[4].Value.ToString();
+
+                        if (Value == "True")
+                        {
+                            Form_Sort.strSelBillno[nCheckcount] = dataGridView_bill.Rows[n].Cells[1].Value.ToString();
+                            Form_Sort.strSelCust = dataGridView_bill.Rows[n].Cells[0].Value.ToString();
+                            Form_Sort.strSelJobName = dataGridView_bill.Rows[n].Cells[3].Value.ToString();
+                            nCheckcount++;
+                        }
+                    }
+                }
+
+                if (nCheckcount == 0)
+                {
+                    MessageBox.Show("선택된 Bill이 없습니다. 작업 하실 Bill을 선택 하십시오.");
+                    return;
+                }
+
+            }
             else if(nMode == 2)
             {
-                if(textBox_bill.Text == "")
+                
+                if (textBox_bill.Text == "")
                 {
                     MessageBox.Show("Bill# 입력 하여 주십시오.");
                     textBox_bill.Focus();
