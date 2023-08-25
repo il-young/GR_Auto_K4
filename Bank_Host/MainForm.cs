@@ -151,7 +151,10 @@ namespace Bank_Host
             btnConnect_Click("Form1", EventArgs.Empty);
         }
 
-        
+        public void Disconnect()
+        {
+            btnDisconnect_Click("Form1", EventArgs.Empty);
+        }
 
 
 		private void btnConnect_Click(object sender, EventArgs e)
@@ -210,7 +213,7 @@ namespace Bank_Host
 
 				_system.Connect();
 
-                BankHost_main.bVisionConnect = true;
+                
 
 
                 try
@@ -231,6 +234,7 @@ namespace Bank_Host
 			_autoconnect = true;
 			RefreshGui();
 		}
+
 
 		private void btnDisconnect_Click(object sender, EventArgs e)
 		{
@@ -450,7 +454,9 @@ namespace Bank_Host
 				{
 					AddListItem("System connected");
 					RefreshGui();
-				},
+
+                    BankHost_main.bVisionConnect = true;
+                },
 				null);
 		}
 

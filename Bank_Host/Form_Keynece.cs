@@ -23,6 +23,7 @@ namespace Bank_Host
 
         string STX = string.Format("{0}", (char)0x02);
         string ETX = string.Format("{0}", (char)0x03);
+        bool initComp = false;
 
         public Form_Keynece()
         {
@@ -52,8 +53,8 @@ namespace Bank_Host
                 if (SocketManager != null)
                     return;
 
-                if (ConfigurationManager.AppSettings["CommunicationType"] != "Socket")
-                    return;
+                //if (ConfigurationManager.AppSettings["CommunicationType"] != "Socket")
+                    //return;
 
                 SocketManager = new TCP();
 
@@ -75,6 +76,8 @@ namespace Bank_Host
                 //if(BankHost_main.nInputMode == 1)
 
                 Fnc_LoadFile(8); //Load file 7:진승리 위원님 파일, 8: GR
+
+                initComp = true;
             }
             catch (Exception ex)
             {
@@ -227,6 +230,12 @@ namespace Bank_Host
             {
                 label_state.BackColor = Color.Red;
                 BankHost_main.bVisionConnect = false;
+
+                if (initComp == true)
+                {
+                    SocketManager.Open();
+                    System.Threading.Thread.Sleep(1000);
+                }
             }
         }
 

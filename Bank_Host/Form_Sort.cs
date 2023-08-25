@@ -2413,6 +2413,12 @@ namespace Bank_Host
                     }
                 }
             }
+
+            if(BankHost_main.strCustName == "QUALCOM_SPLIT")
+            {
+                tc_WSN.Visible = true;
+                tc_WSN.SelectedIndex = 1;
+            }
         }
 
         public void Fnc_UpdateCount(string strWorkName)
@@ -5715,88 +5721,97 @@ namespace Bank_Host
             return res;
         }
 
+        public int GetQualcomSplitCopys()
+        {
+            return (int)nud_splitCopys.Value;
+        }
+
         public List<StorageData> GetSplitData(string strLot)
         {
             List<StorageData> bcrinfos = new List<StorageData>();
 
-
-            foreach (DataGridViewRow row in dataGridView_Device.Rows)
+            //if (GetQualCommSplitGreenLabel() == false)
             {
-                string strDevice = row.Cells[1].Value.ToString();
-
-                string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
-                string strReadfile = "";
-
-                strReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
-
-                string[] info = Fnc_ReadFile(strReadfile);
-
-                
-
-                for(int i = 0; i < info.Length; i++)
+                foreach (DataGridViewRow row in dataGridView_Device.Rows)
                 {
-                    string[] strSplit_data = info[i].Split('\t');
-                    StorageData Binfo = new StorageData();
+                    string strDevice = row.Cells[1].Value.ToString();
 
-                    if (strSplit_data[2].Substring(3, strSplit_data[2].Length - 3)== strLot.Split(',')[1].Substring(3, strLot.Split(',')[1].Length - 3))
+                    string strFileName = strExcutionPath + "\\Work\\" + strWorkFileName + "\\";
+                    string strReadfile = "";
+
+                     strReadfile = strFileName + "\\" + strDevice + "\\" + strDevice + ".txt";
+
+                    string[] info = Fnc_ReadFile(strReadfile);
+
+                    for (int i = 0; i < info.Length; i++)
                     {
-                        //if (strSplit_data[13] == "Waiting")
+                        string[] strSplit_data = info[i].Split('\t');
+                        StorageData Binfo = new StorageData();
+
+                        if (strSplit_data[2].Substring(3, strSplit_data[2].Length - 3) == strLot.Split(',')[1].Substring(3, strLot.Split(',')[1].Length - 3))
                         {
-                            Binfo.Device = strSplit_data[1];
-                            Binfo.Lot = strSplit_data[2];
-                            Binfo.Lot_Dcc = strSplit_data[3];
-                            Binfo.Rcv_Qty = strSplit_data[4];
-                            Binfo.Die_Qty = strSplit_data[5];
-                            Binfo.Rcv_WQty = strSplit_data[6];
-                            Binfo.Rcvddate = strSplit_data[7];
-                            Binfo.Lot_type = strSplit_data[8];
-                            Binfo.Bill = strSplit_data[9];
-                            Binfo.Amkorid = strSplit_data[10];
-                            Binfo.Wafer_lot = strSplit_data[11];
-                            Binfo.strCoo = strSplit_data[12];
-                            Binfo.state = strSplit_data[13] = "Complete";
-                            Binfo.strop = strSplit_data[14];
-                            Binfo.strGRstatus = strSplit_data[15];
-                            Binfo.Default_WQty = strSplit_data[16];
+                            //if (strSplit_data[13] == "Waiting")
+                            {
 
-                            bcrinfos.Add(Binfo);
+                                Form_Sort.strValReadfile = strReadfile;
+                                Form_Sort.strValDevice = Binfo.Device = strSplit_data[1];
+                                Form_Sort.strValLot = Binfo.Lot = strSplit_data[2];
+                                Form_Sort.strValDcc = Binfo.Lot_Dcc = strSplit_data[3];
+                                Binfo.Rcv_Qty = strSplit_data[4];
+                                Binfo.Die_Qty = strSplit_data[5];
+                                Binfo.Rcv_WQty = strSplit_data[6];
+                                Binfo.Rcvddate = strSplit_data[7];
+                                Binfo.Lot_type = strSplit_data[8];
+                                Binfo.Bill = strSplit_data[9];
+                                Binfo.Amkorid = strSplit_data[10];
+                                Binfo.Wafer_lot = strSplit_data[11];
+                                Binfo.strCoo = strSplit_data[12];
+                                Binfo.state = strSplit_data[13] = "Complete";
+                                Binfo.strop = strSplit_data[14];
+                                Binfo.strGRstatus = strSplit_data[15];
+                                Binfo.Default_WQty = strSplit_data[16];
 
-                            info[i] = string.Join("\t", strSplit_data);
+                                bcrinfos.Add(Binfo);
 
-                            File.WriteAllLines(strReadfile, info);
+                                info[i] = string.Join("\t", strSplit_data);
 
-                            run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
+                                File.WriteAllLines(strReadfile, info);
+
+
+                                run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
+                            }
                         }
-                    }
-                    else if(strSplit_data[2].Length == (strSplit_data[2].LastIndexOf(strLot.Split(',')[1]) + strLot.Split(',')[1].Length))
-                    {
-                        Binfo.Device = strSplit_data[1];
-                        Binfo.Lot = strSplit_data[2];
-                        Binfo.Lot_Dcc = strSplit_data[3];
-                        Binfo.Rcv_Qty = strSplit_data[4];
-                        Binfo.Die_Qty = strSplit_data[5];
-                        Binfo.Rcv_WQty = strSplit_data[6];
-                        Binfo.Rcvddate = strSplit_data[7];
-                        Binfo.Lot_type = strSplit_data[8];
-                        Binfo.Bill = strSplit_data[9];
-                        Binfo.Amkorid = strSplit_data[10];
-                        Binfo.Wafer_lot = strSplit_data[11];
-                        Binfo.strCoo = strSplit_data[12];
-                        Binfo.state = strSplit_data[13] = "Complete";
-                        Binfo.strop = strSplit_data[14];
-                        Binfo.strGRstatus = strSplit_data[15];
-                        Binfo.Default_WQty = strSplit_data[16];
+                        //else if (strSplit_data[2].Length == (strSplit_data[2].LastIndexOf(strLot.Split(',')[1]) + strLot.Split(',')[1].Length))
+                        //{
+                        //    Binfo.Device = strSplit_data[1];
+                        //    Binfo.Lot = strSplit_data[2];
+                        //    Binfo.Lot_Dcc = strSplit_data[3];
+                        //    Binfo.Rcv_Qty = strSplit_data[4];
+                        //    Binfo.Die_Qty = strSplit_data[5];
+                        //    Binfo.Rcv_WQty = strSplit_data[6];
+                        //    Binfo.Rcvddate = strSplit_data[7];
+                        //    Binfo.Lot_type = strSplit_data[8];
+                        //    Binfo.Bill = strSplit_data[9];
+                        //    Binfo.Amkorid = strSplit_data[10];
+                        //    Binfo.Wafer_lot = strSplit_data[11];
+                        //    Binfo.strCoo = strSplit_data[12];
+                        //    Binfo.state = strSplit_data[13] = "Complete";
+                        //    Binfo.strop = strSplit_data[14];
+                        //    Binfo.strGRstatus = strSplit_data[15];
+                        //    Binfo.Default_WQty = strSplit_data[16];
 
-                        bcrinfos.Add(Binfo);
+                        //    bcrinfos.Add(Binfo);
 
-                        info[i] = string.Join("\t", strSplit_data);
+                        //    info[i] = string.Join("\t", strSplit_data);
 
-                        File.WriteAllLines(strReadfile, info);
+                        //    File.WriteAllLines(strReadfile, info);
 
-                        run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
+                        //    run_sql_command($"insert into TB_QUALCOMM_SPLIT_LOG values (getdate(), '{BankHost_main.strWork_Cust}', '{Binfo.Lot}', '{Binfo.Lot_Dcc}', '{Binfo.Device}', '{Binfo.Rcv_Qty}', '{Binfo.Default_WQty}', '{Binfo.Rcvddate}', '{Binfo.Bill}', '{Binfo.Amkorid}', 'Complete', '','', '{BankHost_main.strOperator}')");
+                        //}
                     }
                 }
             }
+
             return bcrinfos;
         }
 
@@ -13104,6 +13119,16 @@ namespace Bank_Host
                 worksheet1.get_Range("D3").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
 
+                rd = worksheet1.Range[worksheet1.Cells[4,12], worksheet1.Cells[4, 12]];
+                rd.Font.Color = Color.Red;
+                rd.Font.Size = 20.0;
+                //rd.Merge();
+                rd.HorizontalAlignment = HorizontalAlignment.Center;
+                rd.Value2 = "Total QTY";
+                //worksheet1.get_Range("D3").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+
+                int QtyCnt = 0;
+
 
                 if (MtlList.Rows.Count > 0)
                 {
@@ -13124,6 +13149,7 @@ namespace Bank_Host
 
                             item[rowNo, colNo] = MtlList.Rows[rowNo][colNo].ToString();
                         }
+                        QtyCnt += int.Parse(MtlList.Rows[rowNo]["RETURN_QTY"].ToString());
                     }
                 }
 
@@ -13131,6 +13157,13 @@ namespace Bank_Host
                 //worksheet1.get_Range("A1", columns[MtlList.Columns.Count - 1] + "1").Value2 = headers;
                 //해당위치부터 데이터정보를 담기
 
+                rd = worksheet1.Range[worksheet1.Cells[4, 13], worksheet1.Cells[4, 14]];
+                rd.Font.Color = Color.Black;
+                rd.Font.Size = 20.0;
+                rd.Merge();
+                rd.HorizontalAlignment = HorizontalAlignment.Center;
+                rd.Value2 = QtyCnt;
+                worksheet1.get_Range("M4").HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
 
 
                 worksheet1.get_Range("A3").Value = cust;
@@ -13881,7 +13914,21 @@ namespace Bank_Host
                 //< input type = "checkbox" name = "selected" value = "2023:70234K4:0" >
             }
         }
-    
+
+        public bool GetQualCommSplitGreenLabel()
+        {
+            return cb_GreenLabel.Checked;
+        }
+
+        private void cb_NomalLabel_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_WaferReturnExcel_Click_1(object sender, EventArgs e)
+        {
+
+        }
 
         private void Split_data_sorting()
         {

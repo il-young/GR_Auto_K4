@@ -452,7 +452,7 @@ namespace Bank_Host
                     return;
                 }
             }
-            else if (nMode == 1)
+            else if (nMode == 1 || nMode == 3)
             {
                 int nCnt = dataGridView_bill.Rows.Count;
                 int nCheckcount = 0;
@@ -524,7 +524,7 @@ namespace Bank_Host
                 string strMESID = dt.Rows[0]["MES_ID"].ToString(); strMESID = strMESID.Trim();
                 string strMESPW = dt.Rows[0]["MES_PASSWORD"].ToString(); strMESPW = strMESPW.Trim();
 
-                if(nMode == 0 || nMode == 1 ||nMode == 7)
+                if(nMode == 0 || nMode == 1 )
                 {
                     if (strgrade != "A")
                     {

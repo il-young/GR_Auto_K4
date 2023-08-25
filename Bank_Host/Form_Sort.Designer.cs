@@ -132,6 +132,9 @@
             this.btn_WSNSave = new System.Windows.Forms.Button();
             this.tb_wsn = new System.Windows.Forms.TextBox();
             this.label57 = new System.Windows.Forms.Label();
+            this.tabPage13 = new System.Windows.Forms.TabPage();
+            this.nud_splitCopys = new System.Windows.Forms.NumericUpDown();
+            this.label59 = new System.Windows.Forms.Label();
             this.cb_GreenLabel = new System.Windows.Forms.CheckBox();
             this.label_printstate = new System.Windows.Forms.Label();
             this.label_filename2 = new System.Windows.Forms.Label();
@@ -387,6 +390,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Lot)).BeginInit();
             this.tc_WSN.SuspendLayout();
             this.tabPage12.SuspendLayout();
+            this.tabPage13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_splitCopys)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_hist)).BeginInit();
@@ -1407,6 +1412,7 @@
             // tc_WSN
             // 
             this.tc_WSN.Controls.Add(this.tabPage12);
+            this.tc_WSN.Controls.Add(this.tabPage13);
             this.tc_WSN.HotTrack = true;
             this.tc_WSN.ItemSize = new System.Drawing.Size(1, 10);
             this.tc_WSN.Location = new System.Drawing.Point(401, 592);
@@ -1478,6 +1484,53 @@
             this.label57.TabIndex = 0;
             this.label57.Text = "WSN 구분자 :";
             this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tabPage13
+            // 
+            this.tabPage13.Controls.Add(this.nud_splitCopys);
+            this.tabPage13.Controls.Add(this.label59);
+            this.tabPage13.Location = new System.Drawing.Point(4, 14);
+            this.tabPage13.Name = "tabPage13";
+            this.tabPage13.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage13.Size = new System.Drawing.Size(455, 35);
+            this.tabPage13.TabIndex = 1;
+            this.tabPage13.Text = "tabPage13";
+            this.tabPage13.UseVisualStyleBackColor = true;
+            // 
+            // nud_splitCopys
+            // 
+            this.nud_splitCopys.Dock = System.Windows.Forms.DockStyle.Left;
+            this.nud_splitCopys.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.nud_splitCopys.Location = new System.Drawing.Point(88, 3);
+            this.nud_splitCopys.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_splitCopys.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nud_splitCopys.Name = "nud_splitCopys";
+            this.nud_splitCopys.Size = new System.Drawing.Size(48, 29);
+            this.nud_splitCopys.TabIndex = 1;
+            this.nud_splitCopys.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label59.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label59.Location = new System.Drawing.Point(3, 3);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(85, 30);
+            this.label59.TabIndex = 0;
+            this.label59.Text = "Copys :";
             // 
             // cb_GreenLabel
             // 
@@ -4212,6 +4265,7 @@
             this.btn_WaferReturnExcel.Text = "Excel";
             this.btn_WaferReturnExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_WaferReturnExcel.UseVisualStyleBackColor = true;
+            this.btn_WaferReturnExcel.Click += new System.EventHandler(this.btn_WaferReturnExcel_Click_1);
             this.btn_WaferReturnExcel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_WaferReturnExcel_MouseUp);
             // 
             // label58
@@ -4425,6 +4479,9 @@
             this.tc_WSN.ResumeLayout(false);
             this.tabPage12.ResumeLayout(false);
             this.tabPage12.PerformLayout();
+            this.tabPage13.ResumeLayout(false);
+            this.tabPage13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_splitCopys)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
@@ -4786,5 +4843,8 @@
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.Button btn_WSNSave;
         private System.Windows.Forms.Button btn_WSNExcel;
+        private System.Windows.Forms.TabPage tabPage13;
+        private System.Windows.Forms.NumericUpDown nud_splitCopys;
+        private System.Windows.Forms.Label label59;
     }
 }
