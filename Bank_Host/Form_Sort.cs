@@ -5241,6 +5241,69 @@ namespace Bank_Host
             return null;
         }
 
+        public AmkorBcrInfo Fnc_GetAmkorBcrInfo(string strfilepath, string strLot, string strDcc, string strDevice, string strWSN)
+        {
+            string[] info = Fnc_ReadFile(strfilepath);
+
+            if (info == null)
+                return null;
+
+            StorageData st = new StorageData();
+
+            for (int m = 0; m < info.Length; m++)
+            {
+                string[] strSplit_data = info[m].Split('\t');
+
+                st.Cust = strSplit_data[0];
+                st.Device = strSplit_data[1];
+                st.Lot = strSplit_data[2];
+                st.Lot_Dcc = strSplit_data[3];
+                st.Rcv_Qty = strSplit_data[4];
+                st.Die_Qty = strSplit_data[5];
+                st.Rcv_WQty = strSplit_data[6];
+                st.Rcvddate = strSplit_data[7];
+                st.Lot_type = strSplit_data[8];
+                st.Bill = strSplit_data[9];
+                st.Amkorid = strSplit_data[10];
+                st.Wafer_lot = strSplit_data[11];
+                st.strCoo = strSplit_data[12];
+                st.state = strSplit_data[13];
+                st.strop = strSplit_data[14];
+                st.strGRstatus = strSplit_data[15];
+                st.Default_WQty = strSplit_data[16];
+
+                if (strSplit_data.Length >= 19)
+                    st.WSN = strSplit_data[18];
+
+                if (strDevice == st.Device && strLot == st.Lot && st.Lot_Dcc == strDcc && st.WSN == strWSN)
+                {
+                    AmkorBcrInfo Amkor = new AmkorBcrInfo();
+
+                    Amkor.strLotNo = st.Lot;
+                    Amkor.strDevice = st.Device;
+                    Amkor.strDieQty = st.Die_Qty;
+                    Amkor.strDiettl = st.Rcv_Qty;
+                    Amkor.strWfrQty = st.Rcv_WQty;
+                    Amkor.strWfrttl = st.Default_WQty;
+                    Amkor.strAmkorid = st.Amkorid;
+                    Amkor.strCust = st.Cust;
+                    Amkor.strRcvdate = st.Rcvddate;
+                    Amkor.strBillNo = st.Bill;
+                    Amkor.strLotDcc = st.Lot_Dcc;
+                    Amkor.strLotType = st.Lot_type;
+                    Amkor.strWaferLotNo = st.Wafer_lot;
+                    Amkor.strCoo = st.strCoo;
+                    Amkor.strOperator = st.strop;
+                    Amkor.strWSN = st.WSN;
+
+                    return Amkor;
+                }
+
+            }
+
+            return null;
+        }
+
         public int Fnc_GetLotindex_Revision(string strData, string strQty)
         {
             int nCount = dataGridView_Lot.Rows.Count;
@@ -5405,11 +5468,13 @@ namespace Bank_Host
 
         private void Amkor_label_Print_Process(string strBcr, int cnt)
         {
-            stAmkor_Label temp = new stAmkor_Label();
+            
             string[] str_temp = strBcr.Replace(':', ',').Split(',');
-
+            
             if (str_temp.Length == 7)
             {
+                stAmkor_Label temp = new stAmkor_Label();
+
                 temp.Lot = str_temp[0];
                 temp.DCC = str_temp[1];
                 temp.Device = str_temp[2];
@@ -5456,6 +5521,8 @@ namespace Bank_Host
             }
             else if (str_temp.Length == 8)
             {
+                stAmkor_Label temp = new stAmkor_Label();
+
                 temp.Lot = str_temp[0];
                 temp.DCC = str_temp[1];
                 temp.Device = str_temp[2];
@@ -5475,6 +5542,42 @@ namespace Bank_Host
                     tot_die += int.Parse(str_temp[3]);
                     tot_wfr += int.Parse(str_temp[4]);
                     Frm_Print.Fnc_Print(temp, cnt, int.Parse(numericUpDown1.Value.ToString()));
+                    speech.SpeakAsyncCancelAll();
+                    speech.SpeakAsync(tot_lots.ToString());
+
+                    lprinted_lots.Text = tot_lots.ToString();
+                    ldie.Text = tot_die.ToString();
+                    lwfr.Text = tot_wfr.ToString();
+
+                    tb_next.Text = (++AmkorLabelCnt).ToString();
+                }
+                else
+                {
+                    speech.SpeakAsyncCancelAll();
+                    speech.SpeakAsync("중복된 라벨 입니다.");
+                }
+            }
+            else if (str_temp.Length == 9)
+            {
+                AmkorBcrInfo temp = new AmkorBcrInfo();
+
+                temp.strLotNo = str_temp[0];
+                temp.strLotDcc = str_temp[1];
+                temp.strDevice = str_temp[2];
+                temp.strDieQty = string.Format("{0:%D10}", str_temp[3]);
+                temp.strWfrttl = temp.strWfrQty = string.Format("{0:%D5}", str_temp[4]);                
+                temp.strAmkorid = string.Format("{0:%D10}", str_temp[5]);
+                temp.strCust = string.Format("{0:D10}", str_temp[6]);
+                temp.strWaferLotNo = str_temp[7];
+                temp.strWSN = str_temp[8];
+
+                if (check_duplicate(temp.strAmkorid) == false)
+                {   
+                    tot_lots++;
+                    dataGridView_label.Rows.Add(cnt, temp.strLotNo, temp.strLotDcc, temp.strDevice, temp.strDieQty, temp.strWfrQty, temp.strAmkorid, temp.strCust, temp.strWaferLotNo);
+                    tot_die += int.Parse(str_temp[3]);
+                    tot_wfr += int.Parse(str_temp[4]);
+                    Frm_Print.Fnc_Print(temp, 2, cnt, GetNumericValue());
                     speech.SpeakAsyncCancelAll();
                     speech.SpeakAsync(tot_lots.ToString());
 

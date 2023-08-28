@@ -603,7 +603,7 @@ namespace Bank_Host
                     printinfo[0] = "2"; printinfo[1] = Form_Sort.strValLot;
                     Host.Host_Set_Print_Data(strEqid, printinfo);
 
-                    AmkorBcrInfo Amkor = Frm_Sort.Fnc_GetAmkorBcrInfo(Form_Sort.strValReadfile, Form_Sort.strValLot, Form_Sort.strValDcc, Form_Sort.strValDevice);
+                    AmkorBcrInfo Amkor = Frm_Sort.Fnc_GetAmkorBcrInfo(Form_Sort.strValReadfile, Form_Sort.strValLot, Form_Sort.strValDcc, Form_Sort.strValDevice, Form_Sort.strWSN);
 
                     if (strWork_Shot1Lot == "YES")
                         Form_Sort.nLabelcount = 0;
@@ -1556,7 +1556,8 @@ namespace Bank_Host
             }
             else if(nScanMode == 1)
             {
-                Frm_MultiBcrIn2.Fnc_Show();
+                if(Frm_MultiBcrIn2.Visible == false)
+                   Frm_MultiBcrIn2.Fnc_Show();
             }
         }
 
@@ -1747,8 +1748,7 @@ namespace Bank_Host
         //Process
         public static void Process_GetWorkInformation(WorkInfo Info)
         {
-            //nWorkinch = Info.ninch;
-            strWork_Cust = Info.strCust;
+            //nWorkinch = Info.ninch;5
             strWork_Bank = Info.strBank;
             strWork_DevicePos = Info.strDevicePos;
             strWork_LotidPos = Info.strLotidPos;

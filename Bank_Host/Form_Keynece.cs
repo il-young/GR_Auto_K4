@@ -218,23 +218,26 @@ namespace Bank_Host
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            textBox_receivedata.Text = strReceivedata;
-            label_state.Text = SocketState.ToString();
-
-            if (label_state.Text.ToLower() == "connected")
+            if (BankHost_main.nScanMode == 0 && Properties.Settings.Default.CameraType == "KEYENCE")
             {
-                label_state.BackColor = Color.Green;
-                BankHost_main.bVisionConnect = true;
-            }
-            else
-            {
-                label_state.BackColor = Color.Red;
-                BankHost_main.bVisionConnect = false;
+                textBox_receivedata.Text = strReceivedata.Replace("\r","");
+                label_state.Text = SocketState.ToString();
 
-                if (initComp == true)
+                if (label_state.Text.ToLower() == "connected")
                 {
-                    SocketManager.Open();
-                    System.Threading.Thread.Sleep(1000);
+                    label_state.BackColor = Color.Green;
+                    BankHost_main.bVisionConnect = true;
+                }
+                else
+                {
+                    label_state.BackColor = Color.Red;
+                    BankHost_main.bVisionConnect = false;
+
+                    if (initComp == true)
+                    {
+                        SocketManager.Open();
+                        System.Threading.Thread.Sleep(1000);
+                    }
                 }
             }
         }
