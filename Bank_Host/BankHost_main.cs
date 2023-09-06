@@ -877,16 +877,25 @@ namespace Bank_Host
                                 if (Splitdata.Count != 0)
                                 {
                                     //strResult = Read_Bcr.result;
-                                    if(Splitdata.Count != 1)
+                                    if(Splitdata.Count > Properties.Settings.Default.SplitWLabel)
                                     {
                                         for(int i = 0; i < Frm_Sort.GetQualcomSplitCopys(); i++)
                                             PrintSplit(Splitdata);
                                         
                                     }
                                     else
-                                    {
-                                        for (int i = 0; i < Frm_Sort.GetQualcomSplitCopys(); i++)
-                                            ProcessGun_LabelPrint();
+                                    {//Form_Sort.strValReadfile, Form_Sort.strValLot, Form_Sort.strValDcc, Form_Sort.strValDevice
+
+                                        foreach (StorageData sd in Splitdata)
+                                        {
+                                            Form_Sort.strValReadfile = sd.ReadFile;
+                                            Form_Sort.strValLot = sd.Lot;
+                                            Form_Sort.strValDcc = sd.Lot_Dcc;
+                                            Form_Sort.strValDevice = sd.Device;
+
+                                            for (int i = 0; i < Frm_Sort.GetQualcomSplitCopys(); i++)
+                                                ProcessGun_LabelPrint();
+                                        }
                                     }
                                     strScanData = "";
                                     bGunRingMode_Run = false;
@@ -1136,7 +1145,7 @@ namespace Bank_Host
                 PrintCode += $"^FO880,{(i == 0 ? 70 : 70 + i * 110)} ^BX,3,200 ^FD{bcrdata} ^FS";
             }
 
-            PrintCode += $"^FO30,1530 ^FDLOT TYPE:{SplitData[0].Lot_type}\tRCV-DATE:{SplitData[0].Rcvddate}\tBill#:{SplitData[0].Bill} ^CF0,40,30 ^FS";
+            PrintCode += $"^FO30,1530 ^FDLOT TYPE:{SplitData[0].Lot_type}\tRCV-DATE:{SplitData[0].Rcvddate}\tBill#:{SplitData[0].Bill} #({strWork_Cust}) ^CF0,40,30 ^FS";
 
             PrintCode += "^XZ";
 

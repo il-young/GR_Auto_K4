@@ -2418,6 +2418,7 @@ namespace Bank_Host
             {
                 tc_WSN.Visible = true;
                 tc_WSN.SelectedIndex = 1;
+                nup_Wlabel.Value = Properties.Settings.Default.SplitWLabel;
             }
         }
 
@@ -5860,6 +5861,7 @@ namespace Bank_Host
                                 Form_Sort.strValDevice = Binfo.Device = strSplit_data[1];
                                 Form_Sort.strValLot = Binfo.Lot = strSplit_data[2];
                                 Form_Sort.strValDcc = Binfo.Lot_Dcc = strSplit_data[3];
+                                Binfo.ReadFile = strValReadfile;
                                 Binfo.Rcv_Qty = strSplit_data[4];
                                 Binfo.Die_Qty = strSplit_data[5];
                                 Binfo.Rcv_WQty = strSplit_data[6];
@@ -9425,10 +9427,10 @@ namespace Bank_Host
                 BankHost_main.strWork_Shot1Lot = "NO";
             }
 
-            //if (BankHost_main.strWork_Model == "INARI")
-            //{
-            //    BankHost_main.strWork_Shot1Lot = "NO";
-            //}
+            if (BankHost_main.strWork_Model == "INARI" && BankHost_main.nScanMode == 1)
+            {
+                BankHost_main.strWork_Shot1Lot = "NO";
+            }
 
             string str = "";
 
@@ -14033,6 +14035,12 @@ namespace Bank_Host
 
         }
 
+        private void nup_Wlabel_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.SplitWLabel = (int)nup_Wlabel.Value;
+            Properties.Settings.Default.Save();
+        }
+
         private void Split_data_sorting()
         {
             try
@@ -14887,6 +14895,7 @@ namespace Bank_Host
         public string Loc = "";
         public string Hawb = "";
         public string WSN = "";
+        public string ReadFile = "";
     }
 
     public class Bcrinfo

@@ -133,6 +133,8 @@
             this.tb_wsn = new System.Windows.Forms.TextBox();
             this.label57 = new System.Windows.Forms.Label();
             this.tabPage13 = new System.Windows.Forms.TabPage();
+            this.nup_Wlabel = new System.Windows.Forms.NumericUpDown();
+            this.label60 = new System.Windows.Forms.Label();
             this.nud_splitCopys = new System.Windows.Forms.NumericUpDown();
             this.label59 = new System.Windows.Forms.Label();
             this.cb_GreenLabel = new System.Windows.Forms.CheckBox();
@@ -391,6 +393,7 @@
             this.tc_WSN.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabPage13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nup_Wlabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_splitCopys)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).BeginInit();
             this.tabPage4.SuspendLayout();
@@ -1415,7 +1418,7 @@
             this.tc_WSN.Controls.Add(this.tabPage13);
             this.tc_WSN.HotTrack = true;
             this.tc_WSN.ItemSize = new System.Drawing.Size(1, 10);
-            this.tc_WSN.Location = new System.Drawing.Point(401, 592);
+            this.tc_WSN.Location = new System.Drawing.Point(401, 589);
             this.tc_WSN.Name = "tc_WSN";
             this.tc_WSN.SelectedIndex = 0;
             this.tc_WSN.Size = new System.Drawing.Size(463, 53);
@@ -1487,6 +1490,8 @@
             // 
             // tabPage13
             // 
+            this.tabPage13.Controls.Add(this.nup_Wlabel);
+            this.tabPage13.Controls.Add(this.label60);
             this.tabPage13.Controls.Add(this.nud_splitCopys);
             this.tabPage13.Controls.Add(this.label59);
             this.tabPage13.Location = new System.Drawing.Point(4, 14);
@@ -1496,6 +1501,42 @@
             this.tabPage13.TabIndex = 1;
             this.tabPage13.Text = "tabPage13";
             this.tabPage13.UseVisualStyleBackColor = true;
+            // 
+            // nup_Wlabel
+            // 
+            this.nup_Wlabel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.nup_Wlabel.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.nup_Wlabel.Location = new System.Drawing.Point(302, 3);
+            this.nup_Wlabel.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nup_Wlabel.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nup_Wlabel.Name = "nup_Wlabel";
+            this.nup_Wlabel.Size = new System.Drawing.Size(48, 29);
+            this.nup_Wlabel.TabIndex = 5;
+            this.nup_Wlabel.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nup_Wlabel.ValueChanged += new System.EventHandler(this.nup_Wlabel_ValueChanged);
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label60.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label60.Location = new System.Drawing.Point(136, 3);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(166, 30);
+            this.label60.TabIndex = 4;
+            this.label60.Text = "Green Label↓ :";
             // 
             // nud_splitCopys
             // 
@@ -4481,6 +4522,7 @@
             this.tabPage12.PerformLayout();
             this.tabPage13.ResumeLayout(false);
             this.tabPage13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nup_Wlabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_splitCopys)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Device)).EndInit();
             this.tabPage4.ResumeLayout(false);
@@ -4846,5 +4888,7 @@
         private System.Windows.Forms.TabPage tabPage13;
         private System.Windows.Forms.NumericUpDown nud_splitCopys;
         private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.NumericUpDown nup_Wlabel;
+        private System.Windows.Forms.Label label60;
     }
 }

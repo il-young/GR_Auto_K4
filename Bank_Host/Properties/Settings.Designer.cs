@@ -417,5 +417,17 @@ namespace Bank_Host.Properties {
                 this["CognexTriggerCnt"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int SplitWLabel {
+            get {
+                return ((int)(this["SplitWLabel"]));
+            }
+            set {
+                this["SplitWLabel"] = value;
+            }
+        }
     }
 }

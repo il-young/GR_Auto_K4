@@ -564,5 +564,10 @@ namespace Bank_Host
         {
 
         }
+
+        private void Form_Input_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

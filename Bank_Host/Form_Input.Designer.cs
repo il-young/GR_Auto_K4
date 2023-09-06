@@ -233,6 +233,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Input_FormClosing);
+            this.Load += new System.EventHandler(this.Form_Input_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_bill)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
