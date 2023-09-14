@@ -5684,7 +5684,7 @@ namespace Bank_Host
 
         public bool check_WaferReturnDuplicate(stAmkor_Label amkorLabel)
         {
-            bool res = true;
+            bool res = false;
             bool duplicate = false;
             bool isFail = true;
 
@@ -13046,6 +13046,8 @@ namespace Bank_Host
                 string res = Frm_Print.MakeQualcommLabel(tb_WaferReturnScan.Text.ToUpper());
 
                 Frm_Print.QualcomSocket_MessageSend(res);
+                Frm_Print.QualcomSocket_MessageSend(res);
+                Frm_Print.QualcomSocket_MessageSend(res);
             }
         }
 
@@ -13054,7 +13056,7 @@ namespace Bank_Host
         {
             bool res = false;
 
-            string[] temp = msg.Split(',');
+            string[] temp = msg.Split(':');
 
             for (int i = 0; i < temp.Length; i++)
             {
@@ -14039,6 +14041,12 @@ namespace Bank_Host
         {
             Properties.Settings.Default.SplitWLabel = (int)nup_Wlabel.Value;
             Properties.Settings.Default.Save();
+        }
+
+        private void button19_Click_1(object sender, EventArgs e)
+        {
+            Frm_Print.QualcommSocket_Init();
+            Frm_Print.QualcomSocket_MessageSend("^XA^FO25,0^A0B,30,30^FDQualcomm^FS^FO60,0^BXN,4.5,200^FD1JUN144356508PAN10UCL,PCD90-PT675-3RN,1T000FK326DJT.K500#GG7Y72.QRS,30T17/18/19,10D2326,Q2167,14D10-07-2027^FS^FO260,-10^A0N,25,25^FD(1J)LPN: UN144356508PAN10UCL^FS^FO660,-10^A0N,25,25^FD(30T)Wafer ID(s): 17/18/19^FS^FO1010,-10^A0N,25,25^FD(10D)D/C: 2326^FS^FO260,60^A0N,25,25^FD(P)MCN: CD90-PT675-3RN^FS^FO660,60^A0N,25,25^FD(Q)Quantity: 2167^FS^FO860,60^A0N,25,25^FDDry Pack Exp: 10-07-2027^FS^FO260,130^A0,25,25^FD(1T)Lot Code: 000FK326DJT.K500#GG7Y72.QRS^FS^FO1060,130^A0N,25,25^FD1118^FS^XZ");
         }
 
         private void Split_data_sorting()

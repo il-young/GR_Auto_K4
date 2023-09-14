@@ -170,6 +170,11 @@ namespace Bank_Host
             }
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            
+        }
+
         private void rb_keyence_CheckedChanged(object sender, EventArgs e)
         {
            
