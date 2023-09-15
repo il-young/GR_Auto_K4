@@ -5597,10 +5597,7 @@ namespace Bank_Host
 
         }
 
-
-        int WaferReturnSEQNum = -1;
-
-        private void WaferReturn_label_Print_Process(string strBcr, int cnt)
+        private stAmkor_Label getLabelInfo(string strBcr)
         {
             stAmkor_Label temp = new stAmkor_Label();
             string[] str_temp = strBcr.Replace(':', ',').Split(',');
@@ -5619,21 +5616,7 @@ namespace Bank_Host
                 temp.WQTY = str_temp[4].Trim();// string.Format("{0:%D5}", str_temp[4]);
                 temp.AMKOR_ID = str_temp[5].Trim();// string.Format("{0:%D10}", str_temp[5]);
                 temp.CUST = str_temp[6].Trim();// string.Format("{0:D10}", str_temp[6]);
-                temp.Wafer_ID = "";
-
-                bool pass = false;
-
-                pass = check_WaferReturnDuplicate(temp);
-
-                if (pass == false)
-                {
-                    if (cb_WaferReturnPrint.Checked == false)
-                        Frm_Print.Fnc_Print(temp, WaferReturnSEQNum, dgv_ReturnWafer.RowCount);
-                }
-                else
-                {
-
-                }
+                temp.Wafer_ID = "";                
             }
             else //if (str_temp.Length == 8)
             {
@@ -5645,20 +5628,126 @@ namespace Bank_Host
                 temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5].Trim());
                 temp.CUST = string.Format("{0:D10}", str_temp[6].Trim());
                 temp.Wafer_ID = temp.CUST == "379" ? "" : str_temp[7].Trim();
+            }
 
+            return temp;
+        }
+
+
+        int WaferReturnSEQNum = -1;
+
+        private void WaferReturn_label_Print_Process(string strBcr, int cnt)
+        {
+            stAmkor_Label temp = new stAmkor_Label();
+            string[] str_temp = strBcr.Replace(':', ',').Split(',');
+
+            //3808013.2           :01   :ZT003 - J1            :0000004230:00001:0011106429:00379
+            //3808013.2:01:ZT003-J1:0000004230:00001:0011106429:00379
+            //FH513P005-03.01::FH513-2501-P-C250W-4KN4:8422:1::699
+
+            if (cb_Qualcomm.Checked == false)
+            {
+                if(str_temp.Length == 6)
+                {
+                    temp.Lot = str_temp[0].Trim();
+                    temp.DCC = str_temp[1].Trim();
+                    temp.Device = str_temp[2].Trim();
+                    temp.DQTY = str_temp[3].Trim();// string.Format("{0:%D10}", str_temp[3]);
+                    temp.WQTY = str_temp[4].Trim();// string.Format("{0:%D5}", str_temp[4]);
+                    temp.AMKOR_ID = str_temp[5].Trim();// string.Format("{0:%D10}", str_temp[5]);
+                    //temp.CUST = str_temp[6].Trim();// string.Format("{0:D10}", str_temp[6]);
+                    temp.Wafer_ID = "";
+
+                    bool pass = false;
+
+                    pass = check_WaferReturnDuplicate(temp);
+
+                    if (pass == false)
+                    {
+                        if (cb_WaferReturnPrint.Checked == false)
+                            Frm_Print.Fnc_Print(temp, WaferReturnSEQNum, dgv_ReturnWafer.RowCount);
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (str_temp.Length == 7)
+                {
+                    temp.Lot = str_temp[0].Trim();
+                    temp.DCC = str_temp[1].Trim();
+                    temp.Device = str_temp[2].Trim();
+                    temp.DQTY = str_temp[3].Trim();// string.Format("{0:%D10}", str_temp[3]);
+                    temp.WQTY = str_temp[4].Trim();// string.Format("{0:%D5}", str_temp[4]);
+                    temp.AMKOR_ID = str_temp[5].Trim();// string.Format("{0:%D10}", str_temp[5]);
+                    temp.CUST = str_temp[6].Trim();// string.Format("{0:D10}", str_temp[6]);
+                    temp.Wafer_ID = "";
+
+                    bool pass = false;
+
+                    pass = check_WaferReturnDuplicate(temp);
+
+                    if (pass == false)
+                    {
+                        if (cb_WaferReturnPrint.Checked == false)
+                            Frm_Print.Fnc_Print(temp, WaferReturnSEQNum, dgv_ReturnWafer.RowCount);
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else //if (str_temp.Length == 8)
+                {
+                    temp.Lot = str_temp[0].Trim();
+                    temp.DCC = str_temp[1].Trim();
+                    temp.Device = str_temp[2].Trim();
+                    temp.DQTY = string.Format("{0:%D10}", str_temp[3].Trim());
+                    temp.WQTY = string.Format("{0:%D5}", str_temp[4].Trim());
+                    temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5].Trim());
+                    temp.CUST = string.Format("{0:D10}", str_temp[6].Trim());
+                    temp.Wafer_ID = temp.CUST == "379" ? "" : str_temp[7].Trim();
+
+                    bool pass = false;
+
+                    pass = check_WaferReturnDuplicate(temp);
+
+                    if (pass == false)
+                    {
+                        if (cb_WaferReturnPrint.Checked == false)
+                            Frm_Print.Fnc_Print(temp, WaferReturnSEQNum, dgv_ReturnWafer.RowCount);
+
+                        
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else
+            {
                 bool pass = false;
-
-                pass = check_WaferReturnDuplicate(temp);
+                temp = transCode(tb_WaferReturnScan.Text.ToUpper());
+                pass = check_QualcommWaferReturnDuplicate(ref temp);
 
                 if (pass == false)
                 {
                     if (cb_WaferReturnPrint.Checked == false)
                         Frm_Print.Fnc_Print(temp, WaferReturnSEQNum, dgv_ReturnWafer.RowCount);
-                }
-                else
-                {
 
+                    string res = Frm_Print.MakeQualcommLabel(tb_WaferReturnScan.Text.ToUpper());
+
+                    Frm_Print.QualcomSocket_MessageSend(res);
+                    Frm_Print.QualcomSocket_MessageSend(res);
+                    Frm_Print.QualcomSocket_MessageSend(res);
                 }
+
+
+
+
             }
 
         }
@@ -5693,16 +5782,160 @@ namespace Bank_Host
                 //   0         1         2     3      4          5     6     7            8                 9                  10                 11              12        13
                 // [SEQ],[DEVICE_NAME],[LOT],[DCC],[RETURN_QTY],[LOC],[SL],[REMARK],[SCAN_TIME_1st],[SACN_USER_NAME_1st],[SCAN_TIME_2nd],[SACN_USER_NAME_2nd],[AMKOR_ID],[CUST_CODE]
 
-                if (dgv_ReturnWafer.Rows[i].Cells[1].Value.ToString() == amkorLabel.Device)
+                if (dgv_ReturnWafer.Rows[i].Cells[1].Value.ToString() == amkorLabel.Device || amkorLabel.Device == null)
                 {
                     //FH513P005 - 03.01::FH513 - 2501 - P - C250W - 4KN4: 8422:1::699
                     if (dgv_ReturnWafer.Rows[i].Cells[2].Value.ToString() == amkorLabel.Lot)
                     {
-                        if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString() == "" ? "0" : dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString()) == (int.Parse(amkorLabel.DCC == "" ? "0" : amkorLabel.DCC)))
+                        if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString() == "" ? "0" : dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString()) == (int.Parse(amkorLabel.DCC == "" || amkorLabel.DCC == null ? "0" : amkorLabel.DCC)))
                         {
                             if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[4].Value.ToString()) == int.Parse(amkorLabel.DQTY))
                             {
-                                if (int.Parse(amkorLabel.CUST) == int.Parse(dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString()))
+                                if (int.Parse(amkorLabel.CUST == null ? dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString() : amkorLabel.CUST) == int.Parse(dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString()))
+                                {
+                                    isFail = false;
+                                    if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Blue)
+                                    {
+                                        res = true;
+                                        duplicate = true;
+
+
+                                        speech.SpeakAsync("중복");
+
+                                    }
+                                    else if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Yellow)        // 2차 검수
+                                    {
+                                        if (dgv_ReturnWafer.Rows[i].Cells[9].Value.ToString() == BankHost_main.strMESID)
+                                        {
+                                            speech.SpeakAsync("검수자 중복");
+
+                                        }
+                                        else
+                                        {
+                                            dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = i;
+                                            dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Blue;
+
+                                            dgv_ReturnWafer.Rows[i].Cells[10].Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                            dgv_ReturnWafer.Rows[i].Cells[11].Value = BankHost_main.strMESID;
+
+                                            dgv_ReturnWafer.Rows[i].Cells[12].Value = amkorLabel.AMKOR_ID;
+                                            res = false;
+                                            isFail = false;
+
+                                            string q = string.Format("update [TB_RETURN_WAFER] set [SCAN_TIME_2nd]='{0}',[SCAN_USER_NAME_2nd]='{1}', [AMKOR_ID]='{6}' where [DEVICE_NAME]='{2}' and [LOT]='{3}' and [DCC]='{4}' and [RETURN_QTY]={5}",
+                                                DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
+                                                BankHost_main.strMESID,
+                                                amkorLabel.Device,
+                                                amkorLabel.Lot,
+                                                amkorLabel.DCC,
+                                                int.Parse(amkorLabel.DQTY).ToString(),
+                                                amkorLabel.AMKOR_ID
+                                                );
+                                            run_sql_command(q);
+
+                                            int a = dgv_ReturnWafer.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[11].Value.ToString() != "").Count();
+
+                                            l_WaferReturnCount.Text = string.Format("{0} / {1}", a, dgv_ReturnWafer.RowCount);
+
+                                            speech.SpeakAsync(string.Format("{0}", dgv_ReturnWafer.Rows[i].Cells[0].Value));
+
+                                            InfoBoard.Set(dgv_ReturnWafer.Rows[i].Cells[0].Value.ToString(), Color.Yellow, Color.Blue);
+                                            InfoBoard.Show();
+
+                                            tb_WaferReturnScan.Focus();
+
+                                            WaferReturnSEQNum = int.Parse(dgv_ReturnWafer.Rows[i].Cells[0].Value.ToString());
+
+                                            if (a == dgv_ReturnWafer.RowCount)
+                                            {
+                                                speech.SpeakAsync(string.Format("{0} 라트 이차 검수 완료 되었습니다.", dgv_ReturnWafer.RowCount));
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        dgv_ReturnWafer.FirstDisplayedScrollingRowIndex = i;
+                                        dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+
+                                        dgv_ReturnWafer.Rows[i].Cells[8].Value = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                                        dgv_ReturnWafer.Rows[i].Cells[9].Value = BankHost_main.strMESID;
+
+                                        dgv_ReturnWafer.Rows[i].Cells[12].Value = amkorLabel.AMKOR_ID;
+                                        res = true;
+                                        isFail = false;
+
+                                        string q = string.Format("update [TB_RETURN_WAFER] set [SCAN_TIME_1st]='{0}',[SCAN_USER_NAME_1st]='{1}', [AMKOR_ID]='{6}' where [DEVICE_NAME]='{2}' and [LOT]='{3}' and [DCC]='{4}' and [RETURN_QTY]={5}",
+                                            DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"),
+                                            BankHost_main.strMESID,
+                                            amkorLabel.Device,
+                                            amkorLabel.Lot,
+                                            amkorLabel.DCC,
+                                            int.Parse(amkorLabel.DQTY).ToString(),
+                                            amkorLabel.AMKOR_ID
+                                            );
+                                        run_sql_command(q);
+
+                                        int a = dgv_ReturnWafer.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[9].Value.ToString() != "").Count();
+
+                                        l_WaferReturnCount.Text = string.Format("{0} / {1}", a, dgv_ReturnWafer.RowCount);
+
+                                        speech.SpeakAsync(string.Format("{0}", dgv_ReturnWafer.Rows[i].Cells[0].Value));
+
+                                        InfoBoard.Set(dgv_ReturnWafer.Rows[i].Cells[0].Value.ToString(), Color.Yellow, Color.Blue);
+                                        InfoBoard.Show();
+
+                                        tb_WaferReturnScan.Focus();
+
+                                        if (a == dgv_ReturnWafer.RowCount)
+                                        {
+                                            speech.SpeakAsync(string.Format("{0} 라트 일차 검수 완료 되었습니다.", dgv_ReturnWafer.RowCount));
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (isFail == true)
+            {
+                speech.SpeakAsync("잘 못된 라트 입니다.");
+                res = true;
+
+                if (duplicate == true)
+                {
+                    Form_Board _Board = new Form_Board("Validation fail", Color.Black, Color.Red);
+                    _Board.ShowDialog();
+                }
+            }
+
+            return res;
+        }
+
+        public bool check_QualcommWaferReturnDuplicate(ref stAmkor_Label amkorLabel)
+        {
+            bool res = false;
+            bool duplicate = false;
+            bool isFail = true;
+
+            for (int i = 0; i < dgv_ReturnWafer.RowCount; i++)
+            {
+                //   0         1         2     3      4          5     6     7            8                 9                  10                 11              12        13
+                // [SEQ],[DEVICE_NAME],[LOT],[DCC],[RETURN_QTY],[LOC],[SL],[REMARK],[SCAN_TIME_1st],[SACN_USER_NAME_1st],[SCAN_TIME_2nd],[SACN_USER_NAME_2nd],[AMKOR_ID],[CUST_CODE]
+
+                if (dgv_ReturnWafer.Rows[i].Cells[1].Value.ToString() == amkorLabel.Device || amkorLabel.Device == null)
+                {
+                    //FH513P005 - 03.01::FH513 - 2501 - P - C250W - 4KN4: 8422:1::699
+                    if (dgv_ReturnWafer.Rows[i].Cells[2].Value.ToString() == amkorLabel.Lot)
+                    {
+                        if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString() == "" ? "0" : dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString()) == (int.Parse(amkorLabel.DCC == "" || amkorLabel.DCC == null ? "0" : amkorLabel.DCC)))
+                        {
+                            if (int.Parse(dgv_ReturnWafer.Rows[i].Cells[4].Value.ToString()) == int.Parse(amkorLabel.DQTY))
+                            {
+                                if (int.Parse(amkorLabel.CUST == null ? dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString() : amkorLabel.CUST) == int.Parse(dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString()))
                                 {
                                     isFail = false;
                                     if (dgv_ReturnWafer.Rows[i].DefaultCellStyle.BackColor == Color.Blue)
@@ -5761,6 +5994,11 @@ namespace Bank_Host
                                             {
                                                 speech.SpeakAsync(string.Format("{0} 라트 이차 검수 완료 되었습니다.", dgv_ReturnWafer.RowCount));
                                             }
+
+                                            amkorLabel.AMKOR_ID = dgv_ReturnWafer.Rows[i].Cells[12].Value.ToString();
+                                            amkorLabel.CUST = dgv_ReturnWafer.Rows[i].Cells[13].Value.ToString();
+                                            amkorLabel.DCC = dgv_ReturnWafer.Rows[i].Cells[3].Value.ToString();
+                                            amkorLabel.WQTY = dgv_ReturnWafer.Rows[i].Cells[4].Value.ToString();
                                         }
                                         break;
                                     }
@@ -12997,7 +13235,7 @@ namespace Bank_Host
             tb_WaferReturnScan.Focus();
         }
 
-        private void transCode(string msg)
+        private stAmkor_Label transCode(string msg)
         {
             string[] temp = msg.Split(',');
             stAmkor_Label codeInfo = new stAmkor_Label();
@@ -13029,26 +13267,24 @@ namespace Bank_Host
                     else if (temp[i].Substring(0, 3) == "30T")
                         codeInfo.Wafer_ID = temp[i].Substring(3, temp[i].Length - 3);
                     else if (temp[i].Substring(0, 3) == "10D")
-                        codeInfo.DCC = temp[i].Substring(3, temp[i].Length - 3);
+                    { }//codeInfo.DCC = temp[i].Substring(3, temp[i].Length - 3);
                     else if (temp[i].Substring(0, 3) == "14D")
                     { }// codeInfo.Exp = temp[i].Substring(3, temp[i].Length - 3);
                     else if (temp[i].Substring(0, 1) == "Q")
-                        codeInfo.WQTY = temp[i].Substring(1, temp[i].Length - 1);
+                        codeInfo.DQTY = temp[i].Substring(1, temp[i].Length - 1);
                     else if (temp[i].Substring(0, 1) == "P")
-                    { }// MCN = temp[i].Substring(1, temp[i].Length - 1);
-                }
-            }
+                        codeInfo.Device = temp[i].Substring(1, temp[i].Length - 1);// MCN = temp[i].Substring(1, temp[i].Length - 1);
+                            }
+                        }
 
-            bool pass = check_WaferReturnDuplicate(codeInfo);
+            //bool pass = check_WaferReturnDuplicate(codeInfo);
 
-            if(pass == true)
-            {
-                string res = Frm_Print.MakeQualcommLabel(tb_WaferReturnScan.Text.ToUpper());
+            //if(pass == false)
+            //{
+            
+            //}
 
-                Frm_Print.QualcomSocket_MessageSend(res);
-                Frm_Print.QualcomSocket_MessageSend(res);
-                Frm_Print.QualcomSocket_MessageSend(res);
-            }
+            return codeInfo;
         }
 
 
@@ -13084,7 +13320,8 @@ namespace Bank_Host
                 }
                 else if(cb_Qualcomm.Checked == true)
                 {
-                    transCode(tb_WaferReturnScan.Text.ToUpper());
+                    //transCode(tb_WaferReturnScan.Text.ToUpper());
+                    WaferReturn_label_Print_Process(tb_WaferReturnScan.Text.ToUpper(), 1);
                 }
 
                 tb_WaferReturnScan.Text = "";
