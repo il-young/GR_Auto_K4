@@ -884,8 +884,11 @@ namespace Bank_Host
                                     //strResult = Read_Bcr.result;
                                     if(Splitdata.Count > Properties.Settings.Default.SplitWLabel)
                                     {
-                                        for(int i = 0; i < Frm_Sort.GetQualcomSplitCopys(); i++)
+                                        for (int i = 0; i < Frm_Sort.GetQualcomSplitCopys(); i++)
+                                        {
+                                            speech.SpeakAsync("스플릿 라벨 출력");
                                             PrintSplit(Splitdata);
+                                        }
                                         
                                     }
                                     else
