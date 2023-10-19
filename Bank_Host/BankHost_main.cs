@@ -1142,13 +1142,13 @@ namespace Bank_Host
             for(int i = 0; i < SplitData.Count; i++)
             {
                 PrintCode += $"^FO20,{(i== 0 ?  105 : 105 + i*110)} ^FD{SplitData[i].Device} ^CF0,25 ^FS";
-                PrintCode += $"^FO260,{(i== 0 ? 85 : 85 + i * 110)} ^FD{SplitData[i].Lot.PadRight(20)} ^CF0,25 ^FS";
-                PrintCode += $"^FO260,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Lot_Dcc.PadRight(5)} ^CF0,25 ^FS";
+                PrintCode += $"^FO260,{(i== 0 ? 85 : 85 + i * 110)} ^FD{SplitData[i].Lot} ^CF0,25 ^FS";
+                PrintCode += $"^FO260,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Lot_Dcc} ^CF0,25 ^FS";
 
                 PrintCode += $"^FO645,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Rcv_Qty} ^CF0,25 ^FS";
                 PrintCode += $"^FO790,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Default_WQty} ^CF0,25 ^FS";
 
-                bcrdata = $"{SplitData[i].Lot}:{ SplitData[i].Lot_Dcc}:{ SplitData[i].Device}:{ Convert.ToString(SplitData[i].Rcv_Qty).PadLeft(10, '0')}:{ Convert.ToString(SplitData[i].Default_WQty).PadLeft(5, '0')}:{ SplitData[i].Amkorid}:{Convert.ToString(BankHost_main.strWork_Cust).PadLeft(5, '0')}";
+                bcrdata = $"{SplitData[i].Lot.PadRight(20)}:{ SplitData[i].Lot_Dcc.PadRight(5)}:{ SplitData[i].Device.PadRight(20)}:{ Convert.ToString(SplitData[i].Rcv_Qty).PadLeft(10, '0')}:{ Convert.ToString(SplitData[i].Default_WQty).PadLeft(5, '0')}:{ SplitData[i].Amkorid.PadLeft(10, '0')}:{Convert.ToString(BankHost_main.strWork_Cust).PadLeft(5, '0')}";
 
                 PrintCode += $"^FO880,{(i == 0 ? 70 : 70 + i * 110)} ^BX,3,200 ^FD{bcrdata} ^FS";
             }
