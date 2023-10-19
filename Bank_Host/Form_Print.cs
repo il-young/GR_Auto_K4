@@ -910,8 +910,8 @@ namespace Bank_Host
             string strData3 = string.Format("DEVICE : {0}", AmkorBarcode.Device);
             strLine3 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 110 + Properties.Settings.Default.PrintOffsetY, strData3);
 
-            string strData6 = string.Format("WAFER LOT NO : {0}", AmkorBarcode.Wafer_ID);
-            strLine6 = string.Format("^FO {0},{1}^AON,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData6);
+            //string strData6 = string.Format("WAFER LOT NO : {0}", AmkorBarcode.Wafer_ID);
+            //strLine6 = string.Format("^FO {0},{1}^AON,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData6);
             //string strData4 = string.Format("RCV-DATE : {0}     BILL# : {1}", AmkorBarcode.strRcvdate, AmkorBarcode.strBillNo);
             //strLine4 = string.Format("^FO 20,145^ADN,18,10^FD{0}^FS", strData4);
 
