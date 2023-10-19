@@ -1142,8 +1142,8 @@ namespace Bank_Host
             for(int i = 0; i < SplitData.Count; i++)
             {
                 PrintCode += $"^FO20,{(i== 0 ?  105 : 105 + i*110)} ^FD{SplitData[i].Device} ^CF0,25 ^FS";
-                PrintCode += $"^FO260,{(i== 0 ? 85 : 85 + i * 110)} ^FD{SplitData[i].Lot} ^CF0,25 ^FS";
-                PrintCode += $"^FO260,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Lot_Dcc} ^CF0,25 ^FS";
+                PrintCode += $"^FO260,{(i== 0 ? 85 : 85 + i * 110)} ^FD{SplitData[i].Lot.PadRight(20)} ^CF0,25 ^FS";
+                PrintCode += $"^FO260,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Lot_Dcc.PadRight(5)} ^CF0,25 ^FS";
 
                 PrintCode += $"^FO645,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Rcv_Qty} ^CF0,25 ^FS";
                 PrintCode += $"^FO790,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Default_WQty} ^CF0,25 ^FS";

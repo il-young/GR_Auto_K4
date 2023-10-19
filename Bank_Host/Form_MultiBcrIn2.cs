@@ -356,9 +356,18 @@ namespace Bank_Host
                         strMakeBcr[i] = "";
                     }
 
-                    strMakeBcr[0] = textBox_device.Text;
-                    strMakeBcr[1] = textBox_lot.Text;
-                    strMakeBcr[3] = textBox_wftqty.Text;
+                    if (BankHost_main.strCustName.Contains("AMS") == true)
+                    {
+                        strMakeBcr[0] = "P" + textBox_device.Text.Remove(textBox_device.Text.Length-1 , 1);
+                        strMakeBcr[1] = "1T" + textBox_lot.Text;
+                        strMakeBcr[3] = "WQ" + textBox_wftqty.Text;
+                    }
+                    else
+                    {
+                        strMakeBcr[0] = textBox_device.Text;
+                        strMakeBcr[1] = textBox_lot.Text;
+                        strMakeBcr[3] = textBox_wftqty.Text;
+                    }
 
                     string strSperator = BankHost_main.strWork_SPR;
 

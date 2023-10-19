@@ -6989,31 +6989,40 @@ namespace Bank_Host
                             {
                                 string strBarcode = strSplit_Bcr[n];
 
-                                if (strBarcode.Substring(0, 2) == "1T")
+                                if (strBarcode != "")
                                 {
-                                    //strWaferID = strBarcode;
-                                    bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
-                                    bcr.Lot = bcr.Lot.Trim();
-                                }
-                                else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
-                                {
-                                    bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
-                                    bcr.Device = bcr.Device.Trim();
-                                }
-                                else if (strBarcode.Substring(0, 1) == "Q")
-                                {
-                                    bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
-                                    bcr.DieQty = bcr.DieQty.Trim();
-                                }
-                                else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
-                                {
-                                    bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
-                                    bcr.Device = bcr.Device.Trim();
-                                }
+                                    if (strBarcode.Substring(0, 2) == "1T")
+                                    {
+                                        //strWaferID = strBarcode;
+                                        bcr.Lot = strBarcode.Substring(2, strBarcode.Length - 2);
+                                        bcr.Lot = bcr.Lot.Trim();
+                                    }
+                                    else if (strBarcode.Substring(0, 1) == "P" && strBcrType == "CODE128")
+                                    {
+                                        bcr.Device = strBarcode.Substring(1, strBarcode.Length - 1);
+                                        bcr.Device = bcr.Device.Trim();
+                                    }
+                                    else if (strBarcode.Substring(0, 1) == "Q")
+                                    {
+                                        bcr.DieQty = strBarcode.Substring(1, strBarcode.Length - 1);
+                                        bcr.DieQty = bcr.DieQty.Trim();
+                                    }
+                                    else if (strBarcode.Substring(0, 2) == "WQ" && BankHost_main.strCustName.Contains("AMS") == true)
+                                    {
+                                        bcr.WfrQty = strBarcode.Substring(2, strBarcode.Length - 2);
+                                        bcr.WfrQty = bcr.WfrQty.Trim();
+                                    }
+                                    else if (strBarcode.Substring(0, 3) == "P30" && strBcrType == "CODE39")
+                                    {
+                                        bcr.Device = strBarcode.Substring(3, strBarcode.Length - 3);
+                                        bcr.Device = bcr.Device.Trim();
+                                    }
+                                    
 
-                                if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
-                                {
-                                    strID = strBarcode;
+                                    if (strUdigit[1] == strBarcode.Substring(0, strUdigit.Length))
+                                    {
+                                        strID = strBarcode;
+                                    }
                                 }
                             }
                         }
@@ -7116,7 +7125,7 @@ namespace Bank_Host
 
             nValWfrQty = BankHost_main.Host.Host_Get_BcrRead_Wfrcount(BankHost_main.strEqid, bcr.Lot);
 
-            if (bcr.DieQty == "" || bcr.Lot == "")
+            if ((bcr.DieQty == "" || bcr.Lot == "") && (bcr.WfrQty == "" || bcr.Lot == ""))
                 return null;
 
             int nDieTTL = 0, nWfrTTL = 0;
@@ -7145,7 +7154,7 @@ namespace Bank_Host
                 strFileName_Device = strExcutionPath + "\\Work\\" + strWorkFileName + "\\" + bcr.Device + "\\" + bcr.Device;
             }
 
-            int nQty = Int32.Parse(bcr.DieQty);
+            int nQty = Int32.Parse(bcr.DieQty == "" ? "0" : bcr.DieQty);
 
             bcr.DieTTL = nDieTTL.ToString();
             bcr.WfrTTL = nWfrTTL.ToString();
