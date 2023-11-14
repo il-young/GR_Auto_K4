@@ -5708,7 +5708,7 @@ namespace Bank_Host
                     temp.WQTY = string.Format("{0:%D5}", str_temp[4].Trim());
                     temp.AMKOR_ID = string.Format("{0:%D10}", str_temp[5].Trim());
                     temp.CUST = string.Format("{0:D10}", str_temp[6].Trim());
-                    temp.Wafer_ID = temp.CUST == "379" ? "" : str_temp[7].Trim();
+                    temp.Wafer_ID = temp.CUST == "00379" ? "" : str_temp[7].Trim();
 
                     bool pass = false;
 
@@ -10499,7 +10499,7 @@ namespace Bank_Host
 
                             sqlstr = string.Format("Set IDENTITY_INSERT TB_SCRAP2 ON; Insert into TB_SCRAP2 " +
                                 "(No,[DATE],[REQUEST],[CUST],[DEVICE],[P_D_L],[LOT],[DIE],[WAFER],[LOCATION],[REQUEST_ON],[REQUEST_BY],[CERITIFICATE],[1ST],[2ND],[3RD]) " +
-                                "values({0},getdate(),'{1}','','') Set IDENTITY_INSERT TB_SCRAP2 OFF;", next_no++, datastr);
+                                "values({0},GETDATE(),{1}'','','') Set IDENTITY_INSERT TB_SCRAP2 OFF;", next_no++, datastr);
                             run_sql_command(sqlstr);
                         }
                     }
@@ -10728,7 +10728,7 @@ namespace Bank_Host
         string file_path = "";
         string file_name = "";
         string sScrapFileDIR = System.Windows.Forms.Application.StartupPath + "\\SCRAP";
-        bool bDownloadComp = true;
+        bool bDownloadComp = false;
 
 
         private void ScrapExcelDown()
@@ -13754,7 +13754,7 @@ namespace Bank_Host
             btn_WaferReturnExcel.Enabled = b;
 
 
-            bDownloadComp = true;
+            bDownloadComp = false;
             tb_WaferReturnScan.ImeMode = ImeMode.Alpha;
 
 
