@@ -3762,6 +3762,10 @@ namespace Bank_Host
 
 
             }
+            else if(n ==10)
+            {
+                bDownloadComp = true;
+            }
         }
 
         public void Fnc_Find(string strSearch)
@@ -13754,7 +13758,6 @@ namespace Bank_Host
             btn_WaferReturnExcel.Enabled = b;
 
 
-            bDownloadComp = false;
             tb_WaferReturnScan.ImeMode = ImeMode.Alpha;
 
 
