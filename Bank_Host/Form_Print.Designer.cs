@@ -30,6 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tb_rQTY = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.tb_rId = new System.Windows.Forms.TextBox();
+            this.tb_WSN = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tb_QualcommPrinter = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -81,6 +87,12 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBox_receivedata = new System.Windows.Forms.TextBox();
             this.label_state = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btn_returnLabel = new System.Windows.Forms.Button();
+            this.tb_returnQTY = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tb_reelDCC = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -94,6 +106,12 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGreen;
+            this.panel1.Controls.Add(this.tb_rQTY);
+            this.panel1.Controls.Add(this.label19);
+            this.panel1.Controls.Add(this.tb_rId);
+            this.panel1.Controls.Add(this.tb_WSN);
+            this.panel1.Controls.Add(this.label17);
+            this.panel1.Controls.Add(this.label18);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Controls.Add(this.label13);
@@ -130,14 +148,74 @@
             this.panel1.Size = new System.Drawing.Size(1200, 433);
             this.panel1.TabIndex = 0;
             // 
+            // tb_rQTY
+            // 
+            this.tb_rQTY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_rQTY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_rQTY.Location = new System.Drawing.Point(705, 275);
+            this.tb_rQTY.Name = "tb_rQTY";
+            this.tb_rQTY.Size = new System.Drawing.Size(161, 43);
+            this.tb_rQTY.TabIndex = 21;
+            this.tb_rQTY.Text = "1000";
+            // 
+            // label19
+            // 
+            this.label19.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label19.Location = new System.Drawing.Point(706, 227);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(160, 50);
+            this.label19.TabIndex = 20;
+            this.label19.Text = "R/QTY :";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tb_rId
+            // 
+            this.tb_rId.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_rId.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_rId.Location = new System.Drawing.Point(705, 181);
+            this.tb_rId.Name = "tb_rId";
+            this.tb_rId.Size = new System.Drawing.Size(161, 43);
+            this.tb_rId.TabIndex = 18;
+            this.tb_rId.Text = "123456";
+            // 
+            // tb_WSN
+            // 
+            this.tb_WSN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_WSN.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tb_WSN.Location = new System.Drawing.Point(372, 369);
+            this.tb_WSN.Name = "tb_WSN";
+            this.tb_WSN.Size = new System.Drawing.Size(161, 43);
+            this.tb_WSN.TabIndex = 19;
+            this.tb_WSN.Text = "6996266804";
+            // 
+            // label17
+            // 
+            this.label17.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label17.Location = new System.Drawing.Point(706, 133);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(160, 50);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "R/ID :";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label18
+            // 
+            this.label18.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label18.Location = new System.Drawing.Point(348, 324);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(160, 50);
+            this.label18.TabIndex = 17;
+            this.label18.Text = "WSN :";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.White;
             this.groupBox2.Controls.Add(this.tb_QualcommPrinter);
             this.groupBox2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.groupBox2.Location = new System.Drawing.Point(407, 320);
+            this.groupBox2.Location = new System.Drawing.Point(594, 320);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(453, 94);
+            this.groupBox2.Size = new System.Drawing.Size(266, 94);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Qualcomm Printer";
@@ -213,6 +291,7 @@
             this.SecondPrintOffsetY.Size = new System.Drawing.Size(172, 43);
             this.SecondPrintOffsetY.TabIndex = 15;
             this.SecondPrintOffsetY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.SecondPrintOffsetY.ValueChanged += new System.EventHandler(this.SecondPrintOffsetY_ValueChanged);
             // 
             // label16
             // 
@@ -297,7 +376,7 @@
             // label13
             // 
             this.label13.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label13.Location = new System.Drawing.Point(400, 266);
+            this.label13.Location = new System.Drawing.Point(348, 266);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(160, 50);
             this.label13.TabIndex = 12;
@@ -307,7 +386,7 @@
             // OffsetY
             // 
             this.OffsetY.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.OffsetY.Location = new System.Drawing.Point(566, 271);
+            this.OffsetY.Location = new System.Drawing.Point(514, 271);
             this.OffsetY.Minimum = new decimal(new int[] {
             100,
             0,
@@ -322,7 +401,7 @@
             // label12
             // 
             this.label12.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label12.Location = new System.Drawing.Point(400, 217);
+            this.label12.Location = new System.Drawing.Point(348, 217);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(160, 50);
             this.label12.TabIndex = 10;
@@ -332,9 +411,14 @@
             // OffsetX
             // 
             this.OffsetX.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.OffsetX.Location = new System.Drawing.Point(566, 222);
+            this.OffsetX.Location = new System.Drawing.Point(514, 222);
+            this.OffsetX.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.OffsetX.Minimum = new decimal(new int[] {
-            100,
+            1000,
             0,
             0,
             -2147483648});
@@ -356,7 +440,7 @@
             // 
             this.textBox_dcc.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_dcc.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_dcc.Location = new System.Drawing.Point(169, 123);
+            this.textBox_dcc.Location = new System.Drawing.Point(151, 123);
             this.textBox_dcc.Name = "textBox_dcc";
             this.textBox_dcc.Size = new System.Drawing.Size(141, 43);
             this.textBox_dcc.TabIndex = 3;
@@ -367,9 +451,9 @@
             // 
             this.textBox_coo.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_coo.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_coo.Location = new System.Drawing.Point(169, 371);
+            this.textBox_coo.Location = new System.Drawing.Point(151, 371);
             this.textBox_coo.Name = "textBox_coo";
-            this.textBox_coo.Size = new System.Drawing.Size(227, 43);
+            this.textBox_coo.Size = new System.Drawing.Size(189, 43);
             this.textBox_coo.TabIndex = 5;
             this.textBox_coo.Text = "XX";
             this.textBox_coo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_rvcdate_KeyPress);
@@ -378,9 +462,9 @@
             // 
             this.textBox_wfrLot.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_wfrLot.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_wfrLot.Location = new System.Drawing.Point(169, 322);
+            this.textBox_wfrLot.Location = new System.Drawing.Point(151, 322);
             this.textBox_wfrLot.Name = "textBox_wfrLot";
-            this.textBox_wfrLot.Size = new System.Drawing.Size(227, 43);
+            this.textBox_wfrLot.Size = new System.Drawing.Size(189, 43);
             this.textBox_wfrLot.TabIndex = 5;
             this.textBox_wfrLot.Text = "XXXXX";
             this.textBox_wfrLot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_rvcdate_KeyPress);
@@ -389,9 +473,9 @@
             // 
             this.textBox_LotType.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_LotType.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_LotType.Location = new System.Drawing.Point(169, 273);
+            this.textBox_LotType.Location = new System.Drawing.Point(151, 273);
             this.textBox_LotType.Name = "textBox_LotType";
-            this.textBox_LotType.Size = new System.Drawing.Size(227, 43);
+            this.textBox_LotType.Size = new System.Drawing.Size(189, 43);
             this.textBox_LotType.TabIndex = 5;
             this.textBox_LotType.Text = "PR";
             this.textBox_LotType.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_rvcdate_KeyPress);
@@ -400,9 +484,9 @@
             // 
             this.textBox_rvcdate.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_rvcdate.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_rvcdate.Location = new System.Drawing.Point(169, 224);
+            this.textBox_rvcdate.Location = new System.Drawing.Point(151, 224);
             this.textBox_rvcdate.Name = "textBox_rvcdate";
-            this.textBox_rvcdate.Size = new System.Drawing.Size(227, 43);
+            this.textBox_rvcdate.Size = new System.Drawing.Size(189, 43);
             this.textBox_rvcdate.TabIndex = 5;
             this.textBox_rvcdate.Text = "2020/09/23";
             this.textBox_rvcdate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_rvcdate_KeyPress);
@@ -411,9 +495,9 @@
             // 
             this.textBox_device.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_device.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_device.Location = new System.Drawing.Point(169, 173);
+            this.textBox_device.Location = new System.Drawing.Point(151, 173);
             this.textBox_device.Name = "textBox_device";
-            this.textBox_device.Size = new System.Drawing.Size(227, 43);
+            this.textBox_device.Size = new System.Drawing.Size(189, 43);
             this.textBox_device.TabIndex = 4;
             this.textBox_device.Text = "4HD8-BASE-TR1C";
             this.textBox_device.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_device_KeyPress);
@@ -422,9 +506,9 @@
             // 
             this.textBox_lotno.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_lotno.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_lotno.Location = new System.Drawing.Point(169, 73);
+            this.textBox_lotno.Location = new System.Drawing.Point(151, 73);
             this.textBox_lotno.Name = "textBox_lotno";
-            this.textBox_lotno.Size = new System.Drawing.Size(227, 43);
+            this.textBox_lotno.Size = new System.Drawing.Size(189, 43);
             this.textBox_lotno.TabIndex = 2;
             this.textBox_lotno.Text = "DH220P204-05";
             this.textBox_lotno.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_lotno_KeyPress);
@@ -433,7 +517,7 @@
             // 
             this.textBox_amkorid.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_amkorid.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_amkorid.Location = new System.Drawing.Point(566, 171);
+            this.textBox_amkorid.Location = new System.Drawing.Point(514, 171);
             this.textBox_amkorid.Name = "textBox_amkorid";
             this.textBox_amkorid.Size = new System.Drawing.Size(161, 43);
             this.textBox_amkorid.TabIndex = 8;
@@ -444,7 +528,7 @@
             // 
             this.textBox_billno.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_billno.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_billno.Location = new System.Drawing.Point(566, 120);
+            this.textBox_billno.Location = new System.Drawing.Point(514, 120);
             this.textBox_billno.Name = "textBox_billno";
             this.textBox_billno.Size = new System.Drawing.Size(161, 43);
             this.textBox_billno.TabIndex = 8;
@@ -455,7 +539,7 @@
             // 
             this.textBox_wfrqty.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_wfrqty.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_wfrqty.Location = new System.Drawing.Point(566, 70);
+            this.textBox_wfrqty.Location = new System.Drawing.Point(514, 70);
             this.textBox_wfrqty.Name = "textBox_wfrqty";
             this.textBox_wfrqty.Size = new System.Drawing.Size(161, 43);
             this.textBox_wfrqty.TabIndex = 7;
@@ -466,7 +550,7 @@
             // 
             this.textBox_dieqty.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_dieqty.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_dieqty.Location = new System.Drawing.Point(566, 20);
+            this.textBox_dieqty.Location = new System.Drawing.Point(514, 20);
             this.textBox_dieqty.Name = "textBox_dieqty";
             this.textBox_dieqty.Size = new System.Drawing.Size(161, 43);
             this.textBox_dieqty.TabIndex = 6;
@@ -476,7 +560,7 @@
             // label11
             // 
             this.label11.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label11.Location = new System.Drawing.Point(3, 364);
+            this.label11.Location = new System.Drawing.Point(-14, 364);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(160, 50);
             this.label11.TabIndex = 0;
@@ -487,7 +571,7 @@
             // 
             this.textBox_cust.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBox_cust.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox_cust.Location = new System.Drawing.Point(169, 23);
+            this.textBox_cust.Location = new System.Drawing.Point(151, 23);
             this.textBox_cust.Name = "textBox_cust";
             this.textBox_cust.Size = new System.Drawing.Size(141, 43);
             this.textBox_cust.TabIndex = 1;
@@ -497,17 +581,17 @@
             // label10
             // 
             this.label10.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label10.Location = new System.Drawing.Point(3, 315);
+            this.label10.Location = new System.Drawing.Point(-14, 315);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(160, 50);
             this.label10.TabIndex = 0;
-            this.label10.Text = "WFR LOT# :";
+            this.label10.Text = "WFR LOT :";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label_dcc
             // 
             this.label_dcc.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label_dcc.Location = new System.Drawing.Point(3, 116);
+            this.label_dcc.Location = new System.Drawing.Point(-14, 116);
             this.label_dcc.Name = "label_dcc";
             this.label_dcc.Size = new System.Drawing.Size(160, 50);
             this.label_dcc.TabIndex = 0;
@@ -517,7 +601,7 @@
             // label9
             // 
             this.label9.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label9.Location = new System.Drawing.Point(3, 266);
+            this.label9.Location = new System.Drawing.Point(-14, 266);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(160, 50);
             this.label9.TabIndex = 0;
@@ -527,7 +611,7 @@
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label5.Location = new System.Drawing.Point(400, 164);
+            this.label5.Location = new System.Drawing.Point(348, 164);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(160, 50);
             this.label5.TabIndex = 0;
@@ -537,27 +621,27 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label4.Location = new System.Drawing.Point(3, 217);
+            this.label4.Location = new System.Drawing.Point(-14, 217);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 50);
             this.label4.TabIndex = 0;
-            this.label4.Text = "RCV-DATE :";
+            this.label4.Text = "R/D :";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label8.Location = new System.Drawing.Point(400, 113);
+            this.label8.Location = new System.Drawing.Point(348, 113);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(160, 50);
             this.label8.TabIndex = 0;
-            this.label8.Text = "BILL # :";
+            this.label8.Text = "B/L :";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label7.Location = new System.Drawing.Point(400, 63);
+            this.label7.Location = new System.Drawing.Point(348, 63);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(160, 50);
             this.label7.TabIndex = 0;
@@ -567,17 +651,17 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label3.Location = new System.Drawing.Point(3, 166);
+            this.label3.Location = new System.Drawing.Point(-14, 166);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(160, 50);
             this.label3.TabIndex = 0;
-            this.label3.Text = "DEVICE :";
+            this.label3.Text = "DEV# :";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label6.Location = new System.Drawing.Point(400, 13);
+            this.label6.Location = new System.Drawing.Point(348, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(160, 50);
             this.label6.TabIndex = 0;
@@ -587,7 +671,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(3, 66);
+            this.label2.Location = new System.Drawing.Point(-14, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(160, 50);
             this.label2.TabIndex = 0;
@@ -597,7 +681,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(3, 16);
+            this.label1.Location = new System.Drawing.Point(-14, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(160, 50);
             this.label1.TabIndex = 0;
@@ -673,6 +757,66 @@
             this.label_state.Text = "-";
             this.label_state.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 451);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 37);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "신규 라벨 Test";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btn_returnLabel
+            // 
+            this.btn_returnLabel.Location = new System.Drawing.Point(445, 451);
+            this.btn_returnLabel.Name = "btn_returnLabel";
+            this.btn_returnLabel.Size = new System.Drawing.Size(75, 37);
+            this.btn_returnLabel.TabIndex = 4;
+            this.btn_returnLabel.Text = "리턴 라벨";
+            this.btn_returnLabel.UseVisualStyleBackColor = true;
+            this.btn_returnLabel.Click += new System.EventHandler(this.btn_returnLabel_Click);
+            // 
+            // tb_returnQTY
+            // 
+            this.tb_returnQTY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_returnQTY.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.tb_returnQTY.Location = new System.Drawing.Point(359, 520);
+            this.tb_returnQTY.Name = "tb_returnQTY";
+            this.tb_returnQTY.Size = new System.Drawing.Size(161, 32);
+            this.tb_returnQTY.TabIndex = 23;
+            this.tb_returnQTY.Text = "5000";
+            // 
+            // label20
+            // 
+            this.label20.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.label20.Location = new System.Drawing.Point(356, 491);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(160, 26);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "Return QTY :";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tb_reelDCC
+            // 
+            this.tb_reelDCC.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_reelDCC.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.tb_reelDCC.Location = new System.Drawing.Point(361, 574);
+            this.tb_reelDCC.Name = "tb_reelDCC";
+            this.tb_reelDCC.Size = new System.Drawing.Size(161, 32);
+            this.tb_reelDCC.TabIndex = 25;
+            this.tb_reelDCC.Text = "01";
+            // 
+            // label21
+            // 
+            this.label21.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.label21.Location = new System.Drawing.Point(360, 556);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(160, 26);
+            this.label21.TabIndex = 24;
+            this.label21.Text = "Reel DCC :";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Form_Print
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -680,6 +824,12 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1225, 644);
             this.ControlBox = false;
+            this.Controls.Add(this.tb_reelDCC);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.tb_returnQTY);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.btn_returnLabel);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox_receivedata);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button_Close);
@@ -766,5 +916,17 @@
         private System.Windows.Forms.CheckBox cb_GreenLabelPrint;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox tb_QualcommPrinter;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox tb_rId;
+        private System.Windows.Forms.TextBox tb_WSN;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox tb_rQTY;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button btn_returnLabel;
+        private System.Windows.Forms.TextBox tb_returnQTY;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox tb_reelDCC;
+        private System.Windows.Forms.Label label21;
     }
 }

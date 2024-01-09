@@ -14298,6 +14298,13 @@ namespace Bank_Host
             Frm_Print.QualcomSocket_MessageSend("^XA^FO25,0^A0B,30,30^FDQualcomm^FS^FO60,0^BXN,4.5,200^FD1JUN144356508PAN10UCL,PCD90-PT675-3RN,1T000FK326DJT.K500#GG7Y72.QRS,30T17/18/19,10D2326,Q2167,14D10-07-2027^FS^FO260,-10^A0N,25,25^FD(1J)LPN: UN144356508PAN10UCL^FS^FO660,-10^A0N,25,25^FD(30T)Wafer ID(s): 17/18/19^FS^FO1010,-10^A0N,25,25^FD(10D)D/C: 2326^FS^FO260,60^A0N,25,25^FD(P)MCN: CD90-PT675-3RN^FS^FO660,60^A0N,25,25^FD(Q)Quantity: 2167^FS^FO860,60^A0N,25,25^FDDry Pack Exp: 10-07-2027^FS^FO260,130^A0,25,25^FD(1T)Lot Code: 000FK326DJT.K500#GG7Y72.QRS^FS^FO1060,130^A0N,25,25^FD1118^FS^XZ");
         }
 
+        private void button19_Click_2(object sender, EventArgs e)
+        {
+            var temp = Fnc_RunAsync("http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_auto_gr_rdy_list/K4");
+
+            string res = temp.Result;
+        }
+
         private void Split_data_sorting()
         {
             try
@@ -15186,5 +15193,6 @@ namespace Bank_Host
         public string strCoo = "";
         public string strOperator = "";
         public string strWSN = "";
+        public string strRID = "";
     }
 }

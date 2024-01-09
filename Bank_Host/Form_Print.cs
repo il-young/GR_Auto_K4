@@ -1777,6 +1777,341 @@ namespace Bank_Host
             }
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //Fnc_Print_Billinfo("AATPE2012193");
+            //return;
+
+            if (textBox_lotno.Text == "" || textBox_device.Text == "" || textBox_dieqty.Text == "" || textBox_wfrqty.Text == ""
+                || textBox_cust.Text == "" || textBox_rvcdate.Text == "" || textBox_billno.Text == "" || textBox_amkorid.Text == "")
+            {
+                MessageBox.Show("정보를 모두 입력 하여 주십시오!");
+                return;
+            }
+
+            int nType = BankHost_main.Host.Host_Get_PrintType(textBox_cust.Text);
+            //int nType = 1;
+
+            if (nType == 2)
+            {
+                if (textBox_LotType.Text == "")
+                {
+                    MessageBox.Show("해당 고객은 Lot Type 이 입력 되어야 합니다.");
+                    return;
+                }
+            }
+            else if (nType == 3)
+            {
+                if (textBox_LotType.Text == "" || textBox_wfrLot.Text == "")
+                {
+                    MessageBox.Show("해당 고객은 Lot Type과 Wafer Lot # 가 입력 되어야 합니다.");
+                    return;
+                }
+            }
+            else if (nType == 4)
+            {
+                if (textBox_coo.Text == "")
+                {
+                    MessageBox.Show("해당 고객은 COO 가 입력 되어야 합니다.");
+                    return;
+                }
+            }
+
+            AmkorBcrInfo AmkorBarcode = new AmkorBcrInfo();
+
+            int nIndex = 1, nttl = 1;
+
+            AmkorBarcode.strLotNo = textBox_lotno.Text;
+            AmkorBarcode.strDevice = textBox_device.Text;
+            AmkorBarcode.strDieQty = textBox_dieqty.Text;
+            AmkorBarcode.strDiettl = textBox_dieqty.Text;
+            AmkorBarcode.strWfrQty = textBox_wfrqty.Text;
+            AmkorBarcode.strWfrttl = textBox_wfrqty.Text;
+            AmkorBarcode.strAmkorid = textBox_amkorid.Text;
+            AmkorBarcode.strCust = textBox_cust.Text;
+            AmkorBarcode.strRcvdate = textBox_rvcdate.Text;
+            AmkorBarcode.strBillNo = textBox_billno.Text;
+            AmkorBarcode.strLotDcc = textBox_dcc.Text;
+            AmkorBarcode.strLotType = textBox_LotType.Text;
+            AmkorBarcode.strWaferLotNo = textBox_wfrLot.Text;
+            AmkorBarcode.strCoo = textBox_coo.Text;
+            AmkorBarcode.strWSN = tb_WSN.Text;
+            AmkorBarcode.strRID = tb_rId.Text;
+            AmkorBarcode.strOperator = "";
+
+            string strCovert_cust = AmkorBarcode.strCust.PadLeft(5, '0');
+            string strCovert_amkorid = AmkorBarcode.strAmkorid.PadLeft(10, '0');
+            string strCovert_dcc = "";
+            string strCovert_dieqty = "";
+            Form_Sort.stAmkor_Label temp = new Form_Sort.stAmkor_Label();
+
+            string strCovert_wfrqty = "";
+
+            if (BankHost_main.nScanMode == 1)
+            {
+                strCovert_wfrqty = temp.WQTY;
+            }
+            else
+            {
+                strCovert_wfrqty = temp.WQTY;
+            }
+
+            strCovert_dieqty = temp.DQTY;
+
+
+            string strLine1 = "", strLine2 = "", strLine3 = "", strLine4 = "", strLine5 = "", strLine6 = "";
+
+            string strwfrqty = "";
+
+            AmkorBarcode.strCust = textBox_cust.Text;
+            AmkorBarcode.strDieQty = textBox_dieqty.Text;
+            AmkorBarcode.strWaferLotNo = textBox_wfrLot.Text;
+            AmkorBarcode.strWfrQty = textBox_wfrqty.Text;
+            AmkorBarcode.strAmkorid = textBox_cust.Text;
+            AmkorBarcode.strDevice = textBox_device.Text;
+            AmkorBarcode.strLotDcc = textBox_dcc.Text;
+            AmkorBarcode.strLotNo = textBox_lotno.Text;
+            AmkorBarcode.strLotType = textBox_LotType.Text;
+            AmkorBarcode.strRID = tb_rId.Text;
+            AmkorBarcode.strWSN = tb_WSN.Text;
+            AmkorBarcode.strBillNo = textBox_billno.Text;
+            AmkorBarcode.strCoo = textBox_coo.Text;
+            AmkorBarcode.strRcvdate = textBox_rvcdate.Text;
+
+
+
+            string strBarcodeInfo = $"{textBox_lotno.Text}:{textBox_dcc.Text}:{textBox_device.Text}:{textBox_dieqty.Text}:{textBox_wfrqty.Text}:{textBox_amkorid.Text}:{textBox_cust.Text}:{textBox_wfrLot.Text}:{tb_WSN.Text}:{tb_rId.Text}::{tb_rQTY.Text}";
+
+            string P_SC_1 = "^XA\r\n";
+            string P_SC_2 = "^BY,,10\r\n";
+            string P_SC_3 = string.Format("^FO {0},{1}\r\n", 690 + Properties.Settings.Default.PrintOffsetX, 10 + Properties.Settings.Default.PrintOffsetY);
+            string P_SC_4 = "^BQN,2,3\r\n";
+            string P_SC_5 = "^FDM," + strBarcodeInfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
+            string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\tR/QTY : {3}", AmkorBarcode.strCust, AmkorBarcode.strDiettl, textBox_wfrqty.Text, tb_rQTY.Text);
+            string strData1_2 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.strCust, AmkorBarcode.strDiettl, textBox_wfrqty.Text, nIndex.ToString(), nttl.ToString());
+
+            if (BankHost_main.nScanMode == 1)
+            {
+                strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
+            }
+            else
+            {
+                if (nIndex > 0 && nttl > 1)
+                {
+                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_2);
+                }
+                else
+                {
+                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
+                }
+            }
+
+            strLine1 += $"^FO{650 + Properties.Settings.Default.PrintOffsetX},{40 + Properties.Settings.Default.PrintOffsetY}^ A0N,80^FD*^FS";
+
+
+
+            string strData2 = "";
+            if (AmkorBarcode.strLotDcc != "")
+                strData2 = string.Format("LOT# : {0}  /  {1}", AmkorBarcode.strLotNo, AmkorBarcode.strLotDcc);
+            else
+                strData2 = string.Format("LOT# : {0}", AmkorBarcode.strLotNo);
+
+            strLine2 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 75 + Properties.Settings.Default.PrintOffsetY, strData2);
+
+            string strData3 = string.Format("DEV# : {0}", AmkorBarcode.strDevice);
+            strLine3 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 110 + Properties.Settings.Default.PrintOffsetY, strData3);
+
+            string strData4 = $"R/D : {AmkorBarcode.strRcvdate}";
+            string strbill = $"BILL : {AmkorBarcode.strBillNo}";
+            strLine4 = string.Format("^FO{0},{1}^ADN,18,10^FD{2}^FS", 580 + Properties.Settings.Default.PrintOffsetX, 205 + Properties.Settings.Default.PrintOffsetY, strData4);
+            strLine4 += string.Format("^FO{0},{1}^ADN,18,10^FD{2}^FS", 400 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strbill);
+
+            string strWSN = "";
+
+            string P_SC_END = "^XZ\r\n";
+
+            string dados = "";
+
+            nType = 3;
+
+            if (nType == 1)
+            {
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
+            }
+            else if (nType == 2)
+            {
+                string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
+                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
+
+                if (AmkorBarcode.strWSN == "")
+                    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
+                else
+                    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strWSN + strLine5;
+            }
+            else if (nType == 3)
+            {
+                if (AmkorBarcode.strCust == "948")
+                    AmkorBarcode.strLotType = "PROTO";
+                else if (AmkorBarcode.strCust == "575")
+                    AmkorBarcode.strLotType = "PRO";
+
+                string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
+                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData5);
+
+                string strData6 = $"^FO{17 + Properties.Settings.Default.PrintOffsetX},{175 + Properties.Settings.Default.PrintOffsetY}^ADN,18,10^FDWFR LOT : {textBox_wfrLot.Text}^FS";
+                string strwsn = $"^FO{400 + Properties.Settings.Default.PrintOffsetX},{175 + Properties.Settings.Default.PrintOffsetY}^ADN,18,10^FDWSN : {AmkorBarcode.strWSN}^FS";
+
+                string rid = $"^FO{17 + Properties.Settings.Default.PrintOffsetX},{205 + Properties.Settings.Default.PrintOffsetY}^ADN,18,10^FDR/ID : {AmkorBarcode.strRID}^FS";
+
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5 + strData6 + strwsn  + rid;
+            }
+            else if (nType == 4)
+            {
+                string strData5 = string.Format("COO : {0}", AmkorBarcode.strCoo);
+                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
+
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strLine5;
+            }
+            else
+            {
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
+            }
+
+            if (BankHost_main.strMultiLot == "YES")
+            {
+                if (nttl > 1)
+                {
+                    dados += string.Format("^FO600,130^A0,90,90^FD{0}/{1}", nIndex, nttl);
+                }
+            }
+
+            if (nttl > 1)
+                dados += string.Format("^FO {0},{1}^A0N,80 ^FD{2}/{3}", 760 - ((nttl.ToString().Length + nIndex.ToString().Length) * 35), 140, nIndex, nttl);
+
+            dados = dados + P_SC_END;
+
+            if (false == false || BankHost_main.strCustName == "")
+            {
+                Socket_MessageSend(dados);
+            }
+            else
+            {
+                if (Properties.Settings.Default.GreenLabelPrint == true)
+                {
+                    Socket_MessageSend(dados);
+                }
+                else
+                {
+                    speech.SpeakAsync("라벨 출력이 금지 되어 있습니다.             프린트 설정을 확인 하세요");
+                }
+            }
+        }
+
+        private void SecondPrintOffsetY_ValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btn_returnLabel_Click(object sender, EventArgs e)
+        {
+            AmkorBcrInfo AmkorBarcode = new AmkorBcrInfo();
+
+            int nIndex = 1, nttl = 1;
+
+            AmkorBarcode.strLotNo = textBox_lotno.Text;
+            AmkorBarcode.strDevice = textBox_device.Text;
+            AmkorBarcode.strDieQty = textBox_dieqty.Text;
+            AmkorBarcode.strDiettl = textBox_dieqty.Text;
+            AmkorBarcode.strWfrQty = textBox_wfrqty.Text;
+            AmkorBarcode.strWfrttl = textBox_wfrqty.Text;
+            AmkorBarcode.strAmkorid = textBox_amkorid.Text;
+            AmkorBarcode.strCust = textBox_cust.Text;
+            AmkorBarcode.strRcvdate = textBox_rvcdate.Text;
+            AmkorBarcode.strBillNo = textBox_billno.Text;
+            AmkorBarcode.strLotDcc = textBox_dcc.Text;
+            AmkorBarcode.strLotType = textBox_LotType.Text;
+            AmkorBarcode.strWaferLotNo = textBox_wfrLot.Text;
+            AmkorBarcode.strCoo = textBox_coo.Text;
+            AmkorBarcode.strWSN = tb_WSN.Text;
+            AmkorBarcode.strRID = tb_rId.Text;
+            AmkorBarcode.strOperator = "";
+
+            string strCovert_cust = AmkorBarcode.strCust.PadLeft(5, '0');
+            string strCovert_amkorid = AmkorBarcode.strAmkorid.PadLeft(10, '0');
+            string strCovert_dcc = "";
+            string strCovert_dieqty = "";
+            Form_Sort.stAmkor_Label temp = new Form_Sort.stAmkor_Label();
+
+            string strCovert_wfrqty = "";
+
+            if (BankHost_main.nScanMode == 1)
+            {
+                strCovert_wfrqty = temp.WQTY;
+            }
+            else
+            {
+                strCovert_wfrqty = temp.WQTY;
+            }
+
+            strCovert_dieqty = temp.DQTY;
+
+
+            string strLine1 = "", strLine2 = "", strLine3 = "", strLine4 = "", strLine5 = "", strLine6 = "";
+
+            string strwfrqty = "";
+
+            //AmkorBarcode.strCust = textBox_cust.Text;
+            //AmkorBarcode.strDieQty = textBox_dieqty.Text;
+            //AmkorBarcode.strWaferLotNo = textBox_wfrLot.Text;
+            //AmkorBarcode.strWfrQty = textBox_wfrqty.Text;
+            //AmkorBarcode.strAmkorid = textBox_cust.Text;
+            //AmkorBarcode.strDevice = textBox_device.Text;
+            //AmkorBarcode.strLotDcc = textBox_dcc.Text;
+            //AmkorBarcode.strLotNo = textBox_lotno.Text;
+            //AmkorBarcode.strLotType = textBox_LotType.Text;
+            //AmkorBarcode.strRID = tb_rId.Text;
+            //AmkorBarcode.strWSN = tb_WSN.Text;
+            //AmkorBarcode.strBillNo = textBox_billno.Text;
+            //AmkorBarcode.strCoo = textBox_coo.Text;
+            //AmkorBarcode.strRcvdate = textBox_rvcdate.Text;
+
+
+
+            string strBarcodeInfo = $"{textBox_lotno.Text}:{textBox_dcc.Text}:{textBox_device.Text}:{textBox_dieqty.Text}:{textBox_wfrqty.Text}:{textBox_amkorid.Text}:{textBox_cust.Text}:{textBox_wfrLot.Text}:{tb_WSN.Text}:{tb_rId.Text}::{tb_rQTY.Text}";
+
+            string P_SC_1 = "^XA\r\n" +
+                            $"^FO{10 + Properties.Settings.Default.PrintOffsetX},{10 + Properties.Settings.Default.PrintOffsetY} ^FR ^GB500,300,3 ^FS\r\n" +
+                            $"^FO{10 + Properties.Settings.Default.PrintOffsetX},{10 + Properties.Settings.Default.PrintOffsetY} ^FR ^GB130,130,3 ^FS\r\n" +
+                            $"^FO{140 + Properties.Settings.Default.PrintOffsetX},{57 + Properties.Settings.Default.PrintOffsetY} ^GB370,3,3 ^FS\r\n" +
+                            $"^FO{140 + Properties.Settings.Default.PrintOffsetX},{97 + Properties.Settings.Default.PrintOffsetY} ^GB370,3,3 ^FS\r\n" +
+                            $"^FO{140 + Properties.Settings.Default.PrintOffsetX},{137 + Properties.Settings.Default.PrintOffsetY} ^GB370,3,3 ^FS\r\n" +
+                            $"^FO{340 + Properties.Settings.Default.PrintOffsetX},{57 + Properties.Settings.Default.PrintOffsetY} ^GB3,80,3 ^FS\r\n" +
+                            $"^FO{10 + Properties.Settings.Default.PrintOffsetX},{179 + Properties.Settings.Default.PrintOffsetY} ^GB500,3,3 ^FS\r\n" +
+                            $"^FO{10 + Properties.Settings.Default.PrintOffsetX},{221 + Properties.Settings.Default.PrintOffsetY} ^GB500,3,3 ^FS\r\n" +
+                            $"^FO{10 + Properties.Settings.Default.PrintOffsetX},{263 + Properties.Settings.Default.PrintOffsetY} ^GB500,3,3 ^FS\r\n";
+            P_SC_1 += "^BY,,10\r\n";
+            P_SC_1 += string.Format("^FO {0},{1}\r\n", 20 + Properties.Settings.Default.PrintOffsetX, 0 + Properties.Settings.Default.PrintOffsetY);
+            P_SC_1 += "^BQN,2,3\r\n";
+            P_SC_1 += "^FDM," + strBarcodeInfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
+
+            P_SC_1 += "^CF0,20"+
+                        $"^FO{45 + Properties.Settings.Default.PrintOffsetX},{120 + Properties.Settings.Default.PrintOffsetY}^FDQ:{tb_returnQTY.Text}^FS"+
+                        $"^CF0,20"+
+                        $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{25 + Properties.Settings.Default.PrintOffsetY}^FDMOD:D03MC:M1LOC:1T/R:3^FS"+
+                        $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{70 + Properties.Settings.Default.PrintOffsetY}^FDID:123456^FS"+
+                        $"^FO{350 + Properties.Settings.Default.PrintOffsetX},{70 + Properties.Settings.Default.PrintOffsetY}^FDL:AJ54100^FS"+
+                        $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{110 + Properties.Settings.Default.PrintOffsetY}^FDD:{DateTime.Now.ToString("yy.MM.dd hh:mm")}^FS"+
+                        $"^FO{350 + Properties.Settings.Default.PrintOffsetX},{110 + Properties.Settings.Default.PrintOffsetY}^FDWSN:{AmkorBarcode.strWSN}^FS"+
+                        $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{147 + Properties.Settings.Default.PrintOffsetY}^FDR.ID:{AmkorBarcode.strRID} / {tb_reelDCC.Text} ^FS"+
+                        $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{192 + Properties.Settings.Default.PrintOffsetY}^FDC:{textBox_cust.Text}^FS"+
+                        $"^FO{103 + Properties.Settings.Default.PrintOffsetX},{192 + Properties.Settings.Default.PrintOffsetY}^FDT/QTY:{AmkorBarcode.strDieQty} / {AmkorBarcode.strWfrQty}0^FS"+
+                        $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{235 + Properties.Settings.Default.PrintOffsetY}^FDDEV:{AmkorBarcode.strDevice}^FS"+
+                        $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{275 + Properties.Settings.Default.PrintOffsetY}^FDA/L:{AmkorBarcode.strLotNo} / {AmkorBarcode.strLotDcc}^FS"+
+                        $"^XZ";
+
+            Socket_MessageSend(P_SC_1);
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             textBox_receivedata.Text = strReceivedata;

@@ -378,6 +378,7 @@
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button19 = new System.Windows.Forms.Button();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -469,6 +470,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.tabPage1.Controls.Add(this.button19);
             this.tabPage1.Controls.Add(this.button_option);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.dataGridView_worklist);
@@ -4488,6 +4490,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(716, 181);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(75, 23);
+            this.button19.TabIndex = 14;
+            this.button19.Text = "button19";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click_2);
+            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -4892,5 +4904,6 @@
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.NumericUpDown nup_Wlabel;
         private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Button button19;
     }
 }
