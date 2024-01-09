@@ -2104,7 +2104,7 @@ namespace Bank_Host
                         $"^FO{350 + Properties.Settings.Default.PrintOffsetX},{110 + Properties.Settings.Default.PrintOffsetY}^FDWSN:{AmkorBarcode.strWSN}^FS"+
                         $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{147 + Properties.Settings.Default.PrintOffsetY}^FDR.ID:{AmkorBarcode.strRID} / {tb_reelDCC.Text} ^FS"+
                         $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{192 + Properties.Settings.Default.PrintOffsetY}^FDC:{textBox_cust.Text}^FS"+
-                        $"^FO{103 + Properties.Settings.Default.PrintOffsetX},{192 + Properties.Settings.Default.PrintOffsetY}^FDT/QTY:{AmkorBarcode.strDieQty} / {AmkorBarcode.strWfrQty}0^FS"+
+                        $"^FO{103 + Properties.Settings.Default.PrintOffsetX},{192 + Properties.Settings.Default.PrintOffsetY}^FDT/QTY:{AmkorBarcode.strDieQty} / {AmkorBarcode.strWfrQty}^FS"+
                         $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{235 + Properties.Settings.Default.PrintOffsetY}^FDDEV:{AmkorBarcode.strDevice}^FS"+
                         $"^FO{13 + Properties.Settings.Default.PrintOffsetX},{275 + Properties.Settings.Default.PrintOffsetY}^FDA/L:{AmkorBarcode.strLotNo} / {AmkorBarcode.strLotDcc}^FS"+
                         $"^XZ";
