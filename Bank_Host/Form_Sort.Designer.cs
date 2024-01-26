@@ -76,6 +76,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl_Sort = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button19 = new System.Windows.Forms.Button();
             this.button_option = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView_worklist = new System.Windows.Forms.DataGridView();
@@ -378,7 +379,6 @@
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button19 = new System.Windows.Forms.Button();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -498,6 +498,17 @@
             this.tabPage1.Size = new System.Drawing.Size(1542, 1028);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Host";
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(716, 181);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(75, 23);
+            this.button19.TabIndex = 14;
+            this.button19.Text = "button19";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Visible = false;
+            this.button19.Click += new System.EventHandler(this.button19_Click_2);
             // 
             // button_option
             // 
@@ -4489,16 +4500,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // button19
-            // 
-            this.button19.Location = new System.Drawing.Point(716, 181);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(75, 23);
-            this.button19.TabIndex = 14;
-            this.button19.Text = "button19";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.button19_Click_2);
             // 
             // Form_Sort
             // 
