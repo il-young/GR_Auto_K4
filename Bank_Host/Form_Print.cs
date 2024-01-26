@@ -2077,7 +2077,7 @@ namespace Bank_Host
 
 
 
-            string strBarcodeInfo = $"{textBox_lotno.Text}:{textBox_dcc.Text}:{textBox_device.Text}:{textBox_dieqty.Text}:{textBox_wfrqty.Text}:{textBox_amkorid.Text}:{textBox_cust.Text}:{textBox_wfrLot.Text}:{tb_WSN.Text}:{tb_rId.Text}::{tb_rQTY.Text}";
+            string strBarcodeInfo = $"{textBox_lotno.Text}:{textBox_dcc.Text}:{textBox_device.Text}:{textBox_dieqty.Text}:{textBox_wfrqty.Text}:{textBox_amkorid.Text}:{textBox_cust.Text}:{textBox_wfrLot.Text}:{tb_WSN.Text}:{tb_rId.Text}:{tb_reelDCC.Text}:{tb_returnQTY.Text}";
 
             string P_SC_1 = "^XA\r\n" +
                             $"^FO{10 + Properties.Settings.Default.PrintOffsetX},{10 + Properties.Settings.Default.PrintOffsetY} ^FR ^GB500,300,3 ^FS\r\n" +
@@ -2097,7 +2097,7 @@ namespace Bank_Host
             P_SC_1 += "^CF0,20"+
                         $"^FO{45 + Properties.Settings.Default.PrintOffsetX},{120 + Properties.Settings.Default.PrintOffsetY}^FDQ:{tb_returnQTY.Text}^FS"+
                         $"^CF0,20"+
-                        $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{25 + Properties.Settings.Default.PrintOffsetY}^FDMOD:D03MC:M1LOC:1T/R:3^FS"+
+                        $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{25 + Properties.Settings.Default.PrintOffsetY}^FDMOD:D03 MC:M1 LOC:1 T/R:3^FS"+
                         $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{70 + Properties.Settings.Default.PrintOffsetY}^FDID:123456^FS"+
                         $"^FO{350 + Properties.Settings.Default.PrintOffsetX},{70 + Properties.Settings.Default.PrintOffsetY}^FDL:AJ54100^FS"+
                         $"^FO{145 + Properties.Settings.Default.PrintOffsetX},{110 + Properties.Settings.Default.PrintOffsetY}^FDD:{DateTime.Now.ToString("yy.MM.dd hh:mm")}^FS"+

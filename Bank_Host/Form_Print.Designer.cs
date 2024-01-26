@@ -89,10 +89,10 @@
             this.label_state = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.btn_returnLabel = new System.Windows.Forms.Button();
-            this.tb_returnQTY = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
             this.tb_reelDCC = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tb_returnQTY = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -777,26 +777,6 @@
             this.btn_returnLabel.UseVisualStyleBackColor = true;
             this.btn_returnLabel.Click += new System.EventHandler(this.btn_returnLabel_Click);
             // 
-            // tb_returnQTY
-            // 
-            this.tb_returnQTY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.tb_returnQTY.Font = new System.Drawing.Font("맑은 고딕", 14F);
-            this.tb_returnQTY.Location = new System.Drawing.Point(359, 520);
-            this.tb_returnQTY.Name = "tb_returnQTY";
-            this.tb_returnQTY.Size = new System.Drawing.Size(161, 32);
-            this.tb_returnQTY.TabIndex = 23;
-            this.tb_returnQTY.Text = "5000";
-            // 
-            // label20
-            // 
-            this.label20.Font = new System.Drawing.Font("맑은 고딕", 14F);
-            this.label20.Location = new System.Drawing.Point(356, 491);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(160, 26);
-            this.label20.TabIndex = 22;
-            this.label20.Text = "Return QTY :";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // tb_reelDCC
             // 
             this.tb_reelDCC.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -816,6 +796,26 @@
             this.label21.TabIndex = 24;
             this.label21.Text = "Reel DCC :";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label20
+            // 
+            this.label20.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.label20.Location = new System.Drawing.Point(356, 491);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(160, 26);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "Return QTY :";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tb_returnQTY
+            // 
+            this.tb_returnQTY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.tb_returnQTY.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.tb_returnQTY.Location = new System.Drawing.Point(359, 520);
+            this.tb_returnQTY.Name = "tb_returnQTY";
+            this.tb_returnQTY.Size = new System.Drawing.Size(161, 32);
+            this.tb_returnQTY.TabIndex = 23;
+            this.tb_returnQTY.Text = "5000";
             // 
             // Form_Print
             // 
@@ -924,9 +924,9 @@
         private System.Windows.Forms.TextBox tb_rQTY;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button btn_returnLabel;
-        private System.Windows.Forms.TextBox tb_returnQTY;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox tb_reelDCC;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox tb_returnQTY;
     }
 }

@@ -1122,18 +1122,29 @@ namespace Bank_Host
 
         public void PrintSplit(List<StorageData> SplitData)
         {
-            string PrintCode = "^XA" + "^FO10,10 ^GB850,1500,3 ^FS" + "^FO10,60 ^GB850,3,3 ^FS" + "^FO250,10 ^GB3,1500,3 ^FS" + "^FO600,10 ^GB3,1500,3 ^FS" + "^FO750,10 ^GB3,1500,3 ^FS" +
-                            "^FO10,170 ^GB1000,3,3 ^FS" + "^FO10,280 ^GB1000,3,3 ^FS" + "^FO10,390 ^GB1000,3,3 ^FS" + "^FO10,500 ^GB1000,3,3 ^FS" + "^FO10,610 ^GB1000,3,3 ^FS" +
-                            "^FO10,720 ^GB1000,3,3 ^FS" + "^FO10,830 ^GB1000,3,3 ^FS" + "^FO10,940 ^GB1000,3,3 ^FS" + "^FO10,1050 ^GB1000,3,3 ^FS" + "^FO10,1160 ^GB1000,3,3 ^FS" +
-                            "^FO10,1270 ^GB1000,3,3 ^FS" + "^FO10,1380 ^GB1000,3,3 ^FS" + "^FO10,1507 ^GB1000,3,3 ^FS" +
+            string PrintCode = "^ XA"+
+                                "^ FO10,10 ^ GB650,1250,3 ^ FS "+
+                                "^ FO10,90 ^ GB650,3,3 ^ FS    "+
+                                "^ FO500,10 ^ GB3,1250,3 ^ FS  "+
 
-                            "^FO80,25" + "^FDDevice" + "^CF0,30" + "^FS" +
-                            "^FO350,25" + "^FDLot / DCC" + "^CF0,30" + "^FS" +
+                                "^ FO10,180 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,270 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,360 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,450 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,540 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,630 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,720 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,810 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,900 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,990 ^ GB790,3,3 ^ FS   "+
+                                "^ FO10,1080 ^ GB790,3,3 ^ FS  "+
+                                "^ FO10,1170 ^ GB790,3,3 ^ FS  "+
 
-                            "^FO650,25" + "^FDDie Q'ty" + "^CF0,20" + "^FS" +
-
-                            "^FO760,25" + "^FDWafer Q'ty" + "^CF0,20" + "^FS" + 
-                            $"^FO880,25 ^FDTTL:{SplitData.Count} ^CF0,30 ^FS";
+                                "^ FO30,25 ^ FDDevice ^ CF0,25 ^ FS    "+
+                                "^ FO30,60 ^ FDLot / DCC ^ CF0,25 ^ FS "+
+                                "^ FO510,25 ^ FDDie Q'ty^CF0,25^FS     "+
+                                "^ FO510,60 ^ FDWafer Q'ty^CF0,25^FS"+
+                                $"^FO880,25 ^FDTTL:{SplitData.Count} ^CF0,30 ^FS";
 
             SplitData = SplitData.OrderBy(p => p.Lot).ToList();
 
@@ -1141,19 +1152,19 @@ namespace Bank_Host
 
             for(int i = 0; i < SplitData.Count; i++)
             {
-                PrintCode += $"^FO20,{(i== 0 ?  105 : 105 + i*110)} ^FD{SplitData[i].Device} ^CF0,25 ^FS";
-                PrintCode += $"^FO260,{(i== 0 ? 85 : 85 + i * 110)} ^FD{SplitData[i].Lot} ^CF0,25 ^FS";
-                PrintCode += $"^FO260,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Lot_Dcc} ^CF0,25 ^FS";
+                PrintCode += $"^FO20,{(i== 0 ?  110 : 110 + i * 90)} ^FD{SplitData[i].Device} ^CF0,25 ^FS";
+                PrintCode += $"^FO20,{(i== 0 ? 140 : 140 + i * 90)} ^FD{SplitData[i].Lot} ^CF0,25 ^FS";
+                PrintCode += $"^FO450,{(i == 0 ? 140 : 140 + i * 90)} ^FD{SplitData[i].Lot_Dcc} ^CF0,25 ^FS";
 
-                PrintCode += $"^FO645,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Rcv_Qty} ^CF0,25 ^FS";
-                PrintCode += $"^FO790,{(i == 0 ? 135 : 135 + i * 110)} ^FD{SplitData[i].Default_WQty} ^CF0,25 ^FS";
+                PrintCode += $"^FO510,{(i == 0 ? 140 : 140 + i * 90)} ^FD{SplitData[i].Rcv_Qty} ^CF0,25 ^FS";
+                PrintCode += $"^FO510,{(i == 0 ? 140 : 140 + i * 90)} ^FD{SplitData[i].Default_WQty} ^CF0,25 ^FS";
 
                 bcrdata = $"{SplitData[i].Lot.PadRight(20)}:{ SplitData[i].Lot_Dcc.PadRight(5)}:{ SplitData[i].Device.PadRight(20)}:{ Convert.ToString(SplitData[i].Rcv_Qty).PadLeft(10, '0')}:{ Convert.ToString(SplitData[i].Default_WQty).PadLeft(5, '0')}:{ SplitData[i].Amkorid.PadLeft(10, '0')}:{Convert.ToString(BankHost_main.strWork_Cust).PadLeft(5, '0')}";
 
-                PrintCode += $"^FO880,{(i == 0 ? 70 : 70 + i * 110)} ^BX,3,200 ^FD{bcrdata} ^FS";
+                PrintCode += $"^FO690,{(i == 0 ? 96 : 96 + i * 90)} ^BX,3,200 ^FD{bcrdata} ^FS";
             }
 
-            PrintCode += $"^FO30,1530 ^FDLOT TYPE:{SplitData[0].Lot_type}\tRCV-DATE:{SplitData[0].Rcvddate}\tBill#:{SplitData[0].Bill} #({strWork_Cust}) ^CF0,40,30 ^FS";
+            PrintCode += $"^FO20,1270 ^FDLOT TYPE:{SplitData[0].Lot_type}\tRCV-DATE:{SplitData[0].Rcvddate}\tBill#:{SplitData[0].Bill} #({strWork_Cust}) ^CF0,40,30 ^FS";
 
             PrintCode += "^XZ";
 
