@@ -26,6 +26,9 @@ using Microsoft.Win32;
 using Application = System.Windows.Forms.Application;
 using System.Net;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace Bank_Host
 {
     public partial class Form_Sort : Form
@@ -49,7 +52,86 @@ namespace Bank_Host
 
         public bool LotSPR = false;
 
+        
+
+        public static readonly NLog.Logger ReaderLog = NLog.LogManager.GetLogger("ReaderLog");
+        public static readonly NLog.Logger InkjetLog = NLog.LogManager.GetLogger("InkjetLog");
+        public static readonly NLog.Logger Wlog = NLog.LogManager.GetLogger("WebThread");
+        public static readonly NLog.Logger Dlog = NLog.LogManager.GetLogger("DBThread");
+        public static readonly NLog.Logger Slog = NLog.LogManager.GetLogger("SEQLog");
+        public static readonly NLog.Logger Blog = NLog.LogManager.GetLogger("BUTTONLog");
+        public static readonly NLog.Logger GRLog = NLog.LogManager.GetLogger("GRLog");
+        public static readonly NLog.Logger Joblog = NLog.LogManager.GetLogger("JOBLog");
+
         Form_InfoBoard InfoBoard = new Form_InfoBoard();
+        public static SaveLog LogSave = new SaveLog();
+
+        public class SaveLog
+        {
+            public delegate void EvtInsertLog(string type, string msg);
+            public event EvtInsertLog InsertLogEvent;
+
+            //public ListBox lb_SysLog = new ListBox();
+
+            public SaveLog()
+            {
+
+            }
+
+            public void Save(string LogType, string MsgType, string msg)
+            {
+                NLog.Logger logger = null;
+                string jobType = "LOG";
+
+                switch (LogType.ToUpper())
+                {
+                    case "SLOG": // Sequence Log
+                        logger = Form_Sort.Slog;
+                        break;
+                    case "WLOG": // Web Service Log
+                        logger = Form_Sort.Wlog;
+                        break;
+                    case "DLOG": // Database Log
+                        logger = Form_Sort.Dlog;
+                        break;
+                    case "BLOG": // Button Log
+                        logger = Form_Sort.Blog;
+                        break;
+                    case "READERLOG": // Reader Log
+                        logger = Form_Sort.ReaderLog;
+                        break;
+                    case "INKJETLOG": // Inkjet Log
+                        logger = Form_Sort.InkjetLog;
+                        break;
+                    case "JOBLOG":
+                        jobType = "JOB";
+                        logger = Form_Sort.Joblog;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (logger != null)
+                {
+                    switch (MsgType.ToUpper())
+                    {
+                        case "INFO":
+                            logger.Info(msg);
+                            break;
+                        case "DEBUG":
+                            logger.Debug(msg);
+                            break;
+                        case "ERROR":
+                            logger.Error(msg);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                InsertLogEvent?.Invoke(jobType, msg);
+            }
+        }
 
         public enum SecondLabel
         {
@@ -356,9 +438,10 @@ namespace Bank_Host
 
         public void Fnc_Get_Information()
         {
-            var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+            //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json"));
 
-            if (dt_list.Rows.Count == 0)
+            if (cust.Count == 0)
                 return;
 
             string strCust = "", strName = "";
@@ -369,31 +452,32 @@ namespace Bank_Host
 
             comboBox_Name.Items.Add("모델명을 입력 하세요!");
 
-            for (int n = 0; n < dt_list.Rows.Count; n++)
+            for (int n = 0; n < cust.Count; n++)
             {
-                WorkInfo AWork = new WorkInfo();
+                //WorkInfo AWork = new WorkInfo();
 
-                AWork.strCust = dt_list.Rows[n]["CUST"].ToString(); AWork.strCust = AWork.strCust.Trim();
-                AWork.strBank = dt_list.Rows[n]["BANK_NO"].ToString(); AWork.strBank = AWork.strBank.Trim();
-                AWork.strDevicePos = dt_list.Rows[n]["DEVICE"].ToString(); AWork.strDevicePos = AWork.strDevicePos.Trim();
-                AWork.strLotidPos = dt_list.Rows[n]["LOTID"].ToString(); AWork.strLotidPos = AWork.strLotidPos.Trim();
-                AWork.strLotDigit = dt_list.Rows[n]["LOT_DIGIT"].ToString(); AWork.strLotDigit = AWork.strLotDigit.Trim();
-                AWork.strQtyPos = dt_list.Rows[n]["WFR_QTY"].ToString(); AWork.strQtyPos = AWork.strQtyPos.Trim();
-                AWork.strSPR = dt_list.Rows[n]["SPR"].ToString(); AWork.strSPR = AWork.strSPR.Trim();
-                AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
-                AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
-                AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
-                AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
-                AWork.strWSN = dt_list.Rows[n]["WSN"].ToString(); AWork.strWSN = AWork.strWSN.Trim();
-                AWork.strExcelOut = dt_list.Rows[n]["EXCEL_OUT"].ToString(); AWork.strExcelOut = AWork.strExcelOut.Trim();
+                //AWork.strCust =         cust[n]["CUST_CODE"].ToString(); AWork.strCust = AWork.strCust.Trim();
+                //AWork.strBank =         cust[n]["BANK_NO"].ToString(); AWork.strBank = AWork.strBank.Trim();
+                //AWork.strDevicePos =    cust[n]["DEVICE"].ToString(); AWork.strDevicePos = AWork.strDevicePos.Trim();
+                //AWork.strLotidPos =     cust[n]["LOTID"].ToString(); AWork.strLotidPos = AWork.strLotidPos.Trim();
+                //AWork.strLotDigit =     cust[n]["LOT_DIGIT"].ToString(); AWork.strLotDigit = AWork.strLotDigit.Trim();
+                //AWork.strQtyPos =       cust[n]["WFR_QTY"].ToString(); AWork.strQtyPos = AWork.strQtyPos.Trim();
+                //AWork.strSPR =          cust[n]["SPR"].ToString(); AWork.strSPR = AWork.strSPR.Trim();
+                //AWork.strMultiLot =     cust[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
+                //AWork.strModelName =    cust[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
+                //AWork.strMtlType =      cust[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
+                //AWork.strLot2Wfr =      cust[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
+                //AWork.strWSN =          cust[n]["WSN"].ToString(); AWork.strWSN = AWork.strWSN.Trim();
+                //AWork.strExcelOut =     cust[n]["EXCEL_OUT"].ToString(); AWork.strExcelOut = AWork.strExcelOut.Trim();
 
-                if (strCust != AWork.strCust && dt_list.Rows[n]["USE"].ToString() == "True")
+                if (strCust != cust[n]["CUST_CODE"].ToString() && cust[n]["USE"].ToString() == "Y")
                 {
-                    strCust = AWork.strCust;
+                    //strCust = AWork.strCust;
 
                     int ncount = comboBox_cust.Items.Count;
 
                     bool bAdd = false;
+
                     for (int i = 0; i < ncount; i++)
                     {
                         string str = comboBox_cust.Items[i].ToString();
@@ -403,7 +487,7 @@ namespace Bank_Host
 
                     if (!bAdd)
                     {
-                        comboBox_cust.Items.Add(strCust);
+                        comboBox_cust.Items.Add(cust[n]["CUST_CODE"].ToString());
                     }
                 }
                 else
@@ -411,9 +495,9 @@ namespace Bank_Host
 
                 }
 
-                if (strName != AWork.strModelName && dt_list.Rows[n]["USE"].ToString() == "True")
+                if (strName != cust[n]["CUST_NAME"].ToString() && cust[n]["USE"].ToString() == "Y")
                 {
-                    strName = AWork.strModelName;
+                    strName = cust[n]["CUST_NAME"].ToString();
                     int ncount = comboBox_Name.Items.Count;
 
                     bool bAdd = false;
@@ -427,12 +511,22 @@ namespace Bank_Host
                     {
                         if (BankHost_main.nMaterial_type == 1)
                         {
-                            if (AWork.strMtlType == "FOSB")
+                            if (cust[n].ContainsKey("WAFER_TYPE") == true)
+                            {
+                                if (cust[n]["WAFER_TYPE"].ToString() == "FOSB")
+                                    comboBox_Name.Items.Add(strName);
+                            }
+                            else
                                 comboBox_Name.Items.Add(strName);
                         }
                         else
                         {
-                            if (AWork.strMtlType != "FOSB")
+                            if (cust[n].ContainsKey("WAFER_TYPE") == true)
+                            {
+                                if (cust[n]["WAFER_TYPE"].ToString() != "FOSB")
+                                    comboBox_Name.Items.Add(strName);
+                            }
+                            else
                                 comboBox_Name.Items.Add(strName);
                         }
                     }
@@ -440,67 +534,229 @@ namespace Bank_Host
             }
         }
 
+        private List<Dictionary<string, string>> WAS2CUST(string data)
+        {
+            List<Dictionary<string, string>> cust = new List<Dictionary<string, string>>();
+            string[] s = data.Split(new string[] { "},{" }, StringSplitOptions.None);
+            try
+            {
+                
+                
+
+                for (int i = 0; i < s.Length; i++)
+                {
+                    Dictionary<string, string> temp = new Dictionary<string, string>();
+                    s[i] = s[i].Replace("\"", "");
+                    s[i] = s[i].Replace("{", "");
+                    s[i] = s[i].Replace("[", "");
+                    s[i] = s[i].Replace("]", "");
+                    s[i] = s[i].Replace("SPLITER:,", "SPLITER:COMMA");
+
+                    foreach (string t in s[i].Split(','))
+                    {
+                        temp.Add(t.Split(':')[0], t.Split(':')[1] == "COMMA" ? "," : t.Split(':')[1]);
+                    }
+                    cust.Add(temp);
+                }
+
+                return cust;
+            }
+            catch (Exception ex)
+            {
+                return new List<Dictionary<string, string>>();
+            }
+            return cust;
+        }
+
+
         public void Fnc_Get_Information_Model(string strCust)
         {
-            var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json?CUST_CODE={strCust}"));
 
-            if (dt_list.Rows.Count == 0)
+            //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+
+            if (cust.Count == 0)
                 return;
 
+            //if (dt_list.Rows.Count == 0)
+            //    return;
+
             string strName = "";
+            WorkInfo AWork;
 
             comboBox_Name.Items.Clear();
             comboBox_Name.Items.Add("모델명을 입력 하세요!");
 
-            for (int n = 0; n < dt_list.Rows.Count; n++)
+            for(int i = 0; i < cust.Count; i++)
             {
-                WorkInfo AWork = new WorkInfo();
+                AWork = new WorkInfo();
 
-                AWork.strCust = dt_list.Rows[n]["CUST"].ToString(); AWork.strCust = AWork.strCust.Trim();
-                AWork.strBank = dt_list.Rows[n]["BANK_NO"].ToString(); AWork.strBank = AWork.strBank.Trim();
-                AWork.strDevicePos = dt_list.Rows[n]["DEVICE"].ToString(); AWork.strDevicePos = AWork.strDevicePos.Trim();
-                AWork.strLotidPos = dt_list.Rows[n]["LOTID"].ToString(); AWork.strLotidPos = AWork.strLotidPos.Trim();
-                AWork.strLotDigit = dt_list.Rows[n]["LOT_DIGIT"].ToString(); AWork.strLotDigit = AWork.strLotDigit.Trim();
-                AWork.strQtyPos = dt_list.Rows[n]["WFR_QTY"].ToString(); AWork.strQtyPos = AWork.strQtyPos.Trim();
-                AWork.strSPR = dt_list.Rows[n]["SPR"].ToString(); AWork.strSPR = AWork.strSPR.Trim();
-                AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
-                AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
-                AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
-                AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
-                AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim();
+                AWork.strCust =         cust[i]["CUST_CODE"].ToString(); AWork.strCust = AWork.strCust.Trim();
+                AWork.strModelName =    cust[i]["CUST_NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
 
                 if (strCust == AWork.strCust)
                 {
-                    if (strName != AWork.strModelName)
+                    if (strName != AWork.strModelName && cust[i]["USE"].ToString() == "Y")
                     {
                         strName = AWork.strModelName;
                         int ncount = comboBox_Name.Items.Count;
 
                         bool bAdd = false;
-                        for (int i = 1; i < ncount; i++)
+                        for (int j = 1; j < ncount; j++)
                         {
-                            string str = comboBox_Name.Items[i].ToString();
+                            string str = comboBox_Name.Items[j].ToString();
                             if (str == strName)
                                 bAdd = true;
                         }
+
                         if (!bAdd)
                         {
                             if (BankHost_main.nMaterial_type == 1)
                             {
-                                if (AWork.strMtlType == "FOSB")
+                                if (cust[i].ContainsKey("WAFER_TYPE") == true)
+                                {
+                                    if (cust[i]["WAFER_TYPE"] == "FOSB")
+                                        comboBox_Name.Items.Add(strName);
+                                }
+                                else
+                                {
                                     comboBox_Name.Items.Add(strName);
+                                }
                             }
                             else
                             {
-                                if (AWork.strMtlType != "FOSB")
+                                if (cust[i].ContainsKey("WAFER_TYPE") == true)
+                                {
+                                    if (cust[i]["WAFER_TYPE"] != "FOSB")
+                                        comboBox_Name.Items.Add(strName);
+                                }
+                                else
+                                {
                                     comboBox_Name.Items.Add(strName);
+                                }
                             }
 
                         }
                     }
                 }
+
+            }
+
+            for (int n = 0; n < cust.Count; n++)
+            {
+                //WorkInfo AWork = new WorkInfo();
+                //if(cust[n]["CUST_CODE"].ToString() == strCust)
+                //{
+
+                //}
+                //AWork.strCust = dt_list.Rows[n]["CUST"].ToString(); AWork.strCust = AWork.strCust.Trim();
+                //AWork.strBank = dt_list.Rows[n]["BANK_NO"].ToString(); AWork.strBank = AWork.strBank.Trim();
+                //AWork.strDevicePos = dt_list.Rows[n]["DEVICE"].ToString(); AWork.strDevicePos = AWork.strDevicePos.Trim();
+                //AWork.strLotidPos = dt_list.Rows[n]["LOTID"].ToString(); AWork.strLotidPos = AWork.strLotidPos.Trim();
+                //AWork.strLotDigit = dt_list.Rows[n]["LOT_DIGIT"].ToString(); AWork.strLotDigit = AWork.strLotDigit.Trim();
+                //AWork.strQtyPos = dt_list.Rows[n]["WFR_QTY"].ToString(); AWork.strQtyPos = AWork.strQtyPos.Trim();
+                //AWork.strSPR = dt_list.Rows[n]["SPR"].ToString(); AWork.strSPR = AWork.strSPR.Trim();
+                //AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
+                //AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
+                //AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
+                //AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
+                //AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim();
+
+                //if (strCust == AWork.strCust)
+                //{
+                //    if (strName != AWork.strModelName)
+                //    {
+                //        strName = AWork.strModelName;
+                //        int ncount = comboBox_Name.Items.Count;
+
+                //        bool bAdd = false;
+                //        for (int i = 1; i < ncount; i++)
+                //        {
+                //            string str = comboBox_Name.Items[i].ToString();
+                //            if (str == strName)
+                //                bAdd = true;
+                //        }
+
+                //        if (!bAdd)
+                //        {
+                //            if (BankHost_main.nMaterial_type == 1)
+                //            {
+                //                if (AWork.strMtlType == "FOSB")
+                //                    comboBox_Name.Items.Add(strName);
+                //            }
+                //            else
+                //            {
+                //                if (AWork.strMtlType != "FOSB")
+                //                    comboBox_Name.Items.Add(strName);
+                //            }
+
+                //        }
+                //    }
+                //}
             }
         }
+
+
+        public static string GetWebServiceData(string url)
+        {
+            string responseText = string.Empty;
+
+            try
+            {
+                byte[] arr = new byte[10];
+
+                //new frm_InboundMain().SaveLog("WLOG", "INFO","GET : " + url);
+
+                LogSave.Save("WLOG", "INFO", url);
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = 2000;
+                request.Method = "GET";
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Properties.Settings.Default.USER_NAME + ":" + Properties.Settings.Default.USER_PW)));
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(stream);
+                        responseText = reader.ReadToEnd();
+                        // do something with the response data
+                    }
+                }
+
+                LogSave.Save("WLOG", "INFO", responseText);
+
+                return responseText;
+            }
+            catch (WebException ex)
+            {
+                string errorMessage = string.Empty;
+
+                LogSave.Save("WLOG", "ERROR", ex.Message);
+
+                if (ex.Response != null)
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+                    {
+                        Stream dataStream = response.GetResponseStream();
+                        StreamReader reader = new StreamReader(dataStream);
+                        errorMessage = reader.ReadToEnd();
+
+
+                        return errorMessage;
+                        //new frm_InboundMain().SaveLog("WLOG","ERROR",errorMessage);
+                    }
+                }
+                else if (ex.Message != "")
+                {
+                    //frm_Messageboard brd = new frm_Messageboard(ex.Message, Color.Red, Color.Yellow, "", "", "", "OK");
+                    //brd.ButtonClickEvent += Brd_ButtonClickEvent1;
+                    //brd.ShowDialog();
+                }
+            }
+            return "EMPTY";
+        }
+
 
         public void Fnc_PrintShow()
         {
@@ -968,10 +1224,12 @@ namespace Bank_Host
                 string[] strJobInfo = strList[i].Split('\t');
 
                 StorageData data = new StorageData();
-
+                
                 for (int j = 0; j < nColcnt; j++)
                 {
                     var strType = strJobInfo[j];
+
+                    
 
                     string str = "";
                     if (strType != null)
@@ -1510,11 +1768,15 @@ namespace Bank_Host
             foreach (DataGridViewRow row in dataGridView_worklist.Rows)
             {
                 DataRow dRow = dt.NewRow();
-                foreach (DataGridViewCell cell in row.Cells)
+
+                if (row.Cells["BILL#"].Value.ToString() == strBillData[0])
                 {
-                    dRow[cell.ColumnIndex] = cell.Value;
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        dRow[cell.ColumnIndex] = cell.Value;
+                    }
+                    dt.Rows.Add(dRow);
                 }
-                dt.Rows.Add(dRow);
             }
 
             dataGridView_worklist.Columns.Clear();
@@ -9963,35 +10225,53 @@ namespace Bank_Host
                 Split_log_new_file_save(string.Join("\n", temp));
         }
 
+        public string GetDicKeyVal(Dictionary<string, string> dic, string name)
+        {
+            foreach(KeyValuePair<string, string> kvp in dic)
+            {
+                if(kvp.Value.Contains(name) == true)
+                {
+                    return kvp.Key;
+                }
+            }
+
+            return "EMPTY";
+        }
+
         public void Fnc_Get_WorkBcrInfo(string strGetCust, string strModelName)
         {
-            var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+            //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json"));
 
-            if (dt_list.Rows.Count == 0)
+            if (cust.Count == 0)
                 return;
 
-            for (int n = 0; n < dt_list.Rows.Count; n++)
+            for (int n = 0; n < cust.Count; n++)
             {
-                WorkInfo AWork = new WorkInfo();
+                
 
-                AWork.strCust = dt_list.Rows[n]["CUST"].ToString(); AWork.strCust = AWork.strCust.Trim();
-                AWork.strBank = dt_list.Rows[n]["BANK_NO"].ToString(); AWork.strBank = AWork.strBank.Trim();
-                AWork.strDevicePos = dt_list.Rows[n]["DEVICE"].ToString(); AWork.strDevicePos = AWork.strDevicePos.Trim();
-                AWork.strLotidPos = dt_list.Rows[n]["LOTID"].ToString(); AWork.strLotidPos = AWork.strLotidPos.Trim();
-                AWork.strLotDigit = dt_list.Rows[n]["LOT_DIGIT"].ToString(); AWork.strLotDigit = AWork.strLotDigit.Trim();
-                AWork.strQtyPos = dt_list.Rows[n]["WFR_QTY"].ToString(); AWork.strQtyPos = AWork.strQtyPos.Trim();
-                AWork.strSPR = dt_list.Rows[n]["SPR"].ToString(); AWork.strSPR = AWork.strSPR.Trim();
-                AWork.strModelName = dt_list.Rows[n]["NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
-                AWork.strUdigit = dt_list.Rows[n]["UDIGIT"].ToString(); AWork.strUdigit = AWork.strUdigit.Trim();
-                AWork.strWfrPos = dt_list.Rows[n]["TTL_WFR_QTY"].ToString(); AWork.strWfrPos = AWork.strWfrPos.Trim();
-                AWork.strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); AWork.strMtlType = AWork.strMtlType.Trim();
-                AWork.strLot2Wfr = dt_list.Rows[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
-                AWork.strMultiLot = dt_list.Rows[n]["MULTI_LOT"].ToString(); AWork.strMultiLot = AWork.strMultiLot.Trim();
-                AWork.strTTLWFR = dt_list.Rows[n]["TTLWFR"].ToString().Trim().ToUpper();
-                AWork.strWSN = dt_list.Rows[n]["WSN"].ToString().Trim().ToUpper();
-
-                if (strGetCust == AWork.strCust && strModelName == AWork.strModelName)
+                if (strGetCust == cust[n]["CUST_CODE"] && strModelName == cust[n]["CUST_NAME"])
                 {
+                    WorkInfo AWork = new WorkInfo();
+
+                    AWork.strCust =         cust[n]["CUST_CODE"].ToString().Trim();
+                    AWork.strBank =         cust[n].ContainsKey("BANK_NO") == true ? cust[n]["BANK_NO"].ToString().Trim() : "";
+                    AWork.strSPR =          cust[n]["SPLITER"].ToString().Trim();
+                    AWork.strModelName =    cust[n]["CUST_NAME"].ToString().Trim();
+                    AWork.strMtlType =      cust[n].ContainsKey("MTL_TYPE") == true ? cust[n]["MTL_TYPE"].ToString() : "";
+                    AWork.strMultiLot =     cust[n].ContainsKey("MULTI_LOT") == true ? cust[n]["MULTI_LOT"].ToString() : "";
+                    BankHost_main.strWork_BcdType = cust[n]["BCR_TYPE"];
+                    
+                    AWork.strDevicePos = GetDicKeyVal(cust[n], "DEVICE").Replace("BCD","");
+                    AWork.strLotidPos = GetDicKeyVal(cust[n], "LOT").Replace("BCD", "");
+                    AWork.strLotDigit = "";
+                    AWork.strQtyPos = GetDicKeyVal(cust[n], "QTY").Replace("BCD", "");
+                    AWork.strUdigit = "";// cust[n]["UDIGIT"].ToString(); AWork.strUdigit = AWork.strUdigit.Trim();
+                    AWork.strWfrPos = "";//e cust[n]["TTL_WFR_QTY"].ToString(); AWork.strWfrPos = AWork.strWfrPos.Trim();
+                    AWork.strLot2Wfr = "";// cust[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
+                    AWork.strTTLWFR = "";// cust[n]["TTLWFR"].ToString().Trim().ToUpper();
+                    AWork.strWSN = "";// cust[n]["WSN"].ToString().Trim().ToUpper();
+
                     int nType = BankHost_main.Host.Host_Get_PrintType(AWork.strCust);
                     AWork.nBcrPrintType = nType;
 
@@ -11786,7 +12066,7 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
-                var taskResut = BankHost_main.Host.Fnc_GetLotInformation(Properties.Settings.Default.LOCATION);
+                var taskResut = Fnc_RunAsync( $"http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_auto_gr_rdy_list/{Properties.Settings.Default.LOCATION}");
 
                 try
                 {

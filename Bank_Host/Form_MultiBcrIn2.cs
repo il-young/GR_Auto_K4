@@ -85,7 +85,8 @@ namespace Bank_Host
 
         public void Fnc_Init()
         {
-            strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            //strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            strBcrType = BankHost_main.strWork_BcdType;
             strDevicePos = BankHost_main.strWork_DevicePos;
             strLotPos = BankHost_main.strWork_LotidPos;
             strWfrQtyPos = BankHost_main.strWork_WfrQtyPos;
@@ -181,6 +182,11 @@ namespace Bank_Host
             SetLotSPREvent(cb_lot.Checked);
         }
 
+        private void Form_MultiBcrIn2_Load(object sender, EventArgs e)
+        {
+
+        }
+
         public void Fnc_Show()
         {
             try
@@ -193,7 +199,7 @@ namespace Bank_Host
                     bState = true;
                 }
             }
-            catch
+            catch (Exception ex )
             {
 
             }

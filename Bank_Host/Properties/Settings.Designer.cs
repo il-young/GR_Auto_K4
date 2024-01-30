@@ -429,5 +429,29 @@ namespace Bank_Host.Properties {
                 this["SplitWLabel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("diebank")]
+        public string USER_NAME {
+            get {
+                return ((string)(this["USER_NAME"]));
+            }
+            set {
+                this["USER_NAME"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("diebank@123")]
+        public string USER_PW {
+            get {
+                return ((string)(this["USER_PW"]));
+            }
+            set {
+                this["USER_PW"] = value;
+            }
+        }
     }
 }

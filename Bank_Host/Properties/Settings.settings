@@ -109,5 +109,11 @@
     <Setting Name="SplitWLabel" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="USER_NAME" Type="System.String" Scope="User">
+      <Value Profile="(Default)">diebank</Value>
+    </Setting>
+    <Setting Name="USER_PW" Type="System.String" Scope="User">
+      <Value Profile="(Default)">diebank@123</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

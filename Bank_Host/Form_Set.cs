@@ -11,6 +11,8 @@ using System.Configuration;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System.Data.SqlClient;
+using System.Net;
+using System.IO;
 
 namespace Bank_Host
 {
@@ -221,55 +223,170 @@ namespace Bank_Host
 
         public void Fnc_Update_BcrInfo()
         {
-            var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+            //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
+
+            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json"));
 
             dataGridView_bcrconfig.Columns.Clear();
             dataGridView_bcrconfig.Rows.Clear();
             dataGridView_bcrconfig.Refresh();
 
             dataGridView_bcrconfig.Columns.Add("#", "#");
-            dataGridView_bcrconfig.Columns.Add("CUST_NO", "CUST_NO");
-            dataGridView_bcrconfig.Columns.Add("MULTILOT", "MULTILOT");
-            dataGridView_bcrconfig.Columns.Add("BANK_NO", "BANK_NO");
+            dataGridView_bcrconfig.Columns.Add("CUST_CODE", "CUST_CODE");
+            dataGridView_bcrconfig.Columns.Add("CUST_NAME", "CUST_NAME");
             dataGridView_bcrconfig.Columns.Add("BCR_TYPE", "BCR_TYPE");
-            dataGridView_bcrconfig.Columns.Add("BCR_CNT", "BCR_CNT");
-            dataGridView_bcrconfig.Columns.Add("BCR_NAME", "BCR_NAME");
-            dataGridView_bcrconfig.Columns.Add("DEVICE", "DEVICE");
-            dataGridView_bcrconfig.Columns.Add("LOTID", "LOTID");
-            dataGridView_bcrconfig.Columns.Add("LOT_DIGIT", "LOT_DIGIT");
-            dataGridView_bcrconfig.Columns.Add("DIEQTY", "DIEQTY");
-            dataGridView_bcrconfig.Columns.Add("SPR", "SPR");
-            dataGridView_bcrconfig.Columns.Add("GR 방식", "GR 방식");
+            dataGridView_bcrconfig.Columns.Add("SPLITER", "SPLITER");//o
+            dataGridView_bcrconfig.Columns.Add("USE", "USE");//x
+            dataGridView_bcrconfig.Columns.Add("BCD01", "BCD01");//
+            dataGridView_bcrconfig.Columns.Add("BCD02", "BCD02");//
+            dataGridView_bcrconfig.Columns.Add("BCD03", "BCD03");//
+            dataGridView_bcrconfig.Columns.Add("BCD04", "BCD04");//
+            dataGridView_bcrconfig.Columns.Add("BCD05", "BCD05");//
+            dataGridView_bcrconfig.Columns.Add("BCD06", "BCD06");//
+            dataGridView_bcrconfig.Columns.Add("BCD07", "BCD07");//
+            dataGridView_bcrconfig.Columns.Add("BCD08", "BCD08");//
+            dataGridView_bcrconfig.Columns.Add("BCD09", "BCD09");//
+            dataGridView_bcrconfig.Columns.Add("BCD10", "BCD10");//
+            dataGridView_bcrconfig.Columns.Add("BCD11", "BCD11");//
+            dataGridView_bcrconfig.Columns.Add("BCD12", "BCD12");//
+            dataGridView_bcrconfig.Columns.Add("REGISTER", "REGISTER");
+            dataGridView_bcrconfig.Columns.Add("REG_TIME", "REG_TIME");
+            dataGridView_bcrconfig.Columns.Add("EDITOR", "EDITOR");
+            dataGridView_bcrconfig.Columns.Add("EDIT_TIME", "EDIT_TIME");
+            dataGridView_bcrconfig.Columns.Add("REMARK", "REMARK");
+            dataGridView_bcrconfig.Columns.Add("ROW_NUM", "ROW_NUM");
             dataGridView_bcrconfig.Columns.Add("UDIGIT", "UDIGIT");
-            dataGridView_bcrconfig.Columns.Add("WFRQTY", "WFRQTY");
-            dataGridView_bcrconfig.Columns.Add("MTL_TYPE", "MTL_TYPE");
+            dataGridView_bcrconfig.Columns.Add("RESULT", "RESULT");
+            dataGridView_bcrconfig.Columns.Add("MESSAGE", "MESSAGE");
 
-            if (dt_list.Rows.Count == 0)
+            if (cust.Count == 0)
                 return;
 
-            int nCnt = 1;
-            for (int n = 0; n < dt_list.Rows.Count; n++)
+            for (int n = 0; n < cust.Count; n++)
             {
-                string strCust = dt_list.Rows[n]["CUST"].ToString(); strCust = strCust.Trim();
-                string strMulti = dt_list.Rows[n]["MULTI_LOT"].ToString(); strMulti = strMulti.Trim();
-                string strBank = dt_list.Rows[n]["BANK_NO"].ToString(); strBank = strBank.Trim();
-                string strBcrType = dt_list.Rows[n]["BCR_TYPE"].ToString(); strBcrType = strBcrType.Trim();
-                string strBcrCount = dt_list.Rows[n]["BCR_CNT"].ToString(); strBcrCount = strBcrCount.Trim();
-                string strBcrName = dt_list.Rows[n]["NAME"].ToString(); strBcrName = strBcrName.Trim();
-                string strDevice = dt_list.Rows[n]["DEVICE"].ToString(); strDevice = strDevice.Trim();
-                string strLotid = dt_list.Rows[n]["LOTID"].ToString(); strLotid = strLotid.Trim();
-                string strLotdigit = dt_list.Rows[n]["LOT_DIGIT"].ToString(); strLotdigit = strLotdigit.Trim();
-                string strdieqty = dt_list.Rows[n]["WFR_QTY"].ToString(); strdieqty = strdieqty.Trim();
-                string strSpr = dt_list.Rows[n]["SPR"].ToString(); strdieqty = strdieqty.Trim();
-                string strGrmethod = dt_list.Rows[n]["GR_METHOD"].ToString(); strGrmethod = strGrmethod.Trim();
-                string strUdigit = dt_list.Rows[n]["UDIGIT"].ToString(); strUdigit = strUdigit.Trim();
-                string strWfrqty = dt_list.Rows[n]["TTL_WFR_QTY"].ToString(); strWfrqty = strWfrqty.Trim();
-                string strMtlType = dt_list.Rows[n]["MTL_TYPE"].ToString(); strMtlType = strMtlType.Trim();
-
-                dataGridView_bcrconfig.Rows.Add(new object[16] { nCnt, strCust, strMulti, strBank , strBcrType , strBcrCount ,
-                                                                strBcrName, strDevice, strLotid, strLotdigit, strdieqty, strSpr,strGrmethod, strUdigit, strWfrqty, strMtlType});
-                nCnt++;
+                dataGridView_bcrconfig.Rows.Add(new object[] { n + 1,
+                    cust[n]["CUST_CODE"].ToString().Trim(),
+                    cust[n]["CUST_NAME"].ToString().Trim(),
+                    cust[n]["BCR_TYPE"].ToString().Trim(),
+                    cust[n]["SPLITER"].ToString().Trim(),
+                    cust[n]["USE"].ToString().Trim(),
+                    cust[n]["BCD01"].ToString().Trim(),
+                    cust[n]["BCD02"].ToString().Trim(),
+                    cust[n]["BCD03"].ToString().Trim(),
+                    cust[n]["BCD04"].ToString().Trim(),
+                    cust[n]["BCD05"].ToString().Trim(),
+                    cust[n]["BCD06"].ToString().Trim(),
+                    cust[n]["BCD07"].ToString().Trim(),
+                    cust[n]["BCD08"].ToString().Trim(),
+                    cust[n]["BCD09"].ToString().Trim(),
+                    cust[n]["BCD10"].ToString().Trim(),
+                    cust[n]["BCD11"].ToString().Trim(),
+                    cust[n]["BCD12"].ToString().Trim(),
+                    cust[n]["REGISTER"].ToString().Trim(),
+                    cust[n]["REG_TIME"].ToString().Trim(),
+                    cust[n]["EDITOR"].ToString().Trim(),
+                    cust[n]["EDIT_TIME"].ToString().Trim(),
+                    cust[n]["REMARK"].ToString().Trim(),
+                    cust[n]["ROW_NUM"].ToString().Trim(),
+                    cust[n]["UDIGIT"].ToString().Trim(),
+                    cust[n]["RESULT"].ToString().Trim(),
+                    cust[n]["MESSAGE"].ToString().Trim()});
             }
+        }
+
+        public static string GetWebServiceData(string url)
+        {
+            string responseText = string.Empty;
+
+            try
+            {
+                byte[] arr = new byte[10];
+
+                //new frm_InboundMain().SaveLog("WLOG", "INFO","GET : " + url);
+
+                
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = 2000;
+                request.Method = "GET";
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Properties.Settings.Default.USER_NAME + ":" + Properties.Settings.Default.USER_PW)));
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(stream);
+                        responseText = reader.ReadToEnd();
+                        // do something with the response data
+                    }
+                }
+
+                
+
+                return responseText;
+            }
+            catch (WebException ex)
+            {
+                string errorMessage = string.Empty;
+
+                
+
+                if (ex.Response != null)
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+                    {
+                        Stream dataStream = response.GetResponseStream();
+                        StreamReader reader = new StreamReader(dataStream);
+                        errorMessage = reader.ReadToEnd();
+
+
+                        return errorMessage;
+                        //new frm_InboundMain().SaveLog("WLOG","ERROR",errorMessage);
+                    }
+                }
+                else if (ex.Message != "")
+                {
+                    //frm_Messageboard brd = new frm_Messageboard(ex.Message, Color.Red, Color.Yellow, "", "", "", "OK");
+                    //brd.ButtonClickEvent += Brd_ButtonClickEvent1;
+                    //brd.ShowDialog();
+                }
+            }
+            return "EMPTY";
+        }
+
+
+        private List<Dictionary<string, string>> WAS2CUST(string data)
+        {
+            List<Dictionary<string, string>> cust = new List<Dictionary<string, string>>();
+            string[] s = data.Split(new string[] { "},{" }, StringSplitOptions.None);
+            try
+            {
+
+
+
+                for (int i = 0; i < s.Length; i++)
+                {
+                    Dictionary<string, string> temp = new Dictionary<string, string>();
+                    s[i] = s[i].Replace("\"", "");
+                    s[i] = s[i].Replace("{", "");
+                    s[i] = s[i].Replace("[", "");
+                    s[i] = s[i].Replace("]", "");
+                    s[i] = s[i].Replace("SPLITER:,", "SPLITER:COMMA");
+
+                    foreach (string t in s[i].Split(','))
+                    {
+                        temp.Add(t.Split(':')[0], t.Split(':')[1] == "COMMA" ? "," : t.Split(':')[1]);
+                    }
+                    cust.Add(temp);
+                }
+
+                return cust;
+            }
+            catch (Exception ex)
+            {
+                return new List<Dictionary<string, string>>();
+            }
+            return cust;
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)

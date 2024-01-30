@@ -188,7 +188,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(895, 357);
+            this.ClientSize = new System.Drawing.Size(891, 353);
             this.ControlBox = false;
             this.Controls.Add(this.cb_lot);
             this.Controls.Add(this.checkBox_devicefix);
@@ -211,6 +211,7 @@
             this.ShowInTaskbar = false;
             this.Text = "바코드 입력";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.Form_MultiBcrIn2_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
