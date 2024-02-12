@@ -66,6 +66,9 @@ namespace Bank_Host
         Form_InfoBoard InfoBoard = new Form_InfoBoard();
         public static SaveLog LogSave = new SaveLog();
 
+        List<Dictionary<string, string>> cust = new List<Dictionary<string, string>>();
+        List<Dictionary<string, string>> selectCust = new List<Dictionary<string, string>>();
+
         public class SaveLog
         {
             public delegate void EvtInsertLog(string type, string msg);
@@ -439,7 +442,7 @@ namespace Bank_Host
         public void Fnc_Get_Information()
         {
             //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
-            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json"));
+            cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/diebank/bcr-master/k4/json"));
 
             if (cust.Count == 0)
                 return;
@@ -540,9 +543,6 @@ namespace Bank_Host
             string[] s = data.Split(new string[] { "},{" }, StringSplitOptions.None);
             try
             {
-                
-                
-
                 for (int i = 0; i < s.Length; i++)
                 {
                     Dictionary<string, string> temp = new Dictionary<string, string>();
@@ -554,7 +554,8 @@ namespace Bank_Host
 
                     foreach (string t in s[i].Split(','))
                     {
-                        temp.Add(t.Split(':')[0], t.Split(':')[1] == "COMMA" ? "," : t.Split(':')[1]);
+                        if(t != "")
+                            temp.Add(t.Split(':')[0], t.Split(':')[1] == "COMMA" ? "," : t.Split(':')[1]);
                     }
                     cust.Add(temp);
                 }
@@ -571,7 +572,7 @@ namespace Bank_Host
 
         public void Fnc_Get_Information_Model(string strCust)
         {
-            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json?CUST_CODE={strCust}"));
+            //List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/diebank/bcr-master/k4/json?CUST_CODE={strCust}"));
 
             //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
 
@@ -587,12 +588,14 @@ namespace Bank_Host
             comboBox_Name.Items.Clear();
             comboBox_Name.Items.Add("모델명을 입력 하세요!");
 
-            for(int i = 0; i < cust.Count; i++)
+            selectCust = cust.Cast<Dictionary<string, string>>().Where(r => r["CUST_CODE"].ToString() == strCust).ToList();
+
+            for(int i = 0; i < selectCust.Count; i++)
             {
                 AWork = new WorkInfo();
 
-                AWork.strCust =         cust[i]["CUST_CODE"].ToString(); AWork.strCust = AWork.strCust.Trim();
-                AWork.strModelName =    cust[i]["CUST_NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
+                AWork.strCust = selectCust[i]["CUST_CODE"].ToString(); AWork.strCust = AWork.strCust.Trim();
+                AWork.strModelName = selectCust[i]["CUST_NAME"].ToString(); AWork.strModelName = AWork.strModelName.Trim();
 
                 if (strCust == AWork.strCust)
                 {
@@ -613,9 +616,9 @@ namespace Bank_Host
                         {
                             if (BankHost_main.nMaterial_type == 1)
                             {
-                                if (cust[i].ContainsKey("WAFER_TYPE") == true)
+                                if (selectCust[i].ContainsKey("WAFER_TYPE") == true)
                                 {
-                                    if (cust[i]["WAFER_TYPE"] == "FOSB")
+                                    if (selectCust[i]["WAFER_TYPE"] == "FOSB")
                                         comboBox_Name.Items.Add(strName);
                                 }
                                 else
@@ -625,9 +628,9 @@ namespace Bank_Host
                             }
                             else
                             {
-                                if (cust[i].ContainsKey("WAFER_TYPE") == true)
+                                if (selectCust[i].ContainsKey("WAFER_TYPE") == true)
                                 {
-                                    if (cust[i]["WAFER_TYPE"] != "FOSB")
+                                    if (selectCust[i]["WAFER_TYPE"] != "FOSB")
                                         comboBox_Name.Items.Add(strName);
                                 }
                                 else
@@ -696,6 +699,90 @@ namespace Bank_Host
             }
         }
 
+        public string PostWebServiceData(string url)
+        {
+            string responseText = string.Empty;
+            LogSave.Save("WLOG", "INFO", url);
+            try
+            {
+                byte[] arr = new byte[10];
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                //request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Properties.Settings.Default.USER_NAME + ":" + Properties.Settings.Default.USER_PW)));
+                request.Headers.Add("Authorization", "inbound:inbound@123");
+                //request.ContentLength = url.Length - 29;
+
+                //byte[] bytes = Encoding.UTF8.GetBytes(url.Substring(29));
+                byte[] bytes = Encoding.UTF8.GetBytes(url.Substring(url.IndexOf('?')));
+                request.ContentLength = bytes.Length;// url.Length - url.IndexOf('?');
+                using (Stream requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(bytes, 0, bytes.Length);
+                }
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(stream);
+
+                        responseText = reader.ReadToEnd();
+                    }
+                }
+
+                return responseText;
+            }
+            catch (WebException ex)
+            {
+                string errorMessage = string.Empty;
+                LogSave.Save("WLOG", "ERROR", ex.StackTrace);
+                LogSave.Save("WLOG", "ERROR", ex.Message);
+                if (ex.Response != null)
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+                    {
+                        Stream dataStream = response.GetResponseStream();
+                        StreamReader reader = new StreamReader(dataStream);
+                        errorMessage = GetErrorMSG(reader.ReadToEnd());
+                        LogSave.Save("WLOG", "ERROR", errorMessage);
+                    }
+                }
+
+                return errorMessage;
+            }
+        }
+
+        private static string GetErrorMSG(string msg)
+        {
+            string res = "";
+            msg = msg.Replace("\"", "");
+            msg = msg.Replace("[", "");
+            msg = msg.Replace("]", "");
+            msg = msg.Replace("{", "");
+            msg = msg.Replace("}", "");
+
+            string[] temp = msg.Split(',');
+
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            int bkeyindex = 0;
+
+            for (int i = 0; i < temp.Length; i++)
+            {
+                if (temp[i].Split(':').Length < 2)
+                {
+                    result[temp[bkeyindex].Split(':')[0]] = result[temp[bkeyindex].Split(':')[0]] + " " + temp[i];
+                }
+                else
+                {
+                    bkeyindex = i;
+                    result.Add(temp[i].Split(':')[0], temp[i].Split(':')[1]);
+                }
+            }
+
+            return result["MESSAGE"];
+        }
+
 
         public static string GetWebServiceData(string url)
         {
@@ -710,7 +797,7 @@ namespace Bank_Host
                 LogSave.Save("WLOG", "INFO", url);
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Timeout = 2000;
+                request.Timeout = 5000;
                 request.Method = "GET";
                 request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Properties.Settings.Default.USER_NAME + ":" + Properties.Settings.Default.USER_PW)));
 
@@ -725,6 +812,11 @@ namespace Bank_Host
                 }
 
                 LogSave.Save("WLOG", "INFO", responseText);
+
+                //if (url.Contains("diebank/bcr-master") == true)
+                //    return "[{\"CUST_CODE\":488,\"CUST_NAME\":\"AVAGO_CHIPBOND\",\"BCR_TYPE\":\"DATAMATRIX\",\"SPLITER\":\";\",\"USE\":\"Y\",\"BCD01\":\"DEVICE\",\"BCD02\":\"\",\"BCD03\":\"LOT\",\"BCD04\":\"QTY\",\"BCD05\":\"\",\"BCD06\":\"\",\"BCD07\":\"\",\"BCD08\":\"\",\"BCD09\":\"\",\"BCD10\":\"\",\"BCD11\":\"\",\"BCD12\":\"\",\"REGISTER\":\"\",\"REG_TIME\":\"2024-02-01T16:01:30\",\"EDITOR\":\"\",\"EDIT_TIME\":\"1900-01-01T00:00:00\",\"REMARK\":\"\",\"ROW_NUM\":1,\"RESULT\":\"SUCCESS\",\"MESSAGE\":\"select\",\"REEL_ID\":\"LOT\"},{\"CUST_CODE\":379,\"CUST_NAME\":\"SKYWORKS_SING\",\"BCR_TYPE\":\"DATAMATRIX\",\"SPLITER\":\"+\",\"USE\":\"Y\",\"BCD01\":\"DEVICE/L1\",\"BCD02\":\"LOT/L1\",\"BCD03\":\"QTY/L1\",\"BCD04\":\"\",\"BCD05\":\"\",\"BCD06\":\"\",\"BCD07\":\"\",\"BCD08\":\"\",\"BCD09\":\"\",\"BCD10\":\"\",\"BCD11\":\"\",\"BCD12\":\"\",\"REGISTER\":\"\",\"REG_TIME\":\"2024-02-02T13:37:08\",\"EDITOR\":\"\",\"EDIT_TIME\":\"1900-01-01T00:00:00\",\"REMARK\":\"\",\"ROW_NUM\":2,\"RESULT\":\"SUCCESS\",\"MESSAGE\":\"select\",\"REEL_ID\":\"LOT\"},{\"CUST_CODE\":1,\"CUST_NAME\":\"ATK\",\"BCR_TYPE\":\"QR\",\"SPLITER\":\";\",\"USE\":\"Y\",\"BCD01\":\"AMKOR_PO\",\"BCD02\":\"\",\"BCD03\":\"\",\"BCD04\":\"BOX_SEQ\",\"BCD05\":\"TOTAL_BOX_CNT\",\"BCD06\":\"INVOICE_QTY\",\"BCD07\":\"\",\"BCD08\":\"VENDOR_LOT\",\"BCD09\":\"INVOICE\",\"BCD10\":\"\",\"BCD11\":\"PACKING_ID\",\"BCD12\":null,\"REGISTER\":\"\",\"REG_TIME\":\"2023-07-05T15:13:26\",\"EDITOR\":\"\",\"EDIT_TIME\":\"2023-07-12T11:37:33\",\"REMARK\":\"\",\"ROW_NUM\":3,\"RESULT\":\"SUCCESS\",\"MESSAGE\":\"select\",\"REEL_ID\":\"LOT\"}]";
+                //else
+                //return responseText;
 
                 return responseText;
             }
@@ -1341,6 +1433,7 @@ namespace Bank_Host
             dataGridView_worklist.Columns.Add("AMKOR_ID", "AMKOR_ID");
             dataGridView_worklist.Columns.Add("WAFER_LOT", "WAFER_LOT");
             dataGridView_worklist.Columns.Add("SHIPMENT", "SHIPMENT");
+            
 
 
             dataGridView_worklist.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -1381,7 +1474,50 @@ namespace Bank_Host
             Frm_Process.Form_Display("\n작업을 마침니다.");
             Frm_Process.Hide();
 
+            //Thread insertThread = new Thread(InsertWAS);
+            //mesData = strData;
+            //insertThread.Start();
+
             return list.Count;
+        }
+
+        string mesData = "";
+
+        private void InsertWAS()
+        {
+            string[] strList = mesData.Split('\n'); //index 1 부터 데이터 받아야 함.
+            int nArryLength = strList.Length;
+
+
+            for (int i = 0; i < strList.Length; i++)
+            {
+                string[] strCol = strList[i].Split('\t');
+
+                PostWebServiceData($"http://10.131.10.84:8080/api/diebank/gr-info/k4/json?" +
+                    $"AMKOR_ID={strCol[8]}&AMKOR_BATACH=&AMKOR_BATCH_PREV_BIZ=&BINDING_NO=&COO={strCol[11]}&CUR_MATERIAL_NO=" +
+                    $"&CUST_CODE={strCol[0]}&CUST_INFO=&CUST_NAME=&CUSTOMER_LOT_NO={strCol[1]}&LOT_DCC={strCol[2]}&DEVICE_SCAN=" +
+                    $"DIE_BANK_EOH=&DIE_QTY={strCol[5]}&DS_DT=&FAB_SITE=&HAWB={strCol[7]}&HOLD_COMMENT=&HOLD_STATUS=&" +
+                    $"INVOICE=&LAST_ISSUE_TIME=&LOCATION=&LOT_TYPE=&LOT_NO=&MATERIAL=&MES_UPLOAD_TIME={DateTime.Now.ToString()}&MES_UPLOAD_ID={BankHost_main.strMESID}" +
+                    $"&ON_HAND_WAFER_ID=&PDL=&PDL_SEPARATOR=&PLANT={Properties.Settings.Default.LOCATION}&PRICE=&RCV_DATE=&RCV_DIE_QTY=&RCV_WAFER_QTY=" +
+                    $"&REEL_ID=&REEL_DCC=&RSLT=&SCAN_TIME=&SIZE=&SOURCE_DEVICE={strCol[3]}&SPECIFIC_DATA=&UNIT=&USER_ID=&VALIDATION_ID=" +
+                    $"&VALIDATION_SCAN_TIME=&WAFER_INFORM=&WAFER_LOT_NO=&WAFER_QTY=&WAFER_STATUS=&WAFER_TYPE=&HOST_NAME=&BADGE=&OPER_NAME=");
+             
+                
+                //data.Cust = strCol[0];                    
+                //data.Device = strCol[3];     
+                //data.Lot = strCol[1];                
+                //data.Lot_Dcc = strCol[2];                
+                //data.Rcv_Qty = strCol[5];                
+                //data.Default_WQty = strCol[6];                
+                //data.Rcvddate = strCol[4];                
+                //data.Lot_type = strCol[9];                
+                //data.Bill = strCol[7];                
+                //data.Amkorid = strCol[8];                
+                //data.Wafer_lot = strCol[10];                
+                //data.strCoo = strCol[11];                
+                //data.shipment = strCol[12];                
+            }
+            
         }
 
         public int Fnc_Get_Worklist_3(string strData)
@@ -1687,20 +1823,6 @@ namespace Bank_Host
             dataGridView_worklist.Rows.Clear();
             dataGridView_worklist.Refresh();
 
-            //dataGridView_worklist.Columns.Add("#", "#");
-            //dataGridView_worklist.Columns.Add("CUST", "CUST");
-            //dataGridView_worklist.Columns.Add("DEVICE", "DEVICE");
-            //dataGridView_worklist.Columns.Add("LOT#", "LOT#");
-            //dataGridView_worklist.Columns.Add("DCC", "DCC");
-            //dataGridView_worklist.Columns.Add("DIE_QTY", "DIE_QTY");
-            //dataGridView_worklist.Columns.Add("WFR TTL", "WFR TTL");
-            //dataGridView_worklist.Columns.Add("REV_DATE", "REV_DATE");
-            //dataGridView_worklist.Columns.Add("LOT_TYPE", "LOT_TYPE");
-            //dataGridView_worklist.Columns.Add("BILL#", "BILL#");
-            //dataGridView_worklist.Columns.Add("AMKOR_ID", "AMKOR_ID");
-            //dataGridView_worklist.Columns.Add("WAFER_LOT", "WAFER_LOT");
-            //dataGridView_worklist.Columns.Add("SHIPMENT", "SHIPMENT");
-
 
             dgv_loc.Columns[0].SortMode = DataGridViewColumnSortMode.Programmatic;
             dgv_loc.Columns[1].SortMode = DataGridViewColumnSortMode.Programmatic;
@@ -1909,7 +2031,7 @@ namespace Bank_Host
 
                 string strTxtline = item.Cust + "\t" + item.Device + "\t" + item.Lot + "\t" + item.Lot_Dcc + "\t" + item.Rcv_Qty + "\t" + item.Die_Qty + "\t" +
                     item.Rcv_WQty + "\t" + item.Rcvddate + "\t" + item.Lot_type + "\t" + item.Bill + "\t" + item.Amkorid + "\t" + item.Wafer_lot + "\t" + item.strCoo + "\t" +
-                    item.state + "\t" + item.strop + "\t" + item.strGRstatus + "\t" + item.Default_WQty + "\t" + item.shipment;
+                    item.state + "\t" + item.strop + "\t" + item.strGRstatus + "\t" + item.Default_WQty + "\t" + item.shipment + "\t\t";
 
                 if (strDevicecheck != item.Device)
                 {
@@ -2170,6 +2292,9 @@ namespace Bank_Host
             dataGridView_worklist.Columns.Add("AMKOR_ID", "AMKOR_ID");
             dataGridView_worklist.Columns.Add("WAFER_LOT", "WAFER_LOT");
             dataGridView_worklist.Columns.Add("SHIPMENT", "SHIPMENT");
+            dataGridView_worklist.Columns.Add("REELID", "REEL_ID");
+            dataGridView_worklist.Columns.Add("REELDCC", "REEL_DCC");
+
 
             dataGridView_worklist.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_worklist.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -2184,6 +2309,8 @@ namespace Bank_Host
             dataGridView_worklist.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_worklist.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_worklist.Columns[12].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[13].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_worklist.Columns[14].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             if (data != null)
             {
@@ -3211,10 +3338,11 @@ namespace Bank_Host
             {
                 var taskResut = Task.Run(async () =>
                 {
-                    return await BankHost_main.Host.Fnc_AutoGR(strgr);
+                    return await BankHost_main.Host.Fnc_AutoGR(strgr);//PRD
                 });
-
                 string strResult = taskResut.Result;
+
+                //string strResult = GetWebServiceData($"http://10.121.201.33:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");//$"http://10.131.201.33:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");
 
                 if (strResult.Contains("SUCCESS"))
                 {
@@ -3228,9 +3356,9 @@ namespace Bank_Host
                         return await BankHost_main.Host.Fnc_AutoGR(strgr);
                     });
 
-                    string strResult2 = taskResut.Result;
+                    string strResult2 = taskResut2.Result;
 
-                    if (strResult.Contains("SUCCESS") || strResult.Contains("STATION"))
+                    if (strResult.Contains("SUCCESS"))
                     {
                         Fnc_Update_GR(strDevice, strLot, "COMPLETE");
                         bjudge = true;
@@ -4390,6 +4518,8 @@ namespace Bank_Host
             st.strGRstatus = strSplit_data[15];
             st.Default_WQty = strSplit_data[16];
             st.WSN = strWSN;
+            st.ReelID = strSplit_data[17];
+            st.ReelDCC = strSplit_data[18];
 
 
             if (strSplit_data.Length > 17)
@@ -4607,9 +4737,17 @@ namespace Bank_Host
             st.Die_Qty = nQty.ToString();
             st.Rcv_WQty = nWfrQry.ToString();
 
+            if (st.state == "Working" || st.state == "Complete")
+            {
+                string[] t = ReelIDUpdate(st).Split('/');
+
+                st.ReelID = t[0];
+                st.ReelDCC = t[1];
+            }
+
             string strTxtline = st.Cust + "\t" + st.Device + "\t" + st.Lot + "\t" + st.Lot_Dcc + "\t" + st.Rcv_Qty + "\t" + st.Die_Qty + "\t" +
                     st.Rcv_WQty + "\t" + st.Rcvddate + "\t" + st.Lot_type + "\t" + st.Bill + "\t" + st.Amkorid + "\t" + st.Wafer_lot + "\t" + 
-                    st.strCoo + "\t" + st.state + "\t" + st.strop + "\t" + st.strGRstatus + "\t" + st.Default_WQty + "\t" + st.shipment + "\t" + st.WSN;
+                    st.strCoo + "\t" + st.state + "\t" + st.strop + "\t" + st.strGRstatus + "\t" + st.Default_WQty + "\t" + st.shipment + "\t" + st.WSN + "\t"+ st.ReelID + "\t" + st.ReelDCC;
 
             info[dataIndex] = strTxtline;
             File.WriteAllLines(strValReadfile, info);
@@ -4645,7 +4783,8 @@ namespace Bank_Host
             //dataGridView_Lot.Rows[Realindex].Cells[1].Selected = true;
             dataGridView_Lot.Rows[Realindex].Selected = true;
             dataGridView_Lot.CurrentCell = dataGridView_Lot.Rows[Realindex].Cells[0];
-
+            dataGridView_Lot.Rows[Realindex].Cells["ReelID"].Value = st.ReelID;
+            dataGridView_Lot.Rows[Realindex].Cells["ReelDCC"].Value = st.ReelDCC;
 
             int nRows = dataGridView_Lot.Rows.Count;
             if (nRows == Realindex + 1)
@@ -4661,6 +4800,12 @@ namespace Bank_Host
 
                 BankHost_main.strWork_Lotinfo = "";
                 BankHost_main.Host.Host_Delete_BcrReadinfo(BankHost_main.strEqid, strLot, 0);
+
+                // GR 처리 필요
+                //
+                //
+                
+
                 return 2;
             }
             else if (st.state == "Error")
@@ -4746,6 +4891,78 @@ namespace Bank_Host
 
             return 0;
         }
+
+        public Dictionary<string, string> Bcr2Dic(StorageData info)
+        {
+            Dictionary<string, string> res = new Dictionary<string, string>();
+
+            res.Add("DEVICE", info.Device);
+
+            res.Add("LOT", info.Lot);           
+            res.Add("QTY", info.Die_Qty);            
+            //res.Add("WFRQTY", info.WfrQty);
+            res.Add("STATE", info.state);
+            res.Add("WSN", info.WSN);
+
+            return res;
+        }
+
+        public string ReelIDUpdate(StorageData info)
+        {
+            string ReelID = "";
+            try
+            {
+                Dictionary<string, string> selcust = GetReelIDRule();
+                Dictionary<string, string> bcrDic = Bcr2Dic(info);
+                
+                int res = -1;
+
+                if (selcust["REEL_ID"] == "ALL")
+                {
+                    foreach (KeyValuePair<string, string> s in selcust)
+                    {
+                        if (s.Value != "")
+                        {
+                            //if (bcrDic.Keys.Contains(s.Value.Split('/')[0]) == true)
+                            {
+                                ReelID += $"{bcrDic[s.Value.Split('/')[0]]}{selcust["SPLITER"]}";
+                            }
+
+                        }
+                    }
+
+                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
+                }
+                else if (int.TryParse(selcust["REEL_ID"], out res) == true)
+                {
+
+                }
+                else
+                {
+                    string[] r = selcust["REEL_ID"].Split(',');
+
+                    foreach (string t in r)
+                    {
+                        ReelID += $"{bcrDic[t]}{selcust["SPLITER"]}";
+                    }
+
+                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
+                }
+
+                string DCC = GetWebServiceData($"http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_last_reel_dcc/{ReelID}");
+
+                return $"{ReelID}/{DCC}";
+            }
+            catch (Exception ex)
+            {
+
+
+                return $"{ReelID}/{0}";
+            }
+
+            
+        }
+
 
         public string Fnc_Update_GR(string strDevice, string strLot, string state)
         {
@@ -6426,8 +6643,8 @@ namespace Bank_Host
 
         public Bcrinfo Fnc_Bcr_Parsing(string strBcr)
         {
-            strBcrType = strBcrType == "" ? BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model) : strBcrType;
-
+            strBcrType = strBcrType == "" ? selectCust.Cast<Dictionary<string, string>>().Where(r => r["CUST_NAME"] == BankHost_main.strCustName).ToList()[0]["BCR_TYPE"] : strBcrType;
+            
             Bcrinfo info = new Bcrinfo();
             if (Properties.Settings.Default.CameraType == "KEYENCE" || BankHost_main.nScanMode == 1 || BankHost_main.nScanMode == 3)
             {
@@ -7001,9 +7218,9 @@ namespace Bank_Host
                 return bcr;
             }
 
-            if (BankHost_main.strWork_DevicePos.Contains(','))
+            if (BankHost_main.strWork_DevicePos.Contains('/'))
             {
-                strSplit_DevicePos = BankHost_main.strWork_DevicePos.Split(',');
+                strSplit_DevicePos = BankHost_main.strWork_DevicePos.Split('/');
 
                 if (Int32.TryParse(strSplit_DevicePos[0], out nDevicePos) == false)
                     nDevicePos = FindCodePos(strSplit_DevicePos[0], strBcr);
@@ -7011,9 +7228,9 @@ namespace Bank_Host
             else
                 nDevicePos = Int32.Parse(BankHost_main.strWork_DevicePos);
 
-            if (BankHost_main.strWork_LotidPos.Contains(','))
+            if (BankHost_main.strWork_LotidPos.Contains('/'))
             {
-                strSplit_LotPos = BankHost_main.strWork_LotidPos.Split(',');
+                strSplit_LotPos = BankHost_main.strWork_LotidPos.Split('/');
 
                 if (Int32.TryParse(strSplit_LotPos[0], out nLotPos) == false)
                     nLotPos = FindCodePos(strSplit_LotPos[0], strBcr);
@@ -7021,9 +7238,9 @@ namespace Bank_Host
             else
                 nLotPos = Int32.Parse(BankHost_main.strWork_LotidPos);
 
-            if (BankHost_main.strWork_QtyPos.Contains(','))
+            if (BankHost_main.strWork_QtyPos.Contains('/'))
             {
-                strSplit_QtyPos = BankHost_main.strWork_QtyPos.Split(',');
+                strSplit_QtyPos = BankHost_main.strWork_QtyPos.Split('/');
 
                 if (Int32.TryParse(strSplit_QtyPos[0], out nQtyPos) == false)
                     nQtyPos = FindCodePos(strSplit_QtyPos[0], strBcr);
@@ -7032,9 +7249,9 @@ namespace Bank_Host
                 nQtyPos = Int32.Parse(BankHost_main.strWork_QtyPos);
 
 
-            if (BankHost_main.strWork_WSNPos.Contains(','))
+            if (BankHost_main.strWork_WSNPos.Contains('/'))
             {
-                strSplit_WSNPos = BankHost_main.strWork_WSNPos.Split(',');
+                strSplit_WSNPos = BankHost_main.strWork_WSNPos.Split('/');
 
                 if (Int32.TryParse(strSplit_WSNPos[0], out nWSNPos) == false)
                     nWSNPos = FindCodePos(strSplit_WSNPos[0], strBcr);
@@ -7047,7 +7264,7 @@ namespace Bank_Host
             bool bmultibcr = false;
 
             //1D Scan 인지 확인
-            string strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            //string strBcrType = BankHost_main.Host.Host_Get_BcrType(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
             string str1Dbcrcount = "0";
             bool b1Dbcr = false;
 
@@ -7952,7 +8169,7 @@ namespace Bank_Host
             BankHost_main.IsGRrun = true;
             strSelBill = "";
 
-            string strGrMethod = BankHost_main.Host.Host_Get_GrMethod(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            string strGrMethod = BankHost_main.strWork_Cust.Contains("QUALCOMM") == true ? "INTRANSIT" : "ADE";//BankHost_main.Host.Host_Get_GrMethod(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
             label_GRmethod.Text = strGrMethod;
 
             if (strGrMethod == "ADE")
@@ -9243,7 +9460,8 @@ namespace Bank_Host
             nComplete = Int32.Parse(label_complete.Text);
             nError = Int32.Parse(label_error.Text);
 
-            string strGrMethod = BankHost_main.Host.Host_Get_GrMethod(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            string strGrMethod = BankHost_main.strWork_Cust.Contains("Qualcomm") == true ? "INTRANSIT" : "ADE"; //BankHost_main.Host.Host_Get_GrMethod(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+
 
             string strMsg = "";
 
@@ -9434,6 +9652,8 @@ namespace Bank_Host
                 dataGridView_Lot.Columns.Add("Shipment", "Shipment");
                 dataGridView_Lot.Columns.Add("AmkorID", "AmkorID");
                 dataGridView_Lot.Columns.Add("WSN", "WSN");
+                dataGridView_Lot.Columns.Add("ReelID", "Reel ID");
+                dataGridView_Lot.Columns.Add("ReelDCC", "Reel DCC");
 
 
                 dataGridView_Lot.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -9449,6 +9669,8 @@ namespace Bank_Host
                 dataGridView_Lot.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
                 dataGridView_Lot.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
                 dataGridView_Lot.Columns[12].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dataGridView_Lot.Columns[13].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dataGridView_Lot.Columns[14].SortMode = DataGridViewColumnSortMode.NotSortable;
 
                 //dataGridView_Lot.Columns["WSN"].Visible = false;
 
@@ -9548,17 +9770,20 @@ namespace Bank_Host
 
                 dataGridView_Lot.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
                 dataGridView_Lot.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-                dataGridView_Lot.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridView_Lot.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-                dataGridView_Lot.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-                dataGridView_Lot.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.NotSet;
-
+                dataGridView_Lot.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[13].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridView_Lot.Columns[14].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                
                 dataGridView_Lot.Sort(dataGridView_Lot.Columns[1], ListSortDirection.Ascending);
             }
             catch
@@ -9568,7 +9793,7 @@ namespace Bank_Host
 
             bGridViewUpdate = false;
             return 0;
-        }
+        } 
 
 
         private void btn_exit_Click(object sender, EventArgs e)
@@ -9877,8 +10102,15 @@ namespace Bank_Host
             tabControl_Sort.SelectedIndex = 0;
         }
 
+        public Dictionary<string, string> GetReelIDRule()
+        {
+            return selectCust[0];
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
+            selectCust = selectCust.Cast<Dictionary<string, string>>().Where(r => r["CUST_NAME"] == comboBox_Name.Text).ToList();
+            
             int nMode = comboBox_mode.SelectedIndex;
 
             if (BankHost_main.nScanMode == 0)
@@ -10241,31 +10473,31 @@ namespace Bank_Host
         public void Fnc_Get_WorkBcrInfo(string strGetCust, string strModelName)
         {
             //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
-            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json"));
+            //List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/diebank/bcr-master/k4/json"));
 
-            if (cust.Count == 0)
+            if (selectCust.Count == 0)
                 return;
 
-            for (int n = 0; n < cust.Count; n++)
+            for (int n = 0; n < selectCust.Count; n++)
             {
                 
 
-                if (strGetCust == cust[n]["CUST_CODE"] && strModelName == cust[n]["CUST_NAME"])
+                if (strGetCust == selectCust[n]["CUST_CODE"] && strModelName == selectCust[n]["CUST_NAME"])
                 {
                     WorkInfo AWork = new WorkInfo();
 
-                    AWork.strCust =         cust[n]["CUST_CODE"].ToString().Trim();
-                    AWork.strBank =         cust[n].ContainsKey("BANK_NO") == true ? cust[n]["BANK_NO"].ToString().Trim() : "";
-                    AWork.strSPR =          cust[n]["SPLITER"].ToString().Trim();
-                    AWork.strModelName =    cust[n]["CUST_NAME"].ToString().Trim();
-                    AWork.strMtlType =      cust[n].ContainsKey("MTL_TYPE") == true ? cust[n]["MTL_TYPE"].ToString() : "";
-                    AWork.strMultiLot =     cust[n].ContainsKey("MULTI_LOT") == true ? cust[n]["MULTI_LOT"].ToString() : "";
-                    BankHost_main.strWork_BcdType = cust[n]["BCR_TYPE"];
+                    AWork.strCust =         selectCust[n]["CUST_CODE"].ToString().Trim();
+                    AWork.strBank =         selectCust[n].ContainsKey("BANK_NO") == true ? selectCust[n]["BANK_NO"].ToString().Trim() : "";
+                    AWork.strSPR =          selectCust[n]["SPLITER"].ToString().Trim();
+                    AWork.strModelName =    selectCust[n]["CUST_NAME"].ToString().Trim();
+                    AWork.strMtlType =      selectCust[n].ContainsKey("MTL_TYPE") == true ? selectCust[n]["MTL_TYPE"].ToString() : "";
+                    AWork.strMultiLot = selectCust[n].ContainsKey("MULTI_LOT") == true ? selectCust[n]["MULTI_LOT"].ToString() : "";
+                    BankHost_main.strWork_BcdType = selectCust[n]["BCR_TYPE"];
                     
-                    AWork.strDevicePos = GetDicKeyVal(cust[n], "DEVICE").Replace("BCD","");
-                    AWork.strLotidPos = GetDicKeyVal(cust[n], "LOT").Replace("BCD", "");
+                    AWork.strDevicePos = $"{(int.Parse(GetDicKeyVal(selectCust[n], "DEVICE").Replace("BCD","")) -1).ToString()}{(selectCust[n][GetDicKeyVal(selectCust[n], "DEVICE")].ToString().Contains('/') == true ? "/" + selectCust[n][GetDicKeyVal(selectCust[n], "DEVICE")].ToString().Split('/')[1].ToString() : "")} ";
+                    AWork.strLotidPos = $"{(int.Parse(GetDicKeyVal(selectCust[n], "LOT").Replace("BCD", "")) - 1).ToString()}{(selectCust[n][GetDicKeyVal(selectCust[n], "LOT")].ToString().Contains('/') == true ? "/" + selectCust[n][GetDicKeyVal(selectCust[n], "LOT")].ToString().Split('/')[1].ToString() : "")}";
                     AWork.strLotDigit = "";
-                    AWork.strQtyPos = GetDicKeyVal(cust[n], "QTY").Replace("BCD", "");
+                    AWork.strQtyPos = $"{(int.Parse(GetDicKeyVal(selectCust[n], "QTY").Replace("BCD", "")) -1 ).ToString()}{(selectCust[n][GetDicKeyVal(selectCust[n], "QTY")].ToString().Contains('/') == true ? "/"+ selectCust[n][GetDicKeyVal(selectCust[n], "QTY")].ToString().Split('/')[1].ToString() : "")}";
                     AWork.strUdigit = "";// cust[n]["UDIGIT"].ToString(); AWork.strUdigit = AWork.strUdigit.Trim();
                     AWork.strWfrPos = "";//e cust[n]["TTL_WFR_QTY"].ToString(); AWork.strWfrPos = AWork.strWfrPos.Trim();
                     AWork.strLot2Wfr = "";// cust[n]["LOT2WFR"].ToString(); AWork.strLot2Wfr = AWork.strLot2Wfr.Trim();
@@ -12066,8 +12298,8 @@ namespace Bank_Host
                 string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
                 Frm_Process.Form_Show(strMsg);
 
-                var taskResut = Fnc_RunAsync( $"http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_auto_gr_rdy_list/{Properties.Settings.Default.LOCATION}");
-
+                //var taskResut = Fnc_RunAsync( $"http://10.101.14.130:8180/eMES_Webservice/lot_info_list/getAutoGRLotListOnReadyStatus_eMES/{Properties.Settings.Default.LOCATION}");
+                var taskResut = Fnc_RunAsync(   $"http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_auto_gr_rdy_list/{Properties.Settings.Default.LOCATION}");
                 try
                 {
                     strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
@@ -15440,6 +15672,8 @@ namespace Bank_Host
         public string Hawb = "";
         public string WSN = "";
         public string ReadFile = "";
+        public string ReelID = "";
+        public string ReelDCC = "";
     }
 
     public class Bcrinfo

@@ -181,7 +181,6 @@ namespace Bank_Host
            
         }
 
-       
 
         public BankHost_main()
         {
@@ -1061,6 +1060,8 @@ namespace Bank_Host
                                 Form_Sort.bRun = true;
                                 Form_Sort.nResult = 1000;
 
+                                //ReelID 검증
+                                //ReelIDUpdate(Read_Bcr);
                                 ////데이터 처리 대기
                                 while (Form_Sort.bRun)
                                 {
@@ -1113,11 +1114,76 @@ namespace Bank_Host
                 }
                 
             }
-            catch
+            catch(Exception ex)
             {
                 string strMsg = string.Format("오류가 발견 되었습니다.");
                 ProcessGun_Error(strMsg);
                 bGunRingMode_Run = false;
+            }
+        }
+
+        public Dictionary<string, string> Bcr2Dic(Bcrinfo info)
+        {
+            Dictionary<string, string> res = new Dictionary<string, string>();
+
+            res.Add("DEVICE", info.Device);
+            res.Add("LOT", info.Lot);
+            res.Add("DIETTL", info.DieTTL);
+            res.Add("QTY", info.DieQty);
+            res.Add("WFRTTL", info.WfrTTL);
+            res.Add("WFRQTY", info.WfrQty);
+            res.Add("RESULT", info.result);
+            res.Add("WSN", info.WSN);
+
+            return res;
+        }
+
+        public void ReelIDUpdate(Bcrinfo info)
+        {
+            try
+            {
+                Dictionary<string, string> selcust = Frm_Sort.GetReelIDRule();
+                Dictionary<string, string> bcrDic = Bcr2Dic(info);
+
+                string ReelID = "";
+                int res = -1;
+
+                if (selcust["REEL_ID"] == "ALL")
+                {
+                    foreach (KeyValuePair<string, string> s in selcust)
+                    {
+                        if (s.Value != "")
+                        {
+                            //if (bcrDic.Keys.Contains(s.Value.Split('/')[0]) == true)
+                            {
+                                ReelID += $"{bcrDic[s.Value.Split('/')[0]]}{selcust["SPLITER"]}";
+                            }
+
+                        }
+                    }
+
+                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
+                }
+                else if (int.TryParse(selcust["REEL_ID"], out res) == true)
+                {
+
+                }
+                else
+                {
+                    string[] r = selcust["REEL_ID"].Split(',');
+
+                    foreach (string t in r)
+                    {
+                        ReelID += $"{bcrDic[t]}{selcust["SPLITER"]}";
+                    }
+
+                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 

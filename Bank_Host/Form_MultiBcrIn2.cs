@@ -229,6 +229,7 @@ namespace Bank_Host
                     Fnc_Hide();
                 }
 
+                textBox_2dbcr.Text = "";
                 /*
                 if (textBox_2dbcr.ImeMode != ImeMode.Alpha)
                 {

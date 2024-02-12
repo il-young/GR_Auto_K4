@@ -225,7 +225,7 @@ namespace Bank_Host
         {
             //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
 
-            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/die-bank/bcr-master/k4/json"));
+            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/diebank/bcr-master/k4/json"));
 
             dataGridView_bcrconfig.Columns.Clear();
             dataGridView_bcrconfig.Rows.Clear();
