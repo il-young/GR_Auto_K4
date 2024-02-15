@@ -1061,7 +1061,11 @@ namespace Bank_Host
                                 Form_Sort.nResult = 1000;
 
                                 //ReelID 검증
-                                //ReelIDUpdate(Read_Bcr);
+                                
+
+                                //Thread insertThread = new Thread(InsertWAS);
+                                //mesData = strData;
+                                //insertThread.Start();
                                 ////데이터 처리 대기
                                 while (Form_Sort.bRun)
                                 {
@@ -1138,54 +1142,63 @@ namespace Bank_Host
             return res;
         }
 
-        public void ReelIDUpdate(Bcrinfo info)
+        public string PostWebServiceData(string url)
         {
+            string responseText = string.Empty;
+            //LogSave.Save("WLOG", "INFO", url);
             try
             {
-                Dictionary<string, string> selcust = Frm_Sort.GetReelIDRule();
-                Dictionary<string, string> bcrDic = Bcr2Dic(info);
+                byte[] arr = new byte[10];
 
-                string ReelID = "";
-                int res = -1;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url.Substring(0, url.IndexOf('?')));
+                request.Method = "POST";
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Properties.Settings.Default.USER_NAME + ":" + Properties.Settings.Default.USER_PW)));
+                //request.Headers.Add("Authorization", "inbound:inbound@123");
+                //request.ContentLength = url.Length - 29;
 
-                if (selcust["REEL_ID"] == "ALL")
+                //byte[] bytes = Encoding.UTF8.GetBytes(url.Substring(29));
+                byte[] bytes = Encoding.UTF8.GetBytes(url.Substring(url.IndexOf('?') + 1));
+                request.ContentLength = bytes.Length;// url.Length - url.IndexOf('?');
+                using (Stream requestStream = request.GetRequestStream())
                 {
-                    foreach (KeyValuePair<string, string> s in selcust)
+                    requestStream.Write(bytes, 0, bytes.Length);
+                }
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (Stream stream = response.GetResponseStream())
                     {
-                        if (s.Value != "")
-                        {
-                            //if (bcrDic.Keys.Contains(s.Value.Split('/')[0]) == true)
-                            {
-                                ReelID += $"{bcrDic[s.Value.Split('/')[0]]}{selcust["SPLITER"]}";
-                            }
+                        StreamReader reader = new StreamReader(stream);
 
-                        }
+                        responseText = reader.ReadToEnd();
                     }
-
-                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
                 }
-                else if (int.TryParse(selcust["REEL_ID"], out res) == true)
-                {
 
-                }
-                else
-                {
-                    string[] r = selcust["REEL_ID"].Split(',');
-
-                    foreach (string t in r)
-                    {
-                        ReelID += $"{bcrDic[t]}{selcust["SPLITER"]}";
-                    }
-
-                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
-                }
+                return responseText;
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
+                string errorMessage = string.Empty;
+                //.LogSave.Save("WLOG", "ERROR", ex.StackTrace);
+                //LogSave.Save("WLOG", "ERROR", ex.Message);
+                if (ex.Response != null)
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)ex.Response)
+                    {
+                        Stream dataStream = response.GetResponseStream();
+                        StreamReader reader = new StreamReader(dataStream);
+                        //errorMessage = GetErrorMSG(reader.ReadToEnd());
+                        //LogSave.Save("WLOG", "ERROR", errorMessage);
+                    }
+                }
 
-                throw;
+                return errorMessage;
             }
         }
+
+        
+
+       
 
         public void PrintSplit(List<StorageData> SplitData)
         {

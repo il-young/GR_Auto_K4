@@ -372,6 +372,20 @@
             this.button18 = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
             this.tb_WaferReturnScan = new System.Windows.Forms.TextBox();
+            this.tabPage14 = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.dgv_ATVLabel = new System.Windows.Forms.DataGridView();
+            this.ATV_Location = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_LotDCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_Cust = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_Device = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_QTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_WFRQTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_maker = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ATV_Origin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tb_ATVScan = new System.Windows.Forms.TextBox();
+            this.btn_loadExcel = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
@@ -379,6 +393,7 @@
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.nud_ATV = new System.Windows.Forms.NumericUpDown();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -442,6 +457,13 @@
             this.panel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ReturnWafer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ATVLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_ATV)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl_Sort
@@ -457,6 +479,7 @@
             this.tabControl_Sort.Controls.Add(this.tabPage9);
             this.tabControl_Sort.Controls.Add(this.tabPage10);
             this.tabControl_Sort.Controls.Add(this.tabPage11);
+            this.tabControl_Sort.Controls.Add(this.tabPage14);
             this.tabControl_Sort.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl_Sort.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tabControl_Sort.ImageList = this.imageList1;
@@ -507,7 +530,6 @@
             this.button19.TabIndex = 14;
             this.button19.Text = "button19";
             this.button19.UseVisualStyleBackColor = true;
-            this.button19.Visible = false;
             this.button19.Click += new System.EventHandler(this.button19_Click_2);
             // 
             // button_option
@@ -1431,7 +1453,7 @@
             this.tc_WSN.Controls.Add(this.tabPage13);
             this.tc_WSN.HotTrack = true;
             this.tc_WSN.ItemSize = new System.Drawing.Size(1, 10);
-            this.tc_WSN.Location = new System.Drawing.Point(401, 589);
+            this.tc_WSN.Location = new System.Drawing.Point(405, 613);
             this.tc_WSN.Name = "tc_WSN";
             this.tc_WSN.SelectedIndex = 0;
             this.tc_WSN.Size = new System.Drawing.Size(463, 53);
@@ -2933,9 +2955,10 @@
             this.panel3.Controls.Add(this.dgv_loc);
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Controls.Add(this.panel2);
-            this.panel3.Location = new System.Drawing.Point(6, 6);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1028, 1019);
+            this.panel3.Size = new System.Drawing.Size(1536, 1022);
             this.panel3.TabIndex = 3;
             // 
             // dgv_loc
@@ -2964,7 +2987,7 @@
             this.dgv_loc.RowHeadersVisible = false;
             this.dgv_loc.RowTemplate.Height = 23;
             this.dgv_loc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_loc.Size = new System.Drawing.Size(1028, 521);
+            this.dgv_loc.Size = new System.Drawing.Size(1536, 524);
             this.dgv_loc.TabIndex = 19;
             // 
             // dataGridViewTextBoxColumn1
@@ -3059,9 +3082,9 @@
             this.panel4.Controls.Add(this.btn_excleout);
             this.panel4.Controls.Add(this.btn_exit);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 574);
+            this.panel4.Location = new System.Drawing.Point(0, 577);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1028, 445);
+            this.panel4.Size = new System.Drawing.Size(1536, 445);
             this.panel4.TabIndex = 18;
             // 
             // btn_excleout
@@ -3101,7 +3124,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1028, 53);
+            this.panel2.Size = new System.Drawing.Size(1536, 53);
             this.panel2.TabIndex = 1;
             // 
             // tb_totalwafer
@@ -3181,9 +3204,10 @@
             this.panel6.Controls.Add(this.dgv_split_log);
             this.panel6.Controls.Add(this.panel7);
             this.panel6.Controls.Add(this.panel8);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1020, 1022);
+            this.panel6.Size = new System.Drawing.Size(1536, 1022);
             this.panel6.TabIndex = 5;
             // 
             // dgv_split_log
@@ -3212,7 +3236,7 @@
             this.dgv_split_log.RowHeadersVisible = false;
             this.dgv_split_log.RowTemplate.Height = 23;
             this.dgv_split_log.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_split_log.Size = new System.Drawing.Size(1020, 478);
+            this.dgv_split_log.Size = new System.Drawing.Size(1536, 478);
             this.dgv_split_log.TabIndex = 19;
             this.dgv_split_log.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_split_log_CellContentClick);
             this.dgv_split_log.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_split_log_KeyDown);
@@ -3309,7 +3333,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel7.Location = new System.Drawing.Point(0, 577);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(1020, 445);
+            this.panel7.Size = new System.Drawing.Size(1536, 445);
             this.panel7.TabIndex = 18;
             // 
             // tb_split
@@ -3391,7 +3415,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel8.Location = new System.Drawing.Point(0, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1020, 99);
+            this.panel8.Size = new System.Drawing.Size(1536, 99);
             this.panel8.TabIndex = 1;
             // 
             // tb_com_wfr
@@ -4467,6 +4491,135 @@
             this.tb_WaferReturnScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_WaferReturnScan_KeyDown);
             this.tb_WaferReturnScan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_WaferReturnScan_MouseDown);
             // 
+            // tabPage14
+            // 
+            this.tabPage14.Controls.Add(this.splitContainer4);
+            this.tabPage14.Location = new System.Drawing.Point(4, 29);
+            this.tabPage14.Name = "tabPage14";
+            this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage14.Size = new System.Drawing.Size(1542, 1028);
+            this.tabPage14.TabIndex = 11;
+            this.tabPage14.Text = "ATV Out Label";
+            this.tabPage14.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.dgv_ATVLabel);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.nud_ATV);
+            this.splitContainer4.Panel2.Controls.Add(this.tb_ATVScan);
+            this.splitContainer4.Panel2.Controls.Add(this.btn_loadExcel);
+            this.splitContainer4.Size = new System.Drawing.Size(1536, 1022);
+            this.splitContainer4.SplitterDistance = 1342;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // dgv_ATVLabel
+            // 
+            this.dgv_ATVLabel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_ATVLabel.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ATV_Location,
+            this.ATV_LotDCC,
+            this.ATV_Cust,
+            this.ATV_Device,
+            this.ATV_QTY,
+            this.ATV_WFRQTY,
+            this.ATV_maker,
+            this.ATV_Address,
+            this.ATV_Origin});
+            this.dgv_ATVLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv_ATVLabel.Location = new System.Drawing.Point(0, 0);
+            this.dgv_ATVLabel.Name = "dgv_ATVLabel";
+            this.dgv_ATVLabel.RowTemplate.Height = 23;
+            this.dgv_ATVLabel.Size = new System.Drawing.Size(1342, 1022);
+            this.dgv_ATVLabel.TabIndex = 0;
+            // 
+            // ATV_Location
+            // 
+            this.ATV_Location.HeaderText = "Location";
+            this.ATV_Location.Name = "ATV_Location";
+            this.ATV_Location.ReadOnly = true;
+            // 
+            // ATV_LotDCC
+            // 
+            this.ATV_LotDCC.HeaderText = "Lot/DCC";
+            this.ATV_LotDCC.Name = "ATV_LotDCC";
+            this.ATV_LotDCC.ReadOnly = true;
+            // 
+            // ATV_Cust
+            // 
+            this.ATV_Cust.HeaderText = "CUST";
+            this.ATV_Cust.Name = "ATV_Cust";
+            this.ATV_Cust.ReadOnly = true;
+            // 
+            // ATV_Device
+            // 
+            this.ATV_Device.HeaderText = "Source Device";
+            this.ATV_Device.Name = "ATV_Device";
+            this.ATV_Device.ReadOnly = true;
+            // 
+            // ATV_QTY
+            // 
+            this.ATV_QTY.HeaderText = "DIE QTY";
+            this.ATV_QTY.Name = "ATV_QTY";
+            this.ATV_QTY.ReadOnly = true;
+            // 
+            // ATV_WFRQTY
+            // 
+            this.ATV_WFRQTY.HeaderText = "QFR QTY";
+            this.ATV_WFRQTY.Name = "ATV_WFRQTY";
+            this.ATV_WFRQTY.ReadOnly = true;
+            // 
+            // ATV_maker
+            // 
+            this.ATV_maker.HeaderText = "제조사(maker)";
+            this.ATV_maker.Name = "ATV_maker";
+            this.ATV_maker.ReadOnly = true;
+            // 
+            // ATV_Address
+            // 
+            this.ATV_Address.HeaderText = "제조사 주소";
+            this.ATV_Address.Name = "ATV_Address";
+            this.ATV_Address.ReadOnly = true;
+            // 
+            // ATV_Origin
+            // 
+            this.ATV_Origin.HeaderText = "원산지";
+            this.ATV_Origin.Name = "ATV_Origin";
+            this.ATV_Origin.ReadOnly = true;
+            // 
+            // tb_ATVScan
+            // 
+            this.tb_ATVScan.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tb_ATVScan.Location = new System.Drawing.Point(0, 54);
+            this.tb_ATVScan.Name = "tb_ATVScan";
+            this.tb_ATVScan.Size = new System.Drawing.Size(190, 27);
+            this.tb_ATVScan.TabIndex = 56;
+            this.tb_ATVScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ATVScan_KeyDown);
+            // 
+            // btn_loadExcel
+            // 
+            this.btn_loadExcel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_loadExcel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_loadExcel.Font = new System.Drawing.Font("맑은 고딕", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_loadExcel.Image = ((System.Drawing.Image)(resources.GetObject("btn_loadExcel.Image")));
+            this.btn_loadExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_loadExcel.Location = new System.Drawing.Point(0, 0);
+            this.btn_loadExcel.Name = "btn_loadExcel";
+            this.btn_loadExcel.Size = new System.Drawing.Size(190, 54);
+            this.btn_loadExcel.TabIndex = 55;
+            this.btn_loadExcel.Text = "Load Excel";
+            this.btn_loadExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_loadExcel.UseVisualStyleBackColor = true;
+            this.btn_loadExcel.Click += new System.EventHandler(this.btn_loadExcel_Click);
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -4500,6 +4653,30 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // nud_ATV
+            // 
+            this.nud_ATV.Dock = System.Windows.Forms.DockStyle.Top;
+            this.nud_ATV.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.nud_ATV.Location = new System.Drawing.Point(0, 81);
+            this.nud_ATV.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_ATV.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nud_ATV.Name = "nud_ATV";
+            this.nud_ATV.Size = new System.Drawing.Size(190, 33);
+            this.nud_ATV.TabIndex = 57;
+            this.nud_ATV.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // Form_Sort
             // 
@@ -4595,6 +4772,14 @@
             this.panel11.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ReturnWafer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabPage14.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            this.splitContainer4.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_ATVLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nud_ATV)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4906,5 +5091,20 @@
         private System.Windows.Forms.NumericUpDown nup_Wlabel;
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.TabPage tabPage14;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.DataGridView dgv_ATVLabel;
+        private System.Windows.Forms.Button btn_loadExcel;
+        private System.Windows.Forms.TextBox tb_ATVScan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Location;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_LotDCC;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Cust;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Device;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_QTY;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_WFRQTY;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_maker;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Address;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Origin;
+        private System.Windows.Forms.NumericUpDown nud_ATV;
     }
 }

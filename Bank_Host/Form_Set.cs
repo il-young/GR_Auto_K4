@@ -287,8 +287,6 @@ namespace Bank_Host
                     cust[n]["EDITOR"].ToString().Trim(),
                     cust[n]["EDIT_TIME"].ToString().Trim(),
                     cust[n]["REMARK"].ToString().Trim(),
-                    cust[n]["ROW_NUM"].ToString().Trim(),
-                    cust[n]["UDIGIT"].ToString().Trim(),
                     cust[n]["RESULT"].ToString().Trim(),
                     cust[n]["MESSAGE"].ToString().Trim()});
             }
