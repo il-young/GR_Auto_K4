@@ -441,7 +441,8 @@ namespace Bank_Host
 
         private void Form_Set_Load(object sender, EventArgs e)
         {
-            tb_TimeOutMin.Text = Properties.Settings.Default.TimeOutMin.ToString();          
+            tb_TimeOutMin.Text = Properties.Settings.Default.TimeOutMin.ToString();
+            cb_testMode.Checked = Properties.Settings.Default.TestMode;
         }
 
         private void tb_TimeOutMin_KeyDown(object sender, KeyEventArgs e)
@@ -562,6 +563,12 @@ namespace Bank_Host
             Form_CustNameUse custNameUse = new Form_CustNameUse();
 
             custNameUse.ShowDialog();
+        }
+
+        private void cb_testMode_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.TestMode = cb_testMode.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

@@ -384,6 +384,7 @@
             this.ATV_maker = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ATV_Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ATV_Origin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nud_ATV = new System.Windows.Forms.NumericUpDown();
             this.tb_ATVScan = new System.Windows.Forms.TextBox();
             this.btn_loadExcel = new System.Windows.Forms.Button();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -393,7 +394,6 @@
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.nud_ATV = new System.Windows.Forms.NumericUpDown();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -4595,6 +4595,30 @@
             this.ATV_Origin.Name = "ATV_Origin";
             this.ATV_Origin.ReadOnly = true;
             // 
+            // nud_ATV
+            // 
+            this.nud_ATV.Dock = System.Windows.Forms.DockStyle.Top;
+            this.nud_ATV.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.nud_ATV.Location = new System.Drawing.Point(0, 81);
+            this.nud_ATV.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nud_ATV.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nud_ATV.Name = "nud_ATV";
+            this.nud_ATV.Size = new System.Drawing.Size(190, 33);
+            this.nud_ATV.TabIndex = 57;
+            this.nud_ATV.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // tb_ATVScan
             // 
             this.tb_ATVScan.Dock = System.Windows.Forms.DockStyle.Top;
@@ -4653,30 +4677,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // nud_ATV
-            // 
-            this.nud_ATV.Dock = System.Windows.Forms.DockStyle.Top;
-            this.nud_ATV.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.nud_ATV.Location = new System.Drawing.Point(0, 81);
-            this.nud_ATV.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nud_ATV.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nud_ATV.Name = "nud_ATV";
-            this.nud_ATV.Size = new System.Drawing.Size(190, 33);
-            this.nud_ATV.TabIndex = 57;
-            this.nud_ATV.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // Form_Sort
             // 

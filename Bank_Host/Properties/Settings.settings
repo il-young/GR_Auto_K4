@@ -115,5 +115,8 @@
     <Setting Name="USER_PW" Type="System.String" Scope="User">
       <Value Profile="(Default)">diebank@123</Value>
     </Setting>
+    <Setting Name="TestMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -570,7 +570,7 @@ namespace Bank_Host
                 strCovert_dcc = AmkorBcr.strLotDcc.PadLeft(2, '0');
             }
 
-            strBarcodeInfo = $"{ AmkorBcr.strLotNo}:{strCovert_dcc}:{AmkorBcr.strDevice}:{strCovert_dieqty}:{strCovert_wfrqty}:{strCovert_amkorid}:{strCovert_cust}:{AmkorBcr.strWaferLotNo}:{AmkorBcr.strWSN}";
+            strBarcodeInfo = $"{ AmkorBcr.strLotNo}:{strCovert_dcc}:{AmkorBcr.strDevice}:{strCovert_dieqty}:{strCovert_wfrqty}:{strCovert_amkorid}:{strCovert_cust}:{AmkorBcr.strWaferLotNo}:{AmkorBcr.strWSN}:{AmkorBcr.strRID}:{AmkorBcr.strReelDCC}:";
 
             if (pictureBox_bcr.Image != null)
             {
@@ -622,7 +622,15 @@ namespace Bank_Host
 
                 if (isIn == false || BankHost_main.strCustName =="")
                 {
-                    Socket_MessageSend(strPrint);
+                    if(AmkorBcr.strReelDCC != "")
+                    {
+                        Socket_MessageSend(strPrint);
+                    }
+                    else
+                    {
+                        Socket_MessageSend(strPrint);
+                    }
+                    
                 }
                 else
                 {
@@ -1164,7 +1172,7 @@ namespace Bank_Host
 
             string P_SC_1 = "^XA\r\n";
             string P_SC_2 = "^BY,,10\r\n";
-            string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 10 + Properties.Settings.Default.PrintOffsetY);
+            string P_SC_3 = string.Format("^FO {0},{1}\r\n",690 + Properties.Settings.Default.PrintOffsetX, 20 + Properties.Settings.Default.PrintOffsetY);
             string P_SC_4 = "^BQN,2,3\r\n";
             string P_SC_5 = "^FDM," + strBcrinfo + "^FS\r\n"; //FDMM  두개를 넣으면 앞에 0이 붙고 안붙고 한다. 주의 
             string strData1_1 = string.Format("CUST : {0}     QTY : {1}  /  {2}\t\t*", AmkorBarcode.strCust, AmkorBarcode.strDiettl, strwfrqty);
@@ -1172,17 +1180,17 @@ namespace Bank_Host
 
             if (BankHost_main.nScanMode == 1)
             {
-                strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS",17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
+                strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS",17 + Properties.Settings.Default.PrintOffsetX, 10 + Properties.Settings.Default.PrintOffsetY, strData1_1);
             }
             else
             {
                 if (nIndex > 0 && nttl > 1)
                 {
-                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_2);
+                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 10 + Properties.Settings.Default.PrintOffsetY, strData1_2);
                 }
                 else
                 {
-                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData1_1);
+                    strLine1 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 10 + Properties.Settings.Default.PrintOffsetY, strData1_1);
                 }
             }
 
@@ -1195,13 +1203,22 @@ namespace Bank_Host
             else
                 strData2 = string.Format("LOT# : {0}", AmkorBarcode.strLotNo);
 
-            strLine2 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 75 + Properties.Settings.Default.PrintOffsetY, strData2);
+            strLine2 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 40 + Properties.Settings.Default.PrintOffsetY, strData2);
 
             string strData3 = string.Format("DEVICE : {0}", AmkorBarcode.strDevice);
-            strLine3 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 110 + Properties.Settings.Default.PrintOffsetY, strData3);
+            strLine3 = string.Format("^FO {0},{1}^A0N,30^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 75 + Properties.Settings.Default.PrintOffsetY, strData3);
 
-            string strData4 = string.Format("RCV-DATE : {0}     BILL# : {1}", AmkorBarcode.strRcvdate, AmkorBarcode.strBillNo);
-            strLine4 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 145 + Properties.Settings.Default.PrintOffsetY, strData4);
+            string addData10 = $"^FO{17 + Properties.Settings.Default.PrintOffsetX},{110 + Properties.Settings.Default.PrintOffsetY}^ADN,20,10^FDR/D : {AmkorBarcode.strRcvdate}^FS";            
+            string addData6 = $"^FO{400 + Properties.Settings.Default.PrintOffsetX},{110 + Properties.Settings.Default.PrintOffsetY}^ADN,20,10^FDB/L : {AmkorBarcode.strBillNo}^FS";
+
+            string addData7 = $"^FO{17 + Properties.Settings.Default.PrintOffsetX},{135 + Properties.Settings.Default.PrintOffsetY}^ADN,20,10^FDWafer LOT : {AmkorBarcode.strWaferLotNo}^FS";
+            string addData8 = $"^FO{400 + Properties.Settings.Default.PrintOffsetX},{135 + Properties.Settings.Default.PrintOffsetY}^ADN,20,10^FDWSN : {AmkorBarcode.strWSN}^FS";
+                        
+            string addData9 = $"^FO{17 + Properties.Settings.Default.PrintOffsetX},{160 + Properties.Settings.Default.PrintOffsetY}^ADN,20,10^FDR ID : {AmkorBarcode.strRID} / {AmkorBarcode.strReelDCC}^FS";
+            string addData5 = $"^FO{690 + Properties.Settings.Default.PrintOffsetX},{160 + Properties.Settings.Default.PrintOffsetY}^ADN,20,10^FDL/T : {AmkorBarcode.strLotType}^FS";
+
+
+
 
             string strWSN = "";
 
@@ -1216,37 +1233,40 @@ namespace Bank_Host
 
             if (nType == 1)
             {
-                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;                
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + addData5 + addData6 + addData7 + addData8 + addData9 + addData10;                 
             }
             else if(nType == 2)
             {
-                string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
-                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + addData5 + addData6 + addData7 + addData8 + addData9 + addData10;
+                //string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
+                //strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 17 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
-                if(AmkorBarcode.strWSN == "")
-                    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
-                else
-                    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strWSN + strLine5;
+                //if(AmkorBarcode.strWSN == "")
+                //    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4;
+                //else
+                //    dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + strWSN + strLine5;
             }
             else if (nType == 3)
             {
-                if (AmkorBarcode.strCust == "948")
-                    AmkorBarcode.strLotType = "PROTO";
-                else if(AmkorBarcode.strCust == "575")
-                    AmkorBarcode.strLotType = "PRO";
+                //if (AmkorBarcode.strCust == "948")
+                //    AmkorBarcode.strLotType = "PROTO";
+                //else if(AmkorBarcode.strCust == "575")
+                //    AmkorBarcode.strLotType = "PRO";
 
-                string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
-                strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
+                //string strData5 = string.Format("LOT TYPE : {0}", AmkorBarcode.strLotType);
+                //strLine5 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 165 + Properties.Settings.Default.PrintOffsetY, strData5);
 
-                string strData6 = "";
-                if (Checkdev(AmkorBarcode.strDevice) == true)
-                    strData6 = BankHost_main.strCust.Contains("WSN") == true ? $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo} WSN : {AmkorBarcode.strWSN}" : $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
-                else
-                    strData6 = $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
+                //string strData6 = "";
+                //if (Checkdev(AmkorBarcode.strDevice) == true)
+                //    strData6 = BankHost_main.strCust.Contains("WSN") == true ? $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo} WSN : {AmkorBarcode.strWSN}" : $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
+                //else
+                //    strData6 = $"WAFER LOT NO : {AmkorBarcode.strWaferLotNo}";
 
-                strLine6 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 185 + Properties.Settings.Default.PrintOffsetY, strData6);
+                //strLine6 = string.Format("^FO {0},{1}^ADN,18,10^FD{2}^FS", 20 + Properties.Settings.Default.PrintOffsetX, 185 + Properties.Settings.Default.PrintOffsetY, strData6);
 
-                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + (AmkorBarcode.strWSN == "" ? "" : strWSN) + strLine5 + strLine6;
+                //dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + (AmkorBarcode.strWSN == "" ? "" : strWSN) + strLine5 + strLine6;
+
+                dados = P_SC_1 + P_SC_2 + P_SC_3 + P_SC_4 + P_SC_5 + strLine1 + strLine2 + strLine3 + strLine4 + addData5 + addData6 + addData7 + addData8 + addData9 + addData10;
             }
             else if (nType == 4)
             {

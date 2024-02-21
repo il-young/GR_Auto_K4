@@ -28,6 +28,8 @@ using System.Net;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Bank_Host
 {
@@ -407,6 +409,12 @@ namespace Bank_Host
 
         public bool SecondPrinterMode = false;
 
+        const string PRD_AutoGRConfirm = "aak1ws01";
+        const string TEST_AutoGRConfirm = "10.101.1.37:9080";
+        const string PRD_MES = "10.101.14.130:8180";
+        const string TEST_MES = "10.101.5.130:8980";
+
+
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
         Form_Print Frm_Print = new Form_Print();
@@ -781,6 +789,62 @@ namespace Bank_Host
             }
 
             return result["MESSAGE"];
+        }
+
+        public async Task<string> InsertReelID(string strKey)
+        {
+            string str = "";
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(strKey);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/HY"));
+
+                    HttpResponseMessage response = client.GetAsync("").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var contents = await response.Content.ReadAsStringAsync();
+                        str = response.ReasonPhrase;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return str;
+        }
+
+        public async Task<string> Fnc_RunAsync(string strKey)
+        {
+            string str = "";
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(strKey);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/HY"));
+
+                    HttpResponseMessage response = client.GetAsync("").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var contents = await response.Content.ReadAsStringAsync();
+                        str = contents;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+            return str;
         }
 
 
@@ -1484,12 +1548,102 @@ namespace Bank_Host
         StorageData tempData = new StorageData();
 
         List<StorageData> FailInsertData = new List<StorageData>();
+        List<FailURLData> FailWebDatas = new List<FailURLData>();
+
+        private void InsertWebdata(string url)
+        {
+            string res = GetWebServiceData(url);
+
+            if(res.ToUpper().Contains("OK") || res.ToUpper().Contains("SUCCESS"))
+            {
+                System.Threading.Thread WebdataRetry = new Thread(retryWebdata);
+                WebdataRetry.Start();
+            }
+            else
+            {
+                FailURLData faildata = new FailURLData();
+
+                faildata.URL = url;
+                faildata.Retry = 0;
+                faildata.filaMSG = "";
+
+                FailWebDatas.Add(faildata);
+            }
+        }
+
+        private void retryWebdata()
+        {
+            string res = "";
+
+            for(int i = 0; i < FailWebDatas.Count; i++)
+            {
+                res = GetWebServiceData(FailWebDatas[i].URL);
+
+                if (res.ToUpper().Contains("OK") || res.ToUpper().Contains("SUCCESS"))
+                {
+                    FailWebDatas.RemoveAt(i);
+                    i--;
+                }
+                else if(res.ToUpper().Contains("FAIL") == true)
+                {
+                    FailWebDatas[i].Retry += 1;
+
+                    if(FailWebDatas[i].Retry > 5)
+                    {
+                        writeWebFailData(FailWebDatas[i]);
+                        FailWebDatas.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        private void readWebFailData()
+        {
+            FailWebDatas.Clear();
+
+            string dir = $"{Application.StartupPath}\\FailURL\\";
+            string fileName = "FailURL.txt";
+
+
+            if (File.Exists($"{dir}\\{fileName}") == true)
+            {
+                string[] temp = System.IO.File.ReadAllLines($"{dir}\\{fileName}");
+
+                foreach (string s in temp)
+                {
+                    string[] t = s.Split('\t');
+
+                    FailWebDatas.Add(new FailURLData()
+                    {
+                        URL = t[0],
+                        Retry = 0,
+                        filaMSG = ""
+                    });
+                }
+
+                System.IO.File.WriteAllText($"{dir}\\{fileName}", "");
+            }
+        }
+
+        private void writeWebFailData(FailURLData fdata)
+        {
+            string dir = $"{Application.StartupPath}\\FailURL\\";
+            string fileName = "FailURL.txt";
+
+            if (Directory.Exists(dir) == false)
+                Directory.CreateDirectory(dir);
+
+            System.IO.StreamWriter st = System.IO.File.AppendText($"{dir}\\{fileName}");
+
+            st.WriteLine(fdata.URL, fdata.filaMSG);
+        }
 
         private void InsertWAS()
         {
                 string res = PostWebServiceData($"http://10.131.10.84:8080/api/diebank/gr-info/{Properties.Settings.Default.LOCATION}/json?" +
                     $"AMKOR_ID={tempData.Amkorid}&AMKOR_BATACH=&AMKOR_BATCH_PREV_BIZ=&BINDING_NO=&COO={tempData.strCoo}&CUR_MATERIAL_NO=" +
-                    $"&CUST_CODE={tempData.Cust}&CUST_INFO=&CUST_NAME={BankHost_main.strCustName}&CUSTOMER_LOT_NO={tempData.Lot}&LOT_DCC={tempData.Lot_Dcc}&DEVICE_SCAN=" +
+                    $"&CUST_CODE={tempData.Cust}&CUST_INFO=&CUST_NAME={BankHost_main.strCustName}&CUSTOMER_LOT_NO={tempData.Lot}&LOT_DCC={tempData.Lot_Dcc}&DEVICE_SCAN=&" +
                     $"DIE_BANK_EOH=&DIE_QTY={tempData.Die_Qty}&DS_DT=1900-01-01 00:00.000&FAB_SITE={Properties.Settings.Default.LOCATION}&HAWB={tempData.Bill}&HOLD_COMMENT=&HOLD_STATUS=&" +
                     $"INVOICE={tempData.Invoice}&LAST_ISSUE_TIME=&LOCATION=&LOT_TYPE={tempData.Lot_type}&LOT_NO={tempData.Lot}&MATERIAL=&MES_UPLOAD_TIME={DateTime.Now.ToString()}&MES_UPLOAD_ID={BankHost_main.strMESID}" +
                     $"&ON_HAND_WAFER_ID=&PDL=&PDL_SEPARATOR={"%2F"}&PLANT={Properties.Settings.Default.LOCATION}&PRICE=&RCV_DATE={tempData.Rcvddate}0&RCV_DIE_QTY=&RCV_WAFER_QTY=" +
@@ -1610,6 +1764,8 @@ namespace Bank_Host
                 System.IO.File.WriteAllText($"{dir}\\{fileName}", "");
             }
         }
+
+
 
         private void writeWASInsertFail(StorageData data)
         {
@@ -2727,8 +2883,10 @@ namespace Bank_Host
             dataGridView_sort.Columns.Add("작업자", "작업자");
             dataGridView_sort.Columns.Add("GR처리", "GR처리");
             dataGridView_sort.Columns.Add("SHIPMENT", "SHIPMENT");
-            
-            if(BankHost_main.strCustName.Contains("WSN") == true)
+            dataGridView_sort.Columns.Add("REELID", "Reel ID");
+            dataGridView_sort.Columns.Add("REELDCC", "Reel DCC");
+
+            if (BankHost_main.strCustName.Contains("WSN") == true)
             {
                 dataGridView_sort.Columns.Add("WSN", "WSN");
             }
@@ -2822,8 +2980,8 @@ namespace Bank_Host
             int nCount = 1, nWait = 0, nWork = 0, nComplete = 0, nError = 0, nGR = 0;
             foreach (var item in GRReadyList)
             {
-                dataGridView_sort.Rows.Add(new object[18] { nCount, item.Cust, item.Device, item.Lot, item.Rcv_Qty, item.Die_Qty, item.Default_WQty, item.Rcv_WQty, item.Rcvddate,
-                    item.Lot_type, item.Bill, item.Amkorid, item.Wafer_lot, item.strCoo, item.state, item.strop, item.strGRstatus, item.shipment });
+                dataGridView_sort.Rows.Add(new object[] { nCount, item.Cust, item.Device, item.Lot, item.Rcv_Qty, item.Die_Qty, item.Default_WQty, item.Rcv_WQty, item.Rcvddate,
+                    item.Lot_type, item.Bill, item.Amkorid, item.Wafer_lot, item.strCoo, item.state, item.strop, item.strGRstatus, item.shipment, item.ReelID, item.ReelDCC });
 
                 if (item.state == "Waiting")
                 {
@@ -3091,6 +3249,8 @@ namespace Bank_Host
             dataGridView_workinfo.Columns.Add("Validation", "Validation");
             dataGridView_workinfo.Columns.Add("GR처리", "GR처리");
             dataGridView_workinfo.Columns.Add("SHIPMENT", "SHIPMENT");
+            dataGridView_workinfo.Columns.Add("REELID", "Reel ID");
+            dataGridView_workinfo.Columns.Add("REELDCC", "Reel DCC");
 
             dataGridView_workinfo.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_workinfo.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -3103,7 +3263,8 @@ namespace Bank_Host
             dataGridView_workinfo.Columns[8].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_workinfo.Columns[9].SortMode = DataGridViewColumnSortMode.NotSortable;
             dataGridView_workinfo.Columns[10].SortMode = DataGridViewColumnSortMode.NotSortable;
-            //dataGridView_workinfo.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_workinfo.Columns[11].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView_workinfo.Columns[12].SortMode = DataGridViewColumnSortMode.NotSortable;
 
             string strFileName = "";
 
@@ -3136,12 +3297,15 @@ namespace Bank_Host
                 string strGetVali = dataGridView_sort.Rows[n].Cells[14].Value.ToString();
                 string strGetGr = dataGridView_sort.Rows[n].Cells[16].Value.ToString();
                 string strGetShipment = dataGridView_sort.Rows[n].Cells[17].Value.ToString();
+                string strGetReelID = dataGridView_sort.Rows[n].Cells[18].Value.ToString();
+                string strGetReelDCC = dataGridView_sort.Rows[n].Cells[19].Value.ToString();
+
 
                 if (strGetBill == strBill)
                 {
                     nCount++;
-                    dataGridView_workinfo.Rows.Add(new object[11] { strGetBill, strGetCust, strGetDevice, strGetLot, strGetDiettl,
-                        strGetWfrqty, strGetWfrttl,strGetAmkorid, strGetVali,strGetGr, strGetShipment});
+                    dataGridView_workinfo.Rows.Add(new object[] { strGetBill, strGetCust, strGetDevice, strGetLot, strGetDiettl,
+                        strGetWfrqty, strGetWfrttl,strGetAmkorid, strGetVali,strGetGr, strGetShipment, strGetReelID, strGetReelDCC});
 
                     if (strGetVali == "Waiting")
                     {
@@ -3448,13 +3612,15 @@ namespace Bank_Host
 
             try
             {
-                var taskResut = Task.Run(async () =>
-                {
-                    return await BankHost_main.Host.Fnc_AutoGR(strgr);//PRD
-                });
-                string strResult = taskResut.Result;
+                //var taskResut = Task.Run(async () =>
+                //{
+                //    return await BankHost_main.Host.Fnc_AutoGR(strgr);//PRD
+                //});
+                //string strResult = taskResut.Result;
 
-                //string strResult = GetWebServiceData($"http://10.121.201.33:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");//$"http://10.131.201.33:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");
+                string strResult = GetWebServiceData($"http://10.101.1.37:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");//$"http://10.131.201.33:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");
+
+                
 
                 if (strResult.Contains("SUCCESS"))
                 {
@@ -3501,6 +3667,104 @@ namespace Bank_Host
                     Fnc_Update_GR(strDevice, strLot, "ERROR");
                     bjudge = false;
                 }
+            }
+
+            return bjudge;
+        }
+
+        public bool Gr_Process_Direct(string strDevice, string strLot, string strAmkorid, string strDieQty, string strWfrQty, string strReelID, string strReelDCC)
+        {
+            bool bjudge = false;
+
+            string strgr = string.Format("{0};{1};{2}", strAmkorid, strDieQty, strWfrQty);
+
+            try
+            {
+                //var taskResut = Task.Run(async () =>
+                //{
+                //    return await BankHost_main.Host.Fnc_AutoGR(strgr);//PRD
+                //});
+                //string strResult = taskResut.Result;
+
+                //string strResult = GetWebServiceData($"http://10.101.1.37:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");//$"http://10.131.201.33:9080/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}");
+
+                string strResult = "";// GetWebServiceData($"http://10.101.1.130:8080/eMES_Webservice/diebank_automation_service/rec_reel_inf/{strAmkorid},{strReelID},{strReelDCC},{strDieQty},{BankHost_main.strID}");
+                
+                strResult = InsertReelID($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/rec_reel_inf/{strAmkorid},{strReelID},{(strReelDCC == "" ? " " : strReelDCC)},{strDieQty},{BankHost_main.strID}").Result;
+
+                //try
+                //{
+                //    using (var client = new HttpClient())
+                //    {
+                //        client.BaseAddress = new Uri($"http://10.101.1.130:8080/eMES_Webservice/diebank_automation_service/rec_reel_inf/{strAmkorid},{strReelID},{strReelDCC},{strDieQty},{BankHost_main.strID}");
+                //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/HY"));
+
+                //        HttpResponseMessage response = client.GetAsync("").Result;
+                //        if (response.IsSuccessStatusCode)
+                //        {
+                //            var contents = response.Content.ReadAsStringAsync();
+                //            strResult = contents.ToString();
+                //        }
+                //    }
+                //}
+                //catch (WebException ex)
+                //{
+
+                //    throw;
+                //}
+
+
+
+                if (strResult.ToUpper() == "OK") 
+                {
+                    string res = Fnc_RunAsync($"http://{(Properties.Settings.Default.TestMode == true ? TEST_AutoGRConfirm :PRD_AutoGRConfirm)}/eMES/diebank/lotEntryMultiLotCreateAll.do?serviceRequestor=AutoGR&GR_INFO={strgr}").Result;
+                    if (res.Contains("SUCCESS") == true)
+                    {
+                        Gr_Process_Update(strDevice, strLot);
+                        bjudge = true;
+                    }                    
+                }
+                else
+                {
+                                                   
+                    //var taskResut2 = Task.Run(async () =>
+                    //{
+                    //    return await BankHost_main.Host.Fnc_AutoGR(strgr);
+                    //});
+
+                    //string strResult2 = taskResut2.Result;
+
+                    //if (strResult.Contains("SUCCESS"))
+                    //{
+                    //    Fnc_Update_GR(strDevice, strLot, "COMPLETE");
+                    //    bjudge = true;
+                    //}
+                    //else
+                    //{
+                    //    Fnc_Update_GR(strDevice, strLot, "ERROR");
+                    //    bjudge = false;
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                //var taskResut = Task.Run(async () =>
+                //{
+                //    return await BankHost_main.Host.Fnc_AutoGR(strgr);
+                //});
+
+                //string strResult = taskResut.Result;
+
+                //if (strResult.Contains("SUCCESS"))
+                //{
+                //    Fnc_Update_GR(strDevice, strLot, "COMPLETE");
+                //    bjudge = true;
+                //}
+                //else
+                //{
+                //    Fnc_Update_GR(strDevice, strLot, "ERROR");
+                //    bjudge = false;
+                //}
             }
 
             return bjudge;
@@ -3555,10 +3819,13 @@ namespace Bank_Host
             st.strop = strSplit_data[14];
             st.strGRstatus = "COMPLETE"; //상태 업데이트
             st.Default_WQty = strSplit_data[16];
+            
 
-            if(BankHost_main.strCustName.Contains("WSN") == true && strSplit_data.Length >= 19)
+            if (strSplit_data.Length >= 19)
             {
                 st.WSN = strSplit_data[18];
+                st.ReelID = strSplit_data[19];
+                st.ReelDCC = strSplit_data[20];
             }
 
             st.strop = BankHost_main.strOperator;
@@ -3586,7 +3853,7 @@ namespace Bank_Host
 
             string strTxtline = st.Cust + "\t" + st.Device + "\t" + st.Lot + "\t" + st.Lot_Dcc + "\t" + st.Rcv_Qty + "\t" + st.Die_Qty + "\t" +
                     st.Rcv_WQty + "\t" + st.Rcvddate + "\t" + st.Lot_type + "\t" + st.Bill + "\t" + st.Amkorid + "\t" + st.Wafer_lot + "\t" + 
-                    st.strCoo + "\t" + st.state + "\t" + st.strop + "\t" + st.strGRstatus + "\t" + st.Default_WQty + "\t" + st.shipment + "\t" + st.WSN + "\t\t";
+                    st.strCoo + "\t" + st.state + "\t" + st.strop + "\t" + st.strGRstatus + "\t" + st.Default_WQty + "\t" + st.shipment + "\t" + st.WSN + "\t"+ st.ReelID +"\t" + st.ReelDCC;
 
             info[dataIndex] = strTxtline;
             File.WriteAllLines(strValReadfile, info);
@@ -4851,10 +5118,10 @@ namespace Bank_Host
 
             if (st.state == "Working" || st.state == "Complete")
             {
-                string[] t = ReelIDUpdate(st).Split('/');
+                string[] t = ReelIDUpdate(st);
 
                 st.ReelID = t[0];
-                st.ReelDCC = t[1];
+                st.ReelDCC = t[1];                
             }
 
             string strTxtline = st.Cust + "\t" + st.Device + "\t" + st.Lot + "\t" + st.Lot_Dcc + "\t" + st.Rcv_Qty + "\t" + st.Die_Qty + "\t" +
@@ -4912,6 +5179,18 @@ namespace Bank_Host
 
                 BankHost_main.strWork_Lotinfo = "";
                 BankHost_main.Host.Host_Delete_BcrReadinfo(BankHost_main.strEqid, strLot, 0);
+
+                if (comboBox_mode.SelectedIndex == 2 || comboBox_mode.SelectedIndex == 3)
+                {
+                    string url = $"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/rec_reel_inf/{st.Amkorid},{st.ReelID},{(st.ReelDCC == "" ? " " : st.ReelDCC)},{st.Die_Qty},{BankHost_main.strID}";
+                    string res = InsertReelID(url).Result;
+
+                    if (res.ToUpper() != "OK")
+                    {
+                        InsertWebdata(url);
+                    }
+                }
+
 
                 Thread insertThread = new Thread(InsertWAS);
                 tempData = st;
@@ -5023,35 +5302,53 @@ namespace Bank_Host
             return res;
         }
 
-        public string ReelIDUpdate(StorageData info)
+        public string[] ReelIDUpdate(StorageData info)
         {
             string ReelID = "";
+            string DCC = "";
             try
             {
                 Dictionary<string, string> selcust = GetReelIDRule();
                 Dictionary<string, string> bcrDic = Bcr2Dic(info);
                 
+
                 int res = -1;
 
                 if (selcust["REEL_ID"] == "ALL")
                 {
-                    foreach (KeyValuePair<string, string> s in selcust)
-                    {
-                        if (s.Value != "")
-                        {
-                            //if (bcrDic.Keys.Contains(s.Value.Split('/')[0]) == true)
-                            {
-                                ReelID += $"{bcrDic[s.Value.Split('/')[0]]}{selcust["SPLITER"]}";
-                            }
+                    //foreach (KeyValuePair<string, string> s in selcust)
+                    //{
+                    //    if (s.Value != "" && s.Value.Contains('/') == true)
+                    //    {
+                    //        if (bcrDic.Keys.Contains(s.Value.Split('/')[0]) == true)
+                    //        {
+                    //            ReelID += $"{bcrDic[s.Value.Split('/')[0]]}{selcust["SPLITER"]}";
+                    //        }
 
+                    //    }
+                    //}
+
+                    //ReelID = ReelID.Remove(ReelID.Length - 1, 1);
+
+                    ReelID = BankHost_main.nScanMode == 1 ? BankHost_main.strScanData : BankHost_main.ReaderData.Remove(BankHost_main.ReaderData.Length -1 ,1);
+                }
+                else if (int.TryParse(selcust["REEL_ID"].Split('/')[0], out res) == true)
+                {
+                    ReelID = BankHost_main.nScanMode == 1 ? BankHost_main.strScanData.Split(new string[] { selcust["SPLITER"] }, StringSplitOptions.None)[res-1] : BankHost_main.ReaderData.Remove(BankHost_main.ReaderData.Length - 1, 1).Split(new string[] { selcust["SPLITER"] }, StringSplitOptions.None)[res-1];
+
+                    string[] rule = selcust["REEL_ID"].Split('/');
+
+                    if(rule.Length == 2)
+                    {
+                        if(rule[1].Contains("L") == true)
+                        {
+                            ReelID = ReelID.Remove(0, int.Parse(rule[1].Remove(0,1)));
+                        }
+                        else if(rule[1].Contains("R") == true)
+                        {
+                            ReelID = ReelID.Remove(ReelID.Length - int.Parse(rule[1].Remove(0, 1)), int.Parse(rule[1].Remove(0, 1)));
                         }
                     }
-
-                    ReelID = ReelID.Remove(ReelID.Length - 1, 1);
-                }
-                else if (int.TryParse(selcust["REEL_ID"], out res) == true)
-                {
-
                 }
                 else
                 {
@@ -5064,16 +5361,24 @@ namespace Bank_Host
 
                     ReelID = ReelID.Remove(ReelID.Length - 1, 1);
                 }
+                
 
-                string DCC = GetWebServiceData($"http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_last_reel_dcc/{ReelID}");
+                if (GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/chk_dup_reel_inf/{ReelID}, ").ToUpper() == "TRUE")
+                {
+                    DCC = GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/inq_last_reel_dcc/{ReelID}");
 
-                return $"{ReelID}/{DCC}";
+                    if (DCC != "")
+                        DCC = DCC == "     " ? "01" : $"{int.Parse(DCC) + 1}".PadLeft(2, '0');
+                }
+
+
+                return new string[2]{ReelID,DCC};
             }
             catch (Exception ex)
             {
 
 
-                return $"{ReelID}/{0}";
+                return new string[2] { ReelID, DCC };
             }
 
             
@@ -5810,8 +6115,12 @@ namespace Bank_Host
                 st.strGRstatus = strSplit_data[15];
                 st.Default_WQty = strSplit_data[16];
 
-                if(strSplit_data.Length >= 19)
+                if (strSplit_data.Length >= 19)
+                {
                     st.WSN = strSplit_data[18];
+                    st.ReelID = strSplit_data[19];
+                    st.ReelDCC = strSplit_data[20];
+                }
 
                 if (strDevice == st.Device && strLot == st.Lot && st.Lot_Dcc == strDcc)
                 {
@@ -5833,6 +6142,8 @@ namespace Bank_Host
                     Amkor.strCoo = st.strCoo;
                     Amkor.strOperator = st.strop;
                     Amkor.strWSN = st.WSN;
+                    Amkor.strRID = st.ReelID;
+                    Amkor.strReelDCC = st.ReelDCC;
 
                     return Amkor;
                 }
@@ -5873,8 +6184,14 @@ namespace Bank_Host
                 st.strGRstatus = strSplit_data[15];
                 st.Default_WQty = strSplit_data[16];
 
+
+
                 if (strSplit_data.Length >= 19)
+                {
                     st.WSN = strSplit_data[18];
+                    st.ReelID = strSplit_data[19];
+                    st.ReelDCC = strSplit_data[20];
+                }
 
                 if (strDevice == st.Device && strLot == st.Lot && st.Lot_Dcc == strDcc && st.WSN == strWSN)
                 {
@@ -5896,6 +6213,8 @@ namespace Bank_Host
                     Amkor.strCoo = st.strCoo;
                     Amkor.strOperator = st.strop;
                     Amkor.strWSN = st.WSN;
+                    Amkor.strRID = st.ReelID;
+                    Amkor.strReelDCC = st.ReelDCC;
 
                     return Amkor;
                 }
@@ -9628,6 +9947,8 @@ namespace Bank_Host
                 string strAmkorid = dataGridView_workinfo.Rows[n].Cells[7].Value.ToString();
                 string strVal = dataGridView_workinfo.Rows[n].Cells[8].Value.ToString();
                 string strGr = dataGridView_workinfo.Rows[n].Cells[9].Value.ToString();
+                string strReelID = dataGridView_workinfo.Rows[n].Cells[11].Value.ToString();
+                string strReelDCC = dataGridView_workinfo.Rows[n].Cells[12].Value.ToString();
 
                 strVal = strVal.ToUpper();
 
@@ -9654,7 +9975,7 @@ namespace Bank_Host
                         strMsg = string.Format("\n\nGR 진행 중. 현재 Lot:{0}\nGR 처리 수량:{1}", strLot, nGrcount);
                         Frm_Process.Form_Display(strMsg);
 
-                        bJudge = Gr_Process_Direct(strDevice, strLot, strAmkorid, strDieqty, strWfrqty);
+                        bJudge = Gr_Process_Direct(strDevice, strLot, strAmkorid, strDieqty, strWfrqty, strReelID, strReelDCC);
 
                         if (!bJudge)
                         {
@@ -9819,11 +10140,15 @@ namespace Bank_Host
                     st.Default_WQty = strSplit_data[16];
 
                     if (strSplit_data.Length > 17)
+                    {
                         st.shipment = strSplit_data[17];
+                        st.ReelID = strSplit_data[19];
+                        st.ReelDCC = strSplit_data[20];
+                    }
                     else
                         st.shipment = "";
 
-                    dataGridView_Lot.Rows.Add(new object[] { m + 1, st.Lot, st.Lot_Dcc, st.Rcv_Qty, st.Die_Qty, st.Default_WQty, st.Rcv_WQty, st.state, st.strop, st.Bill, st.strGRstatus, st.shipment, st.Amkorid });
+                    dataGridView_Lot.Rows.Add(new object[] { m + 1, st.Lot, st.Lot_Dcc, st.Rcv_Qty, st.Die_Qty, st.Default_WQty, st.Rcv_WQty, st.state, st.strop, st.Bill, st.strGRstatus, st.shipment, st.Amkorid, st.ReelID, st.ReelDCC });
 
                     if (st.state == "Waiting")
                     {
@@ -11390,31 +11715,6 @@ namespace Bank_Host
                         _options.AddUserProfilePreference("profile.default_content_setting_values.automatic_downloads", 1);
                     }
 
-                    /* test server
-                    _driver = new ChromeDriver(_driverService, _options);
-                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/");  // 웹 사이트에 접속합니다. 
-                    _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-                    progressBar1.Maximum = 15;
-                    progressBar1.Value = 1;
-
-                    SetProgressba("eMes에 접속 중입니다.", 1);
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[3]/td[2]/p/font/span/input").SendKeys("abc4");    // ID 입력          
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[4]/td[2]/p/font/span/input").SendKeys("abc4");   // PW 입력            
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[5]/td[2]/font/span/input").SendKeys("362808");   // 사번 입력         
-                    _driver.FindElementByXPath("/html/body/form/table/tbody/tr[3]/td/table/tbody/tr[6]/td/p/input").Click();   // Main 로그인 버튼            
-                    SetProgressba("Login 확인 중", 2);
-
-                    _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
-                    SetProgressba("Scrap 메뉴로 이동 중입니다.", 3);
-
-
-                    while (_driver.Url != "http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp")
-                    {
-                        _driver.Navigate().GoToUrl("http://10.101.1.37:9080/eMES/diebank/PCSScrapRequest.jsp");   // Scrap request 항목으로 이동
-                        Thread.Sleep(500);
-                    }
-                    */
 
                     _driver = new ChromeDriver(_driverService, _options);
                     _driver.Navigate().GoToUrl("http://aak1ws01/eMES/index.jsp");  // 웹 사이트에 접속합니다. 
@@ -11655,7 +11955,7 @@ namespace Bank_Host
             InfoBoard.Hide();
 
             readWASInsertFail();
-
+            readWebFailData();
             SetWaferReturnControl(false);
 
         }
@@ -12418,7 +12718,7 @@ namespace Bank_Host
                 Frm_Process.Form_Show(strMsg);
 
                 //var taskResut = Fnc_RunAsync( $"http://10.101.14.130:8180/eMES_Webservice/lot_info_list/getAutoGRLotListOnReadyStatus_eMES/{Properties.Settings.Default.LOCATION}");
-                var taskResut = Fnc_RunAsync(   $"http://10.101.5.130:8980/eMES_Webservice/diebank_automation_service/inq_auto_gr_rdy_list/{Properties.Settings.Default.LOCATION}");
+                var taskResut = Fnc_RunAsync($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/inq_auto_gr_rdy_list/{Properties.Settings.Default.LOCATION}");
                 try
                 {
                     strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
@@ -14931,7 +15231,8 @@ namespace Bank_Host
 
         private void button19_Click_2(object sender, EventArgs e)
         {
-            string t = GetWebServiceData("http://10.131.10.84:8080/api/diebank/gr-info/k4/json?REEL_ID=ALL");
+            string s = GetWebServiceData("http://10.131.10.84:8080/api/diebank/gr-info/k4?ReelID=ALL");
+            //string t = GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/chk_dup_reel_inf/7900-7277A.1").ToUpper();
 
         }
 
@@ -15643,25 +15944,7 @@ namespace Bank_Host
             }
         }
         
-        public async Task<string> Fnc_RunAsync(string strKey)
-        {
-            string str = "";
-
-            using (var client = new System.Net.Http.HttpClient())
-            {
-                client.BaseAddress = new Uri(strKey);
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/HY"));
-
-                System.Net.Http.HttpResponseMessage response = client.GetAsync("").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    var contents = await response.Content.ReadAsStringAsync();
-                    str = contents;
-                }
-            }
-
-            return str;
-        }
+       
 
 
         public void SendPrintData(string zpl)
@@ -15875,7 +16158,13 @@ namespace Bank_Host
 
     
     
+    public class FailURLData
+    {
+        public string URL = "";
 
+        public int Retry = 0;
+        public string filaMSG = "";
+    }
 
     public class StorageData
     {
@@ -15905,6 +16194,7 @@ namespace Bank_Host
         public string ReadFile = "";
         public string ReelID = "";
         public string ReelDCC = "";
+        public string LPN = "";
 
         public int Retry = 0;
         public string FailMSG = "";
@@ -15942,5 +16232,6 @@ namespace Bank_Host
         public string strOperator = "";
         public string strWSN = "";
         public string strRID = "";
+        public string strReelDCC = "";
     }
 }

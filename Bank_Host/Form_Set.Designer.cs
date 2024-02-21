@@ -122,6 +122,7 @@
             this.btn_WSN = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.btn_CustVisible = new System.Windows.Forms.Button();
+            this.cb_testMode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_List)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_custType)).BeginInit();
@@ -1110,11 +1111,24 @@
             this.btn_CustVisible.UseVisualStyleBackColor = true;
             this.btn_CustVisible.Click += new System.EventHandler(this.btn_CustVisible_Click);
             // 
+            // cb_testMode
+            // 
+            this.cb_testMode.AutoSize = true;
+            this.cb_testMode.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cb_testMode.Location = new System.Drawing.Point(355, 466);
+            this.cb_testMode.Name = "cb_testMode";
+            this.cb_testMode.Size = new System.Drawing.Size(108, 20);
+            this.cb_testMode.TabIndex = 31;
+            this.cb_testMode.Text = "TestMode";
+            this.cb_testMode.UseVisualStyleBackColor = true;
+            this.cb_testMode.CheckedChanged += new System.EventHandler(this.cb_testMode_CheckedChanged);
+            // 
             // Form_Set
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1609, 930);
             this.ControlBox = false;
+            this.Controls.Add(this.cb_testMode);
             this.Controls.Add(this.btn_CustVisible);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btn_WSN);
@@ -1285,5 +1299,6 @@
         private System.Windows.Forms.Button btn_WSN;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btn_CustVisible;
+        private System.Windows.Forms.CheckBox cb_testMode;
     }
 }
