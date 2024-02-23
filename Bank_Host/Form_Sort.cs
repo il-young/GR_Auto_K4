@@ -383,6 +383,8 @@ namespace Bank_Host
         public List<string> split_log_Linecode = new List<string>();
         private string split_log_input_return_val = "";
 
+        Form_InputEmpNum inputEmpNum = new Form_InputEmpNum();
+        
         Form_Progress Frm_Process = new Form_Progress();
 
         public string strExcutionPath = "", strWorkFileName = "", strWorkCust = "";
@@ -10654,7 +10656,7 @@ namespace Bank_Host
                 tot_wfr = 0;
 
                 LastClickTime = DateTime.Now;
-                bgw_timeout.RunWorkerAsync();
+                runLogOutTimer();
 
                 Set_split_lot_data();
 
@@ -10680,7 +10682,7 @@ namespace Bank_Host
                 LastClickTime = DateTime.Now;
 
                 if (bgw_timeout.IsBusy == false)
-                    bgw_timeout.RunWorkerAsync();
+                    runLogOutTimer();
 
                 //button_autogr.BackColor = Color.LightGray;
                 button_autogr.Enabled = false;
@@ -11952,6 +11954,7 @@ namespace Bank_Host
         {
             CheckForIllegalCrossThreadCalls = false;
             cb_dup.Checked = Properties.Settings.Default.LabelCopy;
+            inputEmpNum.ReturnEmpnumEvent += InputEmpNum_ReturnEmpnumEvent;
             InfoBoard.Hide();
 
             readWASInsertFail();
@@ -12633,15 +12636,33 @@ namespace Bank_Host
         private void ClickTime()
         {
             LastClickTime = DateTime.Now;
+            bTimeOutSt = true;
         }
 
         private void bgw_timeout_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+
+            TimeSpan Time_remaining = new TimeSpan();
+
+            while (btimeOut)
             {
-                if ((DateTime.Now - LastClickTime).TotalMinutes >= Properties.Settings.Default.TimeOutMin || bTimeOutSt == true)
+                if ((DateTime.Now - LastClickTime).TotalMinutes >= 0.5)//Properties.Settings.Default.TimeOutMin)
+            {
+                    int mode = comboBox_mode.SelectedIndex;
+                    if (mode == 0 || mode == 1 || mode == 2 || mode == 3)
+                    {
+                        //inputEmpNum.setEmpNum(BankHost_main.strID);
+
+                        //button19_Click_2(sender,e);
+                            //inputEmpNum.ShowDialog();
+
+
+
+                    }
+                    else
                 {
                     bTimeOutSt = false;
+                        BankHost_main.nWorkMode = 0;
 
                     ClickTime();
                     tabControl_Sort.SelectedIndex = 0;
@@ -12930,7 +12951,7 @@ namespace Bank_Host
                 bselected_mode_index = true;
                 textBox1.Focus();
                 LastClickTime = DateTime.Now;
-                bgw_timeout.RunWorkerAsync();
+                runLogOutTimer();
 
                 tot_lots = 0;
                 tot_wfr = 0;
@@ -12984,7 +13005,7 @@ namespace Bank_Host
 
                     bmode6 = true;
                     LastClickTime = DateTime.Now;
-                    bgw_timeout.RunWorkerAsync();
+                    runLogOutTimer();
                     Frm_Process.Form_Hide();
                 }
                 catch (Exception ex)
@@ -13070,7 +13091,7 @@ namespace Bank_Host
                     }
 
                     LastClickTime = DateTime.Now;
-                    bgw_timeout.RunWorkerAsync();
+                    runLogOutTimer();
                 }
             }
             else if (nSel == 8)
@@ -13110,7 +13131,7 @@ namespace Bank_Host
                     LastClickTime = DateTime.Now;
 
                     if (bgw_timeout.IsBusy == false)
-                        bgw_timeout.RunWorkerAsync();
+                        runLogOutTimer();
                 }
             }
 
