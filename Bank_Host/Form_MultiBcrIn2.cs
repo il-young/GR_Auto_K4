@@ -113,18 +113,18 @@ namespace Bank_Host
             textBox_qty.ImeMode = ImeMode.Alpha;
             textBox_wftqty.ImeMode = ImeMode.Alpha;
 
-            string[] strSplit_DevicePos = strDevicePos.Split(',');
+            string[] strSplit_DevicePos = strDevicePos.Split('/');
             nDevicePos = Int32.Parse(strSplit_DevicePos[0]);
 
-            string[] strSplit_LotPos = strLotPos.Split(',');
+            string[] strSplit_LotPos = strLotPos.Split('/');
             nLotPos = Int32.Parse(strSplit_LotPos[0]);
 
-            string[] strSplit_DieQtyPos = strDieQtyPos.Split(',');
+            string[] strSplit_DieQtyPos = strDieQtyPos.Split('/');
             nDieQtyPos = Int32.Parse(strSplit_DieQtyPos[0]);
 
             if (strWfrQtyPos != "")
             {
-                string[] strSplit_WfrQtyPos = strWfrQtyPos.Split(',');
+                string[] strSplit_WfrQtyPos = strWfrQtyPos.Split('/');
                 nWfrQtyPos = Int32.Parse(strSplit_WfrQtyPos[0]);
             }
             else

@@ -441,8 +441,7 @@ namespace Bank_Host
 
         private void Form_Set_Load(object sender, EventArgs e)
         {
-            tb_TimeOutMin.Text = Properties.Settings.Default.TimeOutMin.ToString();
-            cb_testMode.Checked = Properties.Settings.Default.TestMode;
+            tb_TimeOutMin.Text = Properties.Settings.Default.TimeOutMin.ToString();            
         }
 
         private void tb_TimeOutMin_KeyDown(object sender, KeyEventArgs e)

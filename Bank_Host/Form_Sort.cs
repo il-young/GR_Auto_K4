@@ -415,7 +415,7 @@ namespace Bank_Host
         const string TEST_AutoGRConfirm = "10.101.1.37:9080";
         const string PRD_MES = "10.101.14.130:8180";
         const string TEST_MES = "10.101.5.130:8980";
-
+        bool btimeOut = false;
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
@@ -4621,6 +4621,7 @@ namespace Bank_Host
 
         private void dataGridView_Lot_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+
             if (dataGridView_Lot.Columns["재작업"] != null)
             {
                 if (e.ColumnIndex == dataGridView_Lot.Columns["재작업"].Index)
@@ -6089,6 +6090,7 @@ namespace Bank_Host
         public AmkorBcrInfo Fnc_GetAmkorBcrInfo(string strfilepath, string strLot, string strDcc, string strDevice)
         {
             string[] info = Fnc_ReadFile(strfilepath);
+            ClickTime();
 
             if (info == null)
                 return null;
@@ -7088,7 +7090,7 @@ namespace Bank_Host
             {
                 if (Properties.Settings.Default.LOCATION == "K4")
                 {
-                    info = K4_Parsing(strBcr);
+                    info = K4_Parsing(strBcr.Replace('\r',' '));
                 }
                 else if (Properties.Settings.Default.LOCATION == "K5")
                 {
@@ -7135,7 +7137,7 @@ namespace Bank_Host
                     }
 
                     
-                    info = K4_Parsing(code);
+                    info = K4_Parsing(code.Replace('\r',' '));
                 }
                 else if (Properties.Settings.Default.LOCATION == "K5")
                 {
@@ -7765,6 +7767,17 @@ namespace Bank_Host
                             int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
                             bcr.Device = bcr.Device.Substring(0, bcr.Device.Length - nDigit);
                         }
+                        else
+                        {
+                            for(int i = 0; i < strSplit_Bcr2.Length; i++)
+                            {
+                                if (strSplit_Bcr2[i].IndexOf(strSplit_DevicePos[1].Trim()) == 0)
+                                {
+                                    bcr.Device = strSplit_Bcr2[i].Remove(0, strSplit_DevicePos[1].Trim().Length).Trim();
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                     bcr.Lot = strSplit_Bcr2[nLotPos]; bcr.Lot = bcr.Lot.Trim();
@@ -7780,6 +7793,17 @@ namespace Bank_Host
                         {
                             int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
                             bcr.Lot = bcr.Lot.Substring(0, bcr.Lot.Length - nDigit);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < strSplit_Bcr2.Length; i++)
+                            {
+                                if (strSplit_Bcr2[i].IndexOf(strSplit_LotPos[1].Trim()) == 0)
+                                {
+                                    bcr.Lot = strSplit_Bcr2[i].Remove(0, strSplit_LotPos[1].Trim().Length).Trim();
+                                    break;
+                                }
+                            }
                         }
                     }
                     else if(strSplit_LotPos[1] != null && LotSPR)
@@ -7800,6 +7824,17 @@ namespace Bank_Host
                         {
                             int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
                             bcr.DieQty = bcr.DieQty.Substring(0, bcr.DieQty.Length - nDigit);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < strSplit_Bcr2.Length; i++)
+                            {
+                                if (strSplit_Bcr2[i].IndexOf(strSplit_QtyPos[1].Trim()) == 0)
+                                {
+                                    bcr.DieQty = strSplit_Bcr2[i].Remove(0, strSplit_QtyPos[1].Trim().Length).Trim();
+                                    break;
+                                }
+                            }
                         }
                     }
 
@@ -7840,7 +7875,14 @@ namespace Bank_Host
                                 }
                                 else
                                 {
-                                    bcr.Device = strSplit_Bcr[nDevicePos].Substring(strSplit_DevicePos[0].Length, strSplit_Bcr[nDevicePos].Length - strSplit_DevicePos[0].Length);
+                                    for (int i = 0; i < strSplit_Bcr.Length; i++)
+                                    {
+                                        if (strSplit_Bcr[i].IndexOf(strSplit_DevicePos[1].Trim()) == 0)
+                                        {
+                                            bcr.Device = strSplit_Bcr[i].Remove(0, strSplit_DevicePos[1].Trim().Length).Trim();
+                                            break;
+                                        }
+                                    }
                                 }
 
                                 if(nLotPos == -1)
@@ -7854,7 +7896,14 @@ namespace Bank_Host
                                 }
                                 else
                                 {
-                                    bcr.Lot = strSplit_Bcr[nLotPos].Substring(strSplit_LotPos[0].Length, strSplit_Bcr[nLotPos].Length - strSplit_LotPos[0].Length);
+                                    for (int i = 0; i < strSplit_Bcr.Length; i++)
+                                    {
+                                        if (strSplit_Bcr[i].IndexOf(strSplit_LotPos[1].Trim()) == 0)
+                                        {
+                                            bcr.Lot = strSplit_Bcr[i].Remove(0, strSplit_LotPos[1].Trim().Length).Trim();
+                                            break;
+                                        }
+                                    }
                                 }
 
                                 if(nQtyPos == -1)
@@ -7868,7 +7917,14 @@ namespace Bank_Host
                                 }
                                 else
                                 {
-                                    bcr.DieQty = strSplit_Bcr[nQtyPos].Substring(strSplit_QtyPos[0].Length, strSplit_Bcr[nQtyPos].Length - strSplit_QtyPos[0].Length);
+                                    for (int i = 0; i < strSplit_Bcr.Length; i++)
+                                    {
+                                        if (strSplit_Bcr[i].IndexOf(strSplit_QtyPos[1].Trim()) == 0)
+                                        {
+                                            bcr.DieQty = strSplit_Bcr[i].Remove(0, strSplit_QtyPos[1].Trim().Length).Trim();
+                                            break;
+                                        }
+                                    }
                                 }
 
                                 if(tc_WSN.Visible == true)
@@ -7966,6 +8022,7 @@ namespace Bank_Host
                 {
                     if (strSplit_Bcr.Length < 3)
                         return null;
+                    string[] strSplit_Bcr1 = strBcr.Split(',');
 
                     bcr.Device = strSplit_Bcr[nDevicePos]; bcr.Device = bcr.Device.Trim();
 
@@ -7980,7 +8037,19 @@ namespace Bank_Host
                         {
                             int nDigit = Int32.Parse(strSplit_DevicePos[1].Substring(1, 1));
                             bcr.Device = bcr.Device.Substring(0, bcr.Device.Length - nDigit);
-                        } 
+                        }
+                        else
+                        {
+                            for (int i = 0; i < strSplit_Bcr1.Length; i++)
+                            {
+                                if (strSplit_Bcr1[i].IndexOf(strSplit_DevicePos[1].Trim()) == 0)
+                                {
+                                    bcr.Device = strSplit_Bcr1[i].Remove(0, strSplit_DevicePos[1].Trim().Length).Trim();
+                                    break;
+                                }
+                            }
+                        }
+
                     }
 
                     bcr.Lot = strSplit_Bcr[nLotPos]; bcr.Lot = bcr.Lot.Trim();
@@ -7997,6 +8066,17 @@ namespace Bank_Host
                             int nDigit = Int32.Parse(strSplit_LotPos[1].Substring(1, 1));
                             bcr.Lot = bcr.Lot.Substring(0, bcr.Lot.Length - nDigit);
                         }
+                        else
+                        {
+                            for (int i = 0; i < strSplit_Bcr1.Length; i++)
+                            {
+                                if (strSplit_Bcr1[i].IndexOf(strSplit_LotPos[1].Trim()) == 0)
+                                {
+                                    bcr.Lot = strSplit_Bcr1[i].Remove(0, strSplit_LotPos[1].Trim().Length).Trim();
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                     bcr.DieQty = strSplit_Bcr[nQtyPos]; bcr.DieQty = bcr.DieQty.Trim();
@@ -8012,6 +8092,17 @@ namespace Bank_Host
                         {
                             int nDigit = Int32.Parse(strSplit_QtyPos[1].Substring(1, 1));
                             bcr.DieQty = bcr.DieQty.Substring(0, bcr.DieQty.Length - nDigit);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < strSplit_Bcr1.Length; i++)
+                            {
+                                if (strSplit_Bcr1[i].IndexOf(strSplit_QtyPos[1].Trim()) == 0)
+                                {
+                                    bcr.DieQty = strSplit_Bcr1[i].Remove(0, strSplit_QtyPos[1].Trim().Length).Trim();
+                                    break;
+                                }
+                            }
                         }
                     }
 
@@ -8594,6 +8685,8 @@ namespace Bank_Host
                 label_info.ForeColor = Color.White;
 
                 tabControl_Sort.SelectedIndex = 0;
+
+                stopLogOutTimer();
             }
             else
             {
@@ -8621,6 +8714,7 @@ namespace Bank_Host
                 button_Getlist.Visible = true;
             }
 
+            stopLogOutTimer();
             tabControl_Sort.SelectedIndex = 1;
         }
 
@@ -10551,6 +10645,25 @@ namespace Bank_Host
             return selectCust[0];
         }
 
+        public void runLogOutTimer()
+        {
+            if (bgw_timeout.IsBusy == false)
+            {
+                btimeOut = true;
+                bgw_timeout.RunWorkerAsync();
+
+            }
+        }
+
+        public void stopLogOutTimer()
+        {
+            if(bgw_timeout.IsBusy == true)
+            {
+                btimeOut = false;
+                bgw_timeout.CancelAsync();
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             selectCust = selectCust.Cast<Dictionary<string, string>>().Where(r => r["CUST_NAME"] == comboBox_Name.Text).ToList();
@@ -10622,9 +10735,13 @@ namespace Bank_Host
             }
 
             string str = "";
+            if (nMode == 0 || nMode == 1 || nMode == 2 || nMode == 3)
+                runLogOutTimer();
+
 
             if (nMode == 0 || nMode == 1)
             {
+                
                 str = string.Format("\n\n작업을 시작 합니다. AUTO GR 모드 ");
                 //상태 변경//
                 BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "OK", "1");
@@ -12647,7 +12764,7 @@ namespace Bank_Host
             while (btimeOut)
             {
                 if ((DateTime.Now - LastClickTime).TotalMinutes >= 0.5)//Properties.Settings.Default.TimeOutMin)
-            {
+                {
                     int mode = comboBox_mode.SelectedIndex;
                     if (mode == 0 || mode == 1 || mode == 2 || mode == 3)
                     {
@@ -12660,23 +12777,46 @@ namespace Bank_Host
 
                     }
                     else
-                {
-                    bTimeOutSt = false;
+                    {
+                        bTimeOutSt = false;
                         BankHost_main.nWorkMode = 0;
 
-                    ClickTime();
-                    tabControl_Sort.SelectedIndex = 0;
-                    BankHost_main.strAdminID = "";
-                    BankHost_main.strAdminPW = "";
-                    BankHost_main.strAmkorID = "";
-                    BankHost_main.strCust = "";
-                    BankHost_main.strOperator = "";
-                    BankHost_main.strID = "";
-                    break;
+                        ClickTime();
+                        tabControl_Sort.SelectedIndex = 0;
+                        BankHost_main.strAdminID = "";
+                        BankHost_main.strAdminPW = "";
+                        BankHost_main.strAmkorID = "";
+                        BankHost_main.strCust = "";
+                        BankHost_main.strOperator = "";
+                        BankHost_main.strID = "";
+                        break;
+                    }
+
+                }
+                else
+                {
+                    Time_remaining = TimeSpan.FromMinutes(Properties.Settings.Default.TimeOutMin) - (DateTime.Now - LastClickTime);
+                    l_timouTime.Text = $": {Time_remaining.Minutes} : {Time_remaining.Seconds}";
                 }
 
                 System.Threading.Thread.Sleep(1000);
             }
+        }
+
+
+        private void InputEmpNum_ReturnEmpnumEvent(string empnum)
+        {
+            bTimeOutSt = false;
+            BankHost_main.nWorkMode = 0;
+
+            ClickTime();
+            tabControl_Sort.SelectedIndex = 0;
+            BankHost_main.strAdminID = "";
+            BankHost_main.strAdminPW = "";
+            BankHost_main.strAmkorID = "";
+            BankHost_main.strCust = "";
+            BankHost_main.strOperator = "";
+            BankHost_main.strID = "";
         }
 
         private void cb_download_CheckStateChanged(object sender, EventArgs e)
@@ -15252,9 +15392,9 @@ namespace Bank_Host
 
         private void button19_Click_2(object sender, EventArgs e)
         {
-            string s = GetWebServiceData("http://10.131.10.84:8080/api/diebank/gr-info/k4?ReelID=ALL");
+            //string s = GetWebServiceData("http://10.131.10.84:8080/api/diebank/gr-info/k4?ReelID=ALL");
             //string t = GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/chk_dup_reel_inf/7900-7277A.1").ToUpper();
-
+            inputEmpNum.ShowDialog();
         }
 
         private void btn_loadExcel_Click(object sender, EventArgs e)
@@ -15312,6 +15452,26 @@ namespace Bank_Host
                 application.Quit();
                 Marshal.ReleaseComObject(application);
             }
+        }
+
+        private void t_LogOut_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bgw_timeout_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_Device_MouseClick(object sender, MouseEventArgs e)
+        {
+            ClickTime();
+        }
+
+        private void dataGridView_Lot_MouseClick(object sender, MouseEventArgs e)
+        {
+            ClickTime();
         }
 
         private void tb_ATVScan_KeyDown(object sender, KeyEventArgs e)

@@ -68,6 +68,7 @@
             this.textBox_sid.Font = new System.Drawing.Font("맑은 고딕", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.textBox_sid.Location = new System.Drawing.Point(148, 59);
             this.textBox_sid.Name = "textBox_sid";
+            this.textBox_sid.PasswordChar = '*';
             this.textBox_sid.Size = new System.Drawing.Size(457, 50);
             this.textBox_sid.TabIndex = 1;
             this.textBox_sid.Text = "176524";

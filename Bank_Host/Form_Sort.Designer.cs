@@ -125,6 +125,7 @@
             this.button_download = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.l_timouTime = new System.Windows.Forms.Label();
             this.button_Autofocus = new System.Windows.Forms.Button();
             this.dataGridView_Lot = new System.Windows.Forms.DataGridView();
             this.tc_WSN = new System.Windows.Forms.TabControl();
@@ -176,6 +177,7 @@
             this.button_lotdownload = new System.Windows.Forms.Button();
             this.button_autogr = new System.Windows.Forms.Button();
             this.button_workend = new System.Windows.Forms.Button();
+            this.label61 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.button_Search = new System.Windows.Forms.Button();
             this.textBox_input = new System.Windows.Forms.TextBox();
@@ -394,6 +396,7 @@
             this.WaferReturnMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.t_LogOut = new System.Windows.Forms.Timer(this.components);
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -1325,6 +1328,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.l_timouTime);
             this.tabPage3.Controls.Add(this.button_Autofocus);
             this.tabPage3.Controls.Add(this.dataGridView_Lot);
             this.tabPage3.Controls.Add(this.tc_WSN);
@@ -1366,6 +1370,7 @@
             this.tabPage3.Controls.Add(this.button_lotdownload);
             this.tabPage3.Controls.Add(this.button_autogr);
             this.tabPage3.Controls.Add(this.button_workend);
+            this.tabPage3.Controls.Add(this.label61);
             this.tabPage3.ImageIndex = 2;
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
@@ -1373,6 +1378,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "SCAN 정보";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // l_timouTime
+            // 
+            this.l_timouTime.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.l_timouTime.Location = new System.Drawing.Point(541, 58);
+            this.l_timouTime.Name = "l_timouTime";
+            this.l_timouTime.Size = new System.Drawing.Size(84, 32);
+            this.l_timouTime.TabIndex = 15;
+            this.l_timouTime.Text = "label61";
+            this.l_timouTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button_Autofocus
             // 
@@ -1446,6 +1461,7 @@
             this.dataGridView_Lot.Size = new System.Drawing.Size(1028, 398);
             this.dataGridView_Lot.TabIndex = 1;
             this.dataGridView_Lot.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_Lot_CellClick);
+            this.dataGridView_Lot.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_Lot_MouseClick);
             // 
             // tc_WSN
             // 
@@ -1453,7 +1469,7 @@
             this.tc_WSN.Controls.Add(this.tabPage13);
             this.tc_WSN.HotTrack = true;
             this.tc_WSN.ItemSize = new System.Drawing.Size(1, 10);
-            this.tc_WSN.Location = new System.Drawing.Point(405, 613);
+            this.tc_WSN.Location = new System.Drawing.Point(405, 589);
             this.tc_WSN.Name = "tc_WSN";
             this.tc_WSN.SelectedIndex = 0;
             this.tc_WSN.Size = new System.Drawing.Size(463, 53);
@@ -1684,6 +1700,7 @@
             this.dataGridView_Device.Size = new System.Drawing.Size(220, 204);
             this.dataGridView_Device.TabIndex = 5;
             this.dataGridView_Device.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_Device_CellClick);
+            this.dataGridView_Device.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_Device_MouseClick);
             // 
             // button_End
             // 
@@ -2063,7 +2080,7 @@
             this.button3.Font = new System.Drawing.Font("맑은 고딕", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.button3.Location = new System.Drawing.Point(590, 3);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(35, 87);
+            this.button3.Size = new System.Drawing.Size(35, 52);
             this.button3.TabIndex = 12;
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -2074,7 +2091,7 @@
             this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button2.Location = new System.Drawing.Point(497, 3);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(87, 87);
+            this.button2.Size = new System.Drawing.Size(87, 52);
             this.button2.TabIndex = 11;
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -2130,6 +2147,16 @@
             this.button_workend.Text = "      작업 종료";
             this.button_workend.UseVisualStyleBackColor = false;
             this.button_workend.Click += new System.EventHandler(this.button_workend_Click);
+            // 
+            // label61
+            // 
+            this.label61.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label61.Location = new System.Drawing.Point(490, 51);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(61, 46);
+            this.label61.TabIndex = 16;
+            this.label61.Text = "Out Time";
+            this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tabPage4
             // 
@@ -4667,7 +4694,9 @@
             // 
             // bgw_timeout
             // 
+            this.bgw_timeout.WorkerSupportsCancellation = true;
             this.bgw_timeout.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_timeout_DoWork);
+            this.bgw_timeout.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgw_timeout_RunWorkerCompleted);
             // 
             // WaferReturnMenu
             // 
@@ -4677,6 +4706,11 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // t_LogOut
+            // 
+            this.t_LogOut.Interval = 1000;
+            this.t_LogOut.Tick += new System.EventHandler(this.t_LogOut_Tick);
             // 
             // Form_Sort
             // 
@@ -5106,5 +5140,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn ATV_Origin;
         private System.Windows.Forms.NumericUpDown nud_ATV;
+        private System.Windows.Forms.Timer t_LogOut;
+        private System.Windows.Forms.Label l_timouTime;
+        private System.Windows.Forms.Label label61;
     }
 }

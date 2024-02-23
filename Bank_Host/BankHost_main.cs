@@ -546,12 +546,9 @@ namespace Bank_Host
                         Read_Bcr.unprinted_device = false;
 
                     if (!Read_Bcr.unprinted_device)
-                    {
-
-                        
+                    {                        
                         Frm_Sort.Fnc_Print_Start(Amkor, nWork_BcrType, true, Form_Sort.nLabelcount, Form_Sort.nLabelttl);
                         
-
                         if (nInputMode == 1)
                         {
                             speech.SpeakAsync("라벨 출력");
@@ -663,8 +660,7 @@ namespace Bank_Host
 
                         Thread.Sleep(200);
                     }
-
-
+                    
                     Form_Sort.nLabelcount = 0;
                     Form_Sort.nLabelttl = 0;
 

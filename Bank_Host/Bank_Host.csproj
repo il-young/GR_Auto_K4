@@ -301,6 +301,12 @@
     <Compile Include="Form_Input.Designer.cs">
       <DependentUpon>Form_Input.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_InputEmpNum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_InputEmpNum.Designer.cs">
+      <DependentUpon>Form_InputEmpNum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Keynece.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -466,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Input.resx">
       <DependentUpon>Form_Input.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_InputEmpNum.resx">
+      <DependentUpon>Form_InputEmpNum.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Keynece.resx">
       <DependentUpon>Form_Keynece.cs</DependentUpon>
