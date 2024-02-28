@@ -31,7 +31,7 @@ namespace Bank_Host
             textBox_2dbcr.Visible = false;
             checkBox_devicefix.Visible = true;
 
-            if(strDevicePos.Split(',')[0] == "-1" )
+            if(strDevicePos.Split(',')[0] == "-1" || strDevicePos == "")
             {
                 textBox_device.Enabled = false;
             }
@@ -40,7 +40,7 @@ namespace Bank_Host
                 textBox_device.Enabled = true;
             }
 
-            if(strLotPos.Split(',')[0] == "-1")
+            if(strLotPos.Split(',')[0] == "-1"  || strLotPos == "")
             {
                 textBox_lot.Enabled = false;
             }
@@ -49,7 +49,7 @@ namespace Bank_Host
                 textBox_lot.Enabled = true;
             }
             
-            if(strDieQtyPos.Split(',')[0] == "-1")
+            if(strDieQtyPos.Split(',')[0] == "-1" || strDieQtyPos == "")
             {
                 textBox_qty.Enabled = false;
             }
@@ -58,7 +58,7 @@ namespace Bank_Host
                 textBox_qty.Enabled = true;
             }
 
-            if(strWfrQtyPos.Split(',')[0] == "-1")
+            if(strWfrQtyPos.Split(',')[0] == "-1" || strWfrQtyPos == "")
             {
                 textBox_wftqty.Enabled = false;
             }

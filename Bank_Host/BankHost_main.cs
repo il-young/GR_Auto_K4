@@ -63,7 +63,7 @@ namespace Bank_Host
         //Work Barcode info
         public static string strWork_Cust = "", strWork_Bank = "", strWork_Bcrcount = "", strWork_DevicePos = "", 
             strWork_LotidPos = "", strWork_LotDigit = "", strWork_QtyPos = "", strWork_SPR = "", strWork_Model = "", strWork_WSN ="",
-            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "", strWork_WSNPos = "",
+            strWork_Shot1Lot = "", strWork_Udigit = "", strWork_WfrQtyPos = "", strWork_MtlType = "", strLot2Wfr = "", strMultiLot = "", strTTLWFR = "", strWork_WSNPos = "", strWork_LPNPos = "",
             strWork_BcdType;
 
         public string ForcePrintName = "QUALCOMM STD Multi-2D";
@@ -864,7 +864,7 @@ namespace Bank_Host
 
                     try
                     {
-                        if (BankHost_main.strCustName == "QUALCOM_SPLIT")
+                        if (BankHost_main.strCustName == "QUALCOMM_SPLIT")
                         {
                             if (strScanData == "")
                                 return;
@@ -962,7 +962,7 @@ namespace Bank_Host
                         return;
                     }
 
-                    if (BankHost_main.strCustName == "QUALCOM_SPLIT")
+                    if (BankHost_main.strCustName == "QUALCOMM_SPLIT")
                     {
                         //if(Frm_Sort.GetQualCommSplitGreenLabel() == true)
                         {
@@ -1867,6 +1867,7 @@ namespace Bank_Host
             strMultiLot = Info.strMultiLot;
             strTTLWFR = Info.strTTLWFR;
             strWork_WSNPos = Info.strWSN;
+            strWork_LPNPos = Info.strLPN;
         }        
     }
 }
@@ -1892,5 +1893,6 @@ public class WorkInfo
     public string strLot2Wfr = "";
     public string strTTLWFR = "";
     public string strWSN = "";
+    public string strLPN = "";
     public string strExcelOut = "";
 }
