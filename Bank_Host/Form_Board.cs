@@ -54,6 +54,8 @@ namespace Bank_Host
 
             if (BackColor != null)
                 textBox1.BackColor = BackColor;
+
+            textBox1.Focus();
         }
 
         private void button1_Click(object sender, EventArgs e)

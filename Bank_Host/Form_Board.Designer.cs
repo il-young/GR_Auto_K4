@@ -40,9 +40,9 @@
             // 
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 267);
+            this.panel1.Location = new System.Drawing.Point(0, 263);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(665, 77);
+            this.panel1.Size = new System.Drawing.Size(661, 77);
             this.panel1.TabIndex = 0;
             // 
             // button1
@@ -51,7 +51,8 @@
             this.button1.Location = new System.Drawing.Point(257, 17);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 48);
-            this.button1.TabIndex = 0;
+            this.button1.TabIndex = 1;
+            this.button1.TabStop = false;
             this.button1.Text = "확  인";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -62,7 +63,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(665, 267);
+            this.panel2.Size = new System.Drawing.Size(661, 263);
             this.panel2.TabIndex = 1;
             // 
             // textBox1
@@ -82,7 +83,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 344);
+            this.ClientSize = new System.Drawing.Size(661, 340);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);

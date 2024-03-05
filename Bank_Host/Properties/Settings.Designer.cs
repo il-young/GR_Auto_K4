@@ -465,5 +465,17 @@ namespace Bank_Host.Properties {
                 this["TestMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SplitExcelSavePath {
+            get {
+                return ((string)(this["SplitExcelSavePath"]));
+            }
+            set {
+                this["SplitExcelSavePath"] = value;
+            }
+        }
     }
 }

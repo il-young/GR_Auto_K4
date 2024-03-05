@@ -4554,6 +4554,11 @@ namespace Bank_Host
             {
                 bDownloadComp = true;
             }
+            else if(n == 12)
+            {
+                BankHost_main.nAmkorBcrType = 0;
+                cb_splitMode.SelectedIndex = 0;
+            }
         }
 
         public void Fnc_Find(string strSearch)
@@ -5325,6 +5330,21 @@ namespace Bank_Host
             return res;
         }
 
+        private bool dupCheckReelID(string ReelID)
+        {
+            return GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/chk_dup_reel_inf/{ReelID}, ").ToUpper() == "TRUE" ? true : false;
+        }
+
+        private String checkDCC(string ReelID)
+        {
+            string DCC = GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/inq_last_reel_dcc/{ReelID}");
+
+            if (DCC != "")
+                DCC = DCC == "     " ? "01" : $"{int.Parse(DCC) + 1}".PadLeft(2, '0');
+
+            return DCC;
+        }
+
         public string[] ReelIDUpdate(StorageData info)
         {
             string ReelID = "";
@@ -5353,7 +5373,8 @@ namespace Bank_Host
 
                     //ReelID = ReelID.Remove(ReelID.Length - 1, 1);
 
-                    ReelID = BankHost_main.nScanMode == 1 ? BankHost_main.strScanData : BankHost_main.ReaderData.Remove(BankHost_main.ReaderData.Length -1 ,1);
+                    //ReelID = BankHost_main.nScanMode == 1 ? BankHost_main.strScanData : BankHost_main.ReaderData.Remove(BankHost_main.ReaderData.Length -1 ,1);
+                    ReelID = BankHost_main.strScanData.Replace("\r", "");
                 }
                 else if (int.TryParse(selcust["REEL_ID"].Split('/')[0], out res) == true)
                 {
@@ -8063,7 +8084,7 @@ namespace Bank_Host
                 {
                     if (strSplit_Bcr.Length < 3)
                         return null;
-                    string[] strSplit_Bcr1 = strBcr.Split(',');
+                    string[] strSplit_Bcr1 = strBcr.Split(seperator);
 
                     bcr.Device = strSplit_Bcr[nDevicePos]; bcr.Device = bcr.Device.Trim();
 
@@ -10316,7 +10337,7 @@ namespace Bank_Host
                     else
                         st.shipment = "";
 
-                    dataGridView_Lot.Rows.Add(new object[] { m + 1, st.Lot, st.Lot_Dcc, st.Rcv_Qty, st.Die_Qty, st.Default_WQty, st.Rcv_WQty, st.state, st.strop, st.Bill, st.strGRstatus, st.shipment, st.Amkorid, st.ReelID, st.ReelDCC });
+                    dataGridView_Lot.Rows.Add(new object[] { m + 1, st.Lot, st.Lot_Dcc, st.Rcv_Qty, st.Die_Qty, st.Default_WQty, st.Rcv_WQty, st.state, st.strop, st.Bill, st.strGRstatus, st.shipment, st.Amkorid, st.WSN, st.ReelID, st.ReelDCC });
 
                     if (st.state == "Waiting")
                     {
@@ -15542,6 +15563,317 @@ namespace Bank_Host
         private void dataGridView_Device_MouseClick(object sender, MouseEventArgs e)
         {
             ClickTime();
+        }
+
+        private void tb_splitScan_MouseClick(object sender, MouseEventArgs e)
+        {
+            tb_splitScan.Text = "";
+        }
+
+        int splitMainNum = 0;
+
+        private void tb_splitScan_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == System.Windows.Forms.Keys.Enter)
+            {
+                if(tb_splitScan.Text.Contains(':') == true)
+                {
+                    splitMainNum++;
+
+                    //lot 0      DCC1   DEV  2        QTY 3     REEL4      5     cust6
+                    //3507-P056A:    :2UA3-8233-TR1C:0000054325:00004:0012183533:00488::
+                    string[] temp = tb_splitScan.Text.Split(':');
+
+                    dgv_split.Rows.Add(new object[] {splitMainNum, temp[2], temp[0], temp[1], temp[3], temp[4] });
+
+                    for(int i = 1; i < int.Parse(temp[4])+1 ; ++i)
+                    {
+                        dgv_split.Rows.Add(new object[] { $"{splitMainNum}-{i}", temp[2], $"{temp[0]}.{i.ToString().PadLeft(2,'0')}", "", "", "" });
+                    }
+                }
+                else
+                {
+                    if(cb_splitMode.SelectedIndex == 0) //AVAGO
+                    {
+                        if (tb_splitScan.Text.Contains(';') == true)
+                        {
+                            // 0 DEV          1 Lot      2 WFR#      3 QTY
+                            //2UA3-8233-TR1C;ARUA3A3507;3507-P056A.04;9326;2346;Chipbond
+
+                            string[] temp = tb_splitScan.Text.Split(';');
+
+                            IEnumerable<DataGridViewRow> selectRows = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0] && row.Cells["splitLot"].Value.ToString() == temp[2]);
+
+                            if (selectRows.Count<DataGridViewRow>() == 0)
+                            {
+                                SpeakST("앰코 라벨을 먼저 스캔 하세요");
+                            }
+                            else if (selectRows.Count<DataGridViewRow>() == 1)
+                            {
+                                dgv_split.Rows[selectRows.FirstOrDefault().Index].DefaultCellStyle.BackColor = Color.Aquamarine;
+                                dgv_split.Rows[selectRows.FirstOrDefault().Index].Cells["SplitQTY"].Value = temp[3];
+                                dgv_split.Rows[selectRows.FirstOrDefault().Index].Cells["Split_EA"].Value = "1";
+
+                                SplitCheckSplitComp(tb_splitScan.Text);
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
+                        else if (tb_splitScan.Text.Contains('+') == true)
+                        {
+                            SpeakST("고객 확인 바람");
+                        }
+
+                    }
+                    else if(cb_splitMode.SelectedIndex == 1) //SKYWORKS
+                    {
+                        if (tb_splitScan.Text.Contains('+') == true)
+                        {
+
+                        }
+                    }
+                }
+
+                tb_splitScan.Text = "";
+            }
+        }
+
+        Color motherLotCompColor = Color.LawnGreen;
+
+        private void SplitCheckSplitComp(string scandata)
+        {
+            string[] temp = scandata.Split(';');
+
+            List<DataGridViewRow> listSumRow = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0]).ToList();
+            listSumRow.Sort((a, b) => a.Index.CompareTo(b.Index));
+
+            int totQTY = int.Parse(listSumRow[0].Cells["SplitQTY"].Value.ToString());
+            int sumQTY = 0;
+            int scanCNT = 0;
+
+            for (int i = 1; i < listSumRow.Count; i++)
+            {
+                sumQTY += int.Parse(dgv_split.Rows[listSumRow[i].Index].Cells["SplitQTY"].Value.ToString() == "" ? "0" : dgv_split.Rows[listSumRow[i].Index].Cells["SplitQTY"].Value.ToString());
+
+                scanCNT += dgv_split.Rows[listSumRow[i].Index].DefaultCellStyle.BackColor == Color.Aquamarine ? 1 : 0;
+            }
+
+            if (totQTY == sumQTY)
+            {
+                dgv_split.Rows[listSumRow[0].Index].DefaultCellStyle.BackColor = motherLotCompColor;
+                SpeakST($"{listSumRow[0].Cells["Split_no"].Value.ToString()} 완료");
+
+
+            }
+            else
+            {
+                if (scanCNT == int.Parse(listSumRow[0].Cells["Split_EA"].Value.ToString()))
+                {
+                    SpeakST($"{listSumRow[0].Cells["Split_NO"].Value.ToString()} 수량 틀림");
+
+                    Form_Board form_Board = new Form_Board($"#{listSumRow[0].Cells["Split_NO"].Value.ToString()} 수량 틀림", Color.Black, Color.Red);
+                    form_Board.ShowDialog();
+                }
+            }
+        }
+
+
+        private void tb_splitScan_Leave(object sender, EventArgs e)
+        {
+            tb_splitScan.Text = "Input Here";
+        }
+
+        private void exportSplitData()
+        {
+            if (DialogResult.Yes != MessageBox.Show("Excel 출력 하시겠습니까?", "Excel 출력", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                SpeakST("취소");
+                return;
+            }
+
+            pb_WaferReturn.Value = 0;
+            pb_WaferReturn.Maximum = 10;
+            //SetWaferReturnProgressba("Excel 생성 중...", 1);
+
+            try
+            {
+                Microsoft.Office.Interop.Excel.Application application = new Microsoft.Office.Interop.Excel.Application();
+                Workbook workbook = application.Workbooks.Add();// Filename: string.Format("{0}\\{1}", System.Environment.CurrentDirectory, @"\WaferReturn\WaferReturnOutTemp.xlsx"));
+
+                Worksheet worksheet1 = workbook.Worksheets.get_Item(1);
+                object misValue = System.Reflection.Missing.Value;
+
+                application.Visible = false;
+                worksheet1.Name = "ReelSortList";
+
+                //SetWaferReturnProgressba("Data Loading...", 2);
+
+                if (dgv_split.Rows.Count != 0)
+                {
+                    string[,] item = new string[dgv_split.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value.ToString().Contains("-") == true).ToList().Count, dgv_split.Columns.Count - 1];
+                    string[] columns = new string[dgv_split.Columns.Count];
+                    string cust = "";
+                    string returnnum = "";
+                    string totlot = "";
+
+                    //SetWaferReturnProgressba("엑셀 양식 작성 중...", 3);
+
+                    Range rd = worksheet1.Range[worksheet1.Cells[1, 1], worksheet1.Cells[1, 14]];
+
+                    if (dgv_split.Rows.Count > 0)
+                    {
+                        for (int c = 0; c < dgv_split.Columns.Count; c++)
+                        {
+                            //컬럼 위치값을 가져오기
+                            columns[c] = ExcelColumnIndexToName(c);
+                        }
+
+                        int nrow = 0;
+
+                        for (int rowNo = 0; rowNo < dgv_split.Rows.Count; rowNo++)
+                        {
+                            if (dgv_split.Rows[rowNo].Cells[0].Value.ToString().Contains("-") == true)
+                            {                                
+                                item[nrow, 0] = dgv_split.Rows[rowNo].Cells[0].ToString();
+                                item[nrow, 1] = dgv_split.Rows[rowNo].Cells[1].ToString();
+                                item[nrow, 2] = dgv_split.Rows[rowNo].Cells[2].ToString();
+                                item[nrow, 3] = dgv_split.Rows[rowNo].Cells[3].ToString();
+                                item[nrow, 4] = dgv_split.Rows[rowNo].Cells[4].ToString();
+                                ++nrow;
+                            }
+                            else
+                            {
+                                if (dgv_split.Rows[rowNo].DefaultCellStyle.BackColor != motherLotCompColor)
+                                {
+                                    rowNo += int.Parse(dgv_split.Rows[rowNo].Cells["split_EA"].Value.ToString());
+                                }
+                                else
+                                {
+                                    
+                                }
+                            }
+                        }
+                    }
+
+                    //해당위치에 컬럼명을 담기
+                    //worksheet1.get_Range("A1", columns[MtlList.Columns.Count - 1] + "1").Value2 = headers;
+                    //해당위치부터 데이터정보를 담기
+
+                    worksheet1.get_Range("A1").Value = "MotherLot#";
+                    worksheet1.get_Range("B1").Value = "Dcc";
+                    worksheet1.get_Range("C1").Value = "SplitLot#";
+                    worksheet1.get_Range("D1").Value2 = "Dcc";
+                    worksheet1.get_Range("E1").Value2 = "SplitDieQty";
+                    worksheet1.get_Range("F1").Value2 = "SplitWaferQty";
+                    worksheet1.get_Range("G1").Value2 = "SplitCust";
+                    worksheet1.get_Range("H1").Value2 = "SplitSourceDevice";
+                    worksheet1.get_Range("I1").Value2 = "Wafer ID / Qty";
+                    worksheet1.get_Range("J1").Value2 = "WaferLot#";
+                    worksheet1.get_Range("K1").Value2 = "Custinfo(SWR)";
+                    worksheet1.get_Range("L1").Value2 = "PC Memo1";
+                    worksheet1.get_Range("M1").Value2 = "PC Memo2";
+
+                    rd = worksheet1.Range["A1", $"M{dgv_split.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value.ToString().Contains("-") == true).ToList().Count + 1}"];
+                    //rd.BorderAround2(XlLineStyle.xlDash);
+                    //rd.Borders[XlBordersIndex.xlDiagonalUp].LineStyle = Excel.XlLineStyle.xlContinuous;
+                    //rd.Borders[XlBordersIndex.xlDiagonalDown].LineStyle = Excel.XlLineStyle.xlContinuous;
+
+                    rd.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    rd.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = XlBorderWeight.xlThick;
+                    rd.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = XlBorderWeight.xlThick;
+
+                    //SetWaferReturnProgressba("엑셀 양식 작성 완료...", 4);
+
+                    //SetWaferReturnProgressba("Data 입력 중...", 5);
+                    worksheet1.get_Range("A1", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).Value = item;
+                    worksheet1.get_Range("A6", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    worksheet1.Cells.NumberFormat = @"@";
+                    worksheet1.Columns.AutoFit();
+
+
+                    string filePath = "";
+
+                    //SetWaferReturnProgressba("파일 저장 중...", 7);
+
+                    if (Properties.Settings.Default.SplitExcelSavePath != "")
+                    {
+                        filePath = string.Format("{0}\\Split_{1}.xlsx", Properties.Settings.Default.WaferReturnExcelOutPath, DateTime.Now.ToString("yyyyMMddhhmmss"));
+                        workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                    }
+                    else
+                    {
+                        filePath = string.Format("{0}\\Split_{1}.xlsx", System.Environment.CurrentDirectory + "\\Split", DateTime.Now.ToString("yyyyMMddhhmmss"));
+                        workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                    }
+
+                    speech.SpeakAsync("엑셀 저장 완료");
+                    //SetWaferReturnProgressba("파일 저장 완료", 8);
+
+                    workbook.Close();
+                    application.Quit();
+
+                    releaseObject(application);
+                    releaseObject(worksheet1);
+                    releaseObject(workbook);
+
+                    SetWaferReturnProgressba("Excel 종료", 9);
+
+                    if (DialogResult.Yes == MessageBox.Show("파일을 여시겠습니까?", "file open?", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                    {
+                        ProcessStartInfo info = new ProcessStartInfo("excel.exe", filePath);
+                        Process.Start(info);
+                    }
+
+
+                    //SetWaferReturnProgressba("Excel 실행 완료", 10);
+
+                }
+                else
+                {
+                    MessageBox.Show("데이터가 없습니다.");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void btn_splitExportExcel_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btn_splitExportExcel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                FolderBrowserDialog fd = new FolderBrowserDialog();
+
+                fd.ShowNewFolderButton = true;
+
+                if (Properties.Settings.Default.SplitExcelSavePath == "")
+                    fd.SelectedPath = Environment.SpecialFolder.Desktop.ToString();
+                else
+                    fd.SelectedPath = Properties.Settings.Default.SplitExcelSavePath;
+
+                if (DialogResult.OK == fd.ShowDialog())
+                {
+                    Properties.Settings.Default.SplitExcelSavePath = fd.SelectedPath;
+                    Properties.Settings.Default.Save();
+
+                    toolTip1.SetToolTip(btn_splitExportExcel, string.Format("{0}\n경로 변경 : 마우스 오른쪽 클릭", Properties.Settings.Default.SplitExcelSavePath));
+                }
+            }
+            else
+            {
+                exportSplitData();
+            }
         }
 
         private void dataGridView_Lot_MouseClick(object sender, MouseEventArgs e)

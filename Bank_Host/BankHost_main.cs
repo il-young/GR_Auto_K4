@@ -1251,7 +1251,7 @@ namespace Bank_Host
 
                 //IPAddress ip = IPAddress.Parse(Properties.Settings.Default.SecondPrinterIP);
 
-                socket.Connect("10.131.34.21", 9100);
+                socket.Connect(Properties.Settings.Default.QualcommPrinterIP, 9100);
                 StreamWriter writer = new StreamWriter(socket.GetStream());
 
                 writer.Write(PrintCode);
