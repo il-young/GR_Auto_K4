@@ -398,7 +398,7 @@
             this.tabPage15 = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.dgv_split = new System.Windows.Forms.DataGridView();
-            this.split_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitDevice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitLot = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.splitDCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -4737,10 +4737,9 @@
             // dgv_split
             // 
             this.dgv_split.AllowUserToAddRows = false;
-            this.dgv_split.AllowUserToDeleteRows = false;
             this.dgv_split.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_split.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.split_no,
+            this.splitNo,
             this.splitDevice,
             this.splitLot,
             this.splitDCC,
@@ -4750,20 +4749,21 @@
             this.dgv_split.Location = new System.Drawing.Point(0, 0);
             this.dgv_split.Name = "dgv_split";
             this.dgv_split.ReadOnly = true;
+            this.dgv_split.RowHeadersVisible = false;
             this.dgv_split.RowTemplate.Height = 23;
             this.dgv_split.Size = new System.Drawing.Size(1299, 1022);
             this.dgv_split.TabIndex = 0;
             // 
-            // split_no
+            // splitNo
             // 
-            this.split_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.splitNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             dataGridViewCellStyle45.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.split_no.DefaultCellStyle = dataGridViewCellStyle45;
-            this.split_no.FillWeight = 70F;
-            this.split_no.HeaderText = "No.";
-            this.split_no.Name = "split_no";
-            this.split_no.ReadOnly = true;
-            this.split_no.Width = 57;
+            this.splitNo.DefaultCellStyle = dataGridViewCellStyle45;
+            this.splitNo.FillWeight = 70F;
+            this.splitNo.HeaderText = "No.";
+            this.splitNo.Name = "splitNo";
+            this.splitNo.ReadOnly = true;
+            this.splitNo.Width = 57;
             // 
             // splitDevice
             // 
@@ -5381,7 +5381,7 @@
         private System.Windows.Forms.TextBox tb_splitScan;
         private System.Windows.Forms.Button btn_splitStart;
         private System.Windows.Forms.Button btn_splitExportExcel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn split_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn splitNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn splitDevice;
         private System.Windows.Forms.DataGridViewTextBoxColumn splitLot;
         private System.Windows.Forms.DataGridViewTextBoxColumn splitDCC;

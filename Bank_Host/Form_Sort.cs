@@ -15588,7 +15588,7 @@ namespace Bank_Host
 
                     for(int i = 1; i < int.Parse(temp[4])+1 ; ++i)
                     {
-                        dgv_split.Rows.Add(new object[] { $"{splitMainNum}-{i}", temp[2], $"{temp[0]}.{i.ToString().PadLeft(2,'0')}", "", "", "" });
+                        dgv_split.Rows.Add(new object[] { $"{splitMainNum}-{i}", temp[2], $"{temp[0]}", "", "", "" });
                     }
                 }
                 else
@@ -15602,25 +15602,23 @@ namespace Bank_Host
 
                             string[] temp = tb_splitScan.Text.Split(';');
 
-                            IEnumerable<DataGridViewRow> selectRows = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0] && row.Cells["splitLot"].Value.ToString() == temp[2]);
+                            IEnumerable<DataGridViewRow> selectRows = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0] && row.Cells["splitNo"].Value.ToString().Contains('-') == true && row.Cells["splitQTY"].Value.ToString() == "");
 
                             if (selectRows.Count<DataGridViewRow>() == 0)
                             {
                                 SpeakST("앰코 라벨을 먼저 스캔 하세요");
                             }
-                            else if (selectRows.Count<DataGridViewRow>() == 1)
+                            else
                             {
-                                dgv_split.Rows[selectRows.FirstOrDefault().Index].DefaultCellStyle.BackColor = Color.Aquamarine;
-                                dgv_split.Rows[selectRows.FirstOrDefault().Index].Cells["SplitQTY"].Value = temp[3];
-                                dgv_split.Rows[selectRows.FirstOrDefault().Index].Cells["Split_EA"].Value = "1";
+                                int index = selectRows.FirstOrDefault().Index;
+
+                                dgv_split.Rows[index].DefaultCellStyle.BackColor = Color.Aquamarine;
+                                dgv_split.Rows[index].Cells["SplitLot"].Value = temp[2];
+                                dgv_split.Rows[index].Cells["SplitQTY"].Value = temp[3];
+                                dgv_split.Rows[index].Cells["Split_EA"].Value = "1";                                
 
                                 SplitCheckSplitComp(tb_splitScan.Text);
                             }
-                            else
-                            {
-
-                            }
-
                         }
                         else if (tb_splitScan.Text.Contains('+') == true)
                         {
@@ -15664,7 +15662,7 @@ namespace Bank_Host
             if (totQTY == sumQTY)
             {
                 dgv_split.Rows[listSumRow[0].Index].DefaultCellStyle.BackColor = motherLotCompColor;
-                SpeakST($"{listSumRow[0].Cells["Split_no"].Value.ToString()} 완료");
+                SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 완료");
 
 
             }
@@ -15672,9 +15670,9 @@ namespace Bank_Host
             {
                 if (scanCNT == int.Parse(listSumRow[0].Cells["Split_EA"].Value.ToString()))
                 {
-                    SpeakST($"{listSumRow[0].Cells["Split_NO"].Value.ToString()} 수량 틀림");
+                    SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림");
 
-                    Form_Board form_Board = new Form_Board($"#{listSumRow[0].Cells["Split_NO"].Value.ToString()} 수량 틀림", Color.Black, Color.Red);
+                    Form_Board form_Board = new Form_Board($"#{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림", Color.Black, Color.Red);
                     form_Board.ShowDialog();
                 }
             }
@@ -15709,18 +15707,14 @@ namespace Bank_Host
                 application.Visible = false;
                 worksheet1.Name = "ReelSortList";
 
-                //SetWaferReturnProgressba("Data Loading...", 2);
-
                 if (dgv_split.Rows.Count != 0)
                 {
-                    string[,] item = new string[dgv_split.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value.ToString().Contains("-") == true).ToList().Count, dgv_split.Columns.Count - 1];
+                    string[,] item = new string[dgv_split.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value.ToString().Contains("-") == true).ToList().Count, dgv_split.Columns.Count];
                     string[] columns = new string[dgv_split.Columns.Count];
                     string cust = "";
                     string returnnum = "";
                     string totlot = "";
-
-                    //SetWaferReturnProgressba("엑셀 양식 작성 중...", 3);
-
+                                    
                     Range rd = worksheet1.Range[worksheet1.Cells[1, 1], worksheet1.Cells[1, 14]];
 
                     if (dgv_split.Rows.Count > 0)
@@ -15732,27 +15726,33 @@ namespace Bank_Host
                         }
 
                         int nrow = 0;
+                        string MotherLot = "";
+                        string MotherLotDCC = "";
 
                         for (int rowNo = 0; rowNo < dgv_split.Rows.Count; rowNo++)
                         {
                             if (dgv_split.Rows[rowNo].Cells[0].Value.ToString().Contains("-") == true)
                             {                                
-                                item[nrow, 0] = dgv_split.Rows[rowNo].Cells[0].ToString();
-                                item[nrow, 1] = dgv_split.Rows[rowNo].Cells[1].ToString();
-                                item[nrow, 2] = dgv_split.Rows[rowNo].Cells[2].ToString();
-                                item[nrow, 3] = dgv_split.Rows[rowNo].Cells[3].ToString();
-                                item[nrow, 4] = dgv_split.Rows[rowNo].Cells[4].ToString();
+                                item[nrow, 0] = MotherLot;    // mother Lot
+                                item[nrow, 1] = MotherLotDCC;
+                                item[nrow, 2] = dgv_split.Rows[rowNo].Cells[2].Value.ToString();
+                                item[nrow, 3] = dgv_split.Rows[rowNo].Cells[3].Value.ToString();
+                                item[nrow, 4] = dgv_split.Rows[rowNo].Cells[4].Value.ToString();
+
+                                dgv_split.Rows[rowNo].Cells[1].Value.ToString();
+                                item[nrow, 5] = "1";
                                 ++nrow;
                             }
                             else
                             {
                                 if (dgv_split.Rows[rowNo].DefaultCellStyle.BackColor != motherLotCompColor)
                                 {
-                                    rowNo += int.Parse(dgv_split.Rows[rowNo].Cells["split_EA"].Value.ToString());
+                                    rowNo += int.Parse(dgv_split.Rows[rowNo].Cells["split_EA"].Value.ToString());                                    
                                 }
-                                else
+                                else if(dgv_split.Rows[rowNo].DefaultCellStyle.BackColor == motherLotCompColor)
                                 {
-                                    
+                                    MotherLot = dgv_split.Rows[rowNo].Cells["splitLot"].Value.ToString();
+                                    MotherLotDCC = dgv_split.Rows[rowNo].Cells["splitDCC"].Value.ToString();
                                 }
                             }
                         }
@@ -15788,8 +15788,8 @@ namespace Bank_Host
                     //SetWaferReturnProgressba("엑셀 양식 작성 완료...", 4);
 
                     //SetWaferReturnProgressba("Data 입력 중...", 5);
-                    worksheet1.get_Range("A1", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).Value = item;
-                    worksheet1.get_Range("A6", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    worksheet1.get_Range("A2", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).Value = item;
+                    worksheet1.get_Range("A2", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
                     worksheet1.Cells.NumberFormat = @"@";
                     worksheet1.Columns.AutoFit();
 
