@@ -16527,7 +16527,7 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드7: Split Log");
                 comboBox_mode.Items.Add("모드8: Scrap");
                 comboBox_mode.Items.Add("모드9: Wafer Return");
-                comboBox_mode.Items.Add("");
+                comboBox_mode.Items.Add("모드10: Update Shelf ReelID ");
             }
             else if(loc == "K5")
             {
