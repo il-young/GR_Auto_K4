@@ -15567,7 +15567,10 @@ namespace Bank_Host
 
         private void tb_splitScan_MouseClick(object sender, MouseEventArgs e)
         {
-            tb_splitScan.Text = "";
+            if (tb_splitScan.Text == "Input here")
+            {
+                tb_splitScan.Text = "";
+            }            
         }
 
         int splitMainNum = 0;
@@ -15590,6 +15593,7 @@ namespace Bank_Host
                     {
                         dgv_split.Rows.Add(new object[] { $"{splitMainNum}-{i}", temp[2], $"{temp[0]}", "", "", "" });
                     }
+                    SpeakST($"{splitMainNum} 추가");
                 }
                 else
                 {
@@ -15602,9 +15606,9 @@ namespace Bank_Host
 
                             string[] temp = tb_splitScan.Text.Split(';');
 
-                            IEnumerable<DataGridViewRow> selectRows = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0] && row.Cells["splitNo"].Value.ToString().Contains('-') == true && row.Cells["splitQTY"].Value.ToString() == "");
+                            List<DataGridViewRow> selectRows = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0] && row.Cells["splitNo"].Value.ToString().Contains('-') == true && row.Cells["splitQTY"].Value.ToString() == "").ToList();
 
-                            if (selectRows.Count<DataGridViewRow>() == 0)
+                            if (selectRows.Count == 0)
                             {
                                 SpeakST("앰코 라벨을 먼저 스캔 하세요");
                             }
@@ -15615,7 +15619,9 @@ namespace Bank_Host
                                 dgv_split.Rows[index].DefaultCellStyle.BackColor = Color.Aquamarine;
                                 dgv_split.Rows[index].Cells["SplitLot"].Value = temp[2];
                                 dgv_split.Rows[index].Cells["SplitQTY"].Value = temp[3];
-                                dgv_split.Rows[index].Cells["Split_EA"].Value = "1";                                
+                                dgv_split.Rows[index].Cells["Split_EA"].Value = "1";
+
+                                SpeakST(selectRows[0].Cells["SplitNo"].Value.ToString().Remove(selectRows[0].Cells["SplitNo"].Value.ToString().LastIndexOf("-"), selectRows[0].Cells["SplitNo"].Value.ToString().Length - selectRows[0].Cells["SplitNo"].Value.ToString().LastIndexOf("-")));
 
                                 SplitCheckSplitComp(tb_splitScan.Text);
                             }
@@ -15643,9 +15649,12 @@ namespace Bank_Host
 
         private void SplitCheckSplitComp(string scandata)
         {
+
+            // 0 DEV          1 Lot      2 WFR#      3 QTY
+            //2UA3-8233-TR1C;ARUA3A3507;3507-P056A.04;9326;2346;Chipbond
             string[] temp = scandata.Split(';');
 
-            List<DataGridViewRow> listSumRow = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0]).ToList();
+           List<DataGridViewRow> listSumRow = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == temp[0] && row.Cells["splitLot"].Value.ToString().Contains(temp[2].Remove(temp[2].LastIndexOf('.'), temp[2].Length - temp[2].LastIndexOf('.'))) == true).ToList();
             listSumRow.Sort((a, b) => a.Index.CompareTo(b.Index));
 
             int totQTY = int.Parse(listSumRow[0].Cells["SplitQTY"].Value.ToString());
@@ -15681,7 +15690,6 @@ namespace Bank_Host
 
         private void tb_splitScan_Leave(object sender, EventArgs e)
         {
-            tb_splitScan.Text = "Input Here";
         }
 
         private void exportSplitData()
@@ -15709,8 +15717,8 @@ namespace Bank_Host
 
                 if (dgv_split.Rows.Count != 0)
                 {
-                    string[,] item = new string[dgv_split.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value.ToString().Contains("-") == true).ToList().Count, dgv_split.Columns.Count];
-                    string[] columns = new string[dgv_split.Columns.Count];
+                    string[,] item = new string[dgv_split.Rows.Cast<DataGridViewRow>().Where(r => r.Cells[0].Value.ToString().Contains("-") == true).ToList().Count, dgv_split.Columns.Count + 2];
+                    string[] columns = new string[dgv_split.Columns.Count+2];
                     string cust = "";
                     string returnnum = "";
                     string totlot = "";
@@ -15719,7 +15727,7 @@ namespace Bank_Host
 
                     if (dgv_split.Rows.Count > 0)
                     {
-                        for (int c = 0; c < dgv_split.Columns.Count; c++)
+                        for (int c = 0; c < dgv_split.Columns.Count + 2; c++)
                         {
                             //컬럼 위치값을 가져오기
                             columns[c] = ExcelColumnIndexToName(c);
@@ -15735,12 +15743,13 @@ namespace Bank_Host
                             {                                
                                 item[nrow, 0] = MotherLot;    // mother Lot
                                 item[nrow, 1] = MotherLotDCC;
-                                item[nrow, 2] = dgv_split.Rows[rowNo].Cells[2].Value.ToString();
-                                item[nrow, 3] = dgv_split.Rows[rowNo].Cells[3].Value.ToString();
-                                item[nrow, 4] = dgv_split.Rows[rowNo].Cells[4].Value.ToString();
-
-                                dgv_split.Rows[rowNo].Cells[1].Value.ToString();
+                                item[nrow, 2] = dgv_split.Rows[rowNo].Cells["splitLot"].Value.ToString();
+                                item[nrow, 3] = dgv_split.Rows[rowNo].Cells["splitDCC"].Value.ToString();
+                                item[nrow, 4] = dgv_split.Rows[rowNo].Cells["splitQTY"].Value.ToString();
                                 item[nrow, 5] = "1";
+                                item[nrow, 6] = "";
+                                item[nrow, 7] = dgv_split.Rows[rowNo].Cells["splitDevice"].Value.ToString();
+
                                 ++nrow;
                             }
                             else
@@ -15788,8 +15797,8 @@ namespace Bank_Host
                     //SetWaferReturnProgressba("엑셀 양식 작성 완료...", 4);
 
                     //SetWaferReturnProgressba("Data 입력 중...", 5);
-                    worksheet1.get_Range("A2", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).Value = item;
-                    worksheet1.get_Range("A2", columns[item.GetLength(1)] + (item.GetLength(0)).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
+                    worksheet1.get_Range("A2", columns[item.GetLength(1) - 1] + (item.GetLength(0) + 1).ToString()).Value = item;
+                    worksheet1.get_Range("A2", columns[item.GetLength(1) - 1] + (item.GetLength(0) + 1).ToString()).HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
                     worksheet1.Cells.NumberFormat = @"@";
                     worksheet1.Columns.AutoFit();
 
@@ -15800,13 +15809,13 @@ namespace Bank_Host
 
                     if (Properties.Settings.Default.SplitExcelSavePath != "")
                     {
-                        filePath = string.Format("{0}\\Split_{1}.xlsx", Properties.Settings.Default.WaferReturnExcelOutPath, DateTime.Now.ToString("yyyyMMddhhmmss"));
-                        workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                        filePath = string.Format("{0}\\Split_{1}.xls", Properties.Settings.Default.WaferReturnExcelOutPath, DateTime.Now.ToString("yyyyMMddhhmmss"));
+                        workbook.SaveAs(filePath, Excel.XlFileFormat.xlExcel8, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
                     }
                     else
                     {
-                        filePath = string.Format("{0}\\Split_{1}.xlsx", System.Environment.CurrentDirectory + "\\Split", DateTime.Now.ToString("yyyyMMddhhmmss"));
-                        workbook.SaveAs(filePath, Excel.XlFileFormat.xlOpenXMLWorkbook, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                        filePath = string.Format("{0}\\Split_{1}.xls", System.Environment.CurrentDirectory + "\\Split", DateTime.Now.ToString("yyyyMMddhhmmss"));
+                        workbook.SaveAs(filePath, Excel.XlFileFormat.xlExcel8, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
                     }
 
                     speech.SpeakAsync("엑셀 저장 완료");
@@ -15874,6 +15883,11 @@ namespace Bank_Host
             {
                 exportSplitData();
             }
+        }
+
+        private void btn_splitExportExcel_Click_1(object sender, EventArgs e)
+        {
+
         }
 
         private void dataGridView_Lot_MouseClick(object sender, MouseEventArgs e)

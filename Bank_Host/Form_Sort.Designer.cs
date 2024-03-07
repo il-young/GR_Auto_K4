@@ -4749,7 +4749,6 @@
             this.dgv_split.Location = new System.Drawing.Point(0, 0);
             this.dgv_split.Name = "dgv_split";
             this.dgv_split.ReadOnly = true;
-            this.dgv_split.RowHeadersVisible = false;
             this.dgv_split.RowTemplate.Height = 23;
             this.dgv_split.Size = new System.Drawing.Size(1299, 1022);
             this.dgv_split.TabIndex = 0;
@@ -4829,6 +4828,7 @@
             this.btn_splitExportExcel.Text = "Export Excel";
             this.btn_splitExportExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_splitExportExcel.UseVisualStyleBackColor = true;
+            this.btn_splitExportExcel.Click += new System.EventHandler(this.btn_splitExportExcel_Click_1);
             this.btn_splitExportExcel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btn_splitExportExcel_MouseUp);
             // 
             // btn_splitExit
@@ -4848,6 +4848,7 @@
             this.tb_splitScan.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tb_splitScan.Dock = System.Windows.Forms.DockStyle.Top;
             this.tb_splitScan.Font = new System.Drawing.Font("맑은 고딕", 14F);
+            this.tb_splitScan.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.tb_splitScan.Location = new System.Drawing.Point(0, 101);
             this.tb_splitScan.Name = "tb_splitScan";
             this.tb_splitScan.Size = new System.Drawing.Size(233, 32);
