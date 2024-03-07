@@ -7687,6 +7687,8 @@ namespace Bank_Host
             if (strBcr.Contains("LON") || strBcr.Contains("ERROR") || strBcr.Contains("BLOAD"))
                 return null;
 
+            BankHost_main.strScanData = strBcr;
+
             ///BCR count check
             Bcrinfo bcr = new Bcrinfo();
 
