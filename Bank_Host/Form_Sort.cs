@@ -4558,6 +4558,7 @@ namespace Bank_Host
             {
                 BankHost_main.nAmkorBcrType = 0;
                 cb_splitMode.SelectedIndex = 0;
+                tb_splitScan.Focus();
             }
         }
 
@@ -15589,11 +15590,11 @@ namespace Bank_Host
                     //3507-P056A:    :2UA3-8233-TR1C:0000054325:00004:0012183533:00488::
                     string[] temp = tb_splitScan.Text.Split(':');
 
-                    dgv_split.Rows.Add(new object[] {splitMainNum, temp[2], temp[0], temp[1], temp[3], temp[4] });
+                    dgv_split.Rows.Add(new object[] {splitMainNum, temp[2].Trim(), temp[0].Trim(), temp[1].Trim(), temp[3].Trim(), temp[4].Trim() });
 
                     for(int i = 1; i < int.Parse(temp[4])+1 ; ++i)
                     {
-                        dgv_split.Rows.Add(new object[] { $"{splitMainNum}-{i}", temp[2], $"{temp[0]}", "", "", "" });
+                        dgv_split.Rows.Add(new object[] { $"{splitMainNum}-{i}", temp[2].Trim(), $"{temp[0].Trim()}", "", "", "" });
                     }
                     SpeakST($"{splitMainNum} 추가");
                 }
@@ -15702,8 +15703,7 @@ namespace Bank_Host
                 return;
             }
 
-            pb_WaferReturn.Value = 0;
-            pb_WaferReturn.Maximum = 10;
+            
             //SetWaferReturnProgressba("Excel 생성 중...", 1);
 
             try
@@ -15811,7 +15811,7 @@ namespace Bank_Host
 
                     if (Properties.Settings.Default.SplitExcelSavePath != "")
                     {
-                        filePath = string.Format("{0}\\Split_{1}.xls", Properties.Settings.Default.WaferReturnExcelOutPath, DateTime.Now.ToString("yyyyMMddhhmmss"));
+                        filePath = string.Format("{0}\\Split_{1}.xls", Properties.Settings.Default.SplitExcelSavePath, DateTime.Now.ToString("yyyyMMddhhmmss"));
                         workbook.SaveAs(filePath, Excel.XlFileFormat.xlExcel8, System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlUserResolution, true, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
                     }
                     else
@@ -15851,7 +15851,7 @@ namespace Bank_Host
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
 
