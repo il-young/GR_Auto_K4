@@ -13373,6 +13373,22 @@ namespace Bank_Host
                         runLogOutTimer();
                 }
             }
+            else if (nSel == 9)
+            {
+                tabControl_Sort.SelectedIndex = 13;
+                //Form_ShelfNumInput shelf = new Form_ShelfNumInput();
+                //shelf.Dock = DockStyle.Fill;
+                //shelf.TopLevel = false;
+
+                //panel12.Controls.Add(shelf);
+
+                tb_PreFix.Text = Properties.Settings.Default.ShelfPreFix;
+                tb_StartShelf.Text = Properties.Settings.Default.ShelfStartShelf;
+                tb_EndShelf.Text = Properties.Settings.Default.ShelfEndShelf;
+                tb_StartBoxNo.Text = Properties.Settings.Default.ShelfStartBox;
+                tb_EndBox.Text = Properties.Settings.Default.ShelfEndBox;
+
+            }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
 
@@ -15491,7 +15507,7 @@ namespace Bank_Host
 
         private void button19_Click_2(object sender, EventArgs e)
         {
-            //string s = GetWebServiceData("http://10.131.10.84:8080/api/diebank/gr-info/k4?ReelID=ALL");
+            string s = GetWebServiceData("http://10.131.10.84:8080/api/diebank/gr-info/k4?ReelID=8063-6056A.01");
             //string t = GetWebServiceData($"http://{(Properties.Settings.Default.TestMode == true ? TEST_MES : PRD_MES)}/eMES_Webservice/diebank_automation_service/chk_dup_reel_inf/7900-7277A.1").ToUpper();
             inputEmpNum.ShowDialog();
         }
@@ -15890,6 +15906,76 @@ namespace Bank_Host
         private void btn_splitExportExcel_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void SaveShelfData()
+        {
+            Properties.Settings.Default.ShelfPreFix = tb_PreFix.Text;
+            Properties.Settings.Default.ShelfStartShelf = tb_StartShelf.Text;
+            Properties.Settings.Default.ShelfEndShelf = tb_EndShelf.Text;
+            Properties.Settings.Default.ShelfStartBox = tb_StartBoxNo.Text;
+            Properties.Settings.Default.ShelfEndBox = tb_EndBox.Text;
+            Properties.Settings.Default.Save();
+        }
+
+
+        private void btn_ShelfSearch_Click(object sender, EventArgs e)
+        {
+            string url = "";
+            int Reelcnt = 0;
+            int StartShelf = int.Parse(tb_StartShelf.Text);
+            int EndShelf = int.Parse(tb_EndShelf.Text);
+            int StartBox = int.Parse(tb_StartBoxNo.Text);
+            int EndBox = int.Parse(tb_EndBox.Text);
+
+            SaveShelfData();
+
+            dgv_Shelf.Rows.Clear();
+
+            SetShelfProgressMax((EndShelf - StartShelf + 1) * (EndBox - StartShelf + 1));
+
+            for(int nShelf = StartShelf; nShelf <= EndShelf; nShelf++)
+            {
+                for(int nBox = StartBox; nBox <= EndBox; nBox++)
+                {
+                    try
+                    {
+                        url = $"http://10.101.14.130:8180/eMES_Webservice/diebank_automation_service/inq_auto_gr_ent_list/{Properties.Settings.Default.LOCATION},%20,{tb_PreFix.Text}{nShelf.ToString().PadLeft(3, '0')}{nBox.ToString().PadLeft(2, '0')}";
+                        string[] temp = GetWebServiceData(url).Split('\r');
+
+                        for (int i = 1; i < temp.Length; i++)
+                        {
+                            string[] row = temp[i].Replace("\n", "").Split('\t');
+
+                            dgv_Shelf.Rows.Add(new object[] { ++Reelcnt, row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16] });
+                        }
+
+                        SetShelfProgressVal((nShelf - 1) * (EndBox - StartBox + 1) + nBox);                       
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw;
+                    }
+                    
+                }
+            }            
+        }
+
+        private void SetShelfProgressMax(int max)
+        {
+            pb_Shelf.Maximum = max;
+        }
+
+        private void SetShelfProgressVal( int val)
+        {
+            pb_Shelf.Value = val;
+            pb_Shelf.Update();
+            pb_Shelf.Invalidate();
+
+            l_ShelfProgress.Text = $"{pb_Shelf.Value}/{pb_Shelf.Maximum}";
+            l_ShelfProgress.Update();
+            l_ShelfProgress.Invalidate();
         }
 
         private void dataGridView_Lot_MouseClick(object sender, MouseEventArgs e)

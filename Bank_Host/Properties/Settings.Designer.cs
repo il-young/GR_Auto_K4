@@ -477,5 +477,65 @@ namespace Bank_Host.Properties {
                 this["SplitExcelSavePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShelfPreFix {
+            get {
+                return ((string)(this["ShelfPreFix"]));
+            }
+            set {
+                this["ShelfPreFix"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShelfStartShelf {
+            get {
+                return ((string)(this["ShelfStartShelf"]));
+            }
+            set {
+                this["ShelfStartShelf"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShelfEndShelf {
+            get {
+                return ((string)(this["ShelfEndShelf"]));
+            }
+            set {
+                this["ShelfEndShelf"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShelfStartBox {
+            get {
+                return ((string)(this["ShelfStartBox"]));
+            }
+            set {
+                this["ShelfStartBox"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ShelfEndBox {
+            get {
+                return ((string)(this["ShelfEndBox"]));
+            }
+            set {
+                this["ShelfEndBox"] = value;
+            }
+        }
     }
 }
