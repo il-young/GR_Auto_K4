@@ -537,5 +537,29 @@ namespace Bank_Host.Properties {
                 this["ShelfEndBox"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ShelfCust {
+            get {
+                return ((int)(this["ShelfCust"]));
+            }
+            set {
+                this["ShelfCust"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int ShelfCustName {
+            get {
+                return ((int)(this["ShelfCustName"]));
+            }
+            set {
+                this["ShelfCustName"] = value;
+            }
+        }
     }
 }

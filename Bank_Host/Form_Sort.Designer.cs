@@ -413,9 +413,31 @@
             this.tabPage16 = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.dgv_Shelf = new System.Windows.Forms.DataGridView();
-            this.l_ShelfProgress = new System.Windows.Forms.Label();
+            this.Shelf_No = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_Cust = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_Device = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_Lot = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_DCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_QTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_WaferQTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_RcvDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_LotType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_Bill = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_AmkorID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_WLot = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_COO = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_BuildType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_CustInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_MOO = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_Invoice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Shelf_ReelIDDCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tb_ShelfScan = new System.Windows.Forms.TextBox();
+            this.l_ShelfProgress = new System.Windows.Forms.Label();
             this.pb_Shelf = new System.Windows.Forms.ProgressBar();
+            this.panel13 = new System.Windows.Forms.Panel();
+            this.btn_ShelfStart = new System.Windows.Forms.Button();
+            this.cb_ShelfCustName = new System.Windows.Forms.ComboBox();
+            this.cb_ShelfCust = new System.Windows.Forms.ComboBox();
             this.btn_ShelfSearch = new System.Windows.Forms.Button();
             this.panel12 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -439,23 +461,6 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.t_LogOut = new System.Windows.Forms.Timer(this.components);
-            this.Shelf_No = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_Cust = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_Device = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_Lot = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_DCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_Eoh = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_WaferQTY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_RcvDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_LotType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_Hsb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_AmkorID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_WaferLot = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_COO = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_BuildType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_CustInfo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_MOO = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Shelf_ReelIDDCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -538,6 +543,7 @@
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Shelf)).BeginInit();
+            this.panel13.SuspendLayout();
             this.panel12.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -3024,6 +3030,7 @@
             this.textBox1.TabIndex = 12;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBox1.ImeModeChanged += new System.EventHandler(this.textBox1_ImeModeChanged);
             // 
             // button4
             // 
@@ -4167,6 +4174,7 @@
             this.tb_scrapinput.Size = new System.Drawing.Size(192, 27);
             this.tb_scrapinput.TabIndex = 16;
             this.tb_scrapinput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_input_KeyDown);
+            this.tb_scrapinput.ImeModeChanged += new System.EventHandler(this.tb_scrapinput_ImeModeChanged);
             // 
             // tb_ScrapSt
             // 
@@ -4593,6 +4601,7 @@
             this.tb_WaferReturnScan.Size = new System.Drawing.Size(216, 22);
             this.tb_WaferReturnScan.TabIndex = 39;
             this.tb_WaferReturnScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_WaferReturnScan_KeyDown);
+            this.tb_WaferReturnScan.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.tb_WaferReturnScan_MouseDoubleClick);
             this.tb_WaferReturnScan.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tb_WaferReturnScan_MouseDown);
             // 
             // tabPage14
@@ -4731,6 +4740,7 @@
             this.tb_ATVScan.Size = new System.Drawing.Size(190, 27);
             this.tb_ATVScan.TabIndex = 56;
             this.tb_ATVScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ATVScan_KeyDown);
+            this.tb_ATVScan.ImeModeChanged += new System.EventHandler(this.tb_ATVScan_ImeModeChanged);
             // 
             // btn_loadExcel
             // 
@@ -4893,7 +4903,7 @@
             // 
             // tb_splitScan
             // 
-            this.tb_splitScan.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.tb_splitScan.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.tb_splitScan.Dock = System.Windows.Forms.DockStyle.Top;
             this.tb_splitScan.Font = new System.Drawing.Font("맑은 고딕", 14F);
             this.tb_splitScan.ImeMode = System.Windows.Forms.ImeMode.Alpha;
@@ -4966,9 +4976,10 @@
             // 
             // splitContainer6.Panel2
             // 
-            this.splitContainer6.Panel2.Controls.Add(this.l_ShelfProgress);
             this.splitContainer6.Panel2.Controls.Add(this.tb_ShelfScan);
+            this.splitContainer6.Panel2.Controls.Add(this.l_ShelfProgress);
             this.splitContainer6.Panel2.Controls.Add(this.pb_Shelf);
+            this.splitContainer6.Panel2.Controls.Add(this.panel13);
             this.splitContainer6.Panel2.Controls.Add(this.btn_ShelfSearch);
             this.splitContainer6.Panel2.Controls.Add(this.panel12);
             this.splitContainer6.Size = new System.Drawing.Size(1536, 1022);
@@ -4985,57 +4996,257 @@
             this.Shelf_Device,
             this.Shelf_Lot,
             this.Shelf_DCC,
-            this.Shelf_Eoh,
+            this.Shelf_QTY,
             this.Shelf_WaferQTY,
             this.Shelf_RcvDate,
             this.Shelf_LotType,
-            this.Shelf_Hsb,
+            this.Shelf_Bill,
             this.Shelf_AmkorID,
-            this.Shelf_WaferLot,
+            this.Shelf_WLot,
             this.Shelf_COO,
             this.Shelf_BuildType,
             this.Shelf_CustInfo,
             this.Shelf_MOO,
+            this.Shelf_Invoice,
             this.Shelf_ReelIDDCC});
             this.dgv_Shelf.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_Shelf.Location = new System.Drawing.Point(0, 0);
             this.dgv_Shelf.Name = "dgv_Shelf";
+            this.dgv_Shelf.ReadOnly = true;
             this.dgv_Shelf.RowHeadersVisible = false;
             this.dgv_Shelf.RowTemplate.Height = 23;
+            this.dgv_Shelf.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_Shelf.Size = new System.Drawing.Size(1536, 890);
             this.dgv_Shelf.TabIndex = 0;
+            // 
+            // Shelf_No
+            // 
+            this.Shelf_No.HeaderText = "No";
+            this.Shelf_No.Name = "Shelf_No";
+            this.Shelf_No.ReadOnly = true;
+            this.Shelf_No.Width = 54;
+            // 
+            // Shelf_Cust
+            // 
+            this.Shelf_Cust.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_Cust.HeaderText = "Cust";
+            this.Shelf_Cust.Name = "Shelf_Cust";
+            this.Shelf_Cust.ReadOnly = true;
+            this.Shelf_Cust.Width = 64;
+            // 
+            // Shelf_Device
+            // 
+            this.Shelf_Device.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_Device.HeaderText = "Device";
+            this.Shelf_Device.Name = "Shelf_Device";
+            this.Shelf_Device.ReadOnly = true;
+            this.Shelf_Device.Width = 79;
+            // 
+            // Shelf_Lot
+            // 
+            this.Shelf_Lot.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_Lot.HeaderText = "Lot";
+            this.Shelf_Lot.Name = "Shelf_Lot";
+            this.Shelf_Lot.ReadOnly = true;
+            this.Shelf_Lot.Width = 55;
+            // 
+            // Shelf_DCC
+            // 
+            this.Shelf_DCC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_DCC.HeaderText = "DCC";
+            this.Shelf_DCC.Name = "Shelf_DCC";
+            this.Shelf_DCC.ReadOnly = true;
+            this.Shelf_DCC.Width = 65;
+            // 
+            // Shelf_QTY
+            // 
+            this.Shelf_QTY.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_QTY.HeaderText = "Eoh";
+            this.Shelf_QTY.Name = "Shelf_QTY";
+            this.Shelf_QTY.ReadOnly = true;
+            this.Shelf_QTY.Width = 60;
+            // 
+            // Shelf_WaferQTY
+            // 
+            this.Shelf_WaferQTY.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_WaferQTY.HeaderText = "WQTY";
+            this.Shelf_WaferQTY.Name = "Shelf_WaferQTY";
+            this.Shelf_WaferQTY.ReadOnly = true;
+            this.Shelf_WaferQTY.Width = 76;
+            // 
+            // Shelf_RcvDate
+            // 
+            this.Shelf_RcvDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_RcvDate.HeaderText = "RCV Date";
+            this.Shelf_RcvDate.Name = "Shelf_RcvDate";
+            this.Shelf_RcvDate.ReadOnly = true;
+            // 
+            // Shelf_LotType
+            // 
+            this.Shelf_LotType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_LotType.HeaderText = "Lot Type";
+            this.Shelf_LotType.Name = "Shelf_LotType";
+            this.Shelf_LotType.ReadOnly = true;
+            this.Shelf_LotType.Width = 92;
+            // 
+            // Shelf_Bill
+            // 
+            this.Shelf_Bill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_Bill.HeaderText = "Bill";
+            this.Shelf_Bill.Name = "Shelf_Bill";
+            this.Shelf_Bill.ReadOnly = true;
+            this.Shelf_Bill.Width = 55;
+            // 
+            // Shelf_AmkorID
+            // 
+            this.Shelf_AmkorID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_AmkorID.HeaderText = "Amkor ID";
+            this.Shelf_AmkorID.Name = "Shelf_AmkorID";
+            this.Shelf_AmkorID.ReadOnly = true;
+            this.Shelf_AmkorID.Width = 99;
+            // 
+            // Shelf_WLot
+            // 
+            this.Shelf_WLot.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_WLot.HeaderText = "Wafer Lot";
+            this.Shelf_WLot.Name = "Shelf_WLot";
+            this.Shelf_WLot.ReadOnly = true;
+            // 
+            // Shelf_COO
+            // 
+            this.Shelf_COO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_COO.HeaderText = "COO";
+            this.Shelf_COO.Name = "Shelf_COO";
+            this.Shelf_COO.ReadOnly = true;
+            this.Shelf_COO.Width = 68;
+            // 
+            // Shelf_BuildType
+            // 
+            this.Shelf_BuildType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_BuildType.HeaderText = "Build Type";
+            this.Shelf_BuildType.Name = "Shelf_BuildType";
+            this.Shelf_BuildType.ReadOnly = true;
+            this.Shelf_BuildType.Width = 106;
+            // 
+            // Shelf_CustInfo
+            // 
+            this.Shelf_CustInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_CustInfo.HeaderText = "Cust Info";
+            this.Shelf_CustInfo.Name = "Shelf_CustInfo";
+            this.Shelf_CustInfo.ReadOnly = true;
+            this.Shelf_CustInfo.Width = 96;
+            // 
+            // Shelf_MOO
+            // 
+            this.Shelf_MOO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_MOO.HeaderText = "MOO";
+            this.Shelf_MOO.Name = "Shelf_MOO";
+            this.Shelf_MOO.ReadOnly = true;
+            this.Shelf_MOO.Width = 72;
+            // 
+            // Shelf_Invoice
+            // 
+            this.Shelf_Invoice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_Invoice.HeaderText = "Invoice";
+            this.Shelf_Invoice.Name = "Shelf_Invoice";
+            this.Shelf_Invoice.ReadOnly = true;
+            this.Shelf_Invoice.Width = 82;
+            // 
+            // Shelf_ReelIDDCC
+            // 
+            this.Shelf_ReelIDDCC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Shelf_ReelIDDCC.HeaderText = "Reel ID/DCC";
+            this.Shelf_ReelIDDCC.Name = "Shelf_ReelIDDCC";
+            this.Shelf_ReelIDDCC.ReadOnly = true;
+            this.Shelf_ReelIDDCC.Width = 120;
+            // 
+            // tb_ShelfScan
+            // 
+            this.tb_ShelfScan.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.tb_ShelfScan.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tb_ShelfScan.Enabled = false;
+            this.tb_ShelfScan.ImeMode = System.Windows.Forms.ImeMode.Alpha;
+            this.tb_ShelfScan.Location = new System.Drawing.Point(821, 101);
+            this.tb_ShelfScan.Name = "tb_ShelfScan";
+            this.tb_ShelfScan.Size = new System.Drawing.Size(715, 27);
+            this.tb_ShelfScan.TabIndex = 7;
+            this.tb_ShelfScan.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tb_ShelfScan_MouseClick);
+            this.tb_ShelfScan.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_ShelfScan_KeyDown);
+            this.tb_ShelfScan.ImeModeChanged += new System.EventHandler(this.tb_ShelfScan_ImeModeChanged);
             // 
             // l_ShelfProgress
             // 
             this.l_ShelfProgress.Dock = System.Windows.Forms.DockStyle.Top;
-            this.l_ShelfProgress.Location = new System.Drawing.Point(794, 23);
+            this.l_ShelfProgress.Location = new System.Drawing.Point(821, 23);
             this.l_ShelfProgress.Name = "l_ShelfProgress";
-            this.l_ShelfProgress.Size = new System.Drawing.Size(742, 20);
-            this.l_ShelfProgress.TabIndex = 4;
+            this.l_ShelfProgress.Size = new System.Drawing.Size(715, 23);
+            this.l_ShelfProgress.TabIndex = 6;
             this.l_ShelfProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tb_ShelfScan
-            // 
-            this.tb_ShelfScan.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tb_ShelfScan.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.tb_ShelfScan.Location = new System.Drawing.Point(794, 101);
-            this.tb_ShelfScan.Name = "tb_ShelfScan";
-            this.tb_ShelfScan.Size = new System.Drawing.Size(742, 27);
-            this.tb_ShelfScan.TabIndex = 3;
             // 
             // pb_Shelf
             // 
             this.pb_Shelf.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pb_Shelf.Location = new System.Drawing.Point(794, 0);
+            this.pb_Shelf.Location = new System.Drawing.Point(821, 0);
             this.pb_Shelf.Name = "pb_Shelf";
-            this.pb_Shelf.Size = new System.Drawing.Size(742, 23);
+            this.pb_Shelf.Size = new System.Drawing.Size(715, 23);
             this.pb_Shelf.Step = 1;
-            this.pb_Shelf.TabIndex = 2;
+            this.pb_Shelf.TabIndex = 5;
+            // 
+            // panel13
+            // 
+            this.panel13.Controls.Add(this.btn_ShelfStart);
+            this.panel13.Controls.Add(this.cb_ShelfCustName);
+            this.panel13.Controls.Add(this.cb_ShelfCust);
+            this.panel13.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel13.Location = new System.Drawing.Point(666, 0);
+            this.panel13.Name = "panel13";
+            this.panel13.Size = new System.Drawing.Size(155, 128);
+            this.panel13.TabIndex = 0;
+            // 
+            // btn_ShelfStart
+            // 
+            this.btn_ShelfStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_ShelfStart.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_ShelfStart.Location = new System.Drawing.Point(0, 56);
+            this.btn_ShelfStart.Name = "btn_ShelfStart";
+            this.btn_ShelfStart.Size = new System.Drawing.Size(155, 72);
+            this.btn_ShelfStart.TabIndex = 7;
+            this.btn_ShelfStart.Text = "Start";
+            this.btn_ShelfStart.UseVisualStyleBackColor = true;
+            this.btn_ShelfStart.Click += new System.EventHandler(this.btn_ShelfStart_Click);
+            // 
+            // cb_ShelfCustName
+            // 
+            this.cb_ShelfCustName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cb_ShelfCustName.FormattingEnabled = true;
+            this.cb_ShelfCustName.Items.AddRange(new object[] {
+            "AVAGO",
+            "Skyworks",
+            "Qorvo"});
+            this.cb_ShelfCustName.Location = new System.Drawing.Point(0, 28);
+            this.cb_ShelfCustName.Name = "cb_ShelfCustName";
+            this.cb_ShelfCustName.Size = new System.Drawing.Size(155, 28);
+            this.cb_ShelfCustName.TabIndex = 6;
+            this.cb_ShelfCustName.SelectedIndexChanged += new System.EventHandler(this.cb_ShelfCustName_SelectedIndexChanged);
+            // 
+            // cb_ShelfCust
+            // 
+            this.cb_ShelfCust.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cb_ShelfCust.FormattingEnabled = true;
+            this.cb_ShelfCust.Items.AddRange(new object[] {
+            "488",
+            "379",
+            "453"});
+            this.cb_ShelfCust.Location = new System.Drawing.Point(0, 0);
+            this.cb_ShelfCust.Name = "cb_ShelfCust";
+            this.cb_ShelfCust.Size = new System.Drawing.Size(155, 28);
+            this.cb_ShelfCust.TabIndex = 5;
+            this.cb_ShelfCust.SelectedIndexChanged += new System.EventHandler(this.cb_ShelfCust_SelectedIndexChanged);
             // 
             // btn_ShelfSearch
             // 
             this.btn_ShelfSearch.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btn_ShelfSearch.Location = new System.Drawing.Point(743, 0);
+            this.btn_ShelfSearch.Location = new System.Drawing.Point(615, 0);
             this.btn_ShelfSearch.Name = "btn_ShelfSearch";
             this.btn_ShelfSearch.Size = new System.Drawing.Size(51, 128);
             this.btn_ShelfSearch.TabIndex = 1;
@@ -5051,7 +5262,7 @@
             this.panel12.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel12.Location = new System.Drawing.Point(0, 0);
             this.panel12.Name = "panel12";
-            this.panel12.Size = new System.Drawing.Size(743, 128);
+            this.panel12.Size = new System.Drawing.Size(615, 128);
             this.panel12.TabIndex = 0;
             // 
             // groupBox2
@@ -5063,14 +5274,14 @@
             this.groupBox2.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.Location = new System.Drawing.Point(380, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(346, 79);
+            this.groupBox2.Size = new System.Drawing.Size(230, 79);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "End";
             // 
             // tb_EndBox
             // 
-            this.tb_EndBox.Location = new System.Drawing.Point(229, 39);
+            this.tb_EndBox.Location = new System.Drawing.Point(118, 39);
             this.tb_EndBox.Mask = "99";
             this.tb_EndBox.Name = "tb_EndBox";
             this.tb_EndBox.Size = new System.Drawing.Size(100, 26);
@@ -5081,7 +5292,7 @@
             // 
             // tb_EndShelf
             // 
-            this.tb_EndShelf.Location = new System.Drawing.Point(120, 38);
+            this.tb_EndShelf.Location = new System.Drawing.Point(9, 38);
             this.tb_EndShelf.Mask = "999";
             this.tb_EndShelf.Name = "tb_EndShelf";
             this.tb_EndShelf.Size = new System.Drawing.Size(100, 26);
@@ -5094,7 +5305,7 @@
             // 
             this.label63.AutoSize = true;
             this.label63.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label63.Location = new System.Drawing.Point(226, 22);
+            this.label63.Location = new System.Drawing.Point(115, 22);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(70, 14);
             this.label63.TabIndex = 6;
@@ -5104,7 +5315,7 @@
             // 
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label64.Location = new System.Drawing.Point(117, 22);
+            this.label64.Location = new System.Drawing.Point(6, 22);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(77, 14);
             this.label64.TabIndex = 4;
@@ -5239,139 +5450,6 @@
             this.t_LogOut.Interval = 1000;
             this.t_LogOut.Tick += new System.EventHandler(this.t_LogOut_Tick);
             // 
-            // Shelf_No
-            // 
-            this.Shelf_No.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_No.HeaderText = "No";
-            this.Shelf_No.Name = "Shelf_No";
-            this.Shelf_No.Width = 54;
-            // 
-            // Shelf_Cust
-            // 
-            this.Shelf_Cust.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_Cust.HeaderText = "Cust";
-            this.Shelf_Cust.Name = "Shelf_Cust";
-            this.Shelf_Cust.ReadOnly = true;
-            this.Shelf_Cust.Width = 64;
-            // 
-            // Shelf_Device
-            // 
-            this.Shelf_Device.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_Device.HeaderText = "Device";
-            this.Shelf_Device.Name = "Shelf_Device";
-            this.Shelf_Device.ReadOnly = true;
-            this.Shelf_Device.Width = 79;
-            // 
-            // Shelf_Lot
-            // 
-            this.Shelf_Lot.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_Lot.HeaderText = "Lot";
-            this.Shelf_Lot.Name = "Shelf_Lot";
-            this.Shelf_Lot.ReadOnly = true;
-            this.Shelf_Lot.Width = 55;
-            // 
-            // Shelf_DCC
-            // 
-            this.Shelf_DCC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_DCC.HeaderText = "DCC";
-            this.Shelf_DCC.Name = "Shelf_DCC";
-            this.Shelf_DCC.ReadOnly = true;
-            this.Shelf_DCC.Width = 65;
-            // 
-            // Shelf_Eoh
-            // 
-            this.Shelf_Eoh.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_Eoh.HeaderText = "Eoh";
-            this.Shelf_Eoh.Name = "Shelf_Eoh";
-            this.Shelf_Eoh.ReadOnly = true;
-            this.Shelf_Eoh.Width = 60;
-            // 
-            // Shelf_WaferQTY
-            // 
-            this.Shelf_WaferQTY.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_WaferQTY.HeaderText = "WQTY";
-            this.Shelf_WaferQTY.Name = "Shelf_WaferQTY";
-            this.Shelf_WaferQTY.ReadOnly = true;
-            this.Shelf_WaferQTY.Width = 76;
-            // 
-            // Shelf_RcvDate
-            // 
-            this.Shelf_RcvDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_RcvDate.HeaderText = "RCV Date";
-            this.Shelf_RcvDate.Name = "Shelf_RcvDate";
-            this.Shelf_RcvDate.ReadOnly = true;
-            // 
-            // Shelf_LotType
-            // 
-            this.Shelf_LotType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_LotType.HeaderText = "Lot Type";
-            this.Shelf_LotType.Name = "Shelf_LotType";
-            this.Shelf_LotType.ReadOnly = true;
-            this.Shelf_LotType.Width = 92;
-            // 
-            // Shelf_Hsb
-            // 
-            this.Shelf_Hsb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_Hsb.HeaderText = "Bill";
-            this.Shelf_Hsb.Name = "Shelf_Hsb";
-            this.Shelf_Hsb.ReadOnly = true;
-            this.Shelf_Hsb.Width = 55;
-            // 
-            // Shelf_AmkorID
-            // 
-            this.Shelf_AmkorID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_AmkorID.HeaderText = "Amkor ID";
-            this.Shelf_AmkorID.Name = "Shelf_AmkorID";
-            this.Shelf_AmkorID.ReadOnly = true;
-            this.Shelf_AmkorID.Width = 99;
-            // 
-            // Shelf_WaferLot
-            // 
-            this.Shelf_WaferLot.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_WaferLot.HeaderText = "Wafer Lot";
-            this.Shelf_WaferLot.Name = "Shelf_WaferLot";
-            this.Shelf_WaferLot.ReadOnly = true;
-            // 
-            // Shelf_COO
-            // 
-            this.Shelf_COO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_COO.HeaderText = "COO";
-            this.Shelf_COO.Name = "Shelf_COO";
-            this.Shelf_COO.ReadOnly = true;
-            this.Shelf_COO.Width = 68;
-            // 
-            // Shelf_BuildType
-            // 
-            this.Shelf_BuildType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_BuildType.HeaderText = "Build Type";
-            this.Shelf_BuildType.Name = "Shelf_BuildType";
-            this.Shelf_BuildType.ReadOnly = true;
-            this.Shelf_BuildType.Width = 106;
-            // 
-            // Shelf_CustInfo
-            // 
-            this.Shelf_CustInfo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_CustInfo.HeaderText = "Cust Info";
-            this.Shelf_CustInfo.Name = "Shelf_CustInfo";
-            this.Shelf_CustInfo.ReadOnly = true;
-            this.Shelf_CustInfo.Width = 96;
-            // 
-            // Shelf_MOO
-            // 
-            this.Shelf_MOO.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_MOO.HeaderText = "MOO";
-            this.Shelf_MOO.Name = "Shelf_MOO";
-            this.Shelf_MOO.ReadOnly = true;
-            this.Shelf_MOO.Width = 72;
-            // 
-            // Shelf_ReelIDDCC
-            // 
-            this.Shelf_ReelIDDCC.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Shelf_ReelIDDCC.HeaderText = "Reel ID/DCC";
-            this.Shelf_ReelIDDCC.Name = "Shelf_ReelIDDCC";
-            this.Shelf_ReelIDDCC.ReadOnly = true;
-            this.Shelf_ReelIDDCC.Width = 120;
-            // 
             // Form_Sort
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -5488,6 +5566,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Shelf)).EndInit();
+            this.panel13.ResumeLayout(false);
             this.panel12.ResumeLayout(false);
             this.panel12.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -5856,25 +5935,30 @@
         private System.Windows.Forms.Label label67;
         private System.Windows.Forms.Label label68;
         private System.Windows.Forms.DataGridView dgv_Shelf;
+        private System.Windows.Forms.ComboBox cb_ShelfCust;
         private System.Windows.Forms.TextBox tb_ShelfScan;
-        private System.Windows.Forms.ProgressBar pb_Shelf;
         private System.Windows.Forms.Label l_ShelfProgress;
+        private System.Windows.Forms.ProgressBar pb_Shelf;
+        private System.Windows.Forms.Panel panel13;
+        private System.Windows.Forms.ComboBox cb_ShelfCustName;
+        private System.Windows.Forms.Button btn_ShelfStart;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_No;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Cust;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Device;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Lot;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_DCC;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Eoh;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_QTY;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_WaferQTY;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_RcvDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_LotType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Hsb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Bill;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_AmkorID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_WaferLot;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_WLot;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_COO;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_BuildType;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_CustInfo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_MOO;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_Invoice;
         private System.Windows.Forms.DataGridViewTextBoxColumn Shelf_ReelIDDCC;
     }
 }

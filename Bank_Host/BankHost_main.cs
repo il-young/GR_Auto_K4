@@ -1058,7 +1058,6 @@ namespace Bank_Host
 
                                 //ReelID 검증
                                 
-
                                 //Thread insertThread = new Thread(InsertWAS);
                                 //mesData = strData;
                                 //insertThread.Start();

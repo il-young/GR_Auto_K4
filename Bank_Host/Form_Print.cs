@@ -865,7 +865,7 @@ namespace Bank_Host
 
             if (BankHost_main.nScanMode == 1)
             {
-                strwfrqty = int.Parse(AmkorBarcode.WQTY).ToString();
+                strwfrqty = (AmkorBarcode.WQTY == "") ? "0" : int.Parse(AmkorBarcode.WQTY).ToString();
             }
             else
             {
