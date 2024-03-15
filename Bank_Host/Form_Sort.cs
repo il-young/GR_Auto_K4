@@ -8253,7 +8253,7 @@ namespace Bank_Host
             bcr.WfrTTL = nWfrTTL.ToString();
 
             string strSetID = strWaferID + "_" + bcr.DieQty;
-            string strGet = BankHost_main.Host.Host_Set_BcrReadInfo(BankHost_main.strEqid, bcr.Device, bcr.Lot, strSetID);
+            string strGet = BankHost_main.Host.Host_Set_BcrReadInfo(BankHost_main.strEqid, bcr.Device, (bcr.LPN == "" ? bcr.Lot : bcr.LPN), strSetID);
              
             if (strGet == "True")
             {
