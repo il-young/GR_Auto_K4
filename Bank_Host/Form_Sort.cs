@@ -64,6 +64,7 @@ namespace Bank_Host
         public static readonly NLog.Logger Blog = NLog.LogManager.GetLogger("BUTTONLog");
         public static readonly NLog.Logger GRLog = NLog.LogManager.GetLogger("GRLog");
         public static readonly NLog.Logger Joblog = NLog.LogManager.GetLogger("JOBLog");
+        public static readonly NLog.Logger Splitlog = NLog.LogManager.GetLogger("SPLITLog");
 
         Form_InfoBoard InfoBoard = new Form_InfoBoard();
         public static SaveLog LogSave = new SaveLog();
@@ -111,6 +112,9 @@ namespace Bank_Host
                     case "JOBLOG":
                         jobType = "JOB";
                         logger = Form_Sort.Joblog;
+                        break;
+                    case "SPLITLOG":
+                        logger = Form_Sort.Splitlog;
                         break;
                     default:
                         break;
@@ -13263,7 +13267,7 @@ namespace Bank_Host
 
                     BankHost_main.Fnc_SaveLog("Split Log Low Data", 1);
                     BankHost_main.Fnc_SaveLog(res, 1);
-                    Split_log_file_save(res);
+                    SplitLogFileSave(res);
                     Split_data_sorting(res);
 
                     saveFileDialog1.InitialDirectory = Properties.Settings.Default.SPLIT_LOG_SAVE_PATH;
@@ -13367,7 +13371,7 @@ namespace Bank_Host
                 tb_PreFix.Text = Properties.Settings.Default.ShelfPreFix;
                 tb_StartShelf.Text = Properties.Settings.Default.ShelfStartShelf;
                 tb_EndShelf.Text = Properties.Settings.Default.ShelfEndShelf;
-                tb_StartBoxNo.Text = Properties.Settings.Default.ShelfStartBox;
+                tb_StartBox.Text = Properties.Settings.Default.ShelfStartBox;
                 tb_EndBox.Text = Properties.Settings.Default.ShelfEndBox;
 
                 cb_ShelfCust.SelectedIndex = Properties.Settings.Default.ShelfCust;
@@ -15582,6 +15586,10 @@ namespace Bank_Host
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
+                //Split_log_file_save
+
+                SplitLogFileSave(tb_splitScan.Text);
+
                 if (tb_splitScan.Text.Contains(':') == true)
                 {
                     splitMainNum++;
@@ -15622,7 +15630,7 @@ namespace Bank_Host
                                 dgv_split.Rows[index].DefaultCellStyle.BackColor = Color.Aquamarine;
                                 dgv_split.Rows[index].Cells["SplitLot"].Value = temp[2];
                                 dgv_split.Rows[index].Cells["SplitQTY"].Value = temp[3];
-                                dgv_split.Rows[index].Cells["Split_EA"].Value = "1";
+                                dgv_split.Rows[index].Cells["SplitEA"].Value = "1";
 
                                 SpeakST(selectRows[0].Cells["SplitNo"].Value.ToString().Remove(selectRows[0].Cells["SplitNo"].Value.ToString().LastIndexOf("-"), selectRows[0].Cells["SplitNo"].Value.ToString().Length - selectRows[0].Cells["SplitNo"].Value.ToString().LastIndexOf("-")));
 
@@ -15678,14 +15686,92 @@ namespace Bank_Host
 
 
             }
+            else if(totQTY < sumQTY)
+            {
+                SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 초과");
+            }
             else
             {
-                if (scanCNT == int.Parse(listSumRow[0].Cells["Split_EA"].Value.ToString()))
+                if (cb_ReturnReel.Checked == true)
                 {
-                    SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림");
+                    if (listSumRow.Count == 2)
+                    {
+                        listSumRow[1].Cells["splitQTY"].Value = totQTY;
+                        SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 완료");
+                    }
+                    else
+                    {
+                    }
+                }
+                else
+                {
+                    if (scanCNT == int.Parse(listSumRow[0].Cells["SplitEA"].Value.ToString()))
+                    {
+                        SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림");
 
-                    Form_Board form_Board = new Form_Board($"#{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림", Color.Black, Color.Red);
-                    form_Board.ShowDialog();
+                        Form_Board form_Board = new Form_Board($"#{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림", Color.Black, Color.Red);
+                        form_Board.ShowDialog();
+                    }
+                }
+            }
+        }
+
+        private void SplitCheckSplitComp(int RowIndex)
+        {
+
+            // 0 DEV          1 Lot      2 WFR#      3 QTY
+            //2UA3-8233-TR1C;ARUA3A3507;3507-P056A.04;9326;2346;Chipbond
+
+            String Mlot = (dgv_split.Rows[RowIndex].Cells["splitLot"].Value.ToString().Remove(dgv_split.Rows[RowIndex].Cells["splitLot"].Value.ToString().IndexOf('.'), dgv_split.Rows[RowIndex].Cells["splitLot"].Value.ToString().Length - dgv_split.Rows[RowIndex].Cells["splitLot"].Value.ToString().IndexOf('.')));
+
+            List<DataGridViewRow> listSumRow = dgv_split.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["splitDevice"].Value.ToString() == dgv_split.Rows[RowIndex].Cells["splitDevice"].Value.ToString() && (row.Cells["splitLot"].Value.ToString().Contains('.') == true ? row.Cells["splitLot"].Value.ToString().Remove(row.Cells["splitLot"].Value.ToString().IndexOf('.'), row.Cells["splitLot"].Value.ToString().Length- row.Cells["splitLot"].Value.ToString().IndexOf('.')) : row.Cells["splitLot"].Value.ToString()) == Mlot).ToList();
+            listSumRow.Sort((a, b) => a.Index.CompareTo(b.Index));
+
+            int totQTY = 0;
+
+            if (int.TryParse(listSumRow[0].Cells["splitQTY"].Value.ToString(), out totQTY) == false)
+                return;
+
+            
+            int sumQTY = 0;
+            int scanCNT = 0;
+
+            for (int i = 1; i < listSumRow.Count; i++)
+            {
+                sumQTY += int.Parse(dgv_split.Rows[listSumRow[i].Index].Cells["SplitQTY"].Value.ToString() == "" ? "0" : dgv_split.Rows[listSumRow[i].Index].Cells["SplitQTY"].Value.ToString());
+
+                scanCNT += dgv_split.Rows[listSumRow[i].Index].DefaultCellStyle.BackColor == Color.Aquamarine ? 1 : 0;
+            }
+
+            if (totQTY == sumQTY)
+            {
+                dgv_split.Rows[listSumRow[0].Index].DefaultCellStyle.BackColor = motherLotCompColor;
+                SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 완료");
+
+
+            }
+            else
+            {
+                if (cb_ReturnReel.Checked == true)
+                {
+                    if (listSumRow.Count == 2)
+                    {
+                        listSumRow[1].Cells["splitQTY"].Value = totQTY;
+                        SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 완료");
+                    }
+                    else
+                    {
+                    }
+                }
+                else
+                {
+                    if (scanCNT == int.Parse(listSumRow[0].Cells["SplitEA"].Value.ToString()))
+                    {
+                        SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림");
+
+                        Form_Board form_Board = new Form_Board($"#{listSumRow[0].Cells["SplitNo"].Value.ToString()} 수량 틀림", Color.Black, Color.Red);
+                        form_Board.ShowDialog();
+                    }
                 }
             }
         }
@@ -15758,7 +15844,7 @@ namespace Bank_Host
                             {
                                 if (dgv_split.Rows[rowNo].DefaultCellStyle.BackColor != motherLotCompColor)
                                 {
-                                    rowNo += int.Parse(dgv_split.Rows[rowNo].Cells["split_EA"].Value.ToString());
+                                    rowNo += int.Parse(dgv_split.Rows[rowNo].Cells["splitEA"].Value.ToString());
                                 }
                                 else if (dgv_split.Rows[rowNo].DefaultCellStyle.BackColor == motherLotCompColor)
                                 {
@@ -15897,7 +15983,7 @@ namespace Bank_Host
             Properties.Settings.Default.ShelfPreFix = tb_PreFix.Text;
             Properties.Settings.Default.ShelfStartShelf = tb_StartShelf.Text;
             Properties.Settings.Default.ShelfEndShelf = tb_EndShelf.Text;
-            Properties.Settings.Default.ShelfStartBox = tb_StartBoxNo.Text;
+            Properties.Settings.Default.ShelfStartBox = tb_StartBox.Text;
             Properties.Settings.Default.ShelfEndBox = tb_EndBox.Text;
             Properties.Settings.Default.Save();
         }
@@ -15910,7 +15996,7 @@ namespace Bank_Host
             int Reelcnt = 0;
             int StartShelf = int.Parse(tb_StartShelf.Text);
             int EndShelf = int.Parse(tb_EndShelf.Text);
-            int StartBox = int.Parse(tb_StartBoxNo.Text);
+            int StartBox = int.Parse(tb_StartBox.Text);
             int EndBox = int.Parse(tb_EndBox.Text);
 
             SaveShelfData();
@@ -15920,11 +16006,11 @@ namespace Bank_Host
             dgv_Shelf.Rows.Clear();
 
 
-            if (EndShelf == 0 && EndBox == 0)
-            {
+            //if (EndShelf == 0 && EndBox == 0)
+            //{
 
-            }
-            else
+            //}
+            //else
             {
                 SetShelfProgressMax((EndShelf - StartShelf + 1) * (EndBox - StartShelf + 1));
                 int CustIndex = -1;
@@ -15936,7 +16022,7 @@ namespace Bank_Host
                     {
                         try
                         {
-                            url = $"http://10.101.14.130:8180/eMES_Webservice/diebank_automation_service/inq_auto_gr_ent_list/{Properties.Settings.Default.LOCATION},%20,{tb_PreFix.Text}{nShelf.ToString().PadLeft(3, '0')}{nBox.ToString().PadLeft(2, '0')},%20";
+                            url = $"http://10.101.14.130:8180/eMES_Webservice/diebank_automation_service/inq_auto_gr_ent_list/{Properties.Settings.Default.LOCATION},%20,{tb_PreFix.Text}{nShelf.ToString().PadLeft(3,'0')}{nBox.ToString().PadLeft(2, '0')},%20";
                             string[] temp = GetWebServiceData(url).Split('\r');
 
                             for (int i = 1; i < temp.Length; i++)
@@ -15957,7 +16043,7 @@ namespace Bank_Host
 
                             }
 
-                            SetShelfProgressVal((nShelf - 1) * (EndBox - StartBox + 1) + nBox);
+                            SetShelfProgressVal((nShelf - StartShelf) * (EndBox - StartBox + 1) + (nBox - StartBox));
 
 
                         }
@@ -15969,7 +16055,7 @@ namespace Bank_Host
 
                     }
                 }
-                cb_ShelfCust.SelectedIndex = 0;
+                //cb_ShelfCust.SelectedIndex = 0;
 
             }
         }
@@ -15994,6 +16080,8 @@ namespace Bank_Host
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
+                ShelfLogFileSave(tb_ShelfScan.Text);
+
                 int CustIndex = cb_ShelfCust.SelectedIndex;
 
                 Bcrinfo bcr = K4_Parsing(tb_ShelfScan.Text.Replace("\r", ""));
@@ -16028,7 +16116,8 @@ namespace Bank_Host
                 }
             }
 
-            if (bcr.DieQty != "")
+
+            if (bcr.DieQty != "" && cb_ShelfIgnoQTY.Checked == false)
             {
                 if (row.Count != 0)
                 {
@@ -16040,12 +16129,16 @@ namespace Bank_Host
             if (row.Count == 1)
             {
                 if (dgv_Shelf.Rows[row[0].Index].DefaultCellStyle.BackColor == ShelfCompleteColor)
+                {
+                    SpeakST("스캔 완료");
                     return;
+                }
+
+                dgv_Shelf.FirstDisplayedScrollingRowIndex = row[0].Index;
 
                 dgv_Shelf.Rows[row[0].Index].DefaultCellStyle.BackColor = ShelfCompleteColor;
 
                 SpeakST($"{row[0].Index}");
-
 
                 SetShelfProgressVal(dgv_Shelf.Rows.Cast<DataGridViewRow>().Where(r => r.DefaultCellStyle.BackColor == ShelfCompleteColor).ToList().Count);
 
@@ -16082,7 +16175,7 @@ namespace Bank_Host
             }
             else
             {
-
+                
             }
         }
 
@@ -16094,10 +16187,10 @@ namespace Bank_Host
             label.strCust = data.Cust;
             label.strLotDcc = data.Lot_Dcc;
             label.strDevice = data.Device;
-            label.strDieQty = data.Die_Qty;
+            label.strDiettl = data.Die_Qty;
             label.strLotNo = data.Lot;
             label.strWaferLotNo = data.Wafer_lot;
-            label.strWfrQty = data.Default_WQty;
+            label.strWfrttl = data.Rcv_WQty;
             label.strBillNo = data.Bill;
             label.strCoo = data.strCoo;
             label.strLotType = data.Lot_type;
@@ -16110,9 +16203,9 @@ namespace Bank_Host
 
         private String MakeBCRString(int index)
         {
-            return $"{dgv_Shelf.Rows[index].Cells["Shelf_Lot"].Value.ToString()},{dgv_Shelf.Rows[index].Cells["Shelf_DCC"].Value.ToString()},{dgv_Shelf.Rows[index].Cells["Shelf_Device"].Value.ToString()}," +
-                $"{dgv_Shelf.Rows[index].Cells["Shelf_QTY"].Value.ToString()},{dgv_Shelf.Rows[index].Cells["Shelf_WaferQTY"].Value.ToString()},{dgv_Shelf.Rows[index].Cells["Shelf_AmkorID"].Value.ToString()}," +
-                $"{dgv_Shelf.Rows[index].Cells["Shelf_Cust"].Value.ToString()},{dgv_Shelf.Rows[index].Cells["Shelf_WLot"].Value.ToString()}";
+            return $"{dgv_Shelf.Rows[index].Cells["Shelf_Lot"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_DCC"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_Device"].Value.ToString()}:" +
+                $"{dgv_Shelf.Rows[index].Cells["Shelf_QTY"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_WaferQTY"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_AmkorID"].Value.ToString()}:" +
+                $"{dgv_Shelf.Rows[index].Cells["Shelf_Cust"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_WLot"].Value.ToString()}";
         }
 
         private StorageData ShelfGetData(int ShelfIndex)
@@ -16232,6 +16325,62 @@ namespace Bank_Host
             SetShelfProgressVal(dgv_Shelf.Rows.Cast<DataGridViewRow>().Where(r => r.DefaultCellStyle.BackColor == ShelfCompleteColor).ToList().Count);
         }
 
+        private void cb_ReturnReel_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cb_ReturnReel.Checked == true)
+            {
+                dgv_split.Columns["SplitQTY"].ReadOnly = false;
+                dgv_split.Columns["SplitLot"].ReadOnly = false;
+            }
+            else
+            {
+                dgv_split.Columns["SplitQTY"].ReadOnly = true;
+                dgv_split.Columns["SplitLot"].ReadOnly = true;
+            }
+        }
+
+        private void dgv_split_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if(dgv_split.Rows[e.RowIndex].Cells["SplitNo"].Value.ToString().Contains('-') == true)
+            {
+                SplitCheckSplitComp(e.RowIndex);
+                tb_splitScan.Focus();
+            }
+            
+        }
+
+        int ShelfClickedIndex = -1;
+
+        private void dgv_Shelf_MouseUp(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void ContextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if(e.ClickedItem.Text == "Reset")
+            {
+                dgv_Shelf.Rows[ShelfClickedIndex].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+            }
+        }
+
+        private void dgv_Shelf_MouseDown(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void dgv_Shelf_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenuStrip1.Items.Clear();
+                contextMenuStrip1.Items.Add("Reset");
+                ShelfClickedIndex = e.RowIndex;
+
+                contextMenuStrip1.ItemClicked += ContextMenuStrip1_ItemClicked;
+            }
+        }
+
         private void dataGridView_Lot_MouseClick(object sender, MouseEventArgs e)
         {
             ClickTime();
@@ -16332,8 +16481,87 @@ namespace Bank_Host
             }
         }
 
+        private void ShelfLogFileSave(string split_data)
+        {
+            string folderpath = strExcutionPath + "\\Work\\Shelf_log";
+            string strFileName = string.Format("{0}\\Work\\Shelf_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
+            bool bdata = false;
+            List<string> added_string = new List<string>();
+            List<string> Split_list = new List<string>();
+            FileStream stream = null;
 
-        private void Split_log_file_save(string split_data)
+            string[] temp = split_data.Split('\n');
+            string[] files = new string[10];
+            string[] sp;
+
+            try
+            {
+                for (int i = 1; i < temp.Length; i++)
+                {
+                    if (temp[i] != "")
+                    {
+                        Split_list.Add(temp[i].Remove(temp[i].Length - 1));
+                    }
+                }
+
+                if (System.IO.Directory.Exists(folderpath) == false)
+                {
+                    System.IO.Directory.CreateDirectory(folderpath);
+                }
+
+                if (System.IO.File.Exists(strFileName) == false)
+                {
+                    stream = System.IO.File.Create(strFileName);
+                    stream.Dispose();
+                }
+                else
+                {
+
+                }
+
+                files = System.IO.File.ReadAllLines(strFileName);
+                string t = "";
+                for (int i = 0; i < Split_list.Count; i++)
+                {
+                    bdata = false;
+                    for (int j = 0; j < files.Length; j++)
+                    {
+                        t = string.Join("\t", files[j].Split('\t'), 0, files[j].Split('\t').Length == 12 ? files[j].Split('\t').Length - 2 : 10);
+
+                        if (Split_list[i] == t)
+                        {
+                            bdata = true;
+                            break;
+                        }
+                    }
+
+                    if (bdata == false)
+                        added_string.Add(Split_list[i]);
+                }
+
+                System.IO.StreamWriter fs = new StreamWriter(strFileName);
+
+                string[] arr = new string[files.Length + added_string.Count];
+                Array.Copy(files, arr, files.Length);
+
+
+                if (!(added_string.Count == 1 && added_string[0] == ""))
+                    Array.Copy(added_string.ToArray(), 0, arr, files.Length, added_string.Count);
+
+                fs.Write(String.Join(Environment.NewLine, arr.Take(arr.Length).ToArray()));
+
+                fs.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
+
+        private void SplitLogFileSave(string split_data)
         {
             string folderpath = strExcutionPath + "\\Work\\Split_log";
             string strFileName = string.Format("{0}\\Work\\Split_log\\{1}.txt", strExcutionPath, DateTime.Now.ToShortDateString());
