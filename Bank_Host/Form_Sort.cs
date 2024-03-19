@@ -16086,7 +16086,7 @@ namespace Bank_Host
 
                 Bcrinfo bcr = K4_Parsing(tb_ShelfScan.Text.Replace("\r", ""));
 
-                if (bcr.result.ToUpper() == "OK")
+                if (bcr.result.ToUpper() == "OK" || bcr.result.ToUpper() == "DUPLICATE")
                 {
                     ShelfFindReel(bcr);
                 }
