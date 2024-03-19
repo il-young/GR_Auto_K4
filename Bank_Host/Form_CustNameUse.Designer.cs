@@ -30,8 +30,8 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgv_custname = new System.Windows.Forms.DataGridView();
-            this.btn_OK = new System.Windows.Forms.Button();
             this.cb_Names = new System.Windows.Forms.ComboBox();
+            this.btn_OK = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,6 +70,16 @@
             this.dgv_custname.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_custname_CellMouseUp);
             this.dgv_custname.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_custname_CellValueChanged);
             // 
+            // cb_Names
+            // 
+            this.cb_Names.Dock = System.Windows.Forms.DockStyle.Left;
+            this.cb_Names.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cb_Names.FormattingEnabled = true;
+            this.cb_Names.Location = new System.Drawing.Point(0, 0);
+            this.cb_Names.Name = "cb_Names";
+            this.cb_Names.Size = new System.Drawing.Size(214, 32);
+            this.cb_Names.TabIndex = 1;
+            // 
             // btn_OK
             // 
             this.btn_OK.Dock = System.Windows.Forms.DockStyle.Right;
@@ -80,16 +90,7 @@
             this.btn_OK.TabIndex = 0;
             this.btn_OK.Text = "OK";
             this.btn_OK.UseVisualStyleBackColor = true;
-            // 
-            // cb_Names
-            // 
-            this.cb_Names.Dock = System.Windows.Forms.DockStyle.Left;
-            this.cb_Names.Font = new System.Drawing.Font("굴림", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cb_Names.FormattingEnabled = true;
-            this.cb_Names.Location = new System.Drawing.Point(0, 0);
-            this.cb_Names.Name = "cb_Names";
-            this.cb_Names.Size = new System.Drawing.Size(214, 32);
-            this.cb_Names.TabIndex = 1;
+            this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
             // 
             // Form_CustNameUse
             // 

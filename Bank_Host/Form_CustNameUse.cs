@@ -117,5 +117,10 @@ namespace Bank_Host
             if(e.ColumnIndex != -1 && e.RowIndex != -1)
                 run_sql_command($"update TB_CUST_INFO set [USE]={(dgv_custname.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "True" ? 0: 1)} where [CUST]='{dgv_custname.Rows[e.RowIndex].Cells["CUST"].Value.ToString()}' and [NAME]='{dgv_custname.Rows[e.RowIndex].Cells["NAME"].Value.ToString()}'");
         }
+
+        private void btn_OK_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
