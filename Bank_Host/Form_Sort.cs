@@ -422,6 +422,7 @@ namespace Bank_Host
         bool btimeOut = false;
 
         private Color ShelfCompleteColor = Color.BlueViolet;
+        private Color ShelfValidationCompColor = Color.Blue;
 
         SpeechSynthesizer speech = new SpeechSynthesizer();
 
@@ -13367,6 +13368,20 @@ namespace Bank_Host
             else if (nSel == 9)
             {
                 tabControl_Sort.SelectedIndex = 13;
+                
+                tb_PreFix.Text = Properties.Settings.Default.ShelfPreFix;
+                tb_StartShelf.Text = Properties.Settings.Default.ShelfStartShelf;
+                tb_EndShelf.Text = Properties.Settings.Default.ShelfEndShelf;
+                tb_StartBox.Text = Properties.Settings.Default.ShelfStartBox;
+                tb_EndBox.Text = Properties.Settings.Default.ShelfEndBox;
+
+                cb_ShelfCust.SelectedIndex = Properties.Settings.Default.ShelfCust;
+                cb_ShelfCustName.SelectedIndex = Properties.Settings.Default.ShelfCustName;
+                cb_ShelfIgnoQTY.Checked = false;
+            }
+            else if (nSel == 10)
+            {
+                tabControl_Sort.SelectedIndex = 13;
 
                 tb_PreFix.Text = Properties.Settings.Default.ShelfPreFix;
                 tb_StartShelf.Text = Properties.Settings.Default.ShelfStartShelf;
@@ -13376,6 +13391,7 @@ namespace Bank_Host
 
                 cb_ShelfCust.SelectedIndex = Properties.Settings.Default.ShelfCust;
                 cb_ShelfCustName.SelectedIndex = Properties.Settings.Default.ShelfCustName;
+                cb_ShelfIgnoQTY.Checked = true;
             }
 
             string strJudge = BankHost_main.Host.Host_Set_Ready(BankHost_main.strEqid, "WAIT", "");
@@ -16084,14 +16100,86 @@ namespace Bank_Host
 
                 int CustIndex = cb_ShelfCust.SelectedIndex;
 
-                Bcrinfo bcr = K4_Parsing(tb_ShelfScan.Text.Replace("\r", ""));
-
-                if (bcr.result.ToUpper() == "OK" || bcr.result.ToUpper() == "DUPLICATE")
+                if (tb_ShelfScan.Text.Contains(":") == false)
                 {
-                    ShelfFindReel(bcr);
-                }
+                    Bcrinfo bcr = K4_Parsing(tb_ShelfScan.Text.Replace("\r", ""));
 
+                    if (bcr.result.ToUpper() == "OK" || bcr.result.ToUpper() == "DUPLICATE")
+                    {
+                        ShelfFindReel(bcr);
+                    }
+                }
+                else if(tb_ShelfScan.Text.Contains(":") == true)
+                {
+                    Bcrinfo bcr = AmkorLabel2BCRINFO(tb_ShelfScan.Text);
+                    ShelfValidation(bcr);
+                }
                 tb_ShelfScan.Text = "";
+            }
+        }
+
+        private Bcrinfo AmkorLabel2BCRINFO(string AmkorLabel)
+        {
+            Bcrinfo Result = new Bcrinfo();
+            string[] LabelInfo = AmkorLabel.Split(':');
+            //lot                   dcc   device                qty       wqty   amkorID  cust
+            //P3UK61.00-12        :     :4KL1-2802-TR1C      :0000015148:00002:0012395166:00488
+
+            Result.Lot = LabelInfo[0].Trim();
+            Result.DCC = LabelInfo[1].Trim();
+            Result.Device = LabelInfo[2].Trim();
+            Result.DieQty = LabelInfo[3].Trim();
+            Result.WfrQty = LabelInfo[4].Trim();
+            Result.WfrTTL = LabelInfo[4].Trim();
+            
+            return Result;
+        }
+
+        private void ShelfValidation(Bcrinfo bcr)
+        {
+            List<DataGridViewRow> row = new List<DataGridViewRow>();
+
+            if (bcr.Device != "")
+            {
+                row = dgv_Shelf.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Shelf_Device"].Value.ToString() == bcr.Device).ToList();
+            }
+
+            if (bcr.Lot != "")
+            {
+                if (row.Count == 0)
+                {
+                    row = dgv_Shelf.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Shelf_Lot"].Value.ToString() == bcr.Lot).ToList();
+                }
+                else
+                {
+                    row = row.Cast<DataGridViewRow>().Where(r => r.Cells["Shelf_Lot"].Value.ToString() == bcr.Lot).ToList();
+                }
+            }                                 
+
+            //if (cb_ShelfIgnoQTY.Checked == false)
+            { 
+                if (bcr.DieQty != "")// && cb_ShelfIgnoQTY.Checked == false)
+                {
+                    if (row.Count != 0)
+                    {
+                        row = row.Cast<DataGridViewRow>().Where(r => r.Cells["Shelf_QTY"].Value.ToString() == bcr.DieQty).ToList();
+                    }
+                }
+            }
+
+            if(row.Count == 1)
+            {
+                dgv_Shelf.Rows[row[0].Index].DefaultCellStyle.BackColor = ShelfValidationCompColor;
+                dgv_Shelf.FirstDisplayedScrollingRowIndex = row[0].Index;
+                SpeakST($"{row[0].Index} 확인 완료");
+            }
+            else if(row.Count == 0)
+            {
+                SpeakST("없는 데이터");
+            }
+            else
+            {
+
             }
         }
 
@@ -16163,8 +16251,12 @@ namespace Bank_Host
 
                     string BarcodeInfo = MakeBCRString(row[0].Index);
                     string ZPLCode = Frm_Print.Fnc_Get_PrintFormat(1, BarcodeInfo, AmkorLabel, 1, 1);
-                                     
-                    Frm_Print.Socket_MessageSend(ZPLCode);
+                    
+                    for(int i = 0; i< nud_Copy.Value; i++)
+                    {
+                        Frm_Print.Socket_MessageSend(ZPLCode);
+                    }
+                    
 
                     SpeakST("라벨출력");
                 }
@@ -16191,6 +16283,7 @@ namespace Bank_Host
             label.strLotNo = data.Lot;
             label.strWaferLotNo = data.Wafer_lot;
             label.strWfrttl = data.Rcv_WQty;
+            label.strWfrQty = data.Rcv_WQty;
             label.strBillNo = data.Bill;
             label.strCoo = data.strCoo;
             label.strLotType = data.Lot_type;
@@ -16205,7 +16298,7 @@ namespace Bank_Host
         {
             return $"{dgv_Shelf.Rows[index].Cells["Shelf_Lot"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_DCC"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_Device"].Value.ToString()}:" +
                 $"{dgv_Shelf.Rows[index].Cells["Shelf_QTY"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_WaferQTY"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_AmkorID"].Value.ToString()}:" +
-                $"{dgv_Shelf.Rows[index].Cells["Shelf_Cust"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_WLot"].Value.ToString()}";
+                $"{dgv_Shelf.Rows[index].Cells["Shelf_Cust"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_WLot"].Value.ToString()}:{dgv_Shelf.Rows[index].Cells["Shelf_ReelIDDCC"].Value.ToString().Split('/')[0]}:{dgv_Shelf.Rows[index].Cells["Shelf_ReelIDDCC"].Value.ToString().Split('/')[1]}";
         }
 
         private StorageData ShelfGetData(int ShelfIndex)
@@ -17139,7 +17232,8 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드7: Split Log");
                 comboBox_mode.Items.Add("모드8: Scrap");
                 comboBox_mode.Items.Add("모드9: Wafer Return");
-                comboBox_mode.Items.Add("모드10: Update Shelf ReelID ");
+                comboBox_mode.Items.Add("모드10: Update Shelf ReelID");
+                comboBox_mode.Items.Add("모드11: Update Shelf ReelID(RETURN)");
             }
             else if(loc == "K5")
             {
@@ -17420,6 +17514,7 @@ namespace Bank_Host
     {
         public string Device = "";
         public string Lot = "";
+        public string DCC = "";
         public string DieTTL = "";
         public string DieQty = "";
         public string WfrTTL = "";
