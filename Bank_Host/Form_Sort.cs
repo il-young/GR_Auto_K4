@@ -16362,6 +16362,48 @@ namespace Bank_Host
             {
                 dgv_Shelf.Rows[ShelfClickedIndex].DefaultCellStyle.BackColor = Control.DefaultBackColor;
             }
+            else if(e.ClickedItem.Text == "Find")
+            {
+                ShelfFindIndex = -1;
+                frm_Find FindFrom = new frm_Find();
+                FindFrom.FindEvent += FindFrom_FindEvent;
+                FindFrom.ShowDialog();
+            }
+            else if(e.ClickedItem.Text == "Reset All")
+            {
+                for(int i = 0; i< dgv_Shelf.RowCount; i++)
+                {
+                    dgv_Shelf.Rows[i].DefaultCellStyle.BackColor = Control.DefaultBackColor;
+                }                
+            }
+
+        }
+
+
+        int ShelfFindIndex = -1;
+        private void FindFrom_FindEvent(string Lot)
+        {
+            List<DataGridViewRow> rows = dgv_Shelf.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Shelf_Lot"].Value.ToString().Contains(Lot) == true || r.Cells["Shelf_Device"].Value.ToString().Contains(Lot) == true).ToList();
+
+            if(ShelfFindIndex != -1)
+                dgv_Shelf.Rows[ShelfFindIndex].Selected = false;
+
+            foreach(DataGridViewRow row in rows)
+            {
+                if(row.Index > ShelfFindIndex)
+                {
+                    ShelfFindIndex = row.Index;
+                    dgv_Shelf.FirstDisplayedScrollingRowIndex = row.Index;
+                    dgv_Shelf.Rows[row.Index].Selected = true;
+                    break;
+                }
+                else if(ShelfFindIndex == rows[rows.Count -1].Index)
+                {
+                    ShelfFindIndex = rows[0].Index;
+                    dgv_Shelf.FirstDisplayedScrollingRowIndex = rows[0].Index;
+                    dgv_Shelf.Rows[rows[0].Index].Selected = true;
+                }
+            }
         }
 
         private void dgv_Shelf_MouseDown(object sender, MouseEventArgs e)
@@ -16374,7 +16416,9 @@ namespace Bank_Host
             if (e.Button == MouseButtons.Right)
             {
                 contextMenuStrip1.Items.Clear();
+                contextMenuStrip1.Items.Add("Find");
                 contextMenuStrip1.Items.Add("Reset");
+                contextMenuStrip1.Items.Add("Reset All");
                 ShelfClickedIndex = e.RowIndex;
 
                 contextMenuStrip1.ItemClicked += ContextMenuStrip1_ItemClicked;

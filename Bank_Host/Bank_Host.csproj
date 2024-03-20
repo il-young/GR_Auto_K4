@@ -421,6 +421,12 @@
     <Compile Include="frmReconnecting.designer.cs">
       <DependentUpon>frmReconnecting.cs</DependentUpon>
     </Compile>
+    <Compile Include="frm_Find.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_Find.Designer.cs">
+      <DependentUpon>frm_Find.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_LoactionLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -539,6 +545,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReconnecting.resx">
       <DependentUpon>frmReconnecting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_Find.resx">
+      <DependentUpon>frm_Find.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_LoactionLabel.resx">
       <DependentUpon>frm_LoactionLabel.cs</DependentUpon>
