@@ -16012,7 +16012,7 @@ namespace Bank_Host
             //}
             //else
             {
-                SetShelfProgressMax((EndShelf - StartShelf + 1) * (EndBox - StartShelf + 1));
+                SetShelfProgressMax((EndShelf - StartShelf + 1) * (EndBox - StartBox + 1));
                 int CustIndex = -1;
 
 
