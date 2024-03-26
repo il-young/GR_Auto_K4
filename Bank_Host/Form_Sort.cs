@@ -589,7 +589,7 @@ namespace Bank_Host
 
         public void Fnc_Get_Information_Model(string strCust, ComboBox NameBox)
         {
-            //List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/diebank/bcr-master/k4/json?CUST_CODE={strCust}"));
+            List<Dictionary<string, string>> cust = WAS2CUST(GetWebServiceData($"http://10.131.10.84:8080/api/diebank/bcr-master/k4/json?CUST_CODE={strCust}"));
 
             //var dt_list = BankHost_main.Host.Host_Get_BCRFormat();
 
@@ -13198,56 +13198,73 @@ namespace Bank_Host
             }
             else if (nSel == 5)
             {
-                dgv_loc.Rows.Clear();
-
-                Form_Input Frm_Input = new Form_Input();
-
-                // strInputBill Bill# 입력 변수.
-
-                Frm_Input.Fnc_Init(nSel);
-                Frm_Input.ShowDialog();
-
-                if (BankHost_main.strOperator == "" || strInputBill == "")
-                    return;
-
-                label_opinfo.Text = BankHost_main.strOperator;
-                if (!BankHost_main.bHost_connect)
-                    return;
-
-                string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
-                Frm_Process.Form_Show(strMsg);
-
-                var taskResut = Fnc_RunAsync("http://10.101.5.38:8080/EETPackingLabelValidation.asmx/BANKSplitLog?pPlant=K4");
-
-                try
+                if (Properties.Settings.Default.LOCATION == "K4")
                 {
-                    strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
-                    Frm_Process.Form_Display(strMsg);
+                    dgv_loc.Rows.Clear();
 
-                    string res = taskResut.Result;
+                    Form_Input Frm_Input = new Form_Input();
 
-                    BankHost_main.Fnc_SaveLog("SplitLog Low Data", 1);
-                    BankHost_main.Fnc_SaveLog(res, 1);
-                    location_data_sorting(res);
+                    // strInputBill Bill# 입력 변수.
 
-                    saveFileDialog1.InitialDirectory = Properties.Settings.Default.Loc_file_save_path;
+                    Frm_Input.Fnc_Init(nSel);
+                    Frm_Input.ShowDialog();
 
-                    tabControl_Sort.SelectedIndex = 6;
+                    if (BankHost_main.strOperator == "" || strInputBill == "")
+                        return;
 
-                    bmode6 = true;
-                    LastClickTime = DateTime.Now;
-                    runLogOutTimer();
-                    Frm_Process.Form_Hide();
+                    label_opinfo.Text = BankHost_main.strOperator;
+                    if (!BankHost_main.bHost_connect)
+                        return;
+
+                    string strMsg = string.Format("\n\n작업 정보를 가져 옵니다.");
+                    Frm_Process.Form_Show(strMsg);
+
+                    var taskResut = Fnc_RunAsync("http://10.101.5.38:8080/EETPackingLabelValidation.asmx/BANKSplitLog?pPlant=K4");
+
+                    try
+                    {
+                        strMsg = string.Format("\n\n작업 정보를 분석 합니다.");
+                        Frm_Process.Form_Display(strMsg);
+
+                        string res = taskResut.Result;
+
+                        BankHost_main.Fnc_SaveLog("SplitLog Low Data", 1);
+                        BankHost_main.Fnc_SaveLog(res, 1);
+                        location_data_sorting(res);
+
+                        saveFileDialog1.InitialDirectory = Properties.Settings.Default.Loc_file_save_path;
+
+                        tabControl_Sort.SelectedIndex = 6;
+
+                        bmode6 = true;
+                        LastClickTime = DateTime.Now;
+                        runLogOutTimer();
+                        Frm_Process.Form_Hide();
+                    }
+                    catch (Exception ex)
+                    {
+                        string str = string.Format("{0}", ex);
+
+                        strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
+                        Frm_Process.Form_Display_Warning(strMsg);
+
+                        Thread.Sleep(3000);
+                        Frm_Process.Form_Hide();
+                    }
                 }
-                catch (Exception ex)
+                else if(Properties.Settings.Default.LOCATION == "K5")
                 {
-                    string str = string.Format("{0}", ex);
+                    tabControl_Sort.SelectedIndex = 5;
 
-                    strMsg = string.Format("작업 정보를 가져오는데 실패 하였습니다.");
-                    Frm_Process.Form_Display_Warning(strMsg);
+                    tb_PreFix.Text = Properties.Settings.Default.ShelfPreFix;
+                    tb_StartShelf.Text = Properties.Settings.Default.ShelfStartShelf;
+                    tb_EndShelf.Text = Properties.Settings.Default.ShelfEndShelf;
+                    tb_StartBox.Text = Properties.Settings.Default.ShelfStartBox;
+                    tb_EndBox.Text = Properties.Settings.Default.ShelfEndBox;
 
-                    Thread.Sleep(3000);
-                    Frm_Process.Form_Hide();
+                    cb_ShelfCust.SelectedIndex = Properties.Settings.Default.ShelfCust;
+                    cb_ShelfCustName.SelectedIndex = Properties.Settings.Default.ShelfCustName;
+                    cb_ShelfIgnoQTY.Checked = false;
                 }
             }
             else if (nSel == 6)
@@ -17215,6 +17232,27 @@ namespace Bank_Host
             textBox_Readdata.Invoke(new Update(() => textBox_Readdata.Text = strInfo));            
         }
 
+
+        public void ClearModeComboBox()
+        {
+            comboBox_mode.Items.Clear();
+        }
+
+        public void AddModeComboBox(string msg)
+        {
+            comboBox_mode.Items.Add(msg);
+        }
+
+        public void RemoveTabPage(int index)
+        {
+            tabControl_Sort.TabPages.RemoveAt(index);            
+        }
+
+        public void SelecteTab(int index)
+        {
+            tabControl_Sort.SelectedIndex = index;
+        }
+
         public void init_mode_combobox()
         {
             string loc = Properties.Settings.Default.LOCATION;
@@ -17243,6 +17281,7 @@ namespace Bank_Host
                 comboBox_mode.Items.Add("모드3: Validation(Webservice)");
                 comboBox_mode.Items.Add("모드4: Validation(이전 작업 불러오기)");
                 comboBox_mode.Items.Add("모드5: Amkor Barcode Scan Printer)");
+                comboBox_mode.Items.Add("모드6: Update Shelf ReelID");                
             }
             else if(loc == "K3")
             {                

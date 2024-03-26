@@ -52,6 +52,7 @@
             this.gb_Camera = new System.Windows.Forms.GroupBox();
             this.rb_cognex = new System.Windows.Forms.RadioButton();
             this.rb_keyence = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.gb_Camera.SuspendLayout();
             this.SuspendLayout();
@@ -231,10 +232,16 @@
             this.rb_keyence.CheckedChanged += new System.EventHandler(this.rb_keyence_CheckedChanged);
             this.rb_keyence.Click += new System.EventHandler(this.rb_keyence_Click);
             // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
             // BankHost_main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.gb_Camera);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -291,6 +298,7 @@
         private System.Windows.Forms.GroupBox gb_Camera;
         private System.Windows.Forms.RadioButton rb_cognex;
         private System.Windows.Forms.RadioButton rb_keyence;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

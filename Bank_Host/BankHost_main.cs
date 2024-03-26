@@ -766,9 +766,76 @@ namespace Bank_Host
                 }
             }
 
-            Frm_Sort.init_mode_combobox();
+           init_mode_combobox();
 
         }
+
+        public void init_mode_combobox()
+        {
+            string loc = Properties.Settings.Default.LOCATION;
+
+            if (loc == "K4")
+            {
+                Form_Sort NewForm = new Form_Sort();
+                NewForm.ClearModeComboBox(); 
+
+                NewForm.AddModeComboBox("모드1: Auto GR");
+                NewForm.AddModeComboBox("모드2: Auto GR(이전 작업 불러오기)");
+                NewForm.AddModeComboBox("모드3: Validation(Webservice)");
+                NewForm.AddModeComboBox("모드4: Validation(이전 작업 불러오기)");
+                NewForm.AddModeComboBox("모드5: Amkor Barcode Scan Printer");
+                NewForm.AddModeComboBox("모드6: Location History");
+                NewForm.AddModeComboBox("모드7: Split Log");
+                NewForm.AddModeComboBox("모드8: Scrap");
+                NewForm.AddModeComboBox("모드9: Wafer Return");
+                NewForm.AddModeComboBox("모드10: Update Shelf ReelID");
+                NewForm.AddModeComboBox("모드11: Update Shelf ReelID(RETURN)");
+
+                panel1.Visible = false;
+
+            }
+            else if (loc == "K5")
+            {
+                Form_Sort NewForm = new Form_Sort();
+                NewForm.ClearModeComboBox(); ;
+                NewForm.AddModeComboBox("모드1: Auto GR");
+                NewForm.AddModeComboBox("모드2: Auto GR(이전 작업 불러오기)");
+                NewForm.AddModeComboBox("모드3: Validation(Webservice)");
+                NewForm.AddModeComboBox("모드4: Validation(이전 작업 불러오기)");
+                NewForm.AddModeComboBox("모드5: Amkor Barcode Scan Printer)");
+                NewForm.AddModeComboBox("모드6: Update Shelf ReelID");
+
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+                NewForm.RemoveTabPage(5);
+
+                NewForm.TopLevel = false;
+                NewForm.Parent = panel1;
+                NewForm.Dock = DockStyle.Fill;
+                NewForm.Show();
+                panel1.Visible = true;
+                panel1.BringToFront();
+            }
+            else if (loc == "K3")
+            {
+                Form_Sort NewForm = new Form_Sort();
+                NewForm.ClearModeComboBox(); ;
+                NewForm.SelecteTab(0);
+                NewForm.AddModeComboBox("모드1: Auto GR");
+                NewForm.AddModeComboBox("모드2: Auto GR(이전 작업 불러오기)");
+                NewForm.AddModeComboBox("모드3: Validation(Webservice)");
+                NewForm.AddModeComboBox("모드4: Validation(이전 작업 불러오기)");
+                NewForm.AddModeComboBox("모드5: Amkor Barcode Scan Printer)");
+
+                Frm_Sort = NewForm;
+            }
+        }
+
 
         private void BankHost_main_Load(object sender, EventArgs e)
         {
@@ -783,6 +850,8 @@ namespace Bank_Host
             else if (label3.Text == "K5")
             {
                 label3.ForeColor = Color.Green;
+
+                init_mode_combobox();
             }
             else
             {
@@ -1046,7 +1115,7 @@ namespace Bank_Host
                             {
                                 Form_Sort.strValDevice = Read_Bcr.Device;
                                 Form_Sort.strValLot = Read_Bcr.Lot;
-                                Form_Sort.nValDiettl = Read_Bcr.DieTTL == "" ? 0 : Int32.Parse(Read_Bcr.DieTTL);
+                                Form_Sort.nValDiettl = Read_Bcr.DieTTL == "" ? 0 : Read_Bcr.DieTTL == "-1" ? Int32.Parse(Read_Bcr.DieQty) : Int32.Parse(Read_Bcr.DieTTL);
                                 Form_Sort.nValDieQty = Read_Bcr.DieQty == "" ? 0 : Int32.Parse(Read_Bcr.DieQty);
                                 Form_Sort.nValWfrttl = Read_Bcr.WfrTTL == "" ? 0 : Int32.Parse(Read_Bcr.WfrTTL);
                                 Form_Sort.bupdate = true;
