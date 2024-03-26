@@ -10738,7 +10738,7 @@ namespace Bank_Host
             if (bgw_timeout.IsBusy == false)
             {
                 btimeOut = true;
-                bgw_timeout.RunWorkerAsync();
+                //bgw_timeout.RunWorkerAsync();
 
             }
         }
@@ -12882,7 +12882,7 @@ namespace Bank_Host
                         BankHost_main.strID = "";
                         break;
                     }
-
+                    
                 }
                 else
                 {
