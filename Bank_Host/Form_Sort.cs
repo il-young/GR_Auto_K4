@@ -15789,6 +15789,7 @@ namespace Bank_Host
                 {
                     if (listSumRow.Count == 2)
                     {
+                        listSumRow[0].DefaultCellStyle.BackColor = motherLotCompColor;
                         listSumRow[1].Cells["splitQTY"].Value = totQTY;
                         SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 완료");
                     }
