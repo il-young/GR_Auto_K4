@@ -443,14 +443,15 @@
             this.cb_ShelfCust = new System.Windows.Forms.ComboBox();
             this.btn_ShelfSearch = new System.Windows.Forms.Button();
             this.panel12 = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.tb_EndBox = new System.Windows.Forms.MaskedTextBox();
-            this.tb_EndShelf = new System.Windows.Forms.MaskedTextBox();
-            this.label63 = new System.Windows.Forms.Label();
-            this.label64 = new System.Windows.Forms.Label();
+            this.gb_OneByOne = new System.Windows.Forms.GroupBox();
+            this.rb_OneByOne = new System.Windows.Forms.RadioButton();
+            this.tb_OnebyOne = new System.Windows.Forms.MaskedTextBox();
             this.label65 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gb_Range = new System.Windows.Forms.GroupBox();
+            this.rb_Range = new System.Windows.Forms.RadioButton();
+            this.tb_EndBox = new System.Windows.Forms.MaskedTextBox();
             this.tb_StartBox = new System.Windows.Forms.MaskedTextBox();
+            this.tb_EndShelf = new System.Windows.Forms.MaskedTextBox();
             this.tb_StartShelf = new System.Windows.Forms.MaskedTextBox();
             this.tb_PreFix = new System.Windows.Forms.TextBox();
             this.label66 = new System.Windows.Forms.Label();
@@ -464,6 +465,8 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.t_LogOut = new System.Windows.Forms.Timer(this.components);
+            this.label64 = new System.Windows.Forms.Label();
+            this.label63 = new System.Windows.Forms.Label();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -549,8 +552,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_Copy)).BeginInit();
             this.panel13.SuspendLayout();
             this.panel12.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gb_OneByOne.SuspendLayout();
+            this.gb_Range.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl_Sort
@@ -5310,112 +5313,128 @@
             // 
             // panel12
             // 
-            this.panel12.Controls.Add(this.groupBox2);
-            this.panel12.Controls.Add(this.label65);
-            this.panel12.Controls.Add(this.groupBox1);
+            this.panel12.Controls.Add(this.gb_OneByOne);
+            this.panel12.Controls.Add(this.gb_Range);
             this.panel12.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel12.Location = new System.Drawing.Point(0, 0);
             this.panel12.Name = "panel12";
             this.panel12.Size = new System.Drawing.Size(621, 162);
             this.panel12.TabIndex = 0;
             // 
-            // groupBox2
+            // gb_OneByOne
             // 
-            this.groupBox2.Controls.Add(this.tb_EndBox);
-            this.groupBox2.Controls.Add(this.tb_EndShelf);
-            this.groupBox2.Controls.Add(this.label63);
-            this.groupBox2.Controls.Add(this.label64);
-            this.groupBox2.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.groupBox2.Location = new System.Drawing.Point(380, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(230, 79);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "End";
+            this.gb_OneByOne.Controls.Add(this.rb_OneByOne);
+            this.gb_OneByOne.Controls.Add(this.tb_OnebyOne);
+            this.gb_OneByOne.Controls.Add(this.label65);
+            this.gb_OneByOne.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gb_OneByOne.Location = new System.Drawing.Point(346, 2);
+            this.gb_OneByOne.Name = "gb_OneByOne";
+            this.gb_OneByOne.Size = new System.Drawing.Size(269, 103);
+            this.gb_OneByOne.TabIndex = 16;
+            this.gb_OneByOne.TabStop = false;
+            this.gb_OneByOne.Text = "One by One";
             // 
-            // tb_EndBox
+            // rb_OneByOne
             // 
-            this.tb_EndBox.Font = new System.Drawing.Font("맑은 고딕", 12F);
-            this.tb_EndBox.Location = new System.Drawing.Point(118, 39);
-            this.tb_EndBox.Mask = "99";
-            this.tb_EndBox.Name = "tb_EndBox";
-            this.tb_EndBox.Size = new System.Drawing.Size(100, 29);
-            this.tb_EndBox.TabIndex = 15;
-            this.tb_EndBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.rb_OneByOne.AutoSize = true;
+            this.rb_OneByOne.Location = new System.Drawing.Point(111, 4);
+            this.rb_OneByOne.Name = "rb_OneByOne";
+            this.rb_OneByOne.Size = new System.Drawing.Size(14, 13);
+            this.rb_OneByOne.TabIndex = 10;
+            this.rb_OneByOne.TabStop = true;
+            this.rb_OneByOne.UseVisualStyleBackColor = true;
+            this.rb_OneByOne.CheckedChanged += new System.EventHandler(this.rb_OneByOne_CheckedChanged);
             // 
-            // tb_EndShelf
+            // tb_OnebyOne
             // 
-            this.tb_EndShelf.Font = new System.Drawing.Font("맑은 고딕", 12F);
-            this.tb_EndShelf.Location = new System.Drawing.Point(6, 39);
-            this.tb_EndShelf.Mask = "999";
-            this.tb_EndShelf.Name = "tb_EndShelf";
-            this.tb_EndShelf.Size = new System.Drawing.Size(100, 29);
-            this.tb_EndShelf.TabIndex = 14;
-            this.tb_EndShelf.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label63.Location = new System.Drawing.Point(115, 22);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(70, 14);
-            this.label63.TabIndex = 6;
-            this.label63.Text = "Box No.";
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label64.Location = new System.Drawing.Point(6, 22);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(77, 14);
-            this.label64.TabIndex = 4;
-            this.label64.Text = "Shelf No.";
+            this.tb_OnebyOne.Enabled = false;
+            this.tb_OnebyOne.Font = new System.Drawing.Font("맑은 고딕", 12F);
+            this.tb_OnebyOne.Location = new System.Drawing.Point(4, 38);
+            this.tb_OnebyOne.Name = "tb_OnebyOne";
+            this.tb_OnebyOne.Size = new System.Drawing.Size(100, 29);
+            this.tb_OnebyOne.TabIndex = 13;
+            this.tb_OnebyOne.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Font = new System.Drawing.Font("굴림", 16F, System.Drawing.FontStyle.Bold);
-            this.label65.Location = new System.Drawing.Point(346, 25);
+            this.label65.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
+            this.label65.Location = new System.Drawing.Point(6, 21);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(28, 22);
-            this.label65.TabIndex = 9;
-            this.label65.Text = "~";
+            this.label65.Size = new System.Drawing.Size(72, 14);
+            this.label65.TabIndex = 4;
+            this.label65.Text = "Location";
             // 
-            // groupBox1
+            // gb_Range
             // 
-            this.groupBox1.Controls.Add(this.tb_StartBox);
-            this.groupBox1.Controls.Add(this.tb_StartShelf);
-            this.groupBox1.Controls.Add(this.tb_PreFix);
-            this.groupBox1.Controls.Add(this.label66);
-            this.groupBox1.Controls.Add(this.label67);
-            this.groupBox1.Controls.Add(this.label68);
-            this.groupBox1.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.groupBox1.Location = new System.Drawing.Point(5, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(335, 76);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Start";
+            this.gb_Range.Controls.Add(this.label63);
+            this.gb_Range.Controls.Add(this.label64);
+            this.gb_Range.Controls.Add(this.rb_Range);
+            this.gb_Range.Controls.Add(this.tb_EndBox);
+            this.gb_Range.Controls.Add(this.tb_StartBox);
+            this.gb_Range.Controls.Add(this.tb_EndShelf);
+            this.gb_Range.Controls.Add(this.tb_StartShelf);
+            this.gb_Range.Controls.Add(this.tb_PreFix);
+            this.gb_Range.Controls.Add(this.label66);
+            this.gb_Range.Controls.Add(this.label67);
+            this.gb_Range.Controls.Add(this.label68);
+            this.gb_Range.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gb_Range.Location = new System.Drawing.Point(5, 3);
+            this.gb_Range.Name = "gb_Range";
+            this.gb_Range.Size = new System.Drawing.Size(335, 103);
+            this.gb_Range.TabIndex = 8;
+            this.gb_Range.TabStop = false;
+            this.gb_Range.Text = "Range";
+            // 
+            // rb_Range
+            // 
+            this.rb_Range.AutoSize = true;
+            this.rb_Range.Checked = true;
+            this.rb_Range.Location = new System.Drawing.Point(65, 3);
+            this.rb_Range.Name = "rb_Range";
+            this.rb_Range.Size = new System.Drawing.Size(14, 13);
+            this.rb_Range.TabIndex = 10;
+            this.rb_Range.TabStop = true;
+            this.rb_Range.UseVisualStyleBackColor = true;
+            this.rb_Range.CheckedChanged += new System.EventHandler(this.rb_Range_CheckedChanged_1);
+            // 
+            // tb_EndBox
+            // 
+            this.tb_EndBox.Font = new System.Drawing.Font("맑은 고딕", 12F);
+            this.tb_EndBox.Location = new System.Drawing.Point(249, 64);
+            this.tb_EndBox.Mask = "99";
+            this.tb_EndBox.Name = "tb_EndBox";
+            this.tb_EndBox.Size = new System.Drawing.Size(49, 29);
+            this.tb_EndBox.TabIndex = 15;
+            this.tb_EndBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tb_StartBox
             // 
             this.tb_StartBox.Font = new System.Drawing.Font("맑은 고딕", 12F);
-            this.tb_StartBox.Location = new System.Drawing.Point(229, 39);
+            this.tb_StartBox.Location = new System.Drawing.Point(249, 30);
             this.tb_StartBox.Mask = "99";
             this.tb_StartBox.Name = "tb_StartBox";
-            this.tb_StartBox.Size = new System.Drawing.Size(100, 29);
+            this.tb_StartBox.Size = new System.Drawing.Size(49, 29);
             this.tb_StartBox.TabIndex = 14;
             this.tb_StartBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tb_EndShelf
+            // 
+            this.tb_EndShelf.Font = new System.Drawing.Font("맑은 고딕", 12F);
+            this.tb_EndShelf.Location = new System.Drawing.Point(166, 65);
+            this.tb_EndShelf.Mask = "999";
+            this.tb_EndShelf.Name = "tb_EndShelf";
+            this.tb_EndShelf.Size = new System.Drawing.Size(57, 29);
+            this.tb_EndShelf.TabIndex = 14;
+            this.tb_EndShelf.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tb_StartShelf
             // 
             this.tb_StartShelf.Font = new System.Drawing.Font("맑은 고딕", 12F);
-            this.tb_StartShelf.Location = new System.Drawing.Point(115, 39);
+            this.tb_StartShelf.Location = new System.Drawing.Point(166, 30);
             this.tb_StartShelf.Mask = "999";
             this.tb_StartShelf.Name = "tb_StartShelf";
-            this.tb_StartShelf.Size = new System.Drawing.Size(100, 29);
+            this.tb_StartShelf.Size = new System.Drawing.Size(57, 29);
             this.tb_StartShelf.TabIndex = 13;
             this.tb_StartShelf.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -5423,7 +5442,7 @@
             // 
             this.tb_PreFix.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
             this.tb_PreFix.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.tb_PreFix.Location = new System.Drawing.Point(9, 41);
+            this.tb_PreFix.Location = new System.Drawing.Point(9, 50);
             this.tb_PreFix.Name = "tb_PreFix";
             this.tb_PreFix.Size = new System.Drawing.Size(100, 23);
             this.tb_PreFix.TabIndex = 7;
@@ -5433,7 +5452,7 @@
             // 
             this.label66.AutoSize = true;
             this.label66.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label66.Location = new System.Drawing.Point(6, 22);
+            this.label66.Location = new System.Drawing.Point(6, 31);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(67, 14);
             this.label66.TabIndex = 8;
@@ -5443,7 +5462,7 @@
             // 
             this.label67.AutoSize = true;
             this.label67.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label67.Location = new System.Drawing.Point(226, 22);
+            this.label67.Location = new System.Drawing.Point(246, 13);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(70, 14);
             this.label67.TabIndex = 6;
@@ -5453,7 +5472,7 @@
             // 
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label68.Location = new System.Drawing.Point(117, 22);
+            this.label68.Location = new System.Drawing.Point(168, 13);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(77, 14);
             this.label68.TabIndex = 4;
@@ -5501,6 +5520,26 @@
             // 
             this.t_LogOut.Interval = 1000;
             this.t_LogOut.Tick += new System.EventHandler(this.t_LogOut_Tick);
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
+            this.label64.Location = new System.Drawing.Point(115, 39);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(42, 14);
+            this.label64.TabIndex = 18;
+            this.label64.Text = "Start";
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
+            this.label63.Location = new System.Drawing.Point(115, 74);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(35, 14);
+            this.label63.TabIndex = 19;
+            this.label63.Text = "End";
             // 
             // Form_Sort
             // 
@@ -5621,11 +5660,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nud_Copy)).EndInit();
             this.panel13.ResumeLayout(false);
             this.panel12.ResumeLayout(false);
-            this.panel12.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gb_OneByOne.ResumeLayout(false);
+            this.gb_OneByOne.PerformLayout();
+            this.gb_Range.ResumeLayout(false);
+            this.gb_Range.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5968,11 +6006,7 @@
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.Panel panel12;
         private System.Windows.Forms.Button btn_ShelfSearch;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label63;
-        private System.Windows.Forms.Label label64;
-        private System.Windows.Forms.Label label65;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gb_Range;
         private System.Windows.Forms.TextBox tb_PreFix;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.Label label67;
@@ -6016,5 +6050,12 @@
         private System.Windows.Forms.CheckBox cb_ShelfIgnoQTY;
         private System.Windows.Forms.TextBox tb_ShelfScan;
         private System.Windows.Forms.NumericUpDown nud_Copy;
+        private System.Windows.Forms.GroupBox gb_OneByOne;
+        private System.Windows.Forms.RadioButton rb_OneByOne;
+        private System.Windows.Forms.MaskedTextBox tb_OnebyOne;
+        private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.RadioButton rb_Range;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Label label64;
     }
 }

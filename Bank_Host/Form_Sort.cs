@@ -15780,8 +15780,6 @@ namespace Bank_Host
             {
                 dgv_split.Rows[listSumRow[0].Index].DefaultCellStyle.BackColor = motherLotCompColor;
                 SpeakST($"{listSumRow[0].Cells["SplitNo"].Value.ToString()} 완료");
-
-
             }
             else
             {
@@ -16046,51 +16044,111 @@ namespace Bank_Host
             //}
             //else
             {
-                SetShelfProgressMax((EndShelf - StartShelf + 1) * (EndBox - StartBox + 1));
+                
                 int CustIndex = -1;
 
-
-                for (int nShelf = StartShelf; nShelf <= EndShelf; nShelf++)
+                if(rb_Range.Checked == true)
                 {
-                    for (int nBox = StartBox; nBox <= EndBox; nBox++)
+                    GetShelfRange();
+                }
+                else if(rb_OneByOne.Checked == true)
+                {
+                    GetShelf();
+                }
+
+            }
+        }
+
+        private void GetShelf()
+        {
+            string url = "";
+            int Reelcnt = 0;
+            int CustIndex = -1;
+
+            try
+            {
+                url = $"http://10.101.14.130:8180/eMES_Webservice/diebank_automation_service/inq_auto_gr_ent_list/{Properties.Settings.Default.LOCATION},%20,{tb_OnebyOne.Text},%20";
+                string[] temp = GetWebServiceData(url).Split('\r');
+
+                for (int i = 1; i < temp.Length; i++)
+                {
+                    string[] row = temp[i].Replace("\n", "").Split('\t');
+
+                    dgv_Shelf.Rows.Add(new object[] { ++Reelcnt, row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17] });
+
+                    if (dgv_Shelf.Rows[dgv_Shelf.RowCount - 1].Cells["Shelf_ReelIDDCC"].Value.ToString() != "")
+                        dgv_Shelf.Rows[dgv_Shelf.RowCount - 1].DefaultCellStyle.BackColor = ShelfCompleteColor;
+
+                    CustIndex = cb_ShelfCust.Items.IndexOf(row[0]);
+
+                    if (CustIndex == -1)
                     {
-                        try
+                        cb_ShelfCust.Items.Add(row[0]);
+                    }
+
+                }
+
+                SetShelfProgressVal(0);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        private void GetShelfRange()
+        {
+            string url = "";
+            int Reelcnt = 0;
+            int StartShelf = int.Parse(tb_StartShelf.Text);
+            int EndShelf = int.Parse(tb_EndShelf.Text);
+            int StartBox = int.Parse(tb_StartBox.Text);
+            int EndBox = int.Parse(tb_EndBox.Text);
+            int CustIndex = -1;
+
+            SetShelfProgressMax((EndShelf - StartShelf + 1) * (EndBox - StartBox + 1));
+
+            for (int nShelf = StartShelf; nShelf <= EndShelf; nShelf++)
+            {
+                for (int nBox = StartBox; nBox <= EndBox; nBox++)
+                {
+                    try
+                    {
+                        url = $"http://10.101.14.130:8180/eMES_Webservice/diebank_automation_service/inq_auto_gr_ent_list/{Properties.Settings.Default.LOCATION},%20,{tb_PreFix.Text}{nShelf.ToString().PadLeft(3, '0')}{nBox.ToString().PadLeft(2, '0')},%20";
+                        string[] temp = GetWebServiceData(url).Split('\r');
+
+                        for (int i = 1; i < temp.Length; i++)
                         {
-                            url = $"http://10.101.14.130:8180/eMES_Webservice/diebank_automation_service/inq_auto_gr_ent_list/{Properties.Settings.Default.LOCATION},%20,{tb_PreFix.Text}{nShelf.ToString().PadLeft(3,'0')}{nBox.ToString().PadLeft(2, '0')},%20";
-                            string[] temp = GetWebServiceData(url).Split('\r');
+                            string[] row = temp[i].Replace("\n", "").Split('\t');
 
-                            for (int i = 1; i < temp.Length; i++)
+                            dgv_Shelf.Rows.Add(new object[] { ++Reelcnt, row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17] });
+
+                            if (dgv_Shelf.Rows[dgv_Shelf.RowCount - 1].Cells["Shelf_ReelIDDCC"].Value.ToString() != "")
+                                dgv_Shelf.Rows[dgv_Shelf.RowCount - 1].DefaultCellStyle.BackColor = ShelfCompleteColor;
+
+                            CustIndex = cb_ShelfCust.Items.IndexOf(row[0]);
+
+                            if (CustIndex == -1)
                             {
-                                string[] row = temp[i].Replace("\n", "").Split('\t');
-
-                                dgv_Shelf.Rows.Add(new object[] { ++Reelcnt, row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17] });
-
-                                if (dgv_Shelf.Rows[dgv_Shelf.RowCount - 1].Cells["Shelf_ReelIDDCC"].Value.ToString() != "")
-                                    dgv_Shelf.Rows[dgv_Shelf.RowCount - 1].DefaultCellStyle.BackColor = ShelfCompleteColor;
-
-                                CustIndex = cb_ShelfCust.Items.IndexOf(row[0]);
-
-                                if (CustIndex == -1)
-                                {
-                                    cb_ShelfCust.Items.Add(row[0]);
-                                }
-
+                                cb_ShelfCust.Items.Add(row[0]);
                             }
 
-                            SetShelfProgressVal((nShelf - StartShelf) * (EndBox - StartBox + 1) + (nBox - StartBox));
-
-
                         }
-                        catch (Exception ex)
-                        {
 
-                            throw;
-                        }
+                        SetShelfProgressVal((nShelf - StartShelf) * (EndBox - StartBox + 1) + (nBox - StartBox));
+
 
                     }
-                }
-                //cb_ShelfCust.SelectedIndex = 0;
+                    catch (Exception ex)
+                    {
 
+                        throw;
+                    }
+
+                }
             }
         }
 
@@ -16794,6 +16852,24 @@ namespace Bank_Host
             }
         }
 
+
+
+        private void rb_Range_CheckedChanged_1(object sender, EventArgs e)
+        {
+            rb_OneByOne.Checked = !rb_Range.Checked;
+            tb_OnebyOne.Enabled = !rb_Range.Checked;
+        }
+
+        private void rb_OneByOne_CheckedChanged(object sender, EventArgs e)
+        {
+            rb_Range.Checked = !rb_OneByOne.Checked;
+            tb_PreFix.Enabled = !rb_OneByOne.Checked;
+            tb_StartShelf.Enabled = !rb_OneByOne.Checked;
+            tb_StartBox.Enabled = !rb_OneByOne.Checked;
+            tb_EndShelf.Enabled = !rb_OneByOne.Checked;
+            tb_EndBox.Enabled = !rb_OneByOne.Checked;
+        }
+
         private void Split_log_new_file_save(string split_data)
         {
             string folderpath = strExcutionPath + "\\Work\\Split_log";
@@ -16801,8 +16877,7 @@ namespace Bank_Host
             
             string[] temp = split_data.Split('\n');
             string[] files = new string[10];
-            string[] sp;
-
+            
             try
             {
                 if (File.Exists(strFileName) == true)
