@@ -448,6 +448,8 @@
             this.tb_OnebyOne = new System.Windows.Forms.MaskedTextBox();
             this.label65 = new System.Windows.Forms.Label();
             this.gb_Range = new System.Windows.Forms.GroupBox();
+            this.label63 = new System.Windows.Forms.Label();
+            this.label64 = new System.Windows.Forms.Label();
             this.rb_Range = new System.Windows.Forms.RadioButton();
             this.tb_EndBox = new System.Windows.Forms.MaskedTextBox();
             this.tb_StartBox = new System.Windows.Forms.MaskedTextBox();
@@ -465,8 +467,6 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.t_LogOut = new System.Windows.Forms.Timer(this.components);
-            this.label64 = new System.Windows.Forms.Label();
-            this.label63 = new System.Windows.Forms.Label();
             this.tabControl_Sort.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_worklist)).BeginInit();
@@ -5386,6 +5386,26 @@
             this.gb_Range.TabStop = false;
             this.gb_Range.Text = "Range";
             // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
+            this.label63.Location = new System.Drawing.Point(115, 74);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(35, 14);
+            this.label63.TabIndex = 19;
+            this.label63.Text = "End";
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
+            this.label64.Location = new System.Drawing.Point(115, 39);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(42, 14);
+            this.label64.TabIndex = 18;
+            this.label64.Text = "Start";
+            // 
             // rb_Range
             // 
             this.rb_Range.AutoSize = true;
@@ -5520,26 +5540,6 @@
             // 
             this.t_LogOut.Interval = 1000;
             this.t_LogOut.Tick += new System.EventHandler(this.t_LogOut_Tick);
-            // 
-            // label64
-            // 
-            this.label64.AutoSize = true;
-            this.label64.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label64.Location = new System.Drawing.Point(115, 39);
-            this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(42, 14);
-            this.label64.TabIndex = 18;
-            this.label64.Text = "Start";
-            // 
-            // label63
-            // 
-            this.label63.AutoSize = true;
-            this.label63.Font = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Bold);
-            this.label63.Location = new System.Drawing.Point(115, 74);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(35, 14);
-            this.label63.TabIndex = 19;
-            this.label63.Text = "End";
             // 
             // Form_Sort
             // 

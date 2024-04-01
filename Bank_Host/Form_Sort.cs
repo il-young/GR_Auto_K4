@@ -10060,6 +10060,9 @@ namespace Bank_Host
             textBox1.Focus();
         }
 
+        string bShipment = "";
+        string nShipment = "";
+
         private void button_grstart_Click(object sender, EventArgs e)
         {
             if (bGRrun)
@@ -10117,57 +10120,82 @@ namespace Bank_Host
 
             int nGRNG = 0;
 
+            bool isPopUp = false;
+
             for (int n = 0; n < nLotCount; n++)
             {
                 bool bcheck = false;
+                // Qualcomm일 때 미완료 Reel이 있을 경우 
+              
 
-                string strDevice = dataGridView_workinfo.Rows[n].Cells[2].Value.ToString();
-                string strLot = dataGridView_workinfo.Rows[n].Cells[3].Value.ToString();
-                string strDieqty = dataGridView_workinfo.Rows[n].Cells[4].Value.ToString();
-                string strWfrqty = dataGridView_workinfo.Rows[n].Cells[5].Value.ToString();
-                string strWfrttl = dataGridView_workinfo.Rows[n].Cells[6].Value.ToString();
-                string strAmkorid = dataGridView_workinfo.Rows[n].Cells[7].Value.ToString();
-                string strVal = dataGridView_workinfo.Rows[n].Cells[8].Value.ToString();
-                string strGr = dataGridView_workinfo.Rows[n].Cells[9].Value.ToString();
-                string strReelID = dataGridView_workinfo.Rows[n].Cells[11].Value.ToString();
-                string strReelDCC = dataGridView_workinfo.Rows[n].Cells[12].Value.ToString();
-
-                strVal = strVal.ToUpper();
-
-                if (Int32.Parse(strWfrqty) != Int32.Parse(strWfrttl))
+                if (BankHost_main.strCustName.ToUpper().Contains("QUALCOMM") == true)
                 {
-                    if (strVal == "COMPLETE" && strGr != "COMPLETE")
+                    List<DataGridViewRow> rows = dataGridView_workinfo.Rows.Cast<DataGridViewRow>().Where(r => r.Cells["Validation"].Value.ToString().ToUpper() != "COMPLETE" && r.Cells["Shipment"].Value.ToString() == dataGridView_workinfo.Rows[n].Cells["Shipment"].Value.ToString()).ToList();
+
+                    if(bShipment == "" || bShipment != dataGridView_workinfo.Rows[n].Cells["Shipment"].Value.ToString())
                     {
-                        bcheck = true;
-                        DialogResult dialogResult1 = MessageBox.Show("워이퍼 수량이 전산 데이터와 실제 수량이 상이 합니다.\n\n계속 진행 하시겠습니까?", "Warning", MessageBoxButtons.YesNo);
-                        if (dialogResult1 == DialogResult.Yes)
-                        {
-                            bcheck = false;
-                        }
+                        isPopUp = false;
+                        bShipment = dataGridView_workinfo.Rows[n].Cells["Shipment"].Value.ToString();
+                    }
+
+                    if (isPopUp == false && rows.Count > 0)
+                    {
+                        MessageBox.Show($"Qualcomm : 미완료 된 Reel 있음!!!\nShipment : {bShipment}", "미완료!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        isPopUp = true;
                     }
                 }
-
-                if (!bcheck)
+                else
                 {
-                    bool bJudge = true;
+                    isPopUp = false;
 
-                    if (strVal == "COMPLETE" && strGr != "COMPLETE")
+                    string strDevice = dataGridView_workinfo.Rows[n].Cells[2].Value.ToString();
+                    string strLot = dataGridView_workinfo.Rows[n].Cells[3].Value.ToString();
+                    string strDieqty = dataGridView_workinfo.Rows[n].Cells[4].Value.ToString();
+                    string strWfrqty = dataGridView_workinfo.Rows[n].Cells[5].Value.ToString();
+                    string strWfrttl = dataGridView_workinfo.Rows[n].Cells[6].Value.ToString();
+                    string strAmkorid = dataGridView_workinfo.Rows[n].Cells[7].Value.ToString();
+                    string strVal = dataGridView_workinfo.Rows[n].Cells[8].Value.ToString();
+                    string strGr = dataGridView_workinfo.Rows[n].Cells[9].Value.ToString();
+                    string strReelID = dataGridView_workinfo.Rows[n].Cells[11].Value.ToString();
+                    string strReelDCC = dataGridView_workinfo.Rows[n].Cells[12].Value.ToString();
+
+                    strVal = strVal.ToUpper();
+
+                    if (Int32.Parse(strWfrqty) != Int32.Parse(strWfrttl))
                     {
-                        nGrcount++;
-                        strMsg = string.Format("\n\nGR 진행 중. 현재 Lot:{0}\nGR 처리 수량:{1}", strLot, nGrcount);
-                        Frm_Process.Form_Display(strMsg);
-
-                        bJudge = Gr_Process_Direct(strDevice, strLot, strAmkorid, strDieqty, strWfrqty, strReelID, strReelDCC);
-
-                        if (!bJudge)
+                        if (strVal == "COMPLETE" && strGr != "COMPLETE")
                         {
-                            strSpeak = string.Format("지알 실패!");
-                            speech.SpeakAsync(strSpeak);
+                            bcheck = true;
+                            DialogResult dialogResult1 = MessageBox.Show("워이퍼 수량이 전산 데이터와 실제 수량이 상이 합니다.\n\n계속 진행 하시겠습니까?", "Warning", MessageBoxButtons.YesNo);
+                            if (dialogResult1 == DialogResult.Yes)
+                            {
+                                bcheck = false;
+                            }
+                        }
+                    }
 
-                            strMsg = string.Format("GR 처리 실패 Lot:{0}", strLot);
-                            Frm_Process.Form_Display_Warning(strMsg);
+                    if (!bcheck)
+                    {
+                        bool bJudge = true;
 
-                            nGRNG++;
+                        if (strVal == "COMPLETE" && strGr != "COMPLETE")
+                        {
+                            nGrcount++;
+                            strMsg = string.Format("\n\nGR 진행 중. 현재 Lot:{0}\nGR 처리 수량:{1}", strLot, nGrcount);
+                            Frm_Process.Form_Display(strMsg);
+
+                            bJudge = Gr_Process_Direct(strDevice, strLot, strAmkorid, strDieqty, strWfrqty, strReelID, strReelDCC);
+
+                            if (!bJudge)
+                            {
+                                strSpeak = string.Format("지알 실패!");
+                                speech.SpeakAsync(strSpeak);
+
+                                strMsg = string.Format("GR 처리 실패 Lot:{0}", strLot);
+                                Frm_Process.Form_Display_Warning(strMsg);
+
+                                nGRNG++;
+                            }
                         }
                     }
                 }
