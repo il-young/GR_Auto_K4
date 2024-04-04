@@ -397,12 +397,6 @@
     <Compile Include="Form_Set.Designer.cs">
       <DependentUpon>Form_Set.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_ShelfNumInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form_ShelfNumInput.Designer.cs">
-      <DependentUpon>Form_ShelfNumInput.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form_Sort.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -532,9 +526,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Set.resx">
       <DependentUpon>Form_Set.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form_ShelfNumInput.resx">
-      <DependentUpon>Form_ShelfNumInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Sort.resx">
       <DependentUpon>Form_Sort.cs</DependentUpon>

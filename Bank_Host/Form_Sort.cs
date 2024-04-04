@@ -8786,7 +8786,7 @@ namespace Bank_Host
             BankHost_main.IsGRrun = true;
             strSelBill = "";
 
-            string strGrMethod = BankHost_main.strWork_Cust.Contains("QUALCOMM") == true ? "INTRANSIT" : "ADE";//BankHost_main.Host.Host_Get_GrMethod(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
+            string strGrMethod = BankHost_main.strWork_Cust == "453" ? "INTRANSIT" : "ADE";//BankHost_main.Host.Host_Get_GrMethod(BankHost_main.strWork_Cust, BankHost_main.strWork_Model);
             label_GRmethod.Text = strGrMethod;
 
             if (strGrMethod == "ADE")
