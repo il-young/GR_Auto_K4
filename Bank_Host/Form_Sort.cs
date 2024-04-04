@@ -10143,7 +10143,7 @@ namespace Bank_Host
 
                         if (isPopUp == false && rows.Count > 0 && CompRows.Count > 0)
                         {
-                            MessageBox.Show($"Qualcomm : 미완료 된 Reel 있음!!!\nShipment : {bShipment}", "미완료!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //MessageBox.Show($"Qualcomm : 미완료 된 Reel 있음!!!\nShipment : {bShipment}", "미완료!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             isPopUp = true;
                         }
                     }
